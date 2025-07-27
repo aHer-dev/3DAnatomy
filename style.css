@@ -229,4 +229,78 @@ button:hover {
 #menu-icon.open div:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -6px);
 }
+/* Footer-Styling */
+#footer {
+    position: fixed;
+    bottom: 10px;
+    right: 10px; /* Nach rechts verschoben */
+    background-color: rgba(0, 0, 0, 0.5); /* Dezent transparent */
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.license-link, .license-icon {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.license-icon {
+    vertical-align: middle;
+}
+
+#license-dropdown {
+    display: none;
+    position: fixed;
+    bottom: 40px; /* Über dem Footer */
+    right: 10px; /* Rechtsbündig */
+    background-color: rgba(0, 0, 0, 0.7); /* Stylisch schwarz-transparent */
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-in-out;
+    z-index: 1100; /* Über Footer */
+}
+
+#license-dropdown.active {
+    display: block;
+}
+
+#license-dropdown a {
+    color: #00ff00; /* Grün passend zu UI */
+    text-decoration: none;
+}
+
+#license-dropdown a:hover {
+    text-decoration: underline;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Optimierung */
+@media (max-width: 600px) {
+    #footer {
+        bottom: 5px;
+        right: 5px;
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+
+    #license-dropdown {
+        width: 70vw;
+        bottom: 35px;
+        right: 5px;
+    }
+}
 }

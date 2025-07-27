@@ -316,6 +316,20 @@ function toggleMenu() {
     }
 }
 
+// Lizenz-Dropdown-Toggle
+function toggleLicense() {
+    const licenseDropdown = document.getElementById('license-dropdown');
+    licenseDropdown.classList.toggle('active');
+}
+
+// Schließe Dropdown bei Klick außerhalb
+document.addEventListener('click', (event) => {
+    const licenseDropdown = document.getElementById('license-dropdown');
+    if (!event.target.closest('.license-link') && licenseDropdown.classList.contains('active')) {
+        licenseDropdown.classList.remove('active');
+    }
+});
+
 // Initiale Sichtbarkeit von Controls auf ausgeblendet setzen
 document.getElementById('controls').style.display = 'none';
 
