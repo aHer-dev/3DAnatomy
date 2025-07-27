@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Anatomy Viewer</title>
+    <link rel="stylesheet" href="style.css">
+  <script src="three.min.js"></script>
+  <script src="GLTFLoader.js"></script>
+  <script src="OrbitControls.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="controls">
+        <h2>Gruppen</h2>
+        <label><input type="checkbox" id="bones" checked> Bones (Skelett)</label>
+        <label><input type="checkbox" id="muscles"> Muscles</label>
+        <label><input type="checkbox" id="tendons"> Tendons</label>
+        <label><input type="checkbox" id="other"> Other</label>
+        <h2>Farben</h2>
+        <label>Bones Farbe: <input type="color" id="color-bones" value="#ffffff"></label>
+        <label>Muscles Farbe: <input type="color" id="color-muscles" value="#ff0000"></label>
+        <label>Tendons Farbe: <input type="color" id="color-tendons" value="#ffff00"></label>
+        <label>Other Farbe: <input type="color" id="color-other" value="#00ff00"></label>
+        <h2>Tools</h2>
+        <button id="screenshot">Screenshot machen</button>
+        <button id="save">Einstellungen speichern</button>
+        <input type="text" id="load-code" placeholder="Code einfügen und laden">
+        <button id="load">Einstellungen laden</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
