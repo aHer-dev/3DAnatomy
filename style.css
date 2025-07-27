@@ -1,32 +1,176 @@
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #000000; /* Dunkler Hintergrund */
+    background-color: #333333; /* Grauer Hintergrund */
 }
+
 #container {
     width: 100vw;
     height: 100vh;
 }
+
 #controls {
     position: absolute;
-    top: 10px;
+    top: 50px; /* Unter dem Hamburger-Menü */
     left: 10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparente schwarze Panels */
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
     font-family: Arial, sans-serif;
+    min-width: 200px;
+    min-height: 100px;
+    max-width: 300px;
+    max-height: 80vh;
+    resize: both; /* Verkleinern ermöglichen */
+    overflow: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    display: none; /* Initial ausgeblendet auf allen Geräten */
 }
+
 #controls h2 {
     margin-top: 0;
+    font-size: 16px;
 }
+
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
+
 button {
     margin-top: 10px;
+    background-color: #444444;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
 }
+
+button:hover {
+    background-color: #555555;
+}
+
 #load-code {
     width: 100%;
     margin-top: 10px;
+    background-color: #222222;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+/* Hamburger-Menü */
+#menu-icon {
+    position: fixed;
+    top: 10px;
+    left: 10px; /* Oben rechts für bessere UX */
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1000; /* Über Controls legen */
+}
+
+#menu-icon div {
+    background-color: #ffffff;
+    height: 4px;
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: 0.4s;
+}
+
+/* Dropdown-Styling */
+.dropdown {
+    margin-bottom: 10px;
+}
+
+.dropdown-button {
+    width: 100%;
+    background-color: #444444;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdown-button:hover {
+    background-color: #555555;
+}
+
+.dropdown-content {
+    display: none;
+    padding: 10px;
+    background-color: #222222;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+/* Loading-Bar */
+#loading-bar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #222222;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    display: none;
+}
+
+#progress-bar {
+    width: 100%;
+    background-color: #444444;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progress {
+    width: 0;
+    height: 20px;
+    background-color: #00ff00; /* Grüner Balken */
+    transition: width 0.5s;
+}
+
+#loading-text {
+    margin-top: 10px;
+}
+
+/* Mobile Optimierung */
+@media (max-width: 600px) {
+    #controls {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-height: 50vh;
+        border-radius: 10px 10px 0 0;
+        resize: none; /* Kein Resize auf Handy */
+        overflow-y: auto;
+        display: none; /* Ausgeblendet auf Mobilgeräten */
+    }
+
+    #menu-icon {
+        display: block; /* Hamburger-Menü sichtbar auf Mobilgeräten */
+    }
+}
+
+/* Desktop: Controls initial ausgeblendet, Hamburger-Menü sichtbar */
+@media (min-width: 601px) {
+    #controls {
+        display: none; /* Initial ausgeblendet, durch Hamburger-Menü steuerbar */
+    }
+
+    #menu-icon {
+        display: block; /* Hamburger-Menü sichtbar auf Desktop */
+    }
 }

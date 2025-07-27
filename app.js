@@ -33,7 +33,6 @@ controls.mouseButtons = {
 // Optional: Zoom-Grenzen etwas großzügiger
 controls.minDistance = 1;
 controls.maxDistance = 2000;
-//
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.screenSpacePanning = true;
@@ -65,6 +64,27 @@ let colors = {
   other: 0x00ff00 // Grün
 };
 
+// Ladebalken-Variablen
+let loadedModels = 0;
+let totalModels = 0;
+
+function updateLoadingBar(loaded, total) {
+    const loadingBar = document.getElementById('loading-bar');
+    const progress = document.getElementById('progress');
+    const loadingText = document.getElementById('loading-text');
+    
+    loadingBar.style.display = 'block';
+    const percentage = (loaded / total) * 100;
+    progress.style.width = `${percentage}%`;
+    loadingText.textContent = `Loading ${loaded} of ${total} models...`;
+    
+    if (loaded === total) {
+        setTimeout(() => {
+            loadingBar.style.display = 'none';
+        }, 500); // Verstecke nach 0.5s
+    }
+}
+
 function loadGroup(groupName) {
     console.log(`Lade Gruppe: ${groupName}`);
     fetch(basePath + '/data/meta.json')
@@ -74,48 +94,55 @@ function loadGroup(groupName) {
       })
       .then(meta => {
         console.log(`meta.json geladen, ${meta.length} Einträge`);
-        meta.forEach(entry => {
-          if (entry.group === groupName) {
+        const groupEntries = meta.filter(entry => entry.group === groupName);
+        totalModels = groupEntries.length;
+        loadedModels = 0;
+        updateLoadingBar(loadedModels, totalModels);
+        
+        groupEntries.forEach(entry => {
             const modelPath = basePath + '/models/' + entry.filename;
             console.log(`Lade Modell: ${modelPath}`);
             loader.load(
-              modelPath,
-              (gltf) => {
-                const model = gltf.scene;
+                modelPath,
+                (gltf) => {
+                    const model = gltf.scene;
 
-                  // 🔁 Rotation korrigieren: Modell aufrecht stellen
-                model.rotation.x = -Math.PI / 2;
-                model.traverse((child) => {
-                  if (child.isMesh) {
-                    child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
-                  }
-                });
-                scene.add(model);
-                groups[groupName].push(model);
-                console.log(`Modell geladen: ${entry.filename}`);
-                // Kamera neu ausrichten, wenn das erste Modell dieser Gruppe geladen wurde
-if (groups[groupName].length === 1) {
-  setTimeout(() => {
-    const box = new THREE.Box3().setFromObject(scene);
-    const center = new THREE.Vector3();
-    box.getCenter(center);
+                    // 🔁 Rotation korrigieren: Modell aufrecht stellen
+                    model.rotation.x = -Math.PI / 2;
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                        }
+                    });
+                    scene.add(model);
+                    groups[groupName].push(model);
+                    console.log(`Modell geladen: ${entry.filename}`);
+                    
+                    loadedModels++;
+                    updateLoadingBar(loadedModels, totalModels);
 
-    const size = box.getSize(new THREE.Vector3()).length();
-    const distance = size * 1.5;
+                    // Kamera neu ausrichten, wenn das erste Modell dieser Gruppe geladen wurde
+                    if (groups[groupName].length === 1) {
+                        setTimeout(() => {
+                            const box = new THREE.Box3().setFromObject(scene);
+                            const center = new THREE.Vector3();
+                            box.getCenter(center);
 
-    camera.position.set(center.x, center.y, center.z + distance);
-    camera.lookAt(center);
-    controls.target.copy(center);
-    controls.update();
+                            const size = box.getSize(new THREE.Vector3()).length();
+                            const distance = size * 1.5;
 
-    console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
-  }, 100); // Kleine Verzögerung für sicheres Bounding
-}
-              },
-              undefined,
-              (error) => console.error(`Fehler beim Laden von ${modelPath}: ${error}`)
+                            camera.position.set(center.x, center.y, center.z + distance);
+                            camera.lookAt(center);
+                            controls.target.copy(center);
+                            controls.update();
+
+                            console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
+                        }, 100); // Kleine Verzögerung für sicheres Bounding
+                    }
+                },
+                undefined,
+                (error) => console.error(`Fehler beim Laden von ${modelPath}: ${error}`)
             );
-          }
         });
       })
       .catch(error => console.error(`Fehler beim Laden von meta.json: ${error}`));
@@ -124,7 +151,7 @@ if (groups[groupName].length === 1) {
 // Anfangs nur bones laden
 loadGroup('bones');
 
- // Checkboxen-Events
+// Checkboxen-Events
 document.getElementById('bones').addEventListener('change', (e) => toggleGroup('bones', e.target.checked));
 document.getElementById('muscles').addEventListener('change', (e) => toggleGroup('muscles', e.target.checked));
 document.getElementById('tendons').addEventListener('change', (e) => toggleGroup('tendons', e.target.checked));
@@ -133,9 +160,9 @@ document.getElementById('other').addEventListener('change', (e) => toggleGroup('
 function toggleGroup(groupName, visible) {
     console.log(`Toggle Gruppe: ${groupName}, Sichtbar: ${visible}`);
     if (visible && groups[groupName].length === 0) {
-      loadGroup(groupName);
+        loadGroup(groupName);
     } else {
-      groups[groupName].forEach(model => model.visible = visible);
+        groups[groupName].forEach(model => model.visible = visible);
     }
 }
 
@@ -148,16 +175,16 @@ document.getElementById('color-other').addEventListener('input', (e) => changeCo
 function changeColor(groupName, colorHex) {
     colors[groupName] = parseInt(colorHex.replace('#', '0x'));
     groups[groupName].forEach(model => {
-      model.traverse(child => {
-        if (child.isMesh) {
-          child.material.color.set(colors[groupName]);
-        }
-      });
+        model.traverse(child => {
+            if (child.isMesh) {
+                child.material.color.set(colors[groupName]);
+            }
+        });
     });
     console.log(`Farbe geändert: ${groupName} -> ${colorHex}`);
 }
 
- // Screenshot-Button
+// Screenshot-Button
 document.getElementById('screenshot').addEventListener('click', () => {
     renderer.render(scene, camera);
     const link = document.createElement('a');
@@ -169,13 +196,13 @@ document.getElementById('screenshot').addEventListener('click', () => {
 // Speichern-Button
 document.getElementById('save').addEventListener('click', () => {
     const state = {
-      groups: {
-        bones: document.getElementById('bones').checked,
-        muscles: document.getElementById('muscles').checked,
-        tendons: document.getElementById('tendons').checked,
-        other: document.getElementById('other').checked
-      },
-      colors: colors
+        groups: {
+            bones: document.getElementById('bones').checked,
+            muscles: document.getElementById('muscles').checked,
+            tendons: document.getElementById('tendons').checked,
+            other: document.getElementById('other').checked
+        },
+        colors: colors
     };
     prompt('Kopiere diesen Code, um die Einstellungen zu speichern:', JSON.stringify(state));
 });
@@ -184,30 +211,55 @@ document.getElementById('save').addEventListener('click', () => {
 document.getElementById('load').addEventListener('click', () => {
     const code = document.getElementById('load-code').value;
     if (code) {
-      try {
-        const state = JSON.parse(code);
-        document.getElementById('bones').checked = state.groups.bones;
-        toggleGroup('bones', state.groups.bones);
-        document.getElementById('muscles').checked = state.groups.muscles;
-        toggleGroup('muscles', state.groups.muscles);
-        document.getElementById('tendons').checked = state.groups.tendons;
-        toggleGroup('tendons', state.groups.tendons);
-        document.getElementById('other').checked = state.groups.other;
-        toggleGroup('other', state.groups.other);
-        changeColor('bones', `#${state.colors.bones.toString(16).padStart(6, '0')}`);
-        document.getElementById('color-bones').value = `#${state.colors.bones.toString(16).padStart(6, '0')}`;
-        changeColor('muscles', `#${state.colors.muscles.toString(16).padStart(6, '0')}`);
-        document.getElementById('color-muscles').value = `#${state.colors.muscles.toString(16).padStart(6, '0')}`;
-        changeColor('tendons', `#${state.colors.tendons.toString(16).padStart(6, '0')}`);
-        document.getElementById('color-tendons').value = `#${state.colors.tendons.toString(16).padStart(6, '0')}`;
-        changeColor('other', `#${state.colors.other.toString(16).padStart(6, '0')}`);
-        document.getElementById('color-other').value = `#${state.colors.other.toString(16).padStart(6, '0')}`;
-      } catch (error) {
-        console.error('Fehler beim Laden des Codes: ', error);
-      }
+        try {
+            const state = JSON.parse(code);
+            document.getElementById('bones').checked = state.groups.bones;
+            toggleGroup('bones', state.groups.bones);
+            document.getElementById('muscles').checked = state.groups.muscles;
+            toggleGroup('muscles', state.groups.muscles);
+            document.getElementById('tendons').checked = state.groups.tendons;
+            toggleGroup('tendons', state.groups.tendons);
+            document.getElementById('other').checked = state.groups.other;
+            toggleGroup('other', state.groups.other);
+            changeColor('bones', `#${state.colors.bones.toString(16).padStart(6, '0')}`);
+            document.getElementById('color-bones').value = `#${state.colors.bones.toString(16).padStart(6, '0')}`;
+            changeColor('muscles', `#${state.colors.muscles.toString(16).padStart(6, '0')}`);
+            document.getElementById('color-muscles').value = `#${state.colors.muscles.toString(16).padStart(6, '0')}`;
+            changeColor('tendons', `#${state.colors.tendons.toString(16).padStart(6, '0')}`);
+            document.getElementById('color-tendons').value = `#${state.colors.tendons.toString(16).padStart(6, '0')}`;
+            changeColor('other', `#${state.colors.other.toString(16).padStart(6, '0')}`);
+            document.getElementById('color-other').value = `#${state.colors.other.toString(16).padStart(6, '0')}`;
+        } catch (error) {
+            console.error('Fehler beim Laden des Codes: ', error);
+        }
     }
 });
 
+// Dropdown-Toggle-Funktion
+function toggleDropdown(button) {
+    const dropdown = button.parentElement;
+    const content = button.nextElementSibling;
+    if (content.style.display === "block") {
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    }
+}
+
+// Menu-Toggle-Funktion für Hamburger-Menü
+function toggleMenu() {
+    const controls = document.getElementById('controls');
+    if (controls.style.display === "none" || controls.style.display === "") {
+        controls.style.display = "block";
+    } else {
+        controls.style.display = "none";
+    }
+}
+
+// Initiale Sichtbarkeit von Controls auf ausgeblendet setzen
+document.getElementById('controls').style.display = 'none';
+
+// Animation Loop
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
