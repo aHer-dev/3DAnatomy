@@ -1,7 +1,5 @@
-[
-    {
-        "filename": "bones/FJ43_BP62494_FMA24529_Left cuboid bone.glb",
-        "label": "Left cuboid bone",
+[{
+"label": "Left cuboid bone",
         "group": "bones",
         "fma": "24529",
         "fj": "FJ43"
@@ -14,37 +12,37 @@
         "fj": "FJ127"
     },
     {
-        "filename": "bones/FJ100_BP63544_FMA23083_Thoracic rotator.glb",
+        "filename": "other/FJ100_BP63544_FMA23083_Thoracic rotator.glb",
         "label": "Thoracic rotator",
-        "group": "unknown",
+        "group": "other",
         "fma": "23083",
         "fj": "FJ100"
     },
     {
-        "filename": "bones/FJ265_BP63716_FMA42402_Set of palmar interossei of right hand.glb",
+        "filename": "muscles/FJ265_BP63716_FMA42402_Set of palmar interossei of right hand.glb",
         "label": "Set of palmar interossei of right hand",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "42402",
         "fj": "FJ265"
     },
     {
-        "filename": "bones/FJ778_BP63573_FMA13391_Left scalenus medius.glb",
+        "filename": "muscles/FJ778_BP63573_FMA13391_Left scalenus medius.glb",
         "label": "Left scalenus medius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13391",
         "fj": "FJ778"
     },
     {
-        "filename": "bones/FJ41_BP62855_FMA24487_Left patella.glb",
+        "filename": "other/FJ41_BP62855_FMA24487_Left patella.glb",
         "label": "Left patella",
-        "group": "unknown",
+        "group": "other",
         "fma": "24487",
         "fj": "FJ41"
     },
     {
-        "filename": "bones/FJ305_BP62498_FMA32540_Right levator scapulae.glb",
+        "filename": "muscles/FJ305_BP62498_FMA32540_Right levator scapulae.glb",
         "label": "Right levator scapulae",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32540",
         "fj": "FJ305"
     },
@@ -58,28 +56,28 @@
     {
         "filename": "bones/FJ703_BP62516_FMA10081_Twelfth thoracic vertebra.glb",
         "label": "Twelfth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "10081",
         "fj": "FJ703"
     },
     {
         "filename": "bones/FJ250_BP62514_FMA10037_Tenth thoracic vertebra.glb",
         "label": "Tenth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "10037",
         "fj": "FJ250"
     },
     {
         "filename": "bones/FJ61_BP62541_FMA9922_Fifth thoracic vertebra.glb",
         "label": "Fifth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9922",
         "fj": "FJ61"
     },
     {
         "filename": "bones/FJ828_BP62355_FMA8533_Right twelfth rib.glb",
         "label": "Right twelfth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8533",
         "fj": "FJ828"
     },
@@ -91,72 +89,72 @@
         "fj": "FJ505"
     },
     {
-        "filename": "bones/FJ187_BP62868_FMA38519_Right extensor pollicis brevis.glb",
+        "filename": "muscles/FJ187_BP62868_FMA38519_Right extensor pollicis brevis.glb",
         "label": "Right extensor pollicis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38519",
         "fj": "FJ187"
     },
     {
-        "filename": "bones/FJ21_BP62844_FMA71307_Set of interspinales lumborum.glb",
+        "filename": "other/FJ21_BP62844_FMA71307_Set of interspinales lumborum.glb",
         "label": "Set of interspinales lumborum",
-        "group": "unknown",
+        "group": "other",
         "fma": "71307",
         "fj": "FJ21"
     },
     {
-        "filename": "bones/FJ11_BP62814_FMA22873_Left semispinalis thoracis.glb",
+        "filename": "muscles/FJ11_BP62814_FMA22873_Left semispinalis thoracis.glb",
         "label": "Left semispinalis thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22873",
         "fj": "FJ11"
     },
     {
         "filename": "bones/FJ424_BP62360_FMA8066_Right fifth rib.glb",
         "label": "Right fifth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8066",
         "fj": "FJ424"
     },
     {
         "filename": "bones/FJ91_BP62347_FMA8221_Left sixth costal cartilage.glb",
         "label": "Left sixth costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8221",
         "fj": "FJ91"
     },
     {
-        "filename": "bones/FJ818_BP62467_FMA54737_Right inferior nasal concha.glb",
+        "filename": "other/FJ818_BP62467_FMA54737_Right inferior nasal concha.glb",
         "label": "Right inferior nasal concha",
-        "group": "unknown",
+        "group": "other",
         "fma": "54737",
         "fj": "FJ818"
     },
     {
-        "filename": "bones/FJ632_BP62830_FMA38505_Left extensor digiti minimi.glb",
+        "filename": "muscles/FJ632_BP62830_FMA38505_Left extensor digiti minimi.glb",
         "label": "Left extensor digiti minimi",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38505",
         "fj": "FJ632"
     },
     {
-        "filename": "bones/FJ766_BP63620_FMA45857_Left puborectalis.glb",
+        "filename": "muscles/FJ766_BP63620_FMA45857_Left puborectalis.glb",
         "label": "Left puborectalis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45857",
         "fj": "FJ766"
     },
     {
-        "filename": "bones/FJ415_BP62730_FMA38933_Left vastus medialis.glb",
+        "filename": "muscles/FJ415_BP62730_FMA38933_Left vastus medialis.glb",
         "label": "Left vastus medialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38933",
         "fj": "FJ415"
     },
     {
         "filename": "bones/FJ226_BP62603_FMA13507_Intervertebral disk of tenth thoracic vertebra.glb",
         "label": "Intervertebral disk of tenth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13507",
         "fj": "FJ226"
     },
@@ -168,16 +166,16 @@
         "fj": "FJ790"
     },
     {
-        "filename": "bones/FJ535_BP62705_FMA24441_Right pisiform.glb",
+        "filename": "other/FJ535_BP62705_FMA24441_Right pisiform.glb",
         "label": "Right pisiform",
-        "group": "unknown",
+        "group": "other",
         "fma": "24441",
         "fj": "FJ535"
     },
     {
-        "filename": "bones/FJ146_BP62841_FMA38523_Left extensor pollicis longus.glb",
+        "filename": "muscles/FJ146_BP62841_FMA38523_Left extensor pollicis longus.glb",
         "label": "Left extensor pollicis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38523",
         "fj": "FJ146"
     },
@@ -189,9 +187,9 @@
         "fj": "FJ657"
     },
     {
-        "filename": "bones/FJ93_BP62992_FMA12520_Axis.glb",
+        "filename": "other/FJ93_BP62992_FMA12520_Axis.glb",
         "label": "Axis",
-        "group": "unknown",
+        "group": "other",
         "fma": "12520",
         "fj": "FJ93"
     },
@@ -210,9 +208,9 @@
         "fj": "FJ553"
     },
     {
-        "filename": "bones/FJ836_BP63522_FMA22754_Right longissimus capitis.glb",
+        "filename": "muscles/FJ836_BP63522_FMA22754_Right longissimus capitis.glb",
         "label": "Right longissimus capitis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22754",
         "fj": "FJ836"
     },
@@ -224,23 +222,23 @@
         "fj": "FJ607"
     },
     {
-        "filename": "bones/FJ697_BP63617_FMA46121_Oblique head of right adductor pollicis.glb",
+        "filename": "muscles/FJ697_BP63617_FMA46121_Oblique head of right adductor pollicis.glb",
         "label": "Oblique head of right adductor pollicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46121",
         "fj": "FJ697"
     },
     {
-        "filename": "bones/FJ692_BP62883_FMA22872_Right semispinalis thoracis.glb",
+        "filename": "muscles/FJ692_BP62883_FMA22872_Right semispinalis thoracis.glb",
         "label": "Right semispinalis thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22872",
         "fj": "FJ692"
     },
     {
-        "filename": "bones/FJ142_BP62918_FMA22425_Right tensor fasciae latae.glb",
+        "filename": "muscles/FJ142_BP62918_FMA22425_Right tensor fasciae latae.glb",
         "label": "Right tensor fasciae latae",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22425",
         "fj": "FJ142"
     },
@@ -252,121 +250,121 @@
         "fj": "FJ369"
     },
     {
-        "filename": "bones/FJ829_BP62535_FMA13295_Diaphragm.glb",
+        "filename": "other/FJ829_BP62535_FMA13295_Diaphragm.glb",
         "label": "Diaphragm",
-        "group": "unknown",
+        "group": "other",
         "fma": "13295",
         "fj": "FJ829"
     },
     {
-        "filename": "bones/FJ678_BP62963_FMA65014_Right flexor hallucis longus.glb",
+        "filename": "muscles/FJ678_BP62963_FMA65014_Right flexor hallucis longus.glb",
         "label": "Right flexor hallucis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "65014",
         "fj": "FJ678"
     },
     {
         "filename": "bones/FJ734_BP62582_FMA13503_Intervertebral disk of sixth thoracic vertebra.glb",
         "label": "Intervertebral disk of sixth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13503",
         "fj": "FJ734"
     },
     {
-        "filename": "bones/FJ567_BP62889_FMA24486_Right patella.glb",
+        "filename": "other/FJ567_BP62889_FMA24486_Right patella.glb",
         "label": "Right patella",
-        "group": "unknown",
+        "group": "other",
         "fma": "24486",
         "fj": "FJ567"
     },
     {
         "filename": "bones/FJ729_BP62318_FMA8005_Left first costal cartilage.glb",
         "label": "Left first costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8005",
         "fj": "FJ729"
     },
     {
-        "filename": "bones/FJ753_BP62338_FMA22343_Left psoas major.glb",
+        "filename": "muscles/FJ753_BP62338_FMA22343_Left psoas major.glb",
         "label": "Left psoas major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22343",
         "fj": "FJ753"
     },
     {
-        "filename": "bones/FJ528_BP62652_FMA38930_Right vastus lateralis.glb",
+        "filename": "muscles/FJ528_BP62652_FMA38930_Right vastus lateralis.glb",
         "label": "Right vastus lateralis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38930",
         "fj": "FJ528"
     },
     {
-        "filename": "bones/FJ832_BP62968_FMA22451_Left pectineus.glb",
+        "filename": "muscles/FJ832_BP62968_FMA22451_Left pectineus.glb",
         "label": "Left pectineus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22451",
         "fj": "FJ832"
     },
     {
-        "filename": "bones/FJ220_BP62328_FMA7486_Manubrium.glb",
+        "filename": "other/FJ220_BP62328_FMA7486_Manubrium.glb",
         "label": "Manubrium",
-        "group": "unknown",
+        "group": "other",
         "fma": "7486",
         "fj": "FJ220"
     },
     {
-        "filename": "bones/FJ699_BP62994_FMA52748_Mandible.glb",
+        "filename": "other/FJ699_BP62994_FMA52748_Mandible.glb",
         "label": "Mandible",
-        "group": "unknown",
+        "group": "other",
         "fma": "52748",
         "fj": "FJ699"
     },
     {
         "filename": "bones/FJ748_BP62817_FMA13898_Intervertebral disk of fifth cervical vertebra.glb",
         "label": "Intervertebral disk of fifth cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13898",
         "fj": "FJ748"
     },
     {
-        "filename": "bones/FJ133_BP63622_FMA65198_Superficial head of right flexor pollicis brevis.glb",
+        "filename": "muscles/FJ133_BP63622_FMA65198_Superficial head of right flexor pollicis brevis.glb",
         "label": "Superficial head of right flexor pollicis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "65198",
         "fj": "FJ133"
     },
     {
-        "filename": "bones/FJ591_BP62983_FMA22550_Right fibularis tertius.glb",
+        "filename": "muscles/FJ591_BP62983_FMA22550_Right fibularis tertius.glb",
         "label": "Right fibularis tertius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22550",
         "fj": "FJ591"
     },
     {
-        "filename": "bones/FJ331_BP62975_FMA23467_Right ulna.glb",
+        "filename": "other/FJ331_BP62975_FMA23467_Right ulna.glb",
         "label": "Right ulna",
-        "group": "unknown",
+        "group": "other",
         "fma": "23467",
         "fj": "FJ331"
     },
     {
-        "filename": "bones/FJ566_BP63516_FMA22877_Left semispinalis capitis.glb",
+        "filename": "muscles/FJ566_BP63516_FMA22877_Left semispinalis capitis.glb",
         "label": "Left semispinalis capitis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22877",
         "fj": "FJ566"
     },
     {
-        "filename": "bones/FJ213_BP62510_FMA51145_Left extensor hallucis brevis.glb",
+        "filename": "muscles/FJ213_BP62510_FMA51145_Left extensor hallucis brevis.glb",
         "label": "Left extensor hallucis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "51145",
         "fj": "FJ213"
     },
     {
-        "filename": "bones/FJ141_BP62950_FMA22359_Left semitendinosus.glb",
+        "filename": "muscles/FJ141_BP62950_FMA22359_Left semitendinosus.glb",
         "label": "Left semitendinosus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22359",
         "fj": "FJ141"
     },
@@ -378,9 +376,9 @@
         "fj": "FJ370"
     },
     {
-        "filename": "bones/FJ564_BP62438_FMA13347_Left sternohyoid.glb",
+        "filename": "muscles/FJ564_BP62438_FMA13347_Left sternohyoid.glb",
         "label": "Left sternohyoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13347",
         "fj": "FJ564"
     },
@@ -392,51 +390,51 @@
         "fj": "FJ337"
     },
     {
-        "filename": "bones/FJ552_BP62702_FMA32551_Right teres major.glb",
+        "filename": "muscles/FJ552_BP62702_FMA32551_Right teres major.glb",
         "label": "Right teres major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32551",
         "fj": "FJ552"
     },
     {
         "filename": "bones/FJ247_BP62344_FMA7913_Right third costal cartilage.glb",
         "label": "Right third costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7913",
         "fj": "FJ247"
     },
     {
-        "filename": "bones/FJ637_BP62713_FMA45888_Long head of right biceps femoris.glb",
+        "filename": "muscles/FJ637_BP62713_FMA45888_Long head of right biceps femoris.glb",
         "label": "Long head of right biceps femoris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45888",
         "fj": "FJ637"
     },
     {
-        "filename": "bones/FJ770_BP63601_FMA46444_Left coccygeus.glb",
+        "filename": "muscles/FJ770_BP63601_FMA46444_Left coccygeus.glb",
         "label": "Left coccygeus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46444",
         "fj": "FJ770"
     },
     {
         "filename": "bones/FJ461_BP62345_FMA8148_Left fourth rib.glb",
         "label": "Left fourth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8148",
         "fj": "FJ461"
     },
     {
         "filename": "bones/FJ429_BP62314_FMA16035_Intervertebral disk of third lumbar vertebra.glb",
         "label": "Intervertebral disk of third lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "16035",
         "fj": "FJ429"
     },
     {
-        "filename": "bones/FJ840_BP63515_FMA32532_Right rectus capitis posterior minor.glb",
+        "filename": "muscles/FJ840_BP63515_FMA32532_Right rectus capitis posterior minor.glb",
         "label": "Right rectus capitis posterior minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32532",
         "fj": "FJ840"
     },
@@ -448,23 +446,23 @@
         "fj": "FJ443"
     },
     {
-        "filename": "bones/FJ287_BP63610_FMA258847_Right calcaneal tendon.glb",
+        "filename": "tendons/FJ287_BP63610_FMA258847_Right calcaneal tendon.glb",
         "label": "Right calcaneal tendon",
-        "group": "unknown",
+        "group": "tendons",
         "fma": "258847",
         "fj": "FJ287"
     },
     {
-        "filename": "bones/FJ441_BP62721_FMA32547_Right infraspinatus.glb",
+        "filename": "muscles/FJ441_BP62721_FMA32547_Right infraspinatus.glb",
         "label": "Right infraspinatus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32547",
         "fj": "FJ441"
     },
     {
         "filename": "bones/FJ324_BP62322_FMA8472_Left tenth rib.glb",
         "label": "Left tenth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8472",
         "fj": "FJ324"
     },
@@ -476,9 +474,9 @@
         "fj": "FJ119"
     },
     {
-        "filename": "bones/FJ252_BP62842_FMA13405_Right serratus posterior inferior.glb",
+        "filename": "muscles/FJ252_BP62842_FMA13405_Right serratus posterior inferior.glb",
         "label": "Right serratus posterior inferior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13405",
         "fj": "FJ252"
     },
@@ -490,65 +488,65 @@
         "fj": "FJ411"
     },
     {
-        "filename": "bones/FJ423_BP63720_FMA74075_Set of right levatores costarum longi.glb",
+        "filename": "muscles/FJ423_BP63720_FMA74075_Set of right levatores costarum longi.glb",
         "label": "Set of right levatores costarum longi",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "74075",
         "fj": "FJ423"
     },
     {
-        "filename": "bones/FJ757_BP62907_FMA23130_Right humerus.glb",
+        "filename": "other/FJ757_BP62907_FMA23130_Right humerus.glb",
         "label": "Right humerus",
-        "group": "unknown",
+        "group": "other",
         "fma": "23130",
         "fj": "FJ757"
     },
     {
-        "filename": "bones/FJ138_BP62752_FMA22325_Left obturator internus.glb",
+        "filename": "other/FJ138_BP62752_FMA22325_Left obturator internus.glb",
         "label": "Left obturator internus",
-        "group": "unknown",
+        "group": "other",
         "fma": "22325",
         "fj": "FJ138"
     },
     {
-        "filename": "bones/FJ198_BP63566_FMA13404_Left serratus posterior superior.glb",
+        "filename": "muscles/FJ198_BP63566_FMA13404_Left serratus posterior superior.glb",
         "label": "Left serratus posterior superior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13404",
         "fj": "FJ198"
     },
     {
-        "filename": "bones/FJ354_BP62886_FMA86035_Opponens digiti minimi of left foot.glb",
+        "filename": "muscles/FJ354_BP62886_FMA86035_Opponens digiti minimi of left foot.glb",
         "label": "Opponens digiti minimi of left foot",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "86035",
         "fj": "FJ354"
     },
     {
-        "filename": "bones/FJ322_BP63646_FMA65199_Superficial head of left flexor pollicis brevis.glb",
+        "filename": "muscles/FJ322_BP63646_FMA65199_Superficial head of left flexor pollicis brevis.glb",
         "label": "Superficial head of left flexor pollicis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "65199",
         "fj": "FJ322"
     },
     {
-        "filename": "bones/FJ467_BP63521_FMA22745_Left iliocostalis cervicis.glb",
+        "filename": "muscles/FJ467_BP63521_FMA22745_Left iliocostalis cervicis.glb",
         "label": "Left iliocostalis cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22745",
         "fj": "FJ467"
     },
     {
-        "filename": "bones/FJ156_BP63599_FMA13348_Right omohyoid.glb",
+        "filename": "muscles/FJ156_BP63599_FMA13348_Right omohyoid.glb",
         "label": "Right omohyoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13348",
         "fj": "FJ156"
     },
     {
-        "filename": "bones/FJ665_BP62797_FMA37706_Left anconeus.glb",
+        "filename": "muscles/FJ665_BP62797_FMA37706_Left anconeus.glb",
         "label": "Left anconeus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37706",
         "fj": "FJ665"
     },
@@ -576,28 +574,28 @@
     {
         "filename": "bones/FJ460_BP62333_FMA8058_Left third costal cartilage.glb",
         "label": "Left third costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8058",
         "fj": "FJ460"
     },
     {
-        "filename": "bones/FJ68_BP62885_FMA22454_Left adductor brevis.glb",
+        "filename": "muscles/FJ68_BP62885_FMA22454_Left adductor brevis.glb",
         "label": "Left adductor brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22454",
         "fj": "FJ68"
     },
     {
-        "filename": "bones/FJ327_BP62435_FMA13398_Right serratus anterior.glb",
+        "filename": "muscles/FJ327_BP62435_FMA13398_Right serratus anterior.glb",
         "label": "Right serratus anterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13398",
         "fj": "FJ327"
     },
     {
-        "filename": "bones/FJ20_BP62955_FMA53649_Right maxilla.glb",
+        "filename": "other/FJ20_BP62955_FMA53649_Right maxilla.glb",
         "label": "Right maxilla",
-        "group": "unknown",
+        "group": "other",
         "fma": "53649",
         "fj": "FJ20"
     },
@@ -611,35 +609,35 @@
     {
         "filename": "bones/FJ328_BP62859_FMA13899_Intervertebral disk of sixth cervical vertebra.glb",
         "label": "Intervertebral disk of sixth cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13899",
         "fj": "FJ328"
     },
     {
-        "filename": "bones/FJ470_BP63528_FMA32533_Left rectus capitis posterior minor.glb",
+        "filename": "muscles/FJ470_BP63528_FMA32533_Left rectus capitis posterior minor.glb",
         "label": "Left rectus capitis posterior minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32533",
         "fj": "FJ470"
     },
     {
-        "filename": "bones/FJ35_BP62914_FMA23464_Right radius.glb",
+        "filename": "other/FJ35_BP62914_FMA23464_Right radius.glb",
         "label": "Right radius",
-        "group": "unknown",
+        "group": "other",
         "fma": "23464",
         "fj": "FJ35"
     },
     {
-        "filename": "bones/FJ576_BP62873_FMA38520_Left extensor pollicis brevis.glb",
+        "filename": "muscles/FJ576_BP62873_FMA38520_Left extensor pollicis brevis.glb",
         "label": "Left extensor pollicis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38520",
         "fj": "FJ576"
     },
     {
-        "filename": "bones/FJ619_BP62897_FMA22545_Left tibialis anterior.glb",
+        "filename": "muscles/FJ619_BP62897_FMA22545_Left tibialis anterior.glb",
         "label": "Left tibialis anterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22545",
         "fj": "FJ619"
     },
@@ -651,23 +649,23 @@
         "fj": "FJ570"
     },
     {
-        "filename": "bones/FJ330_BP63512_FMA22757_Right longissimus cervicis.glb",
+        "filename": "muscles/FJ330_BP63512_FMA22757_Right longissimus cervicis.glb",
         "label": "Right longissimus cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22757",
         "fj": "FJ330"
     },
     {
-        "filename": "bones/FJ631_BP62861_FMA38454_Right pronator quadratus.glb",
+        "filename": "muscles/FJ631_BP62861_FMA38454_Right pronator quadratus.glb",
         "label": "Right pronator quadratus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38454",
         "fj": "FJ631"
     },
     {
-        "filename": "bones/FJ499_BP62902_FMA22426_Left tensor fasciae latae.glb",
+        "filename": "muscles/FJ499_BP62902_FMA22426_Left tensor fasciae latae.glb",
         "label": "Left tensor fasciae latae",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22426",
         "fj": "FJ499"
     },
@@ -679,30 +677,30 @@
         "fj": "FJ348"
     },
     {
-        "filename": "bones/FJ624_BP63508_FMA32535_Left obliquus capitis superior.glb",
+        "filename": "muscles/FJ624_BP63508_FMA32535_Left obliquus capitis superior.glb",
         "label": "Left obliquus capitis superior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32535",
         "fj": "FJ624"
     },
     {
-        "filename": "bones/FJ336_BP62489_FMA32541_Left levator scapulae.glb",
+        "filename": "muscles/FJ336_BP62489_FMA32541_Left levator scapulae.glb",
         "label": "Left levator scapulae",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32541",
         "fj": "FJ336"
     },
     {
-        "filename": "bones/FJ77_BP63095_FMA40121_Flexor retinaculum of left wrist.glb",
+        "filename": "muscles/FJ77_BP63095_FMA40121_Flexor retinaculum of left wrist.glb",
         "label": "Flexor retinaculum of left wrist",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "40121",
         "fj": "FJ77"
     },
     {
-        "filename": "bones/FJ157_BP62371_FMA13411_Left subclavius.glb",
+        "filename": "muscles/FJ157_BP62371_FMA13411_Left subclavius.glb",
         "label": "Left subclavius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13411",
         "fj": "FJ157"
     },
@@ -714,23 +712,23 @@
         "fj": "FJ414"
     },
     {
-        "filename": "bones/FJ655_BP62694_FMA24444_Left trapezium.glb",
+        "filename": "other/FJ655_BP62694_FMA24444_Left trapezium.glb",
         "label": "Left trapezium",
-        "group": "unknown",
+        "group": "other",
         "fma": "24444",
         "fj": "FJ655"
     },
     {
-        "filename": "bones/FJ338_BP62281_FMA33585_Transverse part of left trapezius.glb",
+        "filename": "muscles/FJ338_BP62281_FMA33585_Transverse part of left trapezius.glb",
         "label": "Transverse part of left trapezius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "33585",
         "fj": "FJ338"
     },
     {
-        "filename": "bones/FJ600_BP62794_FMA37705_Right anconeus.glb",
+        "filename": "muscles/FJ600_BP62794_FMA37705_Right anconeus.glb",
         "label": "Right anconeus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37705",
         "fj": "FJ600"
     },
@@ -744,49 +742,49 @@
     {
         "filename": "bones/FJ730_BP62332_FMA8012_Left second rib.glb",
         "label": "Left second rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8012",
         "fj": "FJ730"
     },
     {
         "filename": "bones/FJ739_BP62508_FMA13076_Fifth lumbar vertebra.glb",
         "label": "Fifth lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13076",
         "fj": "FJ739"
     },
     {
         "filename": "bones/FJ731_BP62372_FMA8531_Right eleventh rib.glb",
         "label": "Right eleventh rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8531",
         "fj": "FJ731"
     },
     {
-        "filename": "bones/FJ498_BP62898_FMA22331_Left gluteus medius.glb",
+        "filename": "muscles/FJ498_BP62898_FMA22331_Left gluteus medius.glb",
         "label": "Left gluteus medius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22331",
         "fj": "FJ498"
     },
     {
-        "filename": "bones/FJ544_BP62480_FMA24482_Right talus.glb",
+        "filename": "other/FJ544_BP62480_FMA24482_Right talus.glb",
         "label": "Right talus",
-        "group": "unknown",
+        "group": "other",
         "fma": "24482",
         "fj": "FJ544"
     },
     {
         "filename": "bones/FJ827_BP62366_FMA8256_Left seventh rib.glb",
         "label": "Left seventh rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8256",
         "fj": "FJ827"
     },
     {
-        "filename": "bones/FJ870_BP63799_FMA71442_Set of anterior cervical intertransversarii.glb",
+        "filename": "other/FJ870_BP63799_FMA71442_Set of anterior cervical intertransversarii.glb",
         "label": "Set of anterior cervical intertransversarii",
-        "group": "unknown",
+        "group": "other",
         "fma": "71442",
         "fj": "FJ870"
     },
@@ -805,16 +803,16 @@
         "fj": "FJ439"
     },
     {
-        "filename": "bones/FJ126_BP62491_FMA13383_Right rhomboid minor.glb",
+        "filename": "muscles/FJ126_BP62491_FMA13383_Right rhomboid minor.glb",
         "label": "Right rhomboid minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13383",
         "fj": "FJ126"
     },
     {
-        "filename": "bones/FJ859_BP62935_FMA12519_Atlas.glb",
+        "filename": "other/FJ859_BP62935_FMA12519_Atlas.glb",
         "label": "Atlas",
-        "group": "unknown",
+        "group": "other",
         "fma": "12519",
         "fj": "FJ859"
     },
@@ -828,7 +826,7 @@
     {
         "filename": "bones/FJ857_BP62346_FMA8167_Left fourth costal cartilage.glb",
         "label": "Left fourth costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8167",
         "fj": "FJ857"
     },
@@ -840,9 +838,9 @@
         "fj": "FJ756"
     },
     {
-        "filename": "bones/FJ572_BP62450_FMA34682_Acromial part of right deltoid.glb",
+        "filename": "muscles/FJ572_BP62450_FMA34682_Acromial part of right deltoid.glb",
         "label": "Acromial part of right deltoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34682",
         "fj": "FJ572"
     },
@@ -868,37 +866,37 @@
         "fj": "FJ72"
     },
     {
-        "filename": "bones/FJ807_BP62369_FMA13376_Left pectoralis minor.glb",
+        "filename": "muscles/FJ807_BP62369_FMA13376_Left pectoralis minor.glb",
         "label": "Left pectoralis minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13376",
         "fj": "FJ807"
     },
     {
-        "filename": "bones/FJ333_BP62468_FMA24497_Right calcaneus.glb",
+        "filename": "other/FJ333_BP62468_FMA24497_Right calcaneus.glb",
         "label": "Right calcaneus",
-        "group": "unknown",
+        "group": "other",
         "fma": "24497",
         "fj": "FJ333"
     },
     {
-        "filename": "bones/FJ845_BP62961_FMA37465_Right flexor accessorius.glb",
+        "filename": "muscles/FJ845_BP62961_FMA37465_Right flexor accessorius.glb",
         "label": "Right flexor accessorius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37465",
         "fj": "FJ845"
     },
     {
-        "filename": "bones/FJ362_BP62939_FMA23131_Left humerus.glb",
+        "filename": "other/FJ362_BP62939_FMA23131_Left humerus.glb",
         "label": "Left humerus",
-        "group": "unknown",
+        "group": "other",
         "fma": "23131",
         "fj": "FJ362"
     },
     {
-        "filename": "bones/FJ494_BP63572_FMA13389_Left scalenus posterior.glb",
+        "filename": "muscles/FJ494_BP63572_FMA13389_Left scalenus posterior.glb",
         "label": "Left scalenus posterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13389",
         "fj": "FJ494"
     },
@@ -910,44 +908,44 @@
         "fj": "FJ593"
     },
     {
-        "filename": "bones/FJ210_BP63537_FMA46317_Right rectus capitis lateralis.glb",
+        "filename": "muscles/FJ210_BP63537_FMA46317_Right rectus capitis lateralis.glb",
         "label": "Right rectus capitis lateralis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46317",
         "fj": "FJ210"
     },
     {
-        "filename": "bones/FJ70_BP62875_FMA22741_Left iliocostalis lumborum.glb",
+        "filename": "muscles/FJ70_BP62875_FMA22741_Left iliocostalis lumborum.glb",
         "label": "Left iliocostalis lumborum",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22741",
         "fj": "FJ70"
     },
     {
         "filename": "bones/FJ705_BP62990_FMA12521_Third cervical vertebra.glb",
         "label": "Third cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "12521",
         "fj": "FJ705"
     },
     {
-        "filename": "bones/FJ385_BP62644_FMA46021_Transverse head of left adductor hallucis.glb",
+        "filename": "muscles/FJ385_BP62644_FMA46021_Transverse head of left adductor hallucis.glb",
         "label": "Transverse head of left adductor hallucis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46021",
         "fj": "FJ385"
     },
     {
-        "filename": "bones/FJ237_BP63759_FMA33581_Ascending part of right trapezius.glb",
+        "filename": "muscles/FJ237_BP63759_FMA33581_Ascending part of right trapezius.glb",
         "label": "Ascending part of right trapezius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "33581",
         "fj": "FJ237"
     },
     {
         "filename": "bones/FJ776_BP62356_FMA8070_Right fifth costal cartilage.glb",
         "label": "Right fifth costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8070",
         "fj": "FJ776"
     },
@@ -961,49 +959,49 @@
     {
         "filename": "bones/FJ10_BP62312_FMA16034_Intervertebral disk of second lumbar vertebra.glb",
         "label": "Intervertebral disk of second lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "16034",
         "fj": "FJ10"
     },
     {
         "filename": "bones/FJ587_BP62500_FMA13074_Third lumbar vertebra.glb",
         "label": "Third lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13074",
         "fj": "FJ587"
     },
     {
-        "filename": "bones/FJ471_BP62649_FMA32548_Left infraspinatus.glb",
+        "filename": "muscles/FJ471_BP62649_FMA32548_Left infraspinatus.glb",
         "label": "Left infraspinatus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32548",
         "fj": "FJ471"
     },
     {
-        "filename": "bones/FJ184_BP63509_FMA32534_Right obliquus capitis superior.glb",
+        "filename": "muscles/FJ184_BP63509_FMA32534_Right obliquus capitis superior.glb",
         "label": "Right obliquus capitis superior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32534",
         "fj": "FJ184"
     },
     {
         "filename": "bones/FJ222_BP62529_FMA9209_Third thoracic vertebra.glb",
         "label": "Third thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9209",
         "fj": "FJ222"
     },
     {
         "filename": "bones/FJ153_BP62336_FMA7957_Right fourth rib.glb",
         "label": "Right fourth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7957",
         "fj": "FJ153"
     },
     {
-        "filename": "bones/FJ224_BP62461_FMA13382_Left rhomboid major.glb",
+        "filename": "muscles/FJ224_BP62461_FMA13382_Left rhomboid major.glb",
         "label": "Left rhomboid major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13382",
         "fj": "FJ224"
     },
@@ -1017,14 +1015,14 @@
     {
         "filename": "bones/FJ520_BP62335_FMA8031_Left second costal cartilage.glb",
         "label": "Left second costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8031",
         "fj": "FJ520"
     },
     {
         "filename": "bones/FJ545_BP63025_FMA12523_Fifth cervical vertebra.glb",
         "label": "Fifth cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "12523",
         "fj": "FJ545"
     },
@@ -1036,44 +1034,44 @@
         "fj": "FJ658"
     },
     {
-        "filename": "bones/FJ759_BP62676_FMA24446_Right capitate.glb",
+        "filename": "other/FJ759_BP62676_FMA24446_Right capitate.glb",
         "label": "Right capitate",
-        "group": "unknown",
+        "group": "other",
         "fma": "24446",
         "fj": "FJ759"
     },
     {
-        "filename": "bones/FJ754_BP62915_FMA22558_Right soleus.glb",
+        "filename": "other/FJ754_BP62915_FMA22558_Right soleus.glb",
         "label": "Right soleus",
-        "group": "unknown",
+        "group": "other",
         "fma": "22558",
         "fj": "FJ754"
     },
     {
-        "filename": "bones/FJ838_BP63016_FMA24475_Left femur.glb",
+        "filename": "other/FJ838_BP63016_FMA24475_Left femur.glb",
         "label": "Left femur",
-        "group": "unknown",
+        "group": "other",
         "fma": "24475",
         "fj": "FJ838"
     },
     {
-        "filename": "bones/FJ698_BP63667_FMA46122_Oblique head of left adductor pollicis.glb",
+        "filename": "muscles/FJ698_BP63667_FMA46122_Oblique head of left adductor pollicis.glb",
         "label": "Oblique head of left adductor pollicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46122",
         "fj": "FJ698"
     },
     {
-        "filename": "bones/FJ531_BP62451_FMA54738_Left inferior nasal concha.glb",
+        "filename": "other/FJ531_BP62451_FMA54738_Left inferior nasal concha.glb",
         "label": "Left inferior nasal concha",
-        "group": "unknown",
+        "group": "other",
         "fma": "54738",
         "fj": "FJ531"
     },
     {
         "filename": "bones/FJ392_BP62521_FMA10014_Ninth thoracic vertebra.glb",
         "label": "Ninth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "10014",
         "fj": "FJ392"
     },
@@ -1085,58 +1083,58 @@
         "fj": "FJ320"
     },
     {
-        "filename": "bones/FJ416_BP63675_FMA42398_Set of lumbricals of right hand.glb",
+        "filename": "other/FJ416_BP63675_FMA42398_Set of lumbricals of right hand.glb",
         "label": "Set of lumbricals of right hand",
-        "group": "unknown",
+        "group": "other",
         "fma": "42398",
         "fj": "FJ416"
     },
     {
-        "filename": "bones/FJ74_BP62265_FMA34690_Clavicular part of right pectoralis major.glb",
+        "filename": "muscles/FJ74_BP62265_FMA34690_Clavicular part of right pectoralis major.glb",
         "label": "Clavicular part of right pectoralis major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34690",
         "fj": "FJ74"
     },
     {
         "filename": "bones/FJ613_BP62357_FMA8310_Left eighth rib.glb",
         "label": "Left eighth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8310",
         "fj": "FJ613"
     },
     {
-        "filename": "bones/FJ649_BP62757_FMA22324_Right obturator internus.glb",
+        "filename": "other/FJ649_BP62757_FMA22324_Right obturator internus.glb",
         "label": "Right obturator internus",
-        "group": "unknown",
+        "group": "other",
         "fma": "22324",
         "fj": "FJ649"
     },
     {
-        "filename": "bones/FJ15_BP62843_FMA38480_Left flexor digitorum profundus.glb",
+        "filename": "muscles/FJ15_BP62843_FMA38480_Left flexor digitorum profundus.glb",
         "label": "Left flexor digitorum profundus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38480",
         "fj": "FJ15"
     },
     {
-        "filename": "bones/FJ806_BP62274_FMA9710_Vomer.glb",
+        "filename": "other/FJ806_BP62274_FMA9710_Vomer.glb",
         "label": "Vomer",
-        "group": "unknown",
+        "group": "other",
         "fma": "9710",
         "fj": "FJ806"
     },
     {
-        "filename": "bones/FJ165_BP62866_FMA38460_Right flexor carpi radialis.glb",
+        "filename": "muscles/FJ165_BP62866_FMA38460_Right flexor carpi radialis.glb",
         "label": "Right flexor carpi radialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38460",
         "fj": "FJ165"
     },
     {
-        "filename": "bones/FJ503_BP62900_FMA37461_Right flexor digitorum brevis.glb",
+        "filename": "muscles/FJ503_BP62900_FMA37461_Right flexor digitorum brevis.glb",
         "label": "Right flexor digitorum brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37461",
         "fj": "FJ503"
     },
@@ -1150,84 +1148,84 @@
     {
         "filename": "bones/FJ750_BP62316_FMA16037_Intervertebral disk of fifth lumbar vertebra.glb",
         "label": "Intervertebral disk of fifth lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "16037",
         "fj": "FJ750"
     },
     {
-        "filename": "bones/FJ497_BP62940_FMA22329_Left gluteus maximus.glb",
+        "filename": "muscles/FJ497_BP62940_FMA22329_Left gluteus maximus.glb",
         "label": "Left gluteus maximus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22329",
         "fj": "FJ497"
     },
     {
-        "filename": "bones/FJ139_BP62970_FMA22333_Left gluteus minimus.glb",
+        "filename": "muscles/FJ139_BP62970_FMA22333_Left gluteus minimus.glb",
         "label": "Left gluteus minimus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22333",
         "fj": "FJ139"
     },
     {
-        "filename": "bones/FJ835_BP62953_FMA22592_Left popliteus.glb",
+        "filename": "muscles/FJ835_BP62953_FMA22592_Left popliteus.glb",
         "label": "Left popliteus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22592",
         "fj": "FJ835"
     },
     {
-        "filename": "bones/FJ719_BP63652_FMA38617_Humeral head of right flexor carpi ulnaris.glb",
+        "filename": "muscles/FJ719_BP63652_FMA38617_Humeral head of right flexor carpi ulnaris.glb",
         "label": "Humeral head of right flexor carpi ulnaris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38617",
         "fj": "FJ719"
     },
     {
-        "filename": "bones/FJ816_BP62692_FMA45973_Lateral head of right flexor hallucis brevis.glb",
+        "filename": "muscles/FJ816_BP62692_FMA45973_Lateral head of right flexor hallucis brevis.glb",
         "label": "Lateral head of right flexor hallucis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45973",
         "fj": "FJ816"
     },
     {
-        "filename": "bones/FJ834_BP63003_FMA22559_Left soleus.glb",
+        "filename": "other/FJ834_BP63003_FMA22559_Left soleus.glb",
         "label": "Left soleus",
-        "group": "unknown",
+        "group": "other",
         "fma": "22559",
         "fj": "FJ834"
     },
     {
         "filename": "bones/FJ830_BP62778_FMA13897_Intervertebral disk of fourth cervical vertebra.glb",
         "label": "Intervertebral disk of fourth cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13897",
         "fj": "FJ830"
     },
     {
         "filename": "bones/FJ646_BP62321_FMA7875_Right first costal cartilage.glb",
         "label": "Right first costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7875",
         "fj": "FJ646"
     },
     {
         "filename": "bones/FJ685_BP62800_FMA25058_Intervertebral disk of axis.glb",
         "label": "Intervertebral disk of axis",
-        "group": "unknown",
+        "group": "bones",
         "fma": "25058",
         "fj": "FJ685"
     },
     {
-        "filename": "bones/FJ574_BP62784_FMA38514_Left supinator.glb",
+        "filename": "muscles/FJ574_BP62784_FMA38514_Left supinator.glb",
         "label": "Left supinator",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38514",
         "fj": "FJ574"
     },
     {
         "filename": "bones/FJ747_BP62846_FMA13896_Intervertebral disk of third cervical vertebra.glb",
         "label": "Intervertebral disk of third cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13896",
         "fj": "FJ747"
     },
@@ -1239,23 +1237,23 @@
         "fj": "FJ760"
     },
     {
-        "filename": "bones/FJ740_BP62270_FMA45875_Abdominal part of left pectoralis major.glb",
+        "filename": "muscles/FJ740_BP62270_FMA45875_Abdominal part of left pectoralis major.glb",
         "label": "Abdominal part of left pectoralis major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45875",
         "fj": "FJ740"
     },
     {
-        "filename": "bones/FJ812_BP62822_FMA23090_Left lumbar rotator.glb",
+        "filename": "other/FJ812_BP62822_FMA23090_Left lumbar rotator.glb",
         "label": "Left lumbar rotator",
-        "group": "unknown",
+        "group": "other",
         "fma": "23090",
         "fj": "FJ812"
     },
     {
-        "filename": "bones/FJ733_BP62331_FMA13336_Right external oblique.glb",
+        "filename": "other/FJ733_BP62331_FMA13336_Right external oblique.glb",
         "label": "Right external oblique",
-        "group": "unknown",
+        "group": "other",
         "fma": "13336",
         "fj": "FJ733"
     },
@@ -1269,14 +1267,14 @@
     {
         "filename": "bones/FJ95_BP62542_FMA13504_Intervertebral disk of seventh thoracic vertebra.glb",
         "label": "Intervertebral disk of seventh thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13504",
         "fj": "FJ95"
     },
     {
-        "filename": "bones/FJ256_BP63176_FMA22728_Right splenius capitis.glb",
+        "filename": "muscles/FJ256_BP63176_FMA22728_Right splenius capitis.glb",
         "label": "Right splenius capitis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22728",
         "fj": "FJ256"
     },
@@ -1288,9 +1286,9 @@
         "fj": "FJ472"
     },
     {
-        "filename": "bones/FJ14_BP62860_FMA38463_Right palmaris longus.glb",
+        "filename": "other/FJ14_BP62860_FMA38463_Right palmaris longus.glb",
         "label": "Right palmaris longus",
-        "group": "unknown",
+        "group": "other",
         "fma": "38463",
         "fj": "FJ14"
     },
@@ -1304,14 +1302,14 @@
     {
         "filename": "bones/FJ29_BP62557_FMA13506_Intervertebral disk of ninth thoracic vertebra.glb",
         "label": "Intervertebral disk of ninth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13506",
         "fj": "FJ29"
     },
     {
-        "filename": "bones/FJ640_BP62720_FMA52740_Ethmoid.glb",
+        "filename": "other/FJ640_BP62720_FMA52740_Ethmoid.glb",
         "label": "Ethmoid",
-        "group": "unknown",
+        "group": "other",
         "fma": "52740",
         "fj": "FJ640"
     },
@@ -1330,16 +1328,16 @@
         "fj": "FJ501"
     },
     {
-        "filename": "bones/FJ166_BP62854_FMA38482_Right flexor pollicis longus.glb",
+        "filename": "muscles/FJ166_BP62854_FMA38482_Right flexor pollicis longus.glb",
         "label": "Right flexor pollicis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38482",
         "fj": "FJ166"
     },
     {
-        "filename": "bones/FJ17_BP63635_FMA45856_Right puborectalis.glb",
+        "filename": "muscles/FJ17_BP63635_FMA45856_Right puborectalis.glb",
         "label": "Right puborectalis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45856",
         "fj": "FJ17"
     },
@@ -1358,23 +1356,23 @@
         "fj": "FJ680"
     },
     {
-        "filename": "bones/FJ627_BP62423_FMA37401_Opponens digiti minimi of left hand.glb",
+        "filename": "muscles/FJ627_BP62423_FMA37401_Opponens digiti minimi of left hand.glb",
         "label": "Opponens digiti minimi of left hand",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37401",
         "fj": "FJ627"
     },
     {
-        "filename": "bones/FJ40_BP62922_FMA24474_Right femur.glb",
+        "filename": "other/FJ40_BP62922_FMA24474_Right femur.glb",
         "label": "Right femur",
-        "group": "unknown",
+        "group": "other",
         "fma": "24474",
         "fj": "FJ40"
     },
     {
-        "filename": "bones/FJ229_BP62943_FMA22330_Right gluteus medius.glb",
+        "filename": "muscles/FJ229_BP62943_FMA22330_Right gluteus medius.glb",
         "label": "Right gluteus medius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22330",
         "fj": "FJ229"
     },
@@ -1386,86 +1384,86 @@
         "fj": "FJ715"
     },
     {
-        "filename": "bones/FJ522_BP63582_FMA13351_Left sternothyroid.glb",
+        "filename": "muscles/FJ522_BP63582_FMA13351_Left sternothyroid.glb",
         "label": "Left sternothyroid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13351",
         "fj": "FJ522"
     },
     {
         "filename": "bones/FJ195_BP62352_FMA8112_Left fifth costal cartilage.glb",
         "label": "Left fifth costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8112",
         "fj": "FJ195"
     },
     {
         "filename": "bones/FJ402_BP62324_FMA7976_Right fourth costal cartilage.glb",
         "label": "Right fourth costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7976",
         "fj": "FJ402"
     },
     {
-        "filename": "bones/FJ808_BP63561_FMA13403_Right serratus posterior superior.glb",
+        "filename": "muscles/FJ808_BP63561_FMA13403_Right serratus posterior superior.glb",
         "label": "Right serratus posterior superior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13403",
         "fj": "FJ808"
     },
     {
-        "filename": "bones/FJ654_BP62673_FMA24438_Left lunate.glb",
+        "filename": "other/FJ654_BP62673_FMA24438_Left lunate.glb",
         "label": "Left lunate",
-        "group": "unknown",
+        "group": "other",
         "fma": "24438",
         "fj": "FJ654"
     },
     {
         "filename": "bones/FJ253_BP62590_FMA13501_Intervertebral disk of fourth thoracic vertebra.glb",
         "label": "Intervertebral disk of fourth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13501",
         "fj": "FJ253"
     },
     {
         "filename": "bones/FJ28_BP62559_FMA13505_Intervertebral disk of eighth thoracic vertebra.glb",
         "label": "Intervertebral disk of eighth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13505",
         "fj": "FJ28"
     },
     {
-        "filename": "bones/FJ690_BP63597_FMA13388_Right scalenus posterior.glb",
+        "filename": "muscles/FJ690_BP63597_FMA13388_Right scalenus posterior.glb",
         "label": "Right scalenus posterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13388",
         "fj": "FJ690"
     },
     {
-        "filename": "bones/FJ197_BP63769_FMA11336_Linea alba.glb",
+        "filename": "other/FJ197_BP63769_FMA11336_Linea alba.glb",
         "label": "Linea alba",
-        "group": "unknown",
+        "group": "other",
         "fma": "11336",
         "fj": "FJ197"
     },
     {
         "filename": "bones/FJ742_BP62911_FMA12525_Seventh cervical vertebra.glb",
         "label": "Seventh cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "12525",
         "fj": "FJ742"
     },
     {
-        "filename": "bones/FJ341_BP62773_FMA38516_Right abductor pollicis longus.glb",
+        "filename": "muscles/FJ341_BP62773_FMA38516_Right abductor pollicis longus.glb",
         "label": "Right abductor pollicis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38516",
         "fj": "FJ341"
     },
     {
-        "filename": "bones/FJ772_BP63664_FMA264844_Left calcaneal tendon.glb",
+        "filename": "tendons/FJ772_BP63664_FMA264844_Left calcaneal tendon.glb",
         "label": "Left calcaneal tendon",
-        "group": "unknown",
+        "group": "tendons",
         "fma": "264844",
         "fj": "FJ772"
     },
@@ -1477,9 +1475,9 @@
         "fj": "FJ235"
     },
     {
-        "filename": "bones/FJ846_BP62986_FMA40120_Flexor retinaculum of right wrist.glb",
+        "filename": "muscles/FJ846_BP62986_FMA40120_Flexor retinaculum of right wrist.glb",
         "label": "Flexor retinaculum of right wrist",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "40120",
         "fj": "FJ846"
     },
@@ -1493,42 +1491,42 @@
     {
         "filename": "bones/FJ826_BP62370_FMA8229_Right seventh rib.glb",
         "label": "Right seventh rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8229",
         "fj": "FJ826"
     },
     {
-        "filename": "bones/FJ420_BP62903_FMA65018_Right tibialis posterior.glb",
+        "filename": "muscles/FJ420_BP62903_FMA65018_Right tibialis posterior.glb",
         "label": "Right tibialis posterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "65018",
         "fj": "FJ420"
     },
     {
-        "filename": "bones/FJ200_BP62807_FMA22740_Right iliocostalis lumborum.glb",
+        "filename": "muscles/FJ200_BP62807_FMA22740_Right iliocostalis lumborum.glb",
         "label": "Right iliocostalis lumborum",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22740",
         "fj": "FJ200"
     },
     {
-        "filename": "bones/FJ314_BP62683_FMA45971_Medial head of right flexor hallucis brevis.glb",
+        "filename": "muscles/FJ314_BP62683_FMA45971_Medial head of right flexor hallucis brevis.glb",
         "label": "Medial head of right flexor hallucis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45971",
         "fj": "FJ314"
     },
     {
-        "filename": "bones/FJ534_BP63159_FMA22726_Right splenius cervicis.glb",
+        "filename": "muscles/FJ534_BP63159_FMA22726_Right splenius cervicis.glb",
         "label": "Right splenius cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22726",
         "fj": "FJ534"
     },
     {
-        "filename": "bones/FJ833_BP62937_FMA22546_Right extensor hallucis longus.glb",
+        "filename": "muscles/FJ833_BP62937_FMA22546_Right extensor hallucis longus.glb",
         "label": "Right extensor hallucis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22546",
         "fj": "FJ833"
     },
@@ -1540,23 +1538,23 @@
         "fj": "FJ42"
     },
     {
-        "filename": "bones/FJ251_BP63593_FMA13390_Right scalenus medius.glb",
+        "filename": "muscles/FJ251_BP63593_FMA13390_Right scalenus medius.glb",
         "label": "Right scalenus medius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13390",
         "fj": "FJ251"
     },
     {
-        "filename": "bones/FJ688_BP62325_FMA13322_Right clavicle.glb",
+        "filename": "other/FJ688_BP62325_FMA13322_Right clavicle.glb",
         "label": "Right clavicle",
-        "group": "unknown",
+        "group": "other",
         "fma": "13322",
         "fj": "FJ688"
     },
     {
-        "filename": "bones/FJ575_BP62826_FMA38517_Left abductor pollicis longus.glb",
+        "filename": "muscles/FJ575_BP62826_FMA38517_Left abductor pollicis longus.glb",
         "label": "Left abductor pollicis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38517",
         "fj": "FJ575"
     },
@@ -1568,37 +1566,37 @@
         "fj": "FJ842"
     },
     {
-        "filename": "bones/FJ702_BP63525_FMA81752_Right cervical rotator.glb",
+        "filename": "other/FJ702_BP63525_FMA81752_Right cervical rotator.glb",
         "label": "Right cervical rotator",
-        "group": "unknown",
+        "group": "other",
         "fma": "81752",
         "fj": "FJ702"
     },
     {
-        "filename": "bones/FJ292_BP63011_FMA37459_Right abductor hallucis.glb",
+        "filename": "muscles/FJ292_BP63011_FMA37459_Right abductor hallucis.glb",
         "label": "Right abductor hallucis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37459",
         "fj": "FJ292"
     },
     {
-        "filename": "bones/FJ536_BP63619_FMA38562_Ulnar head of right pronator teres.glb",
+        "filename": "muscles/FJ536_BP63619_FMA38562_Ulnar head of right pronator teres.glb",
         "label": "Ulnar head of right pronator teres",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38562",
         "fj": "FJ536"
     },
     {
         "filename": "bones/FJ154_BP62368_FMA7987_Left first rib.glb",
         "label": "Left first rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7987",
         "fj": "FJ154"
     },
     {
         "filename": "bones/FJ25_BP62912_FMA12524_Sixth cervical vertebra.glb",
         "label": "Sixth cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "12524",
         "fj": "FJ25"
     },
@@ -1610,30 +1608,30 @@
         "fj": "FJ104"
     },
     {
-        "filename": "bones/FJ105_BP62832_FMA37666_Left coracobrachialis.glb",
+        "filename": "muscles/FJ105_BP62832_FMA37666_Left coracobrachialis.glb",
         "label": "Left coracobrachialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37666",
         "fj": "FJ105"
     },
     {
-        "filename": "bones/FJ644_BP63686_FMA74077_Set of right levatores costarum breves.glb",
+        "filename": "muscles/FJ644_BP63686_FMA74077_Set of right levatores costarum breves.glb",
         "label": "Set of right levatores costarum breves",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "74077",
         "fj": "FJ644"
     },
     {
-        "filename": "bones/FJ125_BP62382_FMA13337_Left external oblique.glb",
+        "filename": "other/FJ125_BP62382_FMA13337_Left external oblique.glb",
         "label": "Left external oblique",
-        "group": "unknown",
+        "group": "other",
         "fma": "13337",
         "fj": "FJ125"
     },
     {
-        "filename": "bones/FJ163_BP62492_FMA24498_Left calcaneus.glb",
+        "filename": "other/FJ163_BP62492_FMA24498_Left calcaneus.glb",
         "label": "Left calcaneus",
-        "group": "unknown",
+        "group": "other",
         "fma": "24498",
         "fj": "FJ163"
     },
@@ -1645,30 +1643,30 @@
         "fj": "FJ204"
     },
     {
-        "filename": "bones/FJ650_BP63546_FMA22337_Left gemellus inferior.glb",
+        "filename": "muscles/FJ650_BP63546_FMA22337_Left gemellus inferior.glb",
         "label": "Left gemellus inferior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22337",
         "fj": "FJ650"
     },
     {
-        "filename": "bones/FJ110_BP62268_FMA45874_Abdominal part of right pectoralis major.glb",
+        "filename": "muscles/FJ110_BP62268_FMA45874_Abdominal part of right pectoralis major.glb",
         "label": "Abdominal part of right pectoralis major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45874",
         "fj": "FJ110"
     },
     {
-        "filename": "bones/FJ145_BP62863_FMA38484_Left flexor pollicis longus.glb",
+        "filename": "muscles/FJ145_BP62863_FMA38484_Left flexor pollicis longus.glb",
         "label": "Left flexor pollicis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38484",
         "fj": "FJ145"
     },
     {
-        "filename": "bones/FJ413_BP62391_FMA37400_Opponens digiti minimi of right hand.glb",
+        "filename": "muscles/FJ413_BP62391_FMA37400_Opponens digiti minimi of right hand.glb",
         "label": "Opponens digiti minimi of right hand",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37400",
         "fj": "FJ413"
     },
@@ -1687,9 +1685,9 @@
         "fj": "FJ837"
     },
     {
-        "filename": "bones/FJ475_BP62703_FMA45960_Lateral head of right gastrocnemius.glb",
+        "filename": "muscles/FJ475_BP62703_FMA45960_Lateral head of right gastrocnemius.glb",
         "label": "Lateral head of right gastrocnemius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45960",
         "fj": "FJ475"
     },
@@ -1701,16 +1699,16 @@
         "fj": "FJ13"
     },
     {
-        "filename": "bones/FJ601_BP62789_FMA38499_Left extensor carpi radialis brevis.glb",
+        "filename": "muscles/FJ601_BP62789_FMA38499_Left extensor carpi radialis brevis.glb",
         "label": "Left extensor carpi radialis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38499",
         "fj": "FJ601"
     },
     {
-        "filename": "bones/FJ559_BP63018_FMA43886_Right adductor minimus.glb",
+        "filename": "muscles/FJ559_BP63018_FMA43886_Right adductor minimus.glb",
         "label": "Right adductor minimus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "43886",
         "fj": "FJ559"
     },
@@ -1722,65 +1720,65 @@
         "fj": "FJ86"
     },
     {
-        "filename": "bones/FJ590_BP63602_FMA22323_Left iliacus.glb",
+        "filename": "muscles/FJ590_BP63602_FMA22323_Left iliacus.glb",
         "label": "Left iliacus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22323",
         "fj": "FJ590"
     },
     {
-        "filename": "bones/FJ547_BP63584_FMA13392_Right scalenus anterior.glb",
+        "filename": "muscles/FJ547_BP63584_FMA13392_Right scalenus anterior.glb",
         "label": "Right scalenus anterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13392",
         "fj": "FJ547"
     },
     {
-        "filename": "bones/FJ568_BP62653_FMA32552_Left teres major.glb",
+        "filename": "muscles/FJ568_BP62653_FMA32552_Left teres major.glb",
         "label": "Left teres major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32552",
         "fj": "FJ568"
     },
     {
-        "filename": "bones/FJ850_BP63015_FMA53650_Left maxilla.glb",
+        "filename": "other/FJ850_BP63015_FMA53650_Left maxilla.glb",
         "label": "Left maxilla",
-        "group": "unknown",
+        "group": "other",
         "fma": "53650",
         "fj": "FJ850"
     },
     {
-        "filename": "bones/FJ565_BP63583_FMA13393_Left scalenus anterior.glb",
+        "filename": "muscles/FJ565_BP63583_FMA13393_Left scalenus anterior.glb",
         "label": "Left scalenus anterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13393",
         "fj": "FJ565"
     },
     {
-        "filename": "bones/FJ599_BP62394_FMA37386_Right abductor pollicis brevis.glb",
+        "filename": "muscles/FJ599_BP62394_FMA37386_Right abductor pollicis brevis.glb",
         "label": "Right abductor pollicis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37386",
         "fj": "FJ599"
     },
     {
-        "filename": "bones/FJ495_BP62519_FMA13395_Right scapula.glb",
+        "filename": "other/FJ495_BP62519_FMA13395_Right scapula.glb",
         "label": "Right scapula",
-        "group": "unknown",
+        "group": "other",
         "fma": "13395",
         "fj": "FJ495"
     },
     {
-        "filename": "bones/FJ670_BP62641_FMA38935_Left vastus intermedius.glb",
+        "filename": "muscles/FJ670_BP62641_FMA38935_Left vastus intermedius.glb",
         "label": "Left vastus intermedius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38935",
         "fj": "FJ670"
     },
     {
         "filename": "bones/FJ249_BP62373_FMA8391_Left ninth rib.glb",
         "label": "Left ninth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8391",
         "fj": "FJ249"
     },
@@ -1799,128 +1797,128 @@
         "fj": "FJ595"
     },
     {
-        "filename": "bones/FJ483_BP62457_FMA13384_Left rhomboid minor.glb",
+        "filename": "muscles/FJ483_BP62457_FMA13384_Left rhomboid minor.glb",
         "label": "Left rhomboid minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13384",
         "fj": "FJ483"
     },
     {
-        "filename": "bones/FJ131_BP62537_FMA51144_Right extensor hallucis brevis.glb",
+        "filename": "muscles/FJ131_BP62537_FMA51144_Right extensor hallucis brevis.glb",
         "label": "Right extensor hallucis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "51144",
         "fj": "FJ131"
     },
     {
-        "filename": "bones/FJ379_BP62997_FMA22452_Right adductor brevis.glb",
+        "filename": "muscles/FJ379_BP62997_FMA22452_Right adductor brevis.glb",
         "label": "Right adductor brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22452",
         "fj": "FJ379"
     },
     {
-        "filename": "bones/FJ786_BP62967_FMA22328_Right gluteus maximus.glb",
+        "filename": "muscles/FJ786_BP62967_FMA22328_Right gluteus maximus.glb",
         "label": "Right gluteus maximus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22328",
         "fj": "FJ786"
     },
     {
-        "filename": "bones/FJ869_BP63790_FMA71309_Set of interspinales cervicis.glb",
+        "filename": "other/FJ869_BP63790_FMA71309_Set of interspinales cervicis.glb",
         "label": "Set of interspinales cervicis",
-        "group": "unknown",
+        "group": "other",
         "fma": "71309",
         "fj": "FJ869"
     },
     {
         "filename": "bones/FJ406_BP62811_FMA13900_Intervertebral disk of seventh cervical vertebra.glb",
         "label": "Intervertebral disk of seventh cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13900",
         "fj": "FJ406"
     },
     {
-        "filename": "bones/FJ744_BP62714_FMA13415_Left subscapularis.glb",
+        "filename": "muscles/FJ744_BP62714_FMA13415_Left subscapularis.glb",
         "label": "Left subscapularis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13415",
         "fj": "FJ744"
     },
     {
-        "filename": "bones/FJ206_BP62836_FMA38504_Right extensor digiti minimi.glb",
+        "filename": "muscles/FJ206_BP62836_FMA38504_Right extensor digiti minimi.glb",
         "label": "Right extensor digiti minimi",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38504",
         "fj": "FJ206"
     },
     {
-        "filename": "bones/FJ755_BP62871_FMA23089_Right lumbar rotator.glb",
+        "filename": "other/FJ755_BP62871_FMA23089_Right lumbar rotator.glb",
         "label": "Right lumbar rotator",
-        "group": "unknown",
+        "group": "other",
         "fma": "23089",
         "fj": "FJ755"
     },
     {
-        "filename": "bones/FJ769_BP63552_FMA46318_Left rectus capitis lateralis.glb",
+        "filename": "muscles/FJ769_BP63552_FMA46318_Left rectus capitis lateralis.glb",
         "label": "Left rectus capitis lateralis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46318",
         "fj": "FJ769"
     },
     {
-        "filename": "bones/FJ27_BP62539_FMA13396_Left scapula.glb",
+        "filename": "other/FJ27_BP62539_FMA13396_Left scapula.glb",
         "label": "Left scapula",
-        "group": "unknown",
+        "group": "other",
         "fma": "13396",
         "fj": "FJ27"
     },
     {
-        "filename": "bones/FJ315_BP62719_FMA46018_Oblique head of right adductor hallucis.glb",
+        "filename": "muscles/FJ315_BP62719_FMA46018_Oblique head of right adductor hallucis.glb",
         "label": "Oblique head of right adductor hallucis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46018",
         "fj": "FJ315"
     },
     {
-        "filename": "bones/FJ258_BP62662_FMA24440_Left triquetral.glb",
+        "filename": "other/FJ258_BP62662_FMA24440_Left triquetral.glb",
         "label": "Left triquetral",
-        "group": "unknown",
+        "group": "other",
         "fma": "24440",
         "fj": "FJ258"
     },
     {
-        "filename": "bones/FJ306_BP62479_FMA34685_Spinal part of left deltoid.glb",
+        "filename": "muscles/FJ306_BP62479_FMA34685_Spinal part of left deltoid.glb",
         "label": "Spinal part of left deltoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34685",
         "fj": "FJ306"
     },
     {
-        "filename": "bones/FJ696_BP62667_FMA46019_Oblique head of left adductor hallucis.glb",
+        "filename": "muscles/FJ696_BP62667_FMA46019_Oblique head of left adductor hallucis.glb",
         "label": "Oblique head of left adductor hallucis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46019",
         "fj": "FJ696"
     },
     {
-        "filename": "bones/FJ799_BP62878_FMA38495_Right extensor carpi radialis longus.glb",
+        "filename": "muscles/FJ799_BP62878_FMA38495_Right extensor carpi radialis longus.glb",
         "label": "Right extensor carpi radialis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38495",
         "fj": "FJ799"
     },
     {
         "filename": "bones/FJ463_BP62971_FMA12522_Fourth cervical vertebra.glb",
         "label": "Fourth cervical vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "12522",
         "fj": "FJ463"
     },
     {
-        "filename": "bones/FJ384_BP62840_FMA37665_Right coracobrachialis.glb",
+        "filename": "muscles/FJ384_BP62840_FMA37665_Right coracobrachialis.glb",
         "label": "Right coracobrachialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37665",
         "fj": "FJ384"
     },
@@ -1939,30 +1937,30 @@
         "fj": "FJ44"
     },
     {
-        "filename": "bones/FJ363_BP62452_FMA34684_Spinal part of right deltoid.glb",
+        "filename": "muscles/FJ363_BP62452_FMA34684_Spinal part of right deltoid.glb",
         "label": "Spinal part of right deltoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34684",
         "fj": "FJ363"
     },
     {
-        "filename": "bones/FJ280_BP63628_FMA35192_Interosseous membrane of right leg.glb",
+        "filename": "other/FJ280_BP63628_FMA35192_Interosseous membrane of right leg.glb",
         "label": "Interosseous membrane of right leg",
-        "group": "unknown",
+        "group": "other",
         "fma": "35192",
         "fj": "FJ280"
     },
     {
-        "filename": "bones/FJ48_BP62711_FMA38934_Right vastus intermedius.glb",
+        "filename": "muscles/FJ48_BP62711_FMA38934_Right vastus intermedius.glb",
         "label": "Right vastus intermedius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38934",
         "fj": "FJ48"
     },
     {
         "filename": "bones/FJ858_BP62320_FMA8532_Left eleventh rib.glb",
         "label": "Left eleventh rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8532",
         "fj": "FJ858"
     },
@@ -1974,86 +1972,86 @@
         "fj": "FJ814"
     },
     {
-        "filename": "bones/FJ274_BP62515_FMA9761_Right transversus thoracis.glb",
+        "filename": "muscles/FJ274_BP62515_FMA9761_Right transversus thoracis.glb",
         "label": "Right transversus thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "9761",
         "fj": "FJ274"
     },
     {
-        "filename": "bones/FJ262_BP62867_FMA38496_Left extensor carpi radialis longus.glb",
+        "filename": "muscles/FJ262_BP62867_FMA38496_Left extensor carpi radialis longus.glb",
         "label": "Left extensor carpi radialis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38496",
         "fj": "FJ262"
     },
     {
-        "filename": "bones/FJ762_BP62731_FMA38932_Right vastus medialis.glb",
+        "filename": "muscles/FJ762_BP62731_FMA38932_Right vastus medialis.glb",
         "label": "Right vastus medialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38932",
         "fj": "FJ762"
     },
     {
-        "filename": "bones/FJ458_BP62266_FMA79980_Sternocostal part of left pectoralis major.glb",
+        "filename": "muscles/FJ458_BP62266_FMA79980_Sternocostal part of left pectoralis major.glb",
         "label": "Sternocostal part of left pectoralis major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "79980",
         "fj": "FJ458"
     },
     {
-        "filename": "bones/FJ398_BP63729_FMA33587_Descending part of left trapezius.glb",
+        "filename": "muscles/FJ398_BP63729_FMA33587_Descending part of left trapezius.glb",
         "label": "Descending part of left trapezius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "33587",
         "fj": "FJ398"
     },
     {
-        "filename": "bones/FJ45_BP62456_FMA34680_Clavicular part of right deltoid.glb",
+        "filename": "muscles/FJ45_BP62456_FMA34680_Clavicular part of right deltoid.glb",
         "label": "Clavicular part of right deltoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34680",
         "fj": "FJ45"
     },
     {
-        "filename": "bones/FJ588_BP63605_FMA13409_Left sternocleidomastoid.glb",
+        "filename": "muscles/FJ588_BP63605_FMA13409_Left sternocleidomastoid.glb",
         "label": "Left sternocleidomastoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13409",
         "fj": "FJ588"
     },
     {
-        "filename": "bones/FJ281_BP62736_FMA45972_Medial head of left flexor hallucis brevis.glb",
+        "filename": "muscles/FJ281_BP62736_FMA45972_Medial head of left flexor hallucis brevis.glb",
         "label": "Medial head of left flexor hallucis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45972",
         "fj": "FJ281"
     },
     {
-        "filename": "bones/FJ653_BP62910_FMA22591_Right popliteus.glb",
+        "filename": "muscles/FJ653_BP62910_FMA22591_Right popliteus.glb",
         "label": "Right popliteus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22591",
         "fj": "FJ653"
     },
     {
         "filename": "bones/FJ746_BP62546_FMA13508_Intervertebral disk of eleventh thoracic vertebra.glb",
         "label": "Intervertebral disk of eleventh thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13508",
         "fj": "FJ746"
     },
     {
-        "filename": "bones/FJ162_BP62712_FMA24439_Right triquetral.glb",
+        "filename": "other/FJ162_BP62712_FMA24439_Right triquetral.glb",
         "label": "Right triquetral",
-        "group": "unknown",
+        "group": "other",
         "fma": "24439",
         "fj": "FJ162"
     },
     {
         "filename": "bones/FJ353_BP62364_FMA8202_Left sixth rib.glb",
         "label": "Left sixth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8202",
         "fj": "FJ353"
     },
@@ -2072,58 +2070,58 @@
         "fj": "FJ596"
     },
     {
-        "filename": "bones/FJ312_BP63640_FMA45855_Left pubococcygeus.glb",
+        "filename": "muscles/FJ312_BP63640_FMA45855_Left pubococcygeus.glb",
         "label": "Left pubococcygeus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45855",
         "fj": "FJ312"
     },
     {
-        "filename": "bones/FJ291_BP62973_FMA24478_Left tibia.glb",
+        "filename": "other/FJ291_BP62973_FMA24478_Left tibia.glb",
         "label": "Left tibia",
-        "group": "unknown",
+        "group": "other",
         "fma": "24478",
         "fj": "FJ291"
     },
     {
-        "filename": "bones/FJ468_BP63517_FMA22756_Left longissimus capitis.glb",
+        "filename": "muscles/FJ468_BP63517_FMA22756_Left longissimus capitis.glb",
         "label": "Left longissimus capitis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22756",
         "fj": "FJ468"
     },
     {
         "filename": "bones/FJ248_BP62359_FMA8175_Right sixth rib.glb",
         "label": "Right sixth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8175",
         "fj": "FJ248"
     },
     {
-        "filename": "bones/FJ433_BP63009_FMA22449_Left semimembranosus.glb",
+        "filename": "muscles/FJ433_BP63009_FMA22449_Left semimembranosus.glb",
         "label": "Left semimembranosus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22449",
         "fj": "FJ433"
     },
     {
-        "filename": "bones/FJ382_BP62278_FMA33584_Transverse part of right trapezius.glb",
+        "filename": "muscles/FJ382_BP62278_FMA33584_Transverse part of right trapezius.glb",
         "label": "Transverse part of right trapezius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "33584",
         "fj": "FJ382"
     },
     {
-        "filename": "bones/FJ635_BP63699_FMA42404_Set of dorsal interossei of right hand.glb",
+        "filename": "muscles/FJ635_BP63699_FMA42404_Set of dorsal interossei of right hand.glb",
         "label": "Set of dorsal interossei of right hand",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "42404",
         "fj": "FJ635"
     },
     {
         "filename": "bones/FJ356_BP62504_FMA13073_Second lumbar vertebra.glb",
         "label": "Second lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13073",
         "fj": "FJ356"
     },
@@ -2156,9 +2154,9 @@
         "fj": "FJ261"
     },
     {
-        "filename": "bones/FJ718_BP62799_FMA38461_Left flexor carpi radialis.glb",
+        "filename": "muscles/FJ718_BP62799_FMA38461_Left flexor carpi radialis.glb",
         "label": "Left flexor carpi radialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38461",
         "fj": "FJ718"
     },
@@ -2177,9 +2175,9 @@
         "fj": "FJ487"
     },
     {
-        "filename": "bones/FJ691_BP62865_FMA22753_Left longissimus thoracis.glb",
+        "filename": "muscles/FJ691_BP62865_FMA22753_Left longissimus thoracis.glb",
         "label": "Left longissimus thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22753",
         "fj": "FJ691"
     },
@@ -2191,30 +2189,30 @@
         "fj": "FJ39"
     },
     {
-        "filename": "bones/FJ507_BP62782_FMA38455_Left pronator quadratus.glb",
+        "filename": "muscles/FJ507_BP62782_FMA38455_Left pronator quadratus.glb",
         "label": "Left pronator quadratus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38455",
         "fj": "FJ507"
     },
     {
         "filename": "bones/FJ617_BP62313_FMA16036_Intervertebral disk of fourth lumbar vertebra.glb",
         "label": "Intervertebral disk of fourth lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "16036",
         "fj": "FJ617"
     },
     {
-        "filename": "bones/FJ557_BP62780_FMA38513_Right supinator.glb",
+        "filename": "muscles/FJ557_BP62780_FMA38513_Right supinator.glb",
         "label": "Right supinator",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38513",
         "fj": "FJ557"
     },
     {
-        "filename": "bones/FJ868_BP63771_FMA71308_Set of interspinales thoracis.glb",
+        "filename": "other/FJ868_BP63771_FMA71308_Set of interspinales thoracis.glb",
         "label": "Set of interspinales thoracis",
-        "group": "unknown",
+        "group": "other",
         "fma": "71308",
         "fj": "FJ868"
     },
@@ -2233,23 +2231,23 @@
         "fj": "FJ716"
     },
     {
-        "filename": "bones/FJ66_BP62532_FMA16202_Sacrum.glb",
+        "filename": "other/FJ66_BP62532_FMA16202_Sacrum.glb",
         "label": "Sacrum",
-        "group": "unknown",
+        "group": "other",
         "fma": "16202",
         "fj": "FJ66"
     },
     {
         "filename": "bones/FJ532_BP62617_FMA13509_Intervertebral disk of twelfth thoracic vertebra.glb",
         "label": "Intervertebral disk of twelfth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13509",
         "fj": "FJ532"
     },
     {
-        "filename": "bones/FJ612_BP63724_FMA74078_Set of left levatores costarum breves.glb",
+        "filename": "muscles/FJ612_BP63724_FMA74078_Set of left levatores costarum breves.glb",
         "label": "Set of left levatores costarum breves",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "74078",
         "fj": "FJ612"
     },
@@ -2261,51 +2259,51 @@
         "fj": "FJ73"
     },
     {
-        "filename": "bones/FJ473_BP62421_FMA37390_Right opponens pollicis.glb",
+        "filename": "muscles/FJ473_BP62421_FMA37390_Right opponens pollicis.glb",
         "label": "Right opponens pollicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37390",
         "fj": "FJ473"
     },
     {
-        "filename": "bones/FJ820_BP62981_FMA65015_Left flexor hallucis longus.glb",
+        "filename": "muscles/FJ820_BP62981_FMA65015_Left flexor hallucis longus.glb",
         "label": "Left flexor hallucis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "65015",
         "fj": "FJ820"
     },
     {
-        "filename": "bones/FJ329_BP62964_FMA22459_Right adductor magnus.glb",
+        "filename": "muscles/FJ329_BP62964_FMA22459_Right adductor magnus.glb",
         "label": "Right adductor magnus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22459",
         "fj": "FJ329"
     },
     {
-        "filename": "bones/FJ554_BP62259_FMA34691_Clavicular part of left pectoralis major.glb",
+        "filename": "muscles/FJ554_BP62259_FMA34691_Clavicular part of left pectoralis major.glb",
         "label": "Clavicular part of left pectoralis major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34691",
         "fj": "FJ554"
     },
     {
-        "filename": "bones/FJ789_BP63520_FMA22874_Right semispinalis cervicis.glb",
+        "filename": "muscles/FJ789_BP63520_FMA22874_Right semispinalis cervicis.glb",
         "label": "Right semispinalis cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22874",
         "fj": "FJ789"
     },
     {
-        "filename": "bones/FJ625_BP62689_FMA32545_Left supraspinatus.glb",
+        "filename": "muscles/FJ625_BP62689_FMA32545_Left supraspinatus.glb",
         "label": "Left supraspinatus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32545",
         "fj": "FJ625"
     },
     {
-        "filename": "bones/FJ290_BP62969_FMA22450_Right pectineus.glb",
+        "filename": "muscles/FJ290_BP62969_FMA22450_Right pectineus.glb",
         "label": "Right pectineus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22450",
         "fj": "FJ290"
     },
@@ -2317,9 +2315,9 @@
         "fj": "FJ129"
     },
     {
-        "filename": "bones/FJ161_BP63150_FMA22729_Left splenius capitis.glb",
+        "filename": "muscles/FJ161_BP63150_FMA22729_Left splenius capitis.glb",
         "label": "Left splenius capitis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22729",
         "fj": "FJ161"
     },
@@ -2331,30 +2329,30 @@
         "fj": "FJ4"
     },
     {
-        "filename": "bones/FJ736_BP62890_FMA37466_Left flexor accessorius.glb",
+        "filename": "muscles/FJ736_BP62890_FMA37466_Left flexor accessorius.glb",
         "label": "Left flexor accessorius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37466",
         "fj": "FJ736"
     },
     {
-        "filename": "bones/FJ367_BP63550_FMA22335_Left gemellus superior.glb",
+        "filename": "muscles/FJ367_BP63550_FMA22335_Left gemellus superior.glb",
         "label": "Left gemellus superior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22335",
         "fj": "FJ367"
     },
     {
-        "filename": "bones/FJ442_BP62957_FMA37460_Left abductor hallucis.glb",
+        "filename": "muscles/FJ442_BP62957_FMA37460_Left abductor hallucis.glb",
         "label": "Left abductor hallucis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37460",
         "fj": "FJ442"
     },
     {
-        "filename": "bones/FJ373_BP62870_FMA38479_Right flexor digitorum profundus.glb",
+        "filename": "muscles/FJ373_BP62870_FMA38479_Right flexor digitorum profundus.glb",
         "label": "Right flexor digitorum profundus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38479",
         "fj": "FJ373"
     },
@@ -2366,86 +2364,86 @@
         "fj": "FJ231"
     },
     {
-        "filename": "bones/FJ823_BP63676_FMA74141_Set of dorsal interossei of left foot.glb",
+        "filename": "muscles/FJ823_BP63676_FMA74141_Set of dorsal interossei of left foot.glb",
         "label": "Set of dorsal interossei of left foot",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "74141",
         "fj": "FJ823"
     },
     {
-        "filename": "bones/FJ633_BP62637_FMA38931_Left vastus lateralis.glb",
+        "filename": "muscles/FJ633_BP62637_FMA38931_Left vastus lateralis.glb",
         "label": "Left vastus lateralis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38931",
         "fj": "FJ633"
     },
     {
-        "filename": "bones/FJ558_BP63006_FMA43884_Left gracilis.glb",
+        "filename": "muscles/FJ558_BP63006_FMA43884_Left gracilis.glb",
         "label": "Left gracilis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "43884",
         "fj": "FJ558"
     },
     {
         "filename": "bones/FJ825_BP62323_FMA8093_Left fifth rib.glb",
         "label": "Left fifth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8093",
         "fj": "FJ825"
     },
     {
-        "filename": "bones/FJ711_BP63541_FMA22336_Right gemellus inferior.glb",
+        "filename": "muscles/FJ711_BP63541_FMA22336_Right gemellus inferior.glb",
         "label": "Right gemellus inferior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22336",
         "fj": "FJ711"
     },
     {
-        "filename": "bones/FJ620_BP63177_FMA22727_Left splenius cervicis.glb",
+        "filename": "muscles/FJ620_BP63177_FMA22727_Left splenius cervicis.glb",
         "label": "Left splenius cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22727",
         "fj": "FJ620"
     },
     {
-        "filename": "bones/FJ307_BP63624_FMA35193_Interosseous membrane of left leg.glb",
+        "filename": "other/FJ307_BP63624_FMA35193_Interosseous membrane of left leg.glb",
         "label": "Interosseous membrane of left leg",
-        "group": "unknown",
+        "group": "other",
         "fma": "35193",
         "fj": "FJ307"
     },
     {
         "filename": "bones/FJ701_BP62379_FMA7886_Right second costal cartilage.glb",
         "label": "Right second costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7886",
         "fj": "FJ701"
     },
     {
-        "filename": "bones/FJ108_BP62853_FMA38525_Right extensor indicis.glb",
+        "filename": "muscles/FJ108_BP62853_FMA38525_Right extensor indicis.glb",
         "label": "Right extensor indicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38525",
         "fj": "FJ108"
     },
     {
-        "filename": "bones/FJ843_BP62487_FMA34683_Acromial part of left deltoid.glb",
+        "filename": "muscles/FJ843_BP62487_FMA34683_Acromial part of left deltoid.glb",
         "label": "Acromial part of left deltoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34683",
         "fj": "FJ843"
     },
     {
-        "filename": "bones/FJ188_BP63713_FMA42405_Set of dorsal interossei of left hand.glb",
+        "filename": "muscles/FJ188_BP63713_FMA42405_Set of dorsal interossei of left hand.glb",
         "label": "Set of dorsal interossei of left hand",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "42405",
         "fj": "FJ188"
     },
     {
-        "filename": "bones/FJ594_BP62643_FMA24448_Right hamate.glb",
+        "filename": "other/FJ594_BP62643_FMA24448_Right hamate.glb",
         "label": "Right hamate",
-        "group": "unknown",
+        "group": "other",
         "fma": "24448",
         "fj": "FJ594"
     },
@@ -2457,37 +2455,37 @@
         "fj": "FJ569"
     },
     {
-        "filename": "bones/FJ720_BP63636_FMA45854_Right pubococcygeus.glb",
+        "filename": "muscles/FJ720_BP63636_FMA45854_Right pubococcygeus.glb",
         "label": "Right pubococcygeus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45854",
         "fj": "FJ720"
     },
     {
-        "filename": "bones/FJ785_BP62236_FMA21965_Left inguinal ligament.glb",
+        "filename": "tendons/FJ785_BP62236_FMA21965_Left inguinal ligament.glb",
         "label": "Left inguinal ligament",
-        "group": "unknown",
+        "group": "tendons",
         "fma": "21965",
         "fj": "FJ785"
     },
     {
-        "filename": "bones/FJ207_BP62993_FMA43883_Right gracilis.glb",
+        "filename": "muscles/FJ207_BP62993_FMA43883_Right gracilis.glb",
         "label": "Right gracilis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "43883",
         "fj": "FJ207"
     },
     {
-        "filename": "bones/FJ36_BP62958_FMA23465_Left radius.glb",
+        "filename": "other/FJ36_BP62958_FMA23465_Left radius.glb",
         "label": "Left radius",
-        "group": "unknown",
+        "group": "other",
         "fma": "23465",
         "fj": "FJ36"
     },
     {
         "filename": "bones/FJ365_BP62528_FMA9945_Sixth thoracic vertebra.glb",
         "label": "Sixth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9945",
         "fj": "FJ365"
     },
@@ -2501,84 +2499,84 @@
     {
         "filename": "bones/FJ457_BP62340_FMA7857_Right first rib.glb",
         "label": "Right first rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7857",
         "fj": "FJ457"
     },
     {
-        "filename": "bones/FJ533_BP62747_FMA22340_Right piriformis.glb",
+        "filename": "muscles/FJ533_BP62747_FMA22340_Right piriformis.glb",
         "label": "Right piriformis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22340",
         "fj": "FJ533"
     },
     {
-        "filename": "bones/FJ693_BP62987_FMA24477_Right tibia.glb",
+        "filename": "other/FJ693_BP62987_FMA24477_Right tibia.glb",
         "label": "Right tibia",
-        "group": "unknown",
+        "group": "other",
         "fma": "24477",
         "fj": "FJ693"
     },
     {
-        "filename": "bones/FJ371_BP63745_FMA33583_Ascending part of left trapezius.glb",
+        "filename": "muscles/FJ371_BP63745_FMA33583_Ascending part of left trapezius.glb",
         "label": "Ascending part of left trapezius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "33583",
         "fj": "FJ371"
     },
     {
-        "filename": "bones/FJ180_BP62962_FMA22547_Left extensor hallucis longus.glb",
+        "filename": "muscles/FJ180_BP62962_FMA22547_Left extensor hallucis longus.glb",
         "label": "Left extensor hallucis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22547",
         "fj": "FJ180"
     },
     {
-        "filename": "bones/FJ46_BP62495_FMA34681_Clavicular part of left deltoid.glb",
+        "filename": "muscles/FJ46_BP62495_FMA34681_Clavicular part of left deltoid.glb",
         "label": "Clavicular part of left deltoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "34681",
         "fj": "FJ46"
     },
     {
-        "filename": "bones/FJ524_BP63510_FMA22876_Right semispinalis capitis.glb",
+        "filename": "muscles/FJ524_BP63510_FMA22876_Right semispinalis capitis.glb",
         "label": "Right semispinalis capitis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22876",
         "fj": "FJ524"
     },
     {
-        "filename": "bones/FJ33_BP62376_FMA22342_Right psoas major.glb",
+        "filename": "muscles/FJ33_BP62376_FMA22342_Right psoas major.glb",
         "label": "Right psoas major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22342",
         "fj": "FJ33"
     },
     {
-        "filename": "bones/FJ484_BP63598_FMA13408_Right sternocleidomastoid.glb",
+        "filename": "muscles/FJ484_BP63598_FMA13408_Right sternocleidomastoid.glb",
         "label": "Right sternocleidomastoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13408",
         "fj": "FJ484"
     },
     {
-        "filename": "bones/FJ788_BP63024_FMA22561_Left plantaris.glb",
+        "filename": "muscles/FJ788_BP63024_FMA22561_Left plantaris.glb",
         "label": "Left plantaris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22561",
         "fj": "FJ788"
     },
     {
-        "filename": "bones/FJ689_BP62405_FMA13346_Right sternohyoid.glb",
+        "filename": "muscles/FJ689_BP62405_FMA13346_Right sternohyoid.glb",
         "label": "Right sternohyoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13346",
         "fj": "FJ689"
     },
     {
         "filename": "bones/FJ325_BP62522_FMA9187_Second thoracic vertebra.glb",
         "label": "Second thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9187",
         "fj": "FJ325"
     },
@@ -2590,51 +2588,51 @@
         "fj": "FJ144"
     },
     {
-        "filename": "bones/FJ76_BP63639_FMA38563_Ulnar head of left pronator teres.glb",
+        "filename": "muscles/FJ76_BP63639_FMA38563_Ulnar head of left pronator teres.glb",
         "label": "Ulnar head of left pronator teres",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38563",
         "fj": "FJ76"
     },
     {
-        "filename": "bones/FJ49_BP63669_FMA42399_Set of lumbricals of left hand.glb",
+        "filename": "other/FJ49_BP63669_FMA42399_Set of lumbricals of left hand.glb",
         "label": "Set of lumbricals of left hand",
-        "group": "unknown",
+        "group": "other",
         "fma": "42399",
         "fj": "FJ49"
     },
     {
-        "filename": "bones/FJ602_BP62812_FMA38522_Right extensor pollicis longus.glb",
+        "filename": "muscles/FJ602_BP62812_FMA38522_Right extensor pollicis longus.glb",
         "label": "Right extensor pollicis longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38522",
         "fj": "FJ602"
     },
     {
-        "filename": "bones/FJ364_BP62513_FMA9762_Left transversus thoracis.glb",
+        "filename": "muscles/FJ364_BP62513_FMA9762_Left transversus thoracis.glb",
         "label": "Left transversus thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "9762",
         "fj": "FJ364"
     },
     {
-        "filename": "bones/FJ847_BP62666_FMA45961_Lateral head of left gastrocnemius.glb",
+        "filename": "muscles/FJ847_BP62666_FMA45961_Lateral head of left gastrocnemius.glb",
         "label": "Lateral head of left gastrocnemius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45961",
         "fj": "FJ847"
     },
     {
-        "filename": "bones/FJ101_BP62633_FMA23725_Right trapezoid.glb",
+        "filename": "other/FJ101_BP62633_FMA23725_Right trapezoid.glb",
         "label": "Right trapezoid",
-        "group": "unknown",
+        "group": "other",
         "fma": "23725",
         "fj": "FJ101"
     },
     {
-        "filename": "bones/FJ316_BP62660_FMA46020_Transverse head of right adductor hallucis.glb",
+        "filename": "muscles/FJ316_BP62660_FMA46020_Transverse head of right adductor hallucis.glb",
         "label": "Transverse head of right adductor hallucis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46020",
         "fj": "FJ316"
     },
@@ -2648,7 +2646,7 @@
     {
         "filename": "bones/FJ176_BP62343_FMA8275_Left seventh costal cartilage.glb",
         "label": "Left seventh costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8275",
         "fj": "FJ176"
     },
@@ -2669,21 +2667,21 @@
     {
         "filename": "bones/FJ273_BP62527_FMA9165_First thoracic vertebra.glb",
         "label": "First thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9165",
         "fj": "FJ273"
     },
     {
-        "filename": "bones/FJ264_BP63662_FMA38561_Humeral head of left pronator teres.glb",
+        "filename": "muscles/FJ264_BP63662_FMA38561_Humeral head of left pronator teres.glb",
         "label": "Humeral head of left pronator teres",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38561",
         "fj": "FJ264"
     },
     {
-        "filename": "bones/FJ71_BP62638_FMA24435_Right scaphoid.glb",
+        "filename": "other/FJ71_BP62638_FMA24435_Right scaphoid.glb",
         "label": "Right scaphoid",
-        "group": "unknown",
+        "group": "other",
         "fma": "24435",
         "fj": "FJ71"
     },
@@ -2697,35 +2695,35 @@
     {
         "filename": "bones/FJ462_BP62524_FMA9248_Fourth thoracic vertebra.glb",
         "label": "Fourth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9248",
         "fj": "FJ462"
     },
     {
-        "filename": "bones/FJ634_BP63719_FMA42403_Set of palmar interossei of left hand.glb",
+        "filename": "muscles/FJ634_BP63719_FMA42403_Set of palmar interossei of left hand.glb",
         "label": "Set of palmar interossei of left hand",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "42403",
         "fj": "FJ634"
     },
     {
         "filename": "bones/FJ1_BP62499_FMA13075_Fourth lumbar vertebra.glb",
         "label": "Fourth lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13075",
         "fj": "FJ1"
     },
     {
-        "filename": "bones/FJ205_BP62774_FMA38498_Right extensor carpi radialis brevis.glb",
+        "filename": "muscles/FJ205_BP62774_FMA38498_Right extensor carpi radialis brevis.glb",
         "label": "Right extensor carpi radialis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38498",
         "fj": "FJ205"
     },
     {
-        "filename": "bones/FJ64_BP62488_FMA13381_Right rhomboid major.glb",
+        "filename": "muscles/FJ64_BP62488_FMA13381_Right rhomboid major.glb",
         "label": "Right rhomboid major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13381",
         "fj": "FJ64"
     },
@@ -2751,30 +2749,30 @@
         "fj": "FJ721"
     },
     {
-        "filename": "bones/FJ143_BP63518_FMA22758_Left longissimus cervicis.glb",
+        "filename": "muscles/FJ143_BP63518_FMA22758_Left longissimus cervicis.glb",
         "label": "Left longissimus cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22758",
         "fj": "FJ143"
     },
     {
-        "filename": "bones/FJ26_BP62363_FMA13375_Right pectoralis minor.glb",
+        "filename": "muscles/FJ26_BP62363_FMA13375_Right pectoralis minor.glb",
         "label": "Right pectoralis minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13375",
         "fj": "FJ26"
     },
     {
-        "filename": "bones/FJ295_BP63805_FMA71443_Set of posterior cervical intertransversarii.glb",
+        "filename": "other/FJ295_BP63805_FMA71443_Set of posterior cervical intertransversarii.glb",
         "label": "Set of posterior cervical intertransversarii",
-        "group": "unknown",
+        "group": "other",
         "fma": "71443",
         "fj": "FJ295"
     },
     {
-        "filename": "bones/FJ714_BP62672_FMA24442_Left pisiform.glb",
+        "filename": "other/FJ714_BP62672_FMA24442_Left pisiform.glb",
         "label": "Left pisiform",
-        "group": "unknown",
+        "group": "other",
         "fma": "24442",
         "fj": "FJ714"
     },
@@ -2786,23 +2784,23 @@
         "fj": "FJ803"
     },
     {
-        "filename": "bones/FJ225_BP62424_FMA13399_Left serratus anterior.glb",
+        "filename": "muscles/FJ225_BP62424_FMA13399_Left serratus anterior.glb",
         "label": "Left serratus anterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13399",
         "fj": "FJ225"
     },
     {
-        "filename": "bones/FJ361_BP63513_FMA22875_Left semispinalis cervicis.glb",
+        "filename": "muscles/FJ361_BP63513_FMA22875_Left semispinalis cervicis.glb",
         "label": "Left semispinalis cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22875",
         "fj": "FJ361"
     },
     {
         "filename": "bones/FJ355_BP62538_FMA9991_Eighth thoracic vertebra.glb",
         "label": "Eighth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9991",
         "fj": "FJ355"
     },
@@ -2816,14 +2814,14 @@
     {
         "filename": "bones/FJ221_BP62362_FMA8445_Right tenth rib.glb",
         "label": "Right tenth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8445",
         "fj": "FJ221"
     },
     {
-        "filename": "bones/FJ713_BP62960_FMA23468_Left ulna.glb",
+        "filename": "other/FJ713_BP62960_FMA23468_Left ulna.glb",
         "label": "Left ulna",
-        "group": "unknown",
+        "group": "other",
         "fma": "23468",
         "fj": "FJ713"
     },
@@ -2842,37 +2840,37 @@
         "fj": "FJ761"
     },
     {
-        "filename": "bones/FJ62_BP62327_FMA13323_Left clavicle.glb",
+        "filename": "other/FJ62_BP62327_FMA13323_Left clavicle.glb",
         "label": "Left clavicle",
-        "group": "unknown",
+        "group": "other",
         "fma": "13323",
         "fj": "FJ62"
     },
     {
-        "filename": "bones/FJ427_BP62847_FMA13406_Left serratus posterior inferior.glb",
+        "filename": "muscles/FJ427_BP62847_FMA13406_Left serratus posterior inferior.glb",
         "label": "Left serratus posterior inferior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13406",
         "fj": "FJ427"
     },
     {
-        "filename": "bones/FJ793_BP62704_FMA32553_Right teres minor.glb",
+        "filename": "muscles/FJ793_BP62704_FMA32553_Right teres minor.glb",
         "label": "Right teres minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32553",
         "fj": "FJ793"
     },
     {
-        "filename": "bones/FJ508_BP63642_FMA38560_Humeral head of right pronator teres.glb",
+        "filename": "muscles/FJ508_BP63642_FMA38560_Humeral head of right pronator teres.glb",
         "label": "Humeral head of right pronator teres",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38560",
         "fj": "FJ508"
     },
     {
-        "filename": "bones/FJ78_BP62700_FMA45891_Short head of right biceps femoris.glb",
+        "filename": "muscles/FJ78_BP62700_FMA45891_Short head of right biceps femoris.glb",
         "label": "Short head of right biceps femoris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45891",
         "fj": "FJ78"
     },
@@ -2884,44 +2882,44 @@
         "fj": "FJ444"
     },
     {
-        "filename": "bones/FJ313_BP62738_FMA45957_Medial head of right gastrocnemius.glb",
+        "filename": "muscles/FJ313_BP62738_FMA45957_Medial head of right gastrocnemius.glb",
         "label": "Medial head of right gastrocnemius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45957",
         "fj": "FJ313"
     },
     {
-        "filename": "bones/FJ796_BP62816_FMA37668_Right brachialis.glb",
+        "filename": "muscles/FJ796_BP62816_FMA37668_Right brachialis.glb",
         "label": "Right brachialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37668",
         "fj": "FJ796"
     },
     {
-        "filename": "bones/FJ538_BP62737_FMA38929_Left rectus femoris.glb",
+        "filename": "muscles/FJ538_BP62737_FMA38929_Left rectus femoris.glb",
         "label": "Left rectus femoris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38929",
         "fj": "FJ538"
     },
     {
-        "filename": "bones/FJ240_BP62838_FMA38464_Left palmaris longus.glb",
+        "filename": "other/FJ240_BP62838_FMA38464_Left palmaris longus.glb",
         "label": "Left palmaris longus",
-        "group": "unknown",
+        "group": "other",
         "fma": "38464",
         "fj": "FJ240"
     },
     {
-        "filename": "bones/FJ383_BP63742_FMA33586_Descending part of right trapezius.glb",
+        "filename": "muscles/FJ383_BP63742_FMA33586_Descending part of right trapezius.glb",
         "label": "Descending part of right trapezius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "33586",
         "fj": "FJ383"
     },
     {
-        "filename": "bones/FJ589_BP62725_FMA13414_Right subscapularis.glb",
+        "filename": "muscles/FJ589_BP62725_FMA13414_Right subscapularis.glb",
         "label": "Right subscapularis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13414",
         "fj": "FJ589"
     },
@@ -2933,30 +2931,30 @@
         "fj": "FJ841"
     },
     {
-        "filename": "bones/FJ864_BP62775_FMA38526_Left extensor indicis.glb",
+        "filename": "muscles/FJ864_BP62775_FMA38526_Left extensor indicis.glb",
         "label": "Left extensor indicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38526",
         "fj": "FJ864"
     },
     {
-        "filename": "bones/FJ446_BP62670_FMA45974_Lateral head of left flexor hallucis brevis.glb",
+        "filename": "muscles/FJ446_BP62670_FMA45974_Lateral head of left flexor hallucis brevis.glb",
         "label": "Lateral head of left flexor hallucis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45974",
         "fj": "FJ446"
     },
     {
-        "filename": "bones/FJ728_BP62348_FMA7487_Body of sternum.glb",
+        "filename": "other/FJ728_BP62348_FMA7487_Body of sternum.glb",
         "label": "Body of sternum",
-        "group": "unknown",
+        "group": "other",
         "fma": "7487",
         "fj": "FJ728"
     },
     {
-        "filename": "bones/FJ359_BP62876_FMA22751_Right longissimus thoracis.glb",
+        "filename": "muscles/FJ359_BP62876_FMA22751_Right longissimus thoracis.glb",
         "label": "Right longissimus thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22751",
         "fj": "FJ359"
     },
@@ -2968,9 +2966,9 @@
         "fj": "FJ234"
     },
     {
-        "filename": "bones/FJ276_BP62988_FMA22358_Right semitendinosus.glb",
+        "filename": "muscles/FJ276_BP62988_FMA22358_Right semitendinosus.glb",
         "label": "Right semitendinosus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22358",
         "fj": "FJ276"
     },
@@ -2984,28 +2982,28 @@
     {
         "filename": "bones/FJ296_BP62365_FMA8194_Right sixth costal cartilage.glb",
         "label": "Right sixth costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8194",
         "fj": "FJ296"
     },
     {
-        "filename": "bones/FJ63_BP63580_FMA13350_Right sternothyroid.glb",
+        "filename": "muscles/FJ63_BP63580_FMA13350_Right sternothyroid.glb",
         "label": "Right sternothyroid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13350",
         "fj": "FJ63"
     },
     {
-        "filename": "bones/FJ469_BP62722_FMA24445_Left trapezoid.glb",
+        "filename": "other/FJ469_BP62722_FMA24445_Left trapezoid.glb",
         "label": "Left trapezoid",
-        "group": "unknown",
+        "group": "other",
         "fma": "24445",
         "fj": "FJ469"
     },
     {
-        "filename": "bones/FJ103_BP62944_FMA24481_Left fibula.glb",
+        "filename": "other/FJ103_BP62944_FMA24481_Left fibula.glb",
         "label": "Left fibula",
-        "group": "unknown",
+        "group": "other",
         "fma": "24481",
         "fj": "FJ103"
     },
@@ -3017,9 +3015,9 @@
         "fj": "FJ102"
     },
     {
-        "filename": "bones/FJ537_BP63612_FMA38619_Ulnar head of right flexor carpi ulnaris.glb",
+        "filename": "muscles/FJ537_BP63612_FMA38619_Ulnar head of right flexor carpi ulnaris.glb",
         "label": "Ulnar head of right flexor carpi ulnaris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38619",
         "fj": "FJ537"
     },
@@ -3033,49 +3031,49 @@
     {
         "filename": "bones/FJ397_BP62598_FMA13500_Intervertebral disk of third thoracic vertebra.glb",
         "label": "Intervertebral disk of third thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13500",
         "fj": "FJ397"
     },
     {
         "filename": "bones/FJ135_BP62503_FMA13072_First lumbar vertebra.glb",
         "label": "First lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13072",
         "fj": "FJ135"
     },
     {
-        "filename": "bones/FJ712_BP63514_FMA22744_Right iliocostalis cervicis.glb",
+        "filename": "muscles/FJ712_BP63514_FMA22744_Right iliocostalis cervicis.glb",
         "label": "Right iliocostalis cervicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22744",
         "fj": "FJ712"
     },
     {
-        "filename": "bones/FJ122_BP63697_FMA74076_Set of left levatores costarum longi.glb",
+        "filename": "muscles/FJ122_BP63697_FMA74076_Set of left levatores costarum longi.glb",
         "label": "Set of left levatores costarum longi",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "74076",
         "fj": "FJ122"
     },
     {
-        "filename": "bones/FJ787_BP62891_FMA22548_Right extensor digitorum longus.glb",
+        "filename": "muscles/FJ787_BP62891_FMA22548_Right extensor digitorum longus.glb",
         "label": "Right extensor digitorum longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22548",
         "fj": "FJ787"
     },
     {
-        "filename": "bones/FJ432_BP62764_FMA22341_Left piriformis.glb",
+        "filename": "muscles/FJ432_BP62764_FMA22341_Left piriformis.glb",
         "label": "Left piriformis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22341",
         "fj": "FJ432"
     },
     {
-        "filename": "bones/FJ403_BP62484_FMA24483_Left talus.glb",
+        "filename": "other/FJ403_BP62484_FMA24483_Left talus.glb",
         "label": "Left talus",
-        "group": "unknown",
+        "group": "other",
         "fma": "24483",
         "fj": "FJ403"
     },
@@ -3094,9 +3092,9 @@
         "fj": "FJ626"
     },
     {
-        "filename": "bones/FJ647_BP62254_FMA79979_Sternocostal part of right pectoralis major.glb",
+        "filename": "muscles/FJ647_BP62254_FMA79979_Sternocostal part of right pectoralis major.glb",
         "label": "Sternocostal part of right pectoralis major",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "79979",
         "fj": "FJ647"
     },
@@ -3110,7 +3108,7 @@
     {
         "filename": "bones/FJ779_BP62562_FMA13495_Intervertebral disk of second thoracic vertebra.glb",
         "label": "Intervertebral disk of second thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13495",
         "fj": "FJ779"
     },
@@ -3122,9 +3120,9 @@
         "fj": "FJ38"
     },
     {
-        "filename": "bones/FJ32_BP63005_FMA22332_Right gluteus minimus.glb",
+        "filename": "muscles/FJ32_BP63005_FMA22332_Right gluteus minimus.glb",
         "label": "Right gluteus minimus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22332",
         "fj": "FJ32"
     },
@@ -3150,37 +3148,37 @@
         "fj": "FJ804"
     },
     {
-        "filename": "bones/FJ408_BP63021_FMA22544_Right tibialis anterior.glb",
+        "filename": "muscles/FJ408_BP63021_FMA22544_Right tibialis anterior.glb",
         "label": "Right tibialis anterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22544",
         "fj": "FJ408"
     },
     {
-        "filename": "bones/FJ175_BP63507_FMA81753_Left cervical rotator.glb",
+        "filename": "other/FJ175_BP63507_FMA81753_Left cervical rotator.glb",
         "label": "Left cervical rotator",
-        "group": "unknown",
+        "group": "other",
         "fma": "81753",
         "fj": "FJ175"
     },
     {
-        "filename": "bones/FJ863_BP63001_FMA37462_Left flexor digitorum brevis.glb",
+        "filename": "muscles/FJ863_BP63001_FMA37462_Left flexor digitorum brevis.glb",
         "label": "Left flexor digitorum brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37462",
         "fj": "FJ863"
     },
     {
-        "filename": "bones/FJ604_BP62651_FMA45889_Long head of left biceps femoris.glb",
+        "filename": "muscles/FJ604_BP62651_FMA45889_Long head of left biceps femoris.glb",
         "label": "Long head of left biceps femoris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45889",
         "fj": "FJ604"
     },
     {
         "filename": "bones/FJ682_BP62381_FMA8283_Right eighth rib.glb",
         "label": "Right eighth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8283",
         "fj": "FJ682"
     },
@@ -3192,30 +3190,30 @@
         "fj": "FJ37"
     },
     {
-        "filename": "bones/FJ727_BP63703_FMA74140_Set of dorsal interossei of right foot.glb",
+        "filename": "muscles/FJ727_BP63703_FMA74140_Set of dorsal interossei of right foot.glb",
         "label": "Set of dorsal interossei of right foot",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "74140",
         "fj": "FJ727"
     },
     {
         "filename": "bones/FJ459_BP62380_FMA8039_Left third rib.glb",
         "label": "Left third rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8039",
         "fj": "FJ459"
     },
     {
-        "filename": "bones/FJ437_BP62668_FMA24436_Left scaphoid.glb",
+        "filename": "other/FJ437_BP62668_FMA24436_Left scaphoid.glb",
         "label": "Left scaphoid",
-        "group": "unknown",
+        "group": "other",
         "fma": "24436",
         "fj": "FJ437"
     },
     {
         "filename": "bones/FJ492_BP62330_FMA8364_Right ninth rib.glb",
         "label": "Right ninth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8364",
         "fj": "FJ492"
     },
@@ -3234,37 +3232,37 @@
         "fj": "FJ488"
     },
     {
-        "filename": "bones/FJ16_BP62693_FMA38928_Right rectus femoris.glb",
+        "filename": "muscles/FJ16_BP62693_FMA38928_Right rectus femoris.glb",
         "label": "Right rectus femoris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38928",
         "fj": "FJ16"
     },
     {
-        "filename": "bones/FJ652_BP63013_FMA22551_Left fibularis tertius.glb",
+        "filename": "muscles/FJ652_BP63013_FMA22551_Left fibularis tertius.glb",
         "label": "Left fibularis tertius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22551",
         "fj": "FJ652"
     },
     {
-        "filename": "bones/FJ664_BP62845_FMA37669_Left brachialis.glb",
+        "filename": "muscles/FJ664_BP62845_FMA37669_Left brachialis.glb",
         "label": "Left brachialis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37669",
         "fj": "FJ664"
     },
     {
-        "filename": "bones/FJ656_BP62679_FMA24449_Left hamate.glb",
+        "filename": "other/FJ656_BP62679_FMA24449_Left hamate.glb",
         "label": "Left hamate",
-        "group": "unknown",
+        "group": "other",
         "fma": "24449",
         "fj": "FJ656"
     },
     {
-        "filename": "bones/FJ795_BP62408_FMA37387_Left abductor pollicis brevis.glb",
+        "filename": "muscles/FJ795_BP62408_FMA37387_Left abductor pollicis brevis.glb",
         "label": "Left abductor pollicis brevis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37387",
         "fj": "FJ795"
     },
@@ -3290,23 +3288,23 @@
         "fj": "FJ661"
     },
     {
-        "filename": "bones/FJ47_BP63643_FMA38618_Humeral head of left flexor carpi ulnaris.glb",
+        "filename": "muscles/FJ47_BP63643_FMA38618_Humeral head of left flexor carpi ulnaris.glb",
         "label": "Humeral head of left flexor carpi ulnaris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38618",
         "fj": "FJ47"
     },
     {
-        "filename": "bones/FJ706_BP63570_FMA13349_Left omohyoid.glb",
+        "filename": "muscles/FJ706_BP63570_FMA13349_Left omohyoid.glb",
         "label": "Left omohyoid",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13349",
         "fj": "FJ706"
     },
     {
-        "filename": "bones/FJ366_BP62237_FMA21964_Right inguinal ligament.glb",
+        "filename": "tendons/FJ366_BP62237_FMA21964_Right inguinal ligament.glb",
         "label": "Right inguinal ligament",
-        "group": "unknown",
+        "group": "tendons",
         "fma": "21964",
         "fj": "FJ366"
     },
@@ -3318,30 +3316,30 @@
         "fj": "FJ334"
     },
     {
-        "filename": "bones/FJ233_BP62916_FMA24480_Right fibula.glb",
+        "filename": "other/FJ233_BP62916_FMA24480_Right fibula.glb",
         "label": "Right fibula",
-        "group": "unknown",
+        "group": "other",
         "fma": "24480",
         "fj": "FJ233"
     },
     {
-        "filename": "bones/FJ97_BP63543_FMA22334_Right gemellus superior.glb",
+        "filename": "muscles/FJ97_BP63543_FMA22334_Right gemellus superior.glb",
         "label": "Right gemellus superior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22334",
         "fj": "FJ97"
     },
     {
-        "filename": "bones/FJ230_BP62938_FMA22460_Left adductor magnus.glb",
+        "filename": "muscles/FJ230_BP62938_FMA22460_Left adductor magnus.glb",
         "label": "Left adductor magnus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22460",
         "fj": "FJ230"
     },
     {
-        "filename": "bones/FJ577_BP62664_FMA45892_Short head of left biceps femoris.glb",
+        "filename": "muscles/FJ577_BP62664_FMA45892_Short head of left biceps femoris.glb",
         "label": "Short head of left biceps femoris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45892",
         "fj": "FJ577"
     },
@@ -3367,30 +3365,30 @@
         "fj": "FJ203"
     },
     {
-        "filename": "bones/FJ67_BP63575_FMA22322_Right iliacus.glb",
+        "filename": "muscles/FJ67_BP63575_FMA22322_Right iliacus.glb",
         "label": "Right iliacus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22322",
         "fj": "FJ67"
     },
     {
-        "filename": "bones/FJ185_BP62718_FMA32544_Right supraspinatus.glb",
+        "filename": "muscles/FJ185_BP62718_FMA32544_Right supraspinatus.glb",
         "label": "Right supraspinatus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32544",
         "fj": "FJ185"
     },
     {
-        "filename": "bones/FJ502_BP62640_FMA24437_Right lunate.glb",
+        "filename": "other/FJ502_BP62640_FMA24437_Right lunate.glb",
         "label": "Right lunate",
-        "group": "unknown",
+        "group": "other",
         "fma": "24437",
         "fj": "FJ502"
     },
     {
-        "filename": "bones/FJ318_BP63574_FMA46443_Right coccygeus.glb",
+        "filename": "muscles/FJ318_BP63574_FMA46443_Right coccygeus.glb",
         "label": "Right coccygeus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "46443",
         "fj": "FJ318"
     },
@@ -3402,9 +3400,9 @@
         "fj": "FJ332"
     },
     {
-        "filename": "bones/FJ378_BP62923_FMA22448_Right semimembranosus.glb",
+        "filename": "muscles/FJ378_BP62923_FMA22448_Right semimembranosus.glb",
         "label": "Right semimembranosus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22448",
         "fj": "FJ378"
     },
@@ -3425,14 +3423,14 @@
     {
         "filename": "bones/FJ745_BP62573_FMA13502_Intervertebral disk of fifth thoracic vertebra.glb",
         "label": "Intervertebral disk of fifth thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "13502",
         "fj": "FJ745"
     },
     {
-        "filename": "bones/FJ764_BP62966_FMA43887_Left adductor minimus.glb",
+        "filename": "muscles/FJ764_BP62966_FMA43887_Left adductor minimus.glb",
         "label": "Left adductor minimus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "43887",
         "fj": "FJ764"
     },
@@ -3446,14 +3444,14 @@
     {
         "filename": "bones/FJ92_BP62374_FMA8534_Left twelfth rib.glb",
         "label": "Left twelfth rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8534",
         "fj": "FJ92"
     },
     {
         "filename": "bones/FJ738_BP62342_FMA7882_Right second rib.glb",
         "label": "Right second rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7882",
         "fj": "FJ738"
     },
@@ -3472,23 +3470,23 @@
         "fj": "FJ660"
     },
     {
-        "filename": "bones/FJ277_BP62901_FMA22560_Right plantaris.glb",
+        "filename": "muscles/FJ277_BP62901_FMA22560_Right plantaris.glb",
         "label": "Right plantaris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22560",
         "fj": "FJ277"
     },
     {
-        "filename": "bones/FJ218_BP62948_FMA65019_Left tibialis posterior.glb",
+        "filename": "muscles/FJ218_BP62948_FMA65019_Left tibialis posterior.glb",
         "label": "Left tibialis posterior",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "65019",
         "fj": "FJ218"
     },
     {
         "filename": "bones/FJ299_BP62315_FMA16033_Intervertebral disk of first lumbar vertebra.glb",
         "label": "Intervertebral disk of first lumbar vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "16033",
         "fj": "FJ299"
     },
@@ -3500,44 +3498,44 @@
         "fj": "FJ794"
     },
     {
-        "filename": "bones/FJ12_BP62727_FMA32554_Left teres minor.glb",
+        "filename": "muscles/FJ12_BP62727_FMA32554_Left teres minor.glb",
         "label": "Left teres minor",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "32554",
         "fj": "FJ12"
     },
     {
         "filename": "bones/FJ124_BP62358_FMA8248_Right seventh costal cartilage.glb",
         "label": "Right seventh costal cartilage",
-        "group": "unknown",
+        "group": "bones",
         "fma": "8248",
         "fj": "FJ124"
     },
     {
-        "filename": "bones/FJ181_BP62810_FMA22779_Right spinalis thoracis.glb",
+        "filename": "muscles/FJ181_BP62810_FMA22779_Right spinalis thoracis.glb",
         "label": "Right spinalis thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22779",
         "fj": "FJ181"
     },
     {
-        "filename": "bones/FJ259_BP62716_FMA24443_Right trapezium.glb",
+        "filename": "other/FJ259_BP62716_FMA24443_Right trapezium.glb",
         "label": "Right trapezium",
-        "group": "unknown",
+        "group": "other",
         "fma": "24443",
         "fj": "FJ259"
     },
     {
-        "filename": "bones/FJ844_BP62403_FMA37391_Left opponens pollicis.glb",
+        "filename": "muscles/FJ844_BP62403_FMA37391_Left opponens pollicis.glb",
         "label": "Left opponens pollicis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "37391",
         "fj": "FJ844"
     },
     {
-        "filename": "bones/FJ800_BP62740_FMA45958_Medial head of left gastrocnemius.glb",
+        "filename": "muscles/FJ800_BP62740_FMA45958_Medial head of left gastrocnemius.glb",
         "label": "Medial head of left gastrocnemius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "45958",
         "fj": "FJ800"
     },
@@ -3549,44 +3547,44 @@
         "fj": "FJ214"
     },
     {
-        "filename": "bones/FJ435_BP62857_FMA22780_Left spinalis thoracis.glb",
+        "filename": "muscles/FJ435_BP62857_FMA22780_Left spinalis thoracis.glb",
         "label": "Left spinalis thoracis",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22780",
         "fj": "FJ435"
     },
     {
         "filename": "bones/FJ425_BP62614_FMA10458_Intervertebral disk of first thoracic vertebra.glb",
         "label": "Intervertebral disk of first thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "10458",
         "fj": "FJ425"
     },
     {
-        "filename": "bones/FJ260_BP62726_FMA24447_Left capitate.glb",
+        "filename": "other/FJ260_BP62726_FMA24447_Left capitate.glb",
         "label": "Left capitate",
-        "group": "unknown",
+        "group": "other",
         "fma": "24447",
         "fj": "FJ260"
     },
     {
-        "filename": "bones/FJ683_BP62974_FMA86034_Opponens digiti minimi of right foot.glb",
+        "filename": "muscles/FJ683_BP62974_FMA86034_Opponens digiti minimi of right foot.glb",
         "label": "Opponens digiti minimi of right foot",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "86034",
         "fj": "FJ683"
     },
     {
-        "filename": "bones/FJ409_BP63002_FMA22549_Left extensor digitorum longus.glb",
+        "filename": "muscles/FJ409_BP63002_FMA22549_Left extensor digitorum longus.glb",
         "label": "Left extensor digitorum longus",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "22549",
         "fj": "FJ409"
     },
     {
-        "filename": "bones/FJ548_BP62361_FMA13412_Right subclavius.glb",
+        "filename": "muscles/FJ548_BP62361_FMA13412_Right subclavius.glb",
         "label": "Right subclavius",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "13412",
         "fj": "FJ548"
     },
@@ -3600,28 +3598,28 @@
     {
         "filename": "bones/FJ586_BP62534_FMA10059_Eleventh thoracic vertebra.glb",
         "label": "Eleventh thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "10059",
         "fj": "FJ586"
     },
     {
-        "filename": "bones/FJ445_BP63660_FMA38620_Ulnar head of left flexor carpi ulnaris.glb",
+        "filename": "muscles/FJ445_BP63660_FMA38620_Ulnar head of left flexor carpi ulnaris.glb",
         "label": "Ulnar head of left flexor carpi ulnaris",
-        "group": "unknown",
+        "group": "muscles",
         "fma": "38620",
         "fj": "FJ445"
     },
     {
         "filename": "bones/FJ585_BP62329_FMA7909_Right third rib.glb",
         "label": "Right third rib",
-        "group": "unknown",
+        "group": "bones",
         "fma": "7909",
         "fj": "FJ585"
     },
     {
         "filename": "bones/FJ741_BP62531_FMA9968_Seventh thoracic vertebra.glb",
         "label": "Seventh thoracic vertebra",
-        "group": "unknown",
+        "group": "bones",
         "fma": "9968",
         "fj": "FJ741"
     }
