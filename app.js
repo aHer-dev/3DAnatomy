@@ -13,7 +13,7 @@ if (typeof THREE === 'undefined') {
 
 // Szene, Kamera und Renderer
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('container').appendChild(renderer.domElement);
@@ -22,9 +22,21 @@ console.log("THREE und Renderer initialisiert");
 
 // OrbitControls für Interaktion
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+// Stelle sicher, dass Rechtsklick für vertikale Bewegung (Panning) funktioniert
+controls.mouseButtons = {
+  LEFT: THREE.MOUSE.ROTATE,
+  MIDDLE: THREE.MOUSE.DOLLY,
+  RIGHT: THREE.MOUSE.PAN
+};
+
+// Optional: Zoom-Grenzen etwas großzügiger
+controls.minDistance = 1;
+controls.maxDistance = 2000;
+//
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
-controls.screenSpacePanning = false;
+controls.screenSpacePanning = true;
 controls.maxPolarAngle = Math.PI / 2;
 
 console.log("OrbitControls initialisiert");
@@ -36,7 +48,7 @@ scene.add(light);
 const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(ambientLight);
 
-camera.position.set(0, 0, 5); // Aufrecht
+camera.position.set(0, 2, 5); // Aufrecht
 
 const loader = new THREE.GLTFLoader();
 
@@ -70,6 +82,9 @@ function loadGroup(groupName) {
               modelPath,
               (gltf) => {
                 const model = gltf.scene;
+
+                  // 🔁 Rotation korrigieren: Modell aufrecht stellen
+                model.rotation.x = -Math.PI / 2;
                 model.traverse((child) => {
                   if (child.isMesh) {
                     child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
@@ -78,6 +93,24 @@ function loadGroup(groupName) {
                 scene.add(model);
                 groups[groupName].push(model);
                 console.log(`Modell geladen: ${entry.filename}`);
+                // Kamera neu ausrichten, wenn das erste Modell dieser Gruppe geladen wurde
+if (groups[groupName].length === 1) {
+  setTimeout(() => {
+    const box = new THREE.Box3().setFromObject(scene);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+
+    const size = box.getSize(new THREE.Vector3()).length();
+    const distance = size * 1.5;
+
+    camera.position.set(center.x, center.y, center.z + distance);
+    camera.lookAt(center);
+    controls.target.copy(center);
+    controls.update();
+
+    console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
+  }, 100); // Kleine Verzögerung für sicheres Bounding
+}
               },
               undefined,
               (error) => console.error(`Fehler beim Laden von ${modelPath}: ${error}`)
