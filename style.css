@@ -173,4 +173,60 @@ button:hover {
     #menu-icon {
         display: block; /* Hamburger-Menü sichtbar auf Desktop */
     }
+    /* Ladebalken-Styling */
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 30px;
+    background-color: #000000; /* Schwarzer Rand/Hintergrund */
+    border-radius: 5px;
+    overflow: hidden;
+    animation: pulse 2s infinite; /* Pulsier-Animation */
+    z-index: 1000;
+    display: none; /* Standardmäßig unsichtbar */
+}
+
+#loading-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #ffffff; /* Weißer Füllbalken */
+    transition: width 0.3s ease;
+}
+
+#loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff; /* Weißer Text für Kontrast */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Pulsier-Animation */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Mobile Optimierung für Ladebalken */
+@media (max-width: 600px) {
+    #loading {
+        width: 80vw;
+    }
+}
+/* In style.css, zu #menu-icon hinzufügen */
+#menu-icon.open div:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+#menu-icon.open div:nth-child(2) {
+    opacity: 0;
+}
+#menu-icon.open div:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
 }

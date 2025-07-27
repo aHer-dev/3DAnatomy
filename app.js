@@ -40,11 +40,20 @@ controls.maxPolarAngle = Math.PI / 2;
 
 console.log("OrbitControls initialisiert");
 
-// Licht
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(1, 1, 1);
-scene.add(light);
-const ambientLight = new THREE.AmbientLight(0x404040);
+// Verbesserte Beleuchtung für gleichmäßige Ausleuchtung
+const lightFront = new THREE.DirectionalLight(0xffffff, 0.8); // Von vorne
+lightFront.position.set(1, 1, 1);
+scene.add(lightFront);
+
+const lightBack = new THREE.DirectionalLight(0xffffff, 0.6); // Von hinten
+lightBack.position.set(-1, 1, -1);
+scene.add(lightBack);
+
+const lightTop = new THREE.DirectionalLight(0xffffff, 0.5); // Von oben
+lightTop.position.set(0, 1, 0);
+scene.add(lightTop);
+
+const ambientLight = new THREE.AmbientLight(0x606060); // Etwas stärker für Weichheit
 scene.add(ambientLight);
 
 camera.position.set(0, 2, 5); // Aufrecht
@@ -87,6 +96,10 @@ function updateLoadingBar(loaded, total) {
 
 function loadGroup(groupName) {
     console.log(`Lade Gruppe: ${groupName}`);
+    const loadingDiv = document.getElementById('loading');
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingText = document.getElementById('loading-text');
+    
     fetch(basePath + '/data/meta.json')
       .then(response => {
         if (!response.ok) throw new Error(`Fehler beim Laden von meta.json: ${response.status}`);
@@ -95,55 +108,78 @@ function loadGroup(groupName) {
       .then(meta => {
         console.log(`meta.json geladen, ${meta.length} Einträge`);
         const groupEntries = meta.filter(entry => entry.group === groupName);
-        totalModels = groupEntries.length;
-        loadedModels = 0;
-        updateLoadingBar(loadedModels, totalModels);
+        const totalModels = groupEntries.length;
         
-        groupEntries.forEach(entry => {
+        if (totalModels > 0) {
+          loadingDiv.style.display = 'block'; // Ladebalken anzeigen
+        }
+        
+        let loadedCount = 0;
+        
+        const promises = groupEntries.map(entry => {
+          return new Promise((resolve, reject) => {
             const modelPath = basePath + '/models/' + entry.filename;
             console.log(`Lade Modell: ${modelPath}`);
             loader.load(
-                modelPath,
-                (gltf) => {
-                    const model = gltf.scene;
-
-                    // 🔁 Rotation korrigieren: Modell aufrecht stellen
-                    model.rotation.x = -Math.PI / 2;
-                    model.traverse((child) => {
-                        if (child.isMesh) {
-                            child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
-                        }
-                    });
-                    scene.add(model);
-                    groups[groupName].push(model);
-                    console.log(`Modell geladen: ${entry.filename}`);
-                    
-                    loadedModels++;
-                    updateLoadingBar(loadedModels, totalModels);
-
-                    // Kamera neu ausrichten, wenn das erste Modell dieser Gruppe geladen wurde
-                    if (groups[groupName].length === 1) {
-                        setTimeout(() => {
-                            const box = new THREE.Box3().setFromObject(scene);
-                            const center = new THREE.Vector3();
-                            box.getCenter(center);
-
-                            const size = box.getSize(new THREE.Vector3()).length();
-                            const distance = size * 1.5;
-
-                            camera.position.set(center.x, center.y, center.z + distance);
-                            camera.lookAt(center);
-                            controls.target.copy(center);
-                            controls.update();
-
-                            console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
-                        }, 100); // Kleine Verzögerung für sicheres Bounding
-                    }
-                },
-                undefined,
-                (error) => console.error(`Fehler beim Laden von ${modelPath}: ${error}`)
+              modelPath,
+              (gltf) => {
+                const model = gltf.scene;
+                model.rotation.x = -Math.PI / 2;
+                model.visible = false; // Unsichtbar während Laden
+                model.traverse((child) => {
+                  if (child.isMesh) {
+                    child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                  }
+                });
+                // Optional: Modelle optimieren (vereinfachen) - aktiviere, wenn SimplifyModifier-Script in index.html geladen ist
+                // const modifier = new THREE.SimplifyModifier();
+                // model.traverse((child) => {
+                //   if (child.isMesh) {
+                //     const simplified = modifier.modify(child.geometry, child.geometry.attributes.position.count * 0.5); // 50% Vereinfachung
+                //     child.geometry = simplified;
+                //   }
+                // });
+                scene.add(model);
+                groups[groupName].push(model);
+                console.log(`Modell geladen: ${entry.filename}`);
+                loadedCount++;
+                const progress = Math.round((loadedCount / totalModels) * 100);
+                loadingBar.style.width = `${progress}%`;
+                loadingText.innerText = `${progress}%`;
+                resolve();
+              },
+              undefined,
+              (error) => {
+                console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
+                alert(`Fehler beim Laden eines Modells in Gruppe ${groupName}. Bitte überprüfe die Konsole.`);
+                loadedCount++; // Fortschritt fortsetzen
+                const progress = Math.round((loadedCount / totalModels) * 100);
+                loadingBar.style.width = `${progress}%`;
+                loadingText.innerText = `${progress}%`;
+                reject(error);
+              }
             );
+          });
         });
+
+        Promise.all(promises).then(() => {
+          // Alles geladen: Modelle sichtbar machen und Kamera zentrieren
+          groups[groupName].forEach(m => m.visible = true);
+          loadingDiv.style.display = 'none';
+          
+          setTimeout(() => {
+            const box = new THREE.Box3().setFromObject(scene);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            const size = box.getSize(new THREE.Vector3()).length();
+            const distance = size * 1.5;
+            camera.position.set(center.x, center.y, center.z + distance);
+            camera.lookAt(center);
+            controls.target.copy(center);
+            controls.update();
+            console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
+          }, 100);
+        }).catch(error => console.error('Fehler beim parallelen Laden:', error));
       })
       .catch(error => console.error(`Fehler beim Laden von meta.json: ${error}`));
 }
@@ -249,10 +285,13 @@ function toggleDropdown(button) {
 // Menu-Toggle-Funktion für Hamburger-Menü
 function toggleMenu() {
     const controls = document.getElementById('controls');
+    const menuIcon = document.getElementById('menu-icon');
     if (controls.style.display === "none" || controls.style.display === "") {
         controls.style.display = "block";
+        menuIcon.classList.add('open'); // Animation aktivieren
     } else {
         controls.style.display = "none";
+        menuIcon.classList.remove('open');
     }
 }
 
