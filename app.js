@@ -97,9 +97,23 @@ function updateLoadingBar(loaded, total) {
 function loadGroup(groupName) {
     console.log(`Lade Gruppe: ${groupName}`);
     const loadingDiv = document.getElementById('loading');
-    const loadingBar = document.getElementById('loading-bar');
-    const loadingText = document.getElementById('loading-text');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
     
+    // Debugging: Prüfen, ob DOM-Elemente vorhanden sind
+    if (!loadingDiv || !progressBar || !progressText) {
+        console.error('Ladebalken-Elemente fehlen:', { loadingDiv, progressBar, progressText });
+        alert('Fehler: Ladebalken nicht gefunden. Seite könnte nicht korrekt laden.');
+        return;
+    }
+
+    // Debugging: WebGL-Kompatibilität prüfen
+    if (!renderer.getContext()) {
+        console.error('WebGL nicht verfügbar auf diesem Gerät');
+        alert('Fehler: WebGL wird auf diesem Gerät nicht unterstützt. Versuche einen anderen Browser oder Gerät.');
+        return;
+    }
+
     fetch(basePath + '/data/meta.json')
       .then(response => {
         if (!response.ok) throw new Error(`Fehler beim Laden von meta.json: ${response.status}`);
@@ -109,79 +123,86 @@ function loadGroup(groupName) {
         console.log(`meta.json geladen, ${meta.length} Einträge`);
         const groupEntries = meta.filter(entry => entry.group === groupName);
         const totalModels = groupEntries.length;
-        
+
         if (totalModels > 0) {
-          loadingDiv.style.display = 'block'; // Ladebalken anzeigen
+            loadingDiv.style.display = 'block';
+            console.log('Ladebalken sichtbar gesetzt');
+        } else {
+            console.log('Keine Modelle in Gruppe:', groupName);
+            return;
         }
-        
+
         let loadedCount = 0;
-        
+
         const promises = groupEntries.map(entry => {
-          return new Promise((resolve, reject) => {
-            const modelPath = basePath + '/models/' + entry.filename;
-            console.log(`Lade Modell: ${modelPath}`);
-            loader.load(
-              modelPath,
-              (gltf) => {
-                const model = gltf.scene;
-                model.rotation.x = -Math.PI / 2;
-                model.visible = false; // Unsichtbar während Laden
-                model.traverse((child) => {
-                  if (child.isMesh) {
-                    child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
-                  }
-                });
-                // Optional: Modelle optimieren (vereinfachen) - aktiviere, wenn SimplifyModifier-Script in index.html geladen ist
-                // const modifier = new THREE.SimplifyModifier();
-                // model.traverse((child) => {
-                //   if (child.isMesh) {
-                //     const simplified = modifier.modify(child.geometry, child.geometry.attributes.position.count * 0.5); // 50% Vereinfachung
-                //     child.geometry = simplified;
-                //   }
-                // });
-                scene.add(model);
-                groups[groupName].push(model);
-                console.log(`Modell geladen: ${entry.filename}`);
-                loadedCount++;
-                const progress = Math.round((loadedCount / totalModels) * 100);
-                loadingBar.style.width = `${progress}%`;
-                loadingText.innerText = `${progress}%`;
-                resolve();
-              },
-              undefined,
-              (error) => {
-                console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
-                alert(`Fehler beim Laden eines Modells in Gruppe ${groupName}. Bitte überprüfe die Konsole.`);
-                loadedCount++; // Fortschritt fortsetzen
-                const progress = Math.round((loadedCount / totalModels) * 100);
-                loadingBar.style.width = `${progress}%`;
-                loadingText.innerText = `${progress}%`;
-                reject(error);
-              }
-            );
-          });
+            return new Promise((resolve, reject) => {
+                const modelPath = basePath + '/models/' + entry.filename;
+                console.log(`Lade Modell: ${modelPath}`);
+                loader.load(
+                    modelPath,
+                    (gltf) => {
+                        const model = gltf.scene;
+                        model.rotation.x = -Math.PI / 2;
+                        model.visible = false;
+                        model.traverse((child) => {
+                            if (child.isMesh) {
+                                child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                            }
+                        });
+                        // Optional: Modelle optimieren (SimplifyModifier)
+                        // const modifier = new THREE.SimplifyModifier();
+                        // model.traverse((child) => {
+                        //     if (child.isMesh) {
+                        //         const simplified = modifier.modify(child.geometry, child.geometry.attributes.position.count * 0.5);
+                        //         child.geometry = simplified;
+                        //     }
+                        // });
+                        scene.add(model);
+                        groups[groupName].push(model);
+                        console.log(`Modell geladen: ${entry.filename}`);
+                        loadedCount++;
+                        const progress = Math.round((loadedCount / totalModels) * 100);
+                        progressBar.style.width = `${progress}%`;
+                        progressText.innerText = `${progress}%`;
+                        resolve();
+                    },
+                    undefined,
+                    (error) => {
+                        console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
+                        alert(`Fehler beim Laden eines Modells in Gruppe ${groupName}.`);
+                        loadedCount++;
+                        const progress = Math.round((loadedCount / totalModels) * 100);
+                        progressBar.style.width = `${progress}%`;
+                        progressText.innerText = `${progress}%`;
+                        reject(error);
+                    }
+                );
+            });
         });
 
         Promise.all(promises).then(() => {
-          // Alles geladen: Modelle sichtbar machen und Kamera zentrieren
-          groups[groupName].forEach(m => m.visible = true);
-          loadingDiv.style.display = 'none';
-          
-          setTimeout(() => {
-            const box = new THREE.Box3().setFromObject(scene);
-            const center = new THREE.Vector3();
-            box.getCenter(center);
-            const size = box.getSize(new THREE.Vector3()).length();
-            const distance = size * 1.5;
-            camera.position.set(center.x, center.y, center.z + distance);
-            camera.lookAt(center);
-            controls.target.copy(center);
-            controls.update();
-            console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
-          }, 100);
+            groups[groupName].forEach(m => m.visible = true);
+            loadingDiv.style.display = 'none';
+            console.log('Ladebalken ausgeblendet, Modelle sichtbar');
+            
+            setTimeout(() => {
+                const box = new THREE.Box3().setFromObject(scene);
+                const center = new THREE.Vector3();
+                box.getCenter(center);
+                const size = box.getSize(new THREE.Vector3()).length();
+                const distance = size * 1.5;
+                camera.position.set(center.x, center.y, center.z + distance);
+                camera.lookAt(center);
+                controls.target.copy(center);
+                controls.update();
+                console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
+            }, 100);
         }).catch(error => console.error('Fehler beim parallelen Laden:', error));
       })
-      .catch(error => console.error(`Fehler beim Laden von meta.json: ${error}`));
+      .catch(error => {
+          console.error(`Fehler beim Laden von meta.json: ${error}`);
+          alert('Fehler beim Laden der Metadaten. Überprüfe deine Internetverbindung.');
+      });
 }
 
 // Anfangs nur bones laden
