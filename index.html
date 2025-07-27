@@ -6,39 +6,55 @@
     <title>3D Anatomy Viewer</title>
     <link rel="stylesheet" href="style.css">
 
-
-<!-- Three.js -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
-<!-- GLTFLoader -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
-<!-- OrbitControls -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
-
-
-
- <!-- <script src="three.min.js"></script> -->
- <!-- <script src="GLTFLoader.js"></script> -->
- <!-- <script src="OrbitControls.js"></script> -->
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+    <!-- GLTFLoader -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <div id="container"></div>
+    <div id="menu-icon" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
     <div id="controls">
         <h2>Gruppen</h2>
         <label><input type="checkbox" id="bones" checked> Bones (Skelett)</label>
         <label><input type="checkbox" id="muscles"> Muscles</label>
         <label><input type="checkbox" id="tendons"> Tendons</label>
         <label><input type="checkbox" id="other"> Other</label>
-        <h2>Farben</h2>
-        <label>Bones Farbe: <input type="color" id="color-bones" value="#ffffff"></label>
-        <label>Muscles Farbe: <input type="color" id="color-muscles" value="#ff0000"></label>
-        <label>Tendons Farbe: <input type="color" id="color-tendons" value="#ffff00"></label>
-        <label>Other Farbe: <input type="color" id="color-other" value="#00ff00"></label>
-        <h2>Tools</h2>
-        <button id="screenshot">Screenshot machen</button>
-        <button id="save">Einstellungen speichern</button>
-        <input type="text" id="load-code" placeholder="Code einfügen und laden">
-        <button id="load">Einstellungen laden</button>
+
+        <!-- Dropdown für Farben -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown(this)">Farben ändern</button>
+            <div class="dropdown-content">
+                <label>Bones Farbe: <input type="color" id="color-bones" value="#ffffff"></label>
+                <label>Muscles Farbe: <input type="color" id="color-muscles" value="#ff0000"></label>
+                <label>Tendons Farbe: <input type="color" id="color-tendons" value="#ffff00"></label>
+                <label>Other Farbe: <input type="color" id="color-other" value="#00ff00"></label>
+            </div>
+        </div>
+
+        <!-- Dropdown für Tools -->
+        <div class="dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown(this)">Tools</button>
+            <div class="dropdown-content">
+                <button id="screenshot">Screenshot machen</button>
+                <button id="save">Einstellungen speichern</button>
+                <input type="text" id="load-code" placeholder="Code einfügen und laden">
+                <button id="load">Einstellungen laden</button>
+            </div>
+        </div>
+    </div>
+    <div id="loading-bar">
+        <p id="loading-text">Loading bone structures...</p>
+        <div id="progress-bar">
+            <div id="progress"></div>
+        </div>
     </div>
     <script src="app.js"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'965f21570f9c2675',t:'MTc1MzY1MDY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
