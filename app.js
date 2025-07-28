@@ -102,7 +102,10 @@ async function getMeta() {
 
 // Generiere Sub-Dropdown für eine Gruppe
 async function generateSubDropdown(groupName) {
-    const meta = await getMeta();
+    if (!groups[groupName]) {
+    groups[groupName] = [];
+}
+    const meta = await getMeta();  // <- das ist entscheidend
     const groupEntries = meta.filter(entry => entry.group === groupName);
     const subgroups = [...new Set(groupEntries.map(entry => entry.subgroup || 'uncategorized'))];
 
@@ -148,9 +151,20 @@ async function generateSubDropdown(groupName) {
          style="margin-left:10px; vertical-align:middle; width:20px; height:20px; border:none; background:none; cursor:pointer;">
 `;
             itemContent.appendChild(itemLabel);
+            console.log("Element hinzugefügt:", item.label);
         });
         itemDropdown.appendChild(itemContent);
         container.appendChild(itemDropdown);
+// Modell-Checkboxen
+itemContent.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', (e) => {
+    const group = e.target.dataset.group;
+    const file = e.target.dataset.filename;
+    const checked = e.target.checked;
+    loadSingleItem(group, file, checked);
+  });
+});
+
 
         // Toggle für Subgruppen-Checkbox
         subgroupLabel.querySelector('input').addEventListener('change', (e) => {
@@ -169,30 +183,36 @@ async function generateSubDropdown(groupName) {
         });
 
         // Event-Listener für einzelne Elemente
-        itemContent.querySelectorAll('.item-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                loadSingleItem(e.target.dataset.group, e.target.dataset.filename, e.target.checked);
-            });
-        });
-        itemContent.querySelectorAll('.color-picker').forEach(picker => {
-    picker.addEventListener('input', (e) => {
+itemContent.querySelectorAll('.color-picker').forEach(picker => {
+    picker.addEventListener('input', async (e) => {
         const filename = e.target.dataset.filename;
         const newColor = parseInt(e.target.value.replace('#', '0x'));
 
-        // Finde das passende Modell in der Szene
+        // Warte sicherheitshalber auf Meta
+        const meta = await getMeta();
+        const entry = meta.find(e => e.filename === filename);
+        if (!entry) {
+            console.warn("⚠️ Kein Metadaten-Eintrag für", filename);
+            return;
+        }
+
+        // Suche Modell im geladenen Pool
         for (const [model, label] of modelNames.entries()) {
-            const entry = meta.find(e => e.filename === filename);
-            if (entry && label === entry.label) {
+            if (label === entry.label) {
                 model.traverse(child => {
                     if (child.isMesh) {
                         child.material.color.set(newColor);
                     }
                 });
-                console.log(`Farbe für ${label} geändert zu ${e.target.value}`);
+                console.log(`✅ Farbe für ${label} geändert zu ${e.target.value}`);
+                return;
             }
         }
+
+        console.warn(`⚠️ Modell ${entry.label} ist noch nicht geladen. Lade es zuerst!`);
     });
 });
+
 
     });
 }
@@ -201,15 +221,10 @@ async function generateSubDropdown(groupName) {
 async function loadSubgroup(groupName, subgroup, visible) {
     const meta = await getMeta();
     const subgroupEntries = meta.filter(entry => entry.group === groupName && (entry.subgroup === subgroup || (subgroup === 'uncategorized' && !entry.subgroup)));
+
     const loadingDiv = document.getElementById('loading');
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
-
-    if (!loadingDiv || !progressBar || !progressText) {
-        console.error('Ladebalken-Elemente fehlen:', { loadingDiv, progressBar, progressText });
-        alert('Fehler: Ladebalken nicht gefunden.');
-        return;
-    }
 
     if (visible) {
         loadingDiv.style.display = 'block';
@@ -219,22 +234,25 @@ async function loadSubgroup(groupName, subgroup, visible) {
         const promises = subgroupEntries.map(entry => {
             return new Promise((resolve, reject) => {
                 const modelPath = basePath + '/models/' + entry.filename;
-                console.log(`Lade Subgruppen-Modell: ${modelPath}`);
                 loader.load(
                     modelPath,
                     (gltf) => {
                         const model = gltf.scene;
                         model.rotation.x = -Math.PI / 2;
                         model.visible = true;
+                        const safeColor = colors[groupName] ?? 0xffffff;
+
                         model.traverse(child => {
                             if (child.isMesh) {
-                                child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                                child.material = new THREE.MeshStandardMaterial({ color: safeColor });
                             }
                         });
+
                         scene.add(model);
+                        if (!groups[groupName]) groups[groupName] = [];
                         groups[groupName].push(model);
                         modelNames.set(model, entry.label);
-                        console.log(`Subgruppen-Modell geladen: ${entry.filename}`);
+
                         loadedCount++;
                         const progress = Math.round((loadedCount / totalModels) * 100);
                         progressBar.style.width = `${progress}%`;
@@ -244,7 +262,6 @@ async function loadSubgroup(groupName, subgroup, visible) {
                     undefined,
                     (error) => {
                         console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
-                        alert(`Fehler beim Laden eines Modells in ${groupName}/${subgroup}.`);
                         loadedCount++;
                         const progress = Math.round((loadedCount / totalModels) * 100);
                         progressBar.style.width = `${progress}%`;
@@ -257,8 +274,9 @@ async function loadSubgroup(groupName, subgroup, visible) {
 
         await Promise.all(promises);
         loadingDiv.style.display = 'none';
-        console.log('Ladebalken ausgeblendet, Subgruppen-Modelle sichtbar');
     } else {
+        if (!groups[groupName]) groups[groupName] = [];
+
         groups[groupName] = groups[groupName].filter(model => {
             const label = modelNames.get(model);
             const isInSubgroup = subgroupEntries.some(entry => entry.label === label);
@@ -275,73 +293,63 @@ async function loadSubgroup(groupName, subgroup, visible) {
             }
             return true;
         });
-        // Deaktiviere Einzel-Checkboxes
-        document.querySelectorAll(`.item-checkbox[data-group="${groupName}"]`).forEach(checkbox => {
-            const entry = subgroupEntries.find(e => e.filename === checkbox.dataset.filename);
-            if (entry) checkbox.checked = false;
-        });
     }
 }
+
 
 // Lade einzelnes Element
 async function loadSingleItem(groupName, filename, visible) {
-    const meta = await getMeta();
-    const entry = meta.find(e => e.filename === filename);
-    if (!entry) return;
+  const meta = await getMeta();
+  const entry = meta.find(e => e.filename === filename);
+  if (!entry) return;
 
-    const loadingDiv = document.getElementById('loading');
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
+  const modelPath = basePath + '/models/' + filename;
 
-    if (visible) {
-        loadingDiv.style.display = 'block';
-        progressBar.style.width = '0%';
-        progressText.innerText = '0%';
+  if (visible) {
+    loader.load(
+      modelPath,
+      (gltf) => {
+        const model = gltf.scene;
+        model.rotation.x = -Math.PI / 2;
+        model.visible = true;
 
-        loader.load(
-            basePath + '/models/' + filename,
-            (gltf) => {
-                const model = gltf.scene;
-                model.rotation.x = -Math.PI / 2;
-                model.visible = true;
-                model.traverse(child => {
-                    if (child.isMesh) {
-                        child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
-                    }
-                });
-                scene.add(model);
-                groups[groupName].push(model);
-                modelNames.set(model, entry.label);
-                console.log(`Einzelnes Modell geladen: ${filename}`);
-                progressBar.style.width = '100%';
-                progressText.innerText = '100%';
-                setTimeout(() => {
-                    loadingDiv.style.display = 'none';
-                }, 500);
-            },
-            undefined,
-            (error) => {
-                console.error(`Fehler beim Laden von ${filename}: ${error}`);
-                alert(`Fehler beim Laden eines Elements.`);
-            }
-        );
-    } else {
-        groups[groupName] = groups[groupName].filter(model => {
-            if (modelNames.get(model) === entry.label) {
-                scene.remove(model);
-                model.traverse(child => {
-                    if (child.isMesh) {
-                        child.geometry.dispose();
-                        child.material.dispose();
-                    }
-                });
-                modelNames.delete(model);
-                return false;
-            }
-            return true;
+        const safeColor = colors[groupName] ?? 0xffffff;
+        model.traverse(child => {
+          if (child.isMesh) {
+            child.material = new THREE.MeshStandardMaterial({ color: safeColor });
+          }
         });
-    }
+
+        scene.add(model);
+        groups[groupName].push(model);
+        modelNames.set(model, entry.label);
+        console.log(`✅ Einzelnes Modell geladen: ${entry.label}`);
+      },
+      undefined,
+      (error) => {
+        console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
+      }
+    );
+  } else {
+    groups[groupName] = groups[groupName].filter(model => {
+      const label = modelNames.get(model);
+      if (label === entry.label) {
+        scene.remove(model);
+        model.traverse(child => {
+          if (child.isMesh) {
+            child.geometry.dispose();
+            child.material.dispose();
+          }
+        });
+        modelNames.delete(model);
+        return false;
+      }
+      return true;
+    });
+  }
 }
+
+
 
 ['bones', 'muscles', 'tendons', 'other'].forEach(groupName => {
     document.getElementById(groupName).addEventListener('change', (e) => {
@@ -385,6 +393,25 @@ async function loadSingleItem(groupName, filename, visible) {
         }
     });
 });
+
+function changeModelColorByLabel(label, colorHex) {
+    const hex = parseInt(colorHex.replace('#', '0x'));
+
+    // Finde das Modell mit diesem Label
+    for (const [model, name] of modelNames.entries()) {
+        if (name === label) {
+            model.traverse(child => {
+                if (child.isMesh) {
+                    child.material.color.set(hex);
+                }
+            });
+            console.log(`✅ Farbe für ${label} auf ${colorHex} gesetzt`);
+            return;
+        }
+    }
+
+    console.warn(`⚠️ Modell mit Label "${label}" nicht gefunden`);
+}
 
 
 // Klick-Selection mit Tooltip
@@ -455,38 +482,36 @@ function loadGroup(groupName) {
         return;
     }
 
-
-
     getMeta().then(meta => {
         const groupEntries = meta.filter(entry => entry.group === groupName);
         const totalModels = groupEntries.length;
 
-        if (totalModels > 0) {
-            loadingDiv.style.display = 'block';
-            console.log('Ladebalken sichtbar gesetzt');
-        }
+        if (totalModels > 0) loadingDiv.style.display = 'block';
 
         let loadedCount = 0;
 
         const promises = groupEntries.map(entry => {
             return new Promise((resolve, reject) => {
                 const modelPath = basePath + '/models/' + entry.filename;
-                console.log(`Lade Modell: ${modelPath}`);
                 loader.load(
                     modelPath,
                     (gltf) => {
                         const model = gltf.scene;
                         model.rotation.x = -Math.PI / 2;
                         model.visible = true;
+                        const safeColor = colors[groupName] ?? 0xffffff;
+
                         model.traverse(child => {
                             if (child.isMesh) {
-                                child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                                child.material = new THREE.MeshStandardMaterial({ color: safeColor });
                             }
                         });
+
                         scene.add(model);
+                        if (!groups[groupName]) groups[groupName] = [];
                         groups[groupName].push(model);
                         modelNames.set(model, entry.label);
-                        console.log(`Modell geladen: ${entry.filename}`);
+
                         loadedCount++;
                         const progress = Math.round((loadedCount / totalModels) * 100);
                         progressBar.style.width = `${progress}%`;
@@ -496,7 +521,6 @@ function loadGroup(groupName) {
                     undefined,
                     (error) => {
                         console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
-                        alert(`Fehler beim Laden eines Modells in ${groupName}.`);
                         loadedCount++;
                         const progress = Math.round((loadedCount / totalModels) * 100);
                         progressBar.style.width = `${progress}%`;
@@ -509,7 +533,6 @@ function loadGroup(groupName) {
 
         Promise.all(promises).then(() => {
             loadingDiv.style.display = 'none';
-            console.log('Ladebalken ausgeblendet, Modelle sichtbar');
 
             setTimeout(() => {
                 const box = new THREE.Box3().setFromObject(scene);
@@ -529,6 +552,7 @@ function loadGroup(groupName) {
         alert('Fehler beim Laden der Metadaten.');
     });
 }
+
 
 // Anfangs nur bones laden
 loadGroup('bones');
