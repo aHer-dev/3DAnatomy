@@ -141,7 +141,12 @@ async function generateSubDropdown(groupName) {
         subgroupItems.forEach(item => {
             const itemLabel = document.createElement('label');
             itemLabel.className = 'item-checkbox';
-            itemLabel.innerHTML = `<input type="checkbox" class="item-checkbox" data-filename="${item.filename}" data-group="${groupName}"> ${item.label}`;
+        itemLabel.innerHTML = `
+  <input type="checkbox" class="item-checkbox" data-filename="${item.filename}" data-group="${groupName}">
+  ${item.label}
+  <input type="color" class="color-picker" data-filename="${item.filename}" title="Farbe ändern" 
+         style="margin-left:10px; vertical-align:middle; width:20px; height:20px; border:none; background:none; cursor:pointer;">
+`;
             itemContent.appendChild(itemLabel);
         });
         itemDropdown.appendChild(itemContent);
@@ -169,6 +174,26 @@ async function generateSubDropdown(groupName) {
                 loadSingleItem(e.target.dataset.group, e.target.dataset.filename, e.target.checked);
             });
         });
+        itemContent.querySelectorAll('.color-picker').forEach(picker => {
+    picker.addEventListener('input', (e) => {
+        const filename = e.target.dataset.filename;
+        const newColor = parseInt(e.target.value.replace('#', '0x'));
+
+        // Finde das passende Modell in der Szene
+        for (const [model, label] of modelNames.entries()) {
+            const entry = meta.find(e => e.filename === filename);
+            if (entry && label === entry.label) {
+                model.traverse(child => {
+                    if (child.isMesh) {
+                        child.material.color.set(newColor);
+                    }
+                });
+                console.log(`Farbe für ${label} geändert zu ${e.target.value}`);
+            }
+        }
+    });
+});
+
     });
 }
 
