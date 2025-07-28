@@ -303,4 +303,160 @@ button:hover {
         right: 5px;
     }
 }
+
+/* Sub-Dropdown-Styling */
+#muscles-sub-dropdown {
+    margin-left: 20px; /* Einrückung für Verschachtelung */
+}
+
+#muscles-subgroups label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+}
+
+#muscles-subgroups .muscle-checkbox {
+    margin-left: 20px; /* Einrückung für einzelne Muskeln */
+    font-size: 12px;
+}
+
+/* Tooltip für Klick-Name */
+#tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    display: none;
+    z-index: 1500;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Optimierung für Sub-Dropdown und Tooltip */
+@media (max-width: 600px) {
+    #muscles-sub-dropdown {
+        margin-left: 10px;
+    }
+
+    #muscles-subgroups label {
+        font-size: 12px;
+    }
+
+    #muscles-subgroups .muscle-checkbox {
+        font-size: 10px;
+        margin-left: 15px;
+    }
+
+    #tooltip {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
+/* Sub-Dropdown-Styling für alle Gruppen */
+#bones-sub-dropdown, #muscles-sub-dropdown, #tendons-sub-dropdown, #other-sub-dropdown {
+    margin-left: 20px; /* Einrückung für Verschachtelung */
+}
+
+#bones-subgroups label, #muscles-subgroups label, #tendons-subgroups label, #other-subgroups label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+}
+
+/* Sub-Dropdown-Styling für alle Gruppen */
+#bones-sub-dropdown, #muscles-sub-dropdown, #tendons-sub-dropdown, #other-sub-dropdown {
+    margin-left: 20px; /* Einrückung für Verschachtelung */
+}
+
+#bones-subgroups label, #muscles-subgroups label, #tendons-subgroups label, #other-subgroups label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+}
+
+/* Nested Dropdown für Einzel-Elemente */
+.item-dropdown {
+    margin-left: 20px;
+}
+
+.item-dropdown-button {
+    background-color: #555555;
+    color: white;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+}
+
+.item-dropdown-content {
+    display: none;
+    padding: 10px;
+    background-color: #222222;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.item-dropdown.active .item-dropdown-content {
+    display: block;
+}
+
+/* Mobile Optimierung */
+@media (max-width: 600px) {
+    #bones-sub-dropdown, #muscles-sub-dropdown, #tendons-sub-dropdown, #other-sub-dropdown {
+        margin-left: 10px;
+    }
+
+    #bones-subgroups label, #muscles-subgroups label, #tendons-subgroups label, #other-subgroups label {
+        font-size: 12px;
+    }
+
+    .item-dropdown-button {
+        font-size: 10px;
+    }
+}
+
+/* Tooltip für Klick-Name */
+#tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    display: none;
+    z-index: 1500;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Optimierung für Sub-Dropdown und Tooltip */
+@media (max-width: 600px) {
+    #bones-sub-dropdown, #muscles-sub-dropdown, #tendons-sub-dropdown, #other-sub-dropdown {
+        margin-left: 10px;
+    }
+
+    #bones-subgroups label, #muscles-subgroups label, #tendons-subgroups label, #other-subgroups label {
+        font-size: 12px;
+    }
+
+    #bones-subgroups .item-checkbox, #muscles-subgroups .item-checkbox, #tendons-subgroups .item-checkbox, #other-subgroups .item-checkbox {
+        font-size: 10px;
+        margin-left: 15px;
+    }
+
+    #tooltip {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
 }

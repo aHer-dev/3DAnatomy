@@ -60,6 +60,14 @@ camera.position.set(0, 2, 5); // Aufrecht
 
 const loader = new THREE.GLTFLoader();
 
+let clickCounts = {
+    bones: 0,
+    muscles: 0,
+    tendons: 0,
+    other: 0
+};
+
+
 let groups = {
   bones: [],
   muscles: [],
@@ -72,6 +80,316 @@ let colors = {
   tendons: 0xffff00, // Gelb
   other: 0x00ff00 // Grün
 };
+// Map für Model-Namen (für Klick-Selection)
+let modelNames = new Map(); // model -> label
+let groupStates = { // Verfolgt Subgruppen-Status
+    bones: {},
+    muscles: {},
+    tendons: {},
+    other: {}
+};
+
+// Subgruppen aus meta.json laden (einmalig)
+let metaData = null; // Cache für meta.json
+async function getMeta() {
+    if (!metaData) {
+        const response = await fetch(basePath + '/data/meta.json');
+        if (!response.ok) throw new Error(`Fehler beim Laden von meta.json: ${response.status}`);
+        metaData = await response.json();
+    }
+    return metaData;
+}
+
+// Generiere Sub-Dropdown für eine Gruppe
+async function generateSubDropdown(groupName) {
+    const meta = await getMeta();
+    const groupEntries = meta.filter(entry => entry.group === groupName);
+    const subgroups = [...new Set(groupEntries.map(entry => entry.subgroup || 'uncategorized'))];
+
+    const container = document.getElementById(`${groupName}-subgroups`);
+    container.innerHTML = ''; // Leeren
+
+    subgroups.forEach(subgroup => {
+        // Subgruppen-Checkbox
+        const subgroupLabel = document.createElement('label');
+        subgroupLabel.innerHTML = `<input type="checkbox" class="subgroup-checkbox" data-subgroup="${subgroup}" data-group="${groupName}"> ${subgroup}`;
+        subgroupLabel.querySelector('input').checked = true; // Aktiviere Subgruppen-Checkbox
+        groupStates[groupName][subgroup] = true; // Setze Status
+        container.appendChild(subgroupLabel);
+
+        // Nested Dropdown für Einzel-Elemente
+        const itemDropdown = document.createElement('div');
+        itemDropdown.className = 'item-dropdown';
+        const itemButton = document.createElement('button');
+        itemButton.className = 'item-dropdown-button';
+        itemButton.innerText = 'Einzelne Elemente anzeigen';
+        itemButton.onclick = function() {
+            const content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+            this.parentElement.classList.toggle('active');
+        };
+        itemDropdown.appendChild(itemButton);
+
+        const itemContent = document.createElement('div');
+        itemContent.className = 'item-dropdown-content';
+        itemContent.style.display = 'none';
+        const subgroupItems = groupEntries.filter(entry => (entry.subgroup || 'uncategorized') === subgroup);
+        subgroupItems.forEach(item => {
+            const itemLabel = document.createElement('label');
+            itemLabel.className = 'item-checkbox';
+            itemLabel.innerHTML = `<input type="checkbox" class="item-checkbox" data-filename="${item.filename}" data-group="${groupName}"> ${item.label}`;
+            itemContent.appendChild(itemLabel);
+        });
+        itemDropdown.appendChild(itemContent);
+        container.appendChild(itemDropdown);
+
+        // Toggle für Subgruppen-Checkbox
+        subgroupLabel.querySelector('input').addEventListener('change', (e) => {
+            const subgroup = e.target.dataset.subgroup;
+            const group = e.target.dataset.group;
+            const wasChecked = groupStates[group][subgroup] || false;
+            groupStates[group][subgroup] = !wasChecked;
+
+            loadSubgroup(group, subgroup, groupStates[group][subgroup]);
+
+            // Setze Einzel-Checkboxes
+            const itemListDiv = e.target.parentElement.nextElementSibling.querySelector('.item-dropdown-content');
+            itemListDiv.querySelectorAll('input').forEach(checkbox => {
+                checkbox.checked = groupStates[group][subgroup];
+            });
+        });
+
+        // Event-Listener für einzelne Elemente
+        itemContent.querySelectorAll('.item-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                loadSingleItem(e.target.dataset.group, e.target.dataset.filename, e.target.checked);
+            });
+        });
+    });
+}
+
+// Lade Subgruppe
+async function loadSubgroup(groupName, subgroup, visible) {
+    const meta = await getMeta();
+    const subgroupEntries = meta.filter(entry => entry.group === groupName && (entry.subgroup === subgroup || (subgroup === 'uncategorized' && !entry.subgroup)));
+    const loadingDiv = document.getElementById('loading');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
+    if (!loadingDiv || !progressBar || !progressText) {
+        console.error('Ladebalken-Elemente fehlen:', { loadingDiv, progressBar, progressText });
+        alert('Fehler: Ladebalken nicht gefunden.');
+        return;
+    }
+
+    if (visible) {
+        loadingDiv.style.display = 'block';
+        let loadedCount = 0;
+        const totalModels = subgroupEntries.length;
+
+        const promises = subgroupEntries.map(entry => {
+            return new Promise((resolve, reject) => {
+                const modelPath = basePath + '/models/' + entry.filename;
+                console.log(`Lade Subgruppen-Modell: ${modelPath}`);
+                loader.load(
+                    modelPath,
+                    (gltf) => {
+                        const model = gltf.scene;
+                        model.rotation.x = -Math.PI / 2;
+                        model.visible = true;
+                        model.traverse(child => {
+                            if (child.isMesh) {
+                                child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                            }
+                        });
+                        scene.add(model);
+                        groups[groupName].push(model);
+                        modelNames.set(model, entry.label);
+                        console.log(`Subgruppen-Modell geladen: ${entry.filename}`);
+                        loadedCount++;
+                        const progress = Math.round((loadedCount / totalModels) * 100);
+                        progressBar.style.width = `${progress}%`;
+                        progressText.innerText = `${progress}%`;
+                        resolve();
+                    },
+                    undefined,
+                    (error) => {
+                        console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
+                        alert(`Fehler beim Laden eines Modells in ${groupName}/${subgroup}.`);
+                        loadedCount++;
+                        const progress = Math.round((loadedCount / totalModels) * 100);
+                        progressBar.style.width = `${progress}%`;
+                        progressText.innerText = `${progress}%`;
+                        reject(error);
+                    }
+                );
+            });
+        });
+
+        await Promise.all(promises);
+        loadingDiv.style.display = 'none';
+        console.log('Ladebalken ausgeblendet, Subgruppen-Modelle sichtbar');
+    } else {
+        groups[groupName] = groups[groupName].filter(model => {
+            const label = modelNames.get(model);
+            const isInSubgroup = subgroupEntries.some(entry => entry.label === label);
+            if (isInSubgroup) {
+                scene.remove(model);
+                model.traverse(child => {
+                    if (child.isMesh) {
+                        child.geometry.dispose();
+                        child.material.dispose();
+                    }
+                });
+                modelNames.delete(model);
+                return false;
+            }
+            return true;
+        });
+        // Deaktiviere Einzel-Checkboxes
+        document.querySelectorAll(`.item-checkbox[data-group="${groupName}"]`).forEach(checkbox => {
+            const entry = subgroupEntries.find(e => e.filename === checkbox.dataset.filename);
+            if (entry) checkbox.checked = false;
+        });
+    }
+}
+
+// Lade einzelnes Element
+async function loadSingleItem(groupName, filename, visible) {
+    const meta = await getMeta();
+    const entry = meta.find(e => e.filename === filename);
+    if (!entry) return;
+
+    const loadingDiv = document.getElementById('loading');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
+    if (visible) {
+        loadingDiv.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressText.innerText = '0%';
+
+        loader.load(
+            basePath + '/models/' + filename,
+            (gltf) => {
+                const model = gltf.scene;
+                model.rotation.x = -Math.PI / 2;
+                model.visible = true;
+                model.traverse(child => {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
+                    }
+                });
+                scene.add(model);
+                groups[groupName].push(model);
+                modelNames.set(model, entry.label);
+                console.log(`Einzelnes Modell geladen: ${filename}`);
+                progressBar.style.width = '100%';
+                progressText.innerText = '100%';
+                setTimeout(() => {
+                    loadingDiv.style.display = 'none';
+                }, 500);
+            },
+            undefined,
+            (error) => {
+                console.error(`Fehler beim Laden von ${filename}: ${error}`);
+                alert(`Fehler beim Laden eines Elements.`);
+            }
+        );
+    } else {
+        groups[groupName] = groups[groupName].filter(model => {
+            if (modelNames.get(model) === entry.label) {
+                scene.remove(model);
+                model.traverse(child => {
+                    if (child.isMesh) {
+                        child.geometry.dispose();
+                        child.material.dispose();
+                    }
+                });
+                modelNames.delete(model);
+                return false;
+            }
+            return true;
+        });
+    }
+}
+
+['bones', 'muscles', 'tendons', 'other'].forEach(groupName => {
+    document.getElementById(groupName).addEventListener('change', (e) => {
+        const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
+        clickCounts[groupName]++;
+
+        if (clickCounts[groupName] === 1) {
+            // 1. Klick → Anzeigen & Laden
+            
+            subDropdown.style.display = 'block';
+            generateSubDropdown(groupName);
+            loadGroup(groupName);
+            console.log(`Gruppe ${groupName} aktiviert, Sub-Dropdown geöffnet, Modelle geladen`);
+        } else if (clickCounts[groupName] === 2) {
+            // 2. Klick → Entladen, aber Sub-Dropdown bleibt offen
+            groups[groupName].forEach(model => {
+                scene.remove(model);
+                model.traverse(child => {
+                    if (child.isMesh) {
+                        child.geometry.dispose();
+                        child.material.dispose();
+                    }
+                });
+                modelNames.delete(model);
+            });
+            groups[groupName] = [];
+            groupStates[groupName] = {};
+            document.querySelectorAll(`#${groupName}-subgroups .subgroup-checkbox`).forEach(checkbox => {
+                checkbox.checked = false;
+                groupStates[groupName][checkbox.dataset.subgroup] = false;
+            });
+            document.querySelectorAll(`#${groupName}-subgroups .item-checkbox`).forEach(checkbox => checkbox.checked = false);
+            e.target.checked = true; // Checkbox bleibt angehakt
+            console.log(`Gruppe ${groupName} entladen, Sub-Dropdown bleibt offen`);
+        } else {
+            // 3. Klick → Alles zurücksetzen
+            clickCounts[groupName] = 0;
+            subDropdown.style.display = 'none';
+            e.target.checked = false;
+            console.log(`Gruppe ${groupName} deaktiviert, Sub-Dropdown geschlossen`);
+        }
+    });
+});
+
+
+// Klick-Selection mit Tooltip
+const tooltip = document.createElement('div');
+tooltip.id = 'tooltip';
+document.body.appendChild(tooltip);
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function onMouseClick(event) {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    if (intersects.length > 0) {
+        const selectedModel = intersects[0].object.parent;
+        const name = modelNames.get(selectedModel) || 'Unbekannt';
+        tooltip.innerText = name;
+        tooltip.style.display = 'block';
+        tooltip.style.left = `${event.clientX + 10}px`;
+        tooltip.style.top = `${event.clientY + 10}px`;
+        setTimeout(() => tooltip.style.display = 'none', 3000);
+        console.log(`Klick: Zeige Name ${name}`);
+    }
+}
+
+window.addEventListener('click', onMouseClick);
 
 // Ladebalken-Variablen
 let loadedModels = 0;
@@ -99,37 +417,28 @@ function loadGroup(groupName) {
     const loadingDiv = document.getElementById('loading');
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
-    
-    // Debugging: Prüfen, ob DOM-Elemente vorhanden sind
+
     if (!loadingDiv || !progressBar || !progressText) {
         console.error('Ladebalken-Elemente fehlen:', { loadingDiv, progressBar, progressText });
-        alert('Fehler: Ladebalken nicht gefunden. Seite könnte nicht korrekt laden.');
+        alert('Fehler: Ladebalken nicht gefunden.');
         return;
     }
 
-    // Debugging: WebGL-Kompatibilität prüfen
     if (!renderer.getContext()) {
         console.error('WebGL nicht verfügbar auf diesem Gerät');
-        alert('Fehler: WebGL wird auf diesem Gerät nicht unterstützt. Versuche einen anderen Browser oder Gerät.');
+        alert('Fehler: WebGL wird nicht unterstützt. Versuche einen anderen Browser.');
         return;
     }
 
-    fetch(basePath + '/data/meta.json')
-      .then(response => {
-        if (!response.ok) throw new Error(`Fehler beim Laden von meta.json: ${response.status}`);
-        return response.json();
-      })
-      .then(meta => {
-        console.log(`meta.json geladen, ${meta.length} Einträge`);
+
+
+    getMeta().then(meta => {
         const groupEntries = meta.filter(entry => entry.group === groupName);
         const totalModels = groupEntries.length;
 
         if (totalModels > 0) {
             loadingDiv.style.display = 'block';
             console.log('Ladebalken sichtbar gesetzt');
-        } else {
-            console.log('Keine Modelle in Gruppe:', groupName);
-            return;
         }
 
         let loadedCount = 0;
@@ -143,22 +452,15 @@ function loadGroup(groupName) {
                     (gltf) => {
                         const model = gltf.scene;
                         model.rotation.x = -Math.PI / 2;
-                        model.visible = false;
-                        model.traverse((child) => {
+                        model.visible = true;
+                        model.traverse(child => {
                             if (child.isMesh) {
                                 child.material = new THREE.MeshStandardMaterial({ color: colors[groupName] });
                             }
                         });
-                        // Optional: Modelle optimieren (SimplifyModifier)
-                        // const modifier = new THREE.SimplifyModifier();
-                        // model.traverse((child) => {
-                        //     if (child.isMesh) {
-                        //         const simplified = modifier.modify(child.geometry, child.geometry.attributes.position.count * 0.5);
-                        //         child.geometry = simplified;
-                        //     }
-                        // });
                         scene.add(model);
                         groups[groupName].push(model);
+                        modelNames.set(model, entry.label);
                         console.log(`Modell geladen: ${entry.filename}`);
                         loadedCount++;
                         const progress = Math.round((loadedCount / totalModels) * 100);
@@ -169,7 +471,7 @@ function loadGroup(groupName) {
                     undefined,
                     (error) => {
                         console.error(`Fehler beim Laden von ${modelPath}: ${error}`);
-                        alert(`Fehler beim Laden eines Modells in Gruppe ${groupName}.`);
+                        alert(`Fehler beim Laden eines Modells in ${groupName}.`);
                         loadedCount++;
                         const progress = Math.round((loadedCount / totalModels) * 100);
                         progressBar.style.width = `${progress}%`;
@@ -181,10 +483,9 @@ function loadGroup(groupName) {
         });
 
         Promise.all(promises).then(() => {
-            groups[groupName].forEach(m => m.visible = true);
             loadingDiv.style.display = 'none';
             console.log('Ladebalken ausgeblendet, Modelle sichtbar');
-            
+
             setTimeout(() => {
                 const box = new THREE.Box3().setFromObject(scene);
                 const center = new THREE.Vector3();
@@ -198,30 +499,18 @@ function loadGroup(groupName) {
                 console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
             }, 100);
         }).catch(error => console.error('Fehler beim parallelen Laden:', error));
-      })
-      .catch(error => {
-          console.error(`Fehler beim Laden von meta.json: ${error}`);
-          alert('Fehler beim Laden der Metadaten. Überprüfe deine Internetverbindung.');
-      });
+    }).catch(error => {
+        console.error(`Fehler beim Laden von meta.json: ${error}`);
+        alert('Fehler beim Laden der Metadaten.');
+    });
 }
 
 // Anfangs nur bones laden
 loadGroup('bones');
 
 // Checkboxen-Events
-document.getElementById('bones').addEventListener('change', (e) => toggleGroup('bones', e.target.checked));
-document.getElementById('muscles').addEventListener('change', (e) => toggleGroup('muscles', e.target.checked));
-document.getElementById('tendons').addEventListener('change', (e) => toggleGroup('tendons', e.target.checked));
-document.getElementById('other').addEventListener('change', (e) => toggleGroup('other', e.target.checked));
 
-function toggleGroup(groupName, visible) {
-    console.log(`Toggle Gruppe: ${groupName}, Sichtbar: ${visible}`);
-    if (visible && groups[groupName].length === 0) {
-        loadGroup(groupName);
-    } else {
-        groups[groupName].forEach(model => model.visible = visible);
-    }
-}
+
 
 // Farbpicker-Events
 document.getElementById('color-bones').addEventListener('input', (e) => changeColor('bones', e.target.value));

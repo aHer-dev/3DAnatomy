@@ -21,12 +21,35 @@
         <div></div>
     </div>
     <div id="controls">
-        <h2>Gruppen</h2>
-        <label><input type="checkbox" id="bones" checked> Bones (Skelett)</label>
-        <label><input type="checkbox" id="muscles"> Muscles</label>
-        <label><input type="checkbox" id="tendons"> Tendons</label>
-        <label><input type="checkbox" id="other"> Other</label>
-
+<h2>Gruppen</h2>
+<label><input type="checkbox" id="bones" checked> Bones (Skelett)</label>
+<div class="dropdown" id="bones-sub-dropdown" style="display: none;">
+    <button class="dropdown-button" onclick="toggleDropdown(this)">Knochen-Teile auswählen</button>
+    <div class="dropdown-content">
+        <div id="bones-subgroups"></div>
+    </div>
+</div>
+<label><input type="checkbox" id="muscles"> Muscles</label>
+<div class="dropdown" id="muscles-sub-dropdown" style="display: none;">
+    <button class="dropdown-button" onclick="toggleDropdown(this)">Muskel-Teile auswählen</button>
+    <div class="dropdown-content">
+        <div id="muscles-subgroups"></div>
+    </div>
+</div>
+<label><input type="checkbox" id="tendons"> Tendons</label>
+<div class="dropdown" id="tendons-sub-dropdown" style="display: none;">
+    <button class="dropdown-button" onclick="toggleDropdown(this)">Sehnen-Teile auswählen</button>
+    <div class="dropdown-content">
+        <div id="tendons-subgroups"></div>
+    </div>
+</div>
+<label><input type="checkbox" id="other"> Other</label>
+<div class="dropdown" id="other-sub-dropdown" style="display: none;">
+    <button class="dropdown-button" onclick="toggleDropdown(this)">Andere Teile auswählen</button>
+    <div class="dropdown-content">
+        <div id="other-subgroups"></div>
+    </div>
+</div>
         <!-- Dropdown für Farben -->
         <div class="dropdown">
             <button class="dropdown-button" onclick="toggleDropdown(this)">Farben ändern</button>
