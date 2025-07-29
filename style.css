@@ -429,3 +429,129 @@ button:hover {
         display: block;
     }
 }
+
+#info-panel {
+  position: fixed;
+  z-index: 10;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 14px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: transform 0.4s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+/* Startposition für Animation */
+.hidden {
+  transform: translateY(150%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Desktop: oben rechts */
+@media (min-width: 601px) {
+  #info-panel {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+/* Mobile: unten mittig */
+@media (max-width: 600px) {
+  #info-panel {
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: 90vw;
+  }
+
+  #info-panel.hidden {
+    transform: translate(-50%, 150%);
+  }
+}
+
+#info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#info-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#info-close:hover {
+  color: #00ff00;
+}
+
+#info-content p {
+  margin: 4px 0;
+}
+
+.info-panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: 80vh;
+  background: rgba(30, 30, 30, 0.95);
+  color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  overflow-y: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.info-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-30px);
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.info-icon {
+  font-size: 1.4em;
+}
+
+.close-button {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+#info-panel {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(150%);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute; /* oder fixed je nach Layout */
+  bottom: 10px;
+  right: 10px;
+  /* weitere Styles wie background, padding etc. */
+}
+
+#info-panel.visible {
+  transform: translateY(0%);
+  opacity: 1;
+  pointer-events: auto;
+}

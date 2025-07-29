@@ -10,6 +10,16 @@ if (typeof THREE === 'undefined') {
     console.log("THREE ist definiert, Version: " + THREE.REVISION);
 }
 
+const infoPanel = document.getElementById('info-panel');
+const infoContent = document.getElementById('info-content');
+const infoClose = document.getElementById('info-close');
+
+if (infoClose) {
+    infoClose.addEventListener('click', () => {
+        hideInfoPanel();
+    });
+}
+
 // Szene, Kamera und Renderer
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -153,6 +163,15 @@ async function loadSubgroup(groupName, subgroup, visible) {
     const loadingDiv = document.getElementById('loading');
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
+    
+    const infoPanel = document.getElementById('info-panel');
+    const infoContent = document.getElementById('info-content');
+const infoClose = document.getElementById('info-close');
+
+        // Panel schließen bei Button-Klick
+        infoClose.addEventListener('click', () => {
+        hideInfoPanel();
+        });
 
     if (visible) {
         loadingDiv.style.display = 'block';
@@ -473,10 +492,7 @@ function changeModelColorByLabel(label, colorHex) {
     console.warn(`⚠️ Modell mit Label "${label}" nicht gefunden`);
 }
 
-// --- Klick-Selection mit Tooltip und Sidebar ---
-const tooltip = document.createElement('div');
-tooltip.id = 'tooltip';
-document.body.appendChild(tooltip);
+
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -489,31 +505,56 @@ function onMouseClick(event) {
     const intersects = raycaster.intersectObjects(scene.children, true);
 
     if (intersects.length > 0) {
-        const selectedModel = intersects[0].object.parent;
-        const name = modelNames.get(selectedModel) || 'Unbekannt';
-        tooltip.innerText = name;
-        tooltip.style.display = 'block';
-        tooltip.style.left = `${event.clientX + 10}px`;
-        tooltip.style.top = `${event.clientY + 10}px`;
-        setTimeout(() => tooltip.style.display = 'none', 3000);
-        console.log(`Klick: Zeige Name ${name}`);
+        const clickedObject = intersects[0].object;
+        const selectedModel = clickedObject.parent;
+        const modelLabel = modelNames.get(selectedModel);
 
-        // Sidebar mit Details füllen
-        getMeta().then(meta => {
-            const entry = meta.find(e => e.label === name);
-            if (entry) {
-                document.getElementById('detail-label').innerText = `Label: ${entry.label}`;
-                document.getElementById('detail-fma').innerText = `FMA-ID: ${entry.fma}`;
-                document.getElementById('detail-group').innerText = `Gruppe/Subgruppe: ${entry.group}/${entry.subgroup || 'uncategorized'}`;
-                document.getElementById('detail-side').innerText = `Seite: ${entry.side || 'none'}`;
-                document.getElementById('detail-parts').innerText = `Teile: ${entry.parts.length > 0 ? entry.parts.join(', ') : 'none'}`;
-                document.getElementById('detail-info').innerText = `Info: ${JSON.stringify(entry.info)}`;
-                document.getElementById('sidebar').style.display = 'block';
-            }
-        });
+        if (modelLabel) {
+            getMeta().then(meta => {
+                const entry = meta.find(e => e.label === modelLabel);
+                if (entry) {
+                    showInfoPanel(entry);          // Infofenster anzeigen
+                    highlightObject(clickedObject); // Objekt hervorheben
+                }
+            });
+        } else {
+            console.warn("❓ Kein Label für das angeklickte Modell gefunden.");
+        }
+    } else {
+        hideInfoPanel();  // Kein Objekt getroffen → Panel schließen
+        currentlySelected = null;
     }
 }
+
+
 window.addEventListener('click', onMouseClick);
+
+// Infopanele
+
+function showInfoPanel(meta) {
+  infoContent.innerHTML = `
+    <p><strong>Label:</strong> ${meta.label}</p>
+    ${meta.fma ? `<p><strong>FMA-ID:</strong> ${meta.fma}</p>` : ""}
+    ${meta.group ? `<p><strong>Gruppe:</strong> ${meta.group}</p>` : ""}
+    ${meta.subgroup && meta.subgroup !== "none" ? `<p><strong>Subgruppe:</strong> ${meta.subgroup}</p>` : ""}
+    ${meta.side && meta.side !== "none" ? `<p><strong>Seite:</strong> ${meta.side}</p>` : ""}
+    ${meta.info?.origin ? `<p><strong>Ursprung:</strong> ${meta.info.origin}</p>` : ""}
+    ${meta.info?.insertion ? `<p><strong>Ansatz:</strong> ${meta.info.insertion}</p>` : ""}
+    ${meta.info?.function ? `<p><strong>Funktion:</strong> ${meta.info.function}</p>` : ""}
+  `;
+
+  infoPanel.classList.add('visible');
+}
+
+function hideInfoPanel() {
+  infoPanel.classList.remove('visible');
+  infoContent.innerHTML = '';
+  if (currentlySelected?.material?.emissive) {
+    currentlySelected.material.emissive.setHex(0x000000);
+  }
+  currentlySelected = null;
+}
+
 
 // --- Suchleiste mit Autovervollständigung ---
 const searchBar = document.getElementById('search-bar');
@@ -548,6 +589,22 @@ document.getElementById('transparency-slider').addEventListener('input', (e) => 
     });
     console.log(`Transparenz gesetzt: ${transparency}`);
 });
+
+let currentlySelected = null;
+
+function highlightObject(object) {
+  // Vorheriges Objekt zurücksetzen
+  if (currentlySelected) {
+    currentlySelected.material.emissive?.setHex(0x000000);
+  }
+
+  // Neues Objekt hervorheben
+  if (object.material.emissive) {
+    object.material.emissive.setHex(0x222222);
+  }
+
+  currentlySelected = object;
+}
 
 document.getElementById('lighting-slider').addEventListener('input', (e) => {
     const intensity = parseFloat(e.target.value);

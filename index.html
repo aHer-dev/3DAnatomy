@@ -90,17 +90,6 @@
         </div>
     </div>
 
-    <!-- Sidebar: Anzeige von Modell-Details, kollabierbar -->
-    <div id="sidebar" style="display: none;">
-        <h2>Modell-Details</h2>
-        <p id="detail-label">Label: </p>
-        <p id="detail-fma">FMA-ID: </p>
-        <p id="detail-group">Gruppe/Subgruppe: </p>
-        <p id="detail-side">Seite: </p>
-        <p id="detail-parts">Teile: </p>
-        <p id="detail-info">Info: </p>
-    </div>
-
     <!-- Ladebalken: Zeigt Fortschritt beim Laden der Modelle -->
     <div id="loading">
         <div id="progress-bar"></div>
@@ -115,7 +104,15 @@
             <p>Attribution: Modelle basieren auf Daten von Anatomography/BodyParts3D. Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.</p>
         </div>
     </footer>
-
+<!-- Info-Panel für Strukturdetails -->
+<div id="info-panel" class="hidden">
+  <div id="info-content"></div>
+  <button id="info-close">✖</button>
+</div>
+  <div id="info-content">
+    <!-- Dynamisch befüllter Inhalt -->
+  </div>
+</div>
     <!-- Haupt-Skript für die Anwendung -->
     <script src="app.js"></script>
     <!-- Cloudflare-Skript: Unverändert für Sicherheitszwecke -->
