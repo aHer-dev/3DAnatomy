@@ -1,10 +1,10 @@
 // js/modelLoader.js
 import * as THREE from './three.module.js';
 import { getMeta, getModelPath } from './utils.js';
-import { scene, loader } from './init.js';
+import { scene, loader } from './init.js'; // ✅ korrekt
 import { state } from './state.js';
 
-export async function loadModels(entries, groupName, visible) {
+export async function loadModels(entries, groupName, visible, scene, loader) {
   console.log(`loadModels aufgerufen für Gruppe: ${groupName}, visible: ${visible}, entries: ${entries ? entries.length + ' Einträge' : 'undefined oder kein Array'}`);
 
   // Schutz vor ungültigen entries

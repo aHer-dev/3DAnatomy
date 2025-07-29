@@ -101,19 +101,25 @@
             <p>Attribution: Modelle basieren auf Daten von Anatomography/BodyParts3D. Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.</p>
         </div>
     </footer>
+
 <!-- Info-Panel für Strukturdetails -->
 <div id="info-panel" class="hidden">
-  <div id="info-content"></div>
-  <button id="info-close">✖</button>
-</div>
   <div id="info-content">
     <!-- Dynamisch befüllter Inhalt -->
   </div>
+  <button id="info-close">✖</button>
 </div>
-    <!-- Haupt-Skript für die Anwendung -->
-      <script type="importmap">{    "imports": {      "three": "./js/three.module.js"    }  }</script>
-    <script type="module" src="app.js"></script>
-  
+
+<!-- Haupt-Skript für die Anwendung -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./js/three.module.js"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+
 <div id="parts-content">
   <h2>Modellteile</h2>
   <ul id="parts-list"></ul>
