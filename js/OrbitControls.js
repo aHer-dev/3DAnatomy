@@ -1,4 +1,4 @@
-import * as THREE from './three.module.js'; // oder '../three.module.js' je nach Lage
+import * as THREE from './three.module.js';
 
 class OrbitControls extends THREE.EventDispatcher {
   constructor(object, domElement) {
