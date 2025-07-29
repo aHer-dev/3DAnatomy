@@ -4,30 +4,33 @@ import { GLTFLoader } from './GLTFLoader.js';
 
 export const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-export const renderer = new THREE.WebGLRenderer();
-export const controls = new OrbitControls(camera, renderer.domElement);
+export const renderer = new THREE.WebGLRenderer({ antialias: true });
 export const loader = new GLTFLoader();
+export const controls = new OrbitControls(camera, renderer.domElement);
 
 export function initThree() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById('container').appendChild(renderer.domElement);
 
-  // Beleuchtung
+  camera.position.set(0, 2, 5);
+
+  // Lichtquellen
   const lightFront = new THREE.DirectionalLight(0xffffff, 0.8);
   lightFront.position.set(1, 1, 1);
   scene.add(lightFront);
+
   const lightBack = new THREE.DirectionalLight(0xffffff, 0.6);
   lightBack.position.set(-1, 1, -1);
   scene.add(lightBack);
+
   const lightTop = new THREE.DirectionalLight(0xffffff, 0.5);
   lightTop.position.set(0, 1, 0);
   scene.add(lightTop);
+
   const ambientLight = new THREE.AmbientLight(0x606060);
   scene.add(ambientLight);
 
-  camera.position.set(0, 2, 5);
-
-  // OrbitControls
+  // OrbitControls konfigurieren
   controls.mouseButtons = {
     LEFT: THREE.MOUSE.ROTATE,
     MIDDLE: THREE.MOUSE.DOLLY,
@@ -40,6 +43,7 @@ export function initThree() {
   controls.screenSpacePanning = true;
   controls.maxPolarAngle = Math.PI / 2;
 
+  // Render-Schleife
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
@@ -47,9 +51,11 @@ export function initThree() {
   }
   animate();
 
+  // Reaktion auf Fenstergröße
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 }
+

@@ -6,6 +6,7 @@ import {
   BufferGeometry,
   ClampToEdgeWrapping,
   Color,
+  RGBFormat, // Neu hinzugefügt
   DirectionalLight,
   DoubleSide,
   FileLoader,
