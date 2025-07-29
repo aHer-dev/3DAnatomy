@@ -653,10 +653,6 @@ function loadSingleModel(filename, label) {
 }
 
 
-
-
-
-
 // === Einzelentladung: Muskelmodell entfernen, z. B. beim Abwählen einer Checkbox ===
 function unloadSingleModel(filename) {
     const toRemove = groups['muscles'].find(model =>
@@ -695,7 +691,6 @@ function changeModelColorByLabel(label, colorHex) {
     }
     console.warn(`⚠️ Modell mit Label "${label}" nicht gefunden`);
 }
-
 
 
 const raycaster = new THREE.Raycaster();
@@ -1018,23 +1013,28 @@ function loadGroup(groupName) {
         });
 
         Promise.all(promises).then(() => {
-            loadingDiv.style.display = 'none';
-            setTimeout(() => {
-                const box = new THREE.Box3().setFromObject(scene);
-                const center = new THREE.Vector3();
-                box.getCenter(center);
-                const size = box.getSize(new THREE.Vector3()).length();
-                const distance = size * 1.5;
-                camera.position.set(center.x, center.y, center.z + distance);
-                camera.lookAt(center);
-                controls.target.copy(center);
-                controls.update();
-                console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
-            }, 100);
-        }).catch(error => {
-            console.error('Fehler beim parallelen Laden:', error);
-            alert('Fehler beim Laden der Gruppe. Prüfe die Dateistruktur.');
-        });
+    loadingDiv.style.display = 'none';
+
+    if (groupName !== 'muscles') {
+        setTimeout(() => {
+            const box = new THREE.Box3().setFromObject(scene);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            const size = box.getSize(new THREE.Vector3()).length();
+            const distance = size * 1;
+
+            camera.position.set(center.x, center.y, center.z + distance);
+            camera.lookAt(center);
+            controls.target.copy(center);
+            controls.update();
+
+            console.log("Kamera automatisch auf Zentrum ausgerichtet:", center);
+        }, 100);
+    } else {
+        console.log("Muskelgruppe geladen – Kamera bleibt unverändert.");
+    }
+});
+
     }).catch(error => {
         console.error(`Fehler beim Laden von meta.json: ${error}`);
         alert('Fehler beim Laden der Metadaten.');
