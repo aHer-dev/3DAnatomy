@@ -132,27 +132,93 @@ async function generateSubDropdown(groupName) {
     // Sortiere Subgruppen alphabetisch
     subgroups.sort();
 
-    subgroups.forEach(subgroup => {
-        const label = document.createElement("label");
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.dataset.group = groupName;
-        checkbox.dataset.subgroup = subgroup;
-        checkbox.checked = false;
+subgroups.forEach(subgroup => {
+    // Container für die Zeile (Checkbox + mehr...-Button)
+    const lineDiv = document.createElement("div");
+    lineDiv.className = "subgroup-line";
 
-        checkbox.addEventListener("change", () => {
-            toggleSubgroup(groupName, subgroup, checkbox.checked);
-        });
+    // Checkbox für die Subgruppe
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.dataset.group = groupName;
+    checkbox.dataset.subgroup = subgroup;
+    checkbox.checked = false;
 
-        label.appendChild(checkbox);
-        label.append(` ${subgroup}`);
-        container.appendChild(label);
-        container.appendChild(document.createElement("br"));
+    checkbox.addEventListener("change", () => {
+        toggleSubgroup(groupName, subgroup, checkbox.checked);
     });
+
+    label.appendChild(checkbox);
+    label.append(` ${subgroup}`);
+    lineDiv.appendChild(label);
+
+    // --- Mehr... Button ---
+    const moreButton = document.createElement("button");
+    moreButton.className = "more-button";
+    moreButton.innerText = "mehr...";
+    moreButton.addEventListener("click", () => {
+        const existing = document.getElementById(`muscle-list-${subgroup}`);
+        if (existing) {
+            existing.remove(); // beim zweiten Klick ausblenden
+        } else {
+            generateMoreMuscleList(subgroup);
+        }
+    });
+    lineDiv.appendChild(moreButton);
+
+    // Attribute für gezieltes Anhängen der Detail-Listen
+    lineDiv.setAttribute("data-subgroup", subgroup);
+    lineDiv.classList.add("subgroup-container");
+
+    container.appendChild(lineDiv);
+});
+
 }
+
+
 
 function toggleSubgroup(groupName, subgroup, visible) {
     loadSubgroup(groupName, subgroup, visible);
+}
+
+// scheckboxenliste 
+
+function generateMoreMuscleList(subgroup) {
+    getMeta().then(meta => {
+        const container = document.querySelector(`#muscles-subgroups .subgroup-container[data-subgroup="${subgroup}"]`);
+        if (!container) return;
+
+        const filtered = meta.filter(e => e.subgroup === subgroup && e.group === 'muscles');
+        filtered.sort((a, b) => parseInt(b.fma.replace(/\D/g, '')) - parseInt(a.fma.replace(/\D/g, '')));
+
+        const list = document.createElement('div');
+        list.className = 'muscle-detailed-list';
+        list.id = `muscle-list-${subgroup}`;
+
+        filtered.forEach(entry => {
+            const label = document.createElement('label');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'muscle-item-checkbox';
+            checkbox.dataset.filename = entry.filename;
+
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    loadSingleModel(entry.filename, entry.label);
+                } else {
+                    removeSingleModel(entry.filename);
+                }
+            });
+
+            label.appendChild(checkbox);
+            label.append(` ${entry.label}`);
+            list.appendChild(label);
+            list.appendChild(document.createElement('br'));
+        });
+
+        container.appendChild(list);
+    });
 }
 
 // --- Laden von Subgruppen ---
@@ -358,6 +424,9 @@ async function loadSide(groupName, subgroup, side, visible) {
     }
 }
 
+
+
+
 // --- Laden eines einzelnen Modells ---
 async function loadSingleItem(groupName, filename, visible) {
     const meta = await getMeta();
@@ -423,16 +492,91 @@ async function loadSingleItem(groupName, filename, visible) {
     }
 }
 
+// Hilfsfunktion: sortiere nach FMA-ID (als Zahl)
+function sortByFmaId(entries) {
+    return entries.slice().sort((a, b) => {
+        const aId = parseInt((a.fma || '').replace(/\D/g, '') || '0');
+        const bId = parseInt((b.fma || '').replace(/\D/g, '') || '0');
+        return bId - aId;
+    });
+}
+
+// Funktion: mehr... Button für Muskel-Untergruppe einfügen
+function createMoreButton(subgroup, models) {
+    const container = document.querySelector(`#muscles-subgroups [data-subgroup="${subgroup}"]`);
+    if (!container || container.querySelector('.more-button')) return; // Schon da
+
+    const button = document.createElement('button');
+    button.className = 'more-button';
+    button.textContent = 'mehr...';
+    button.style.marginLeft = '10px';
+    button.dataset.state = 'closed';
+
+    const list = document.createElement('div');
+    list.className = 'sub-muscle-list';
+    list.style.marginTop = '5px';
+    list.style.display = 'none';
+
+    // Sortierte Modelle nach FMA-ID anzeigen
+    const sorted = sortByFmaId(models);
+    sorted.forEach(entry => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'muscle-item-checkbox';
+        checkbox.dataset.filename = entry.filename;
+
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                loadSingleModel(entry.filename, entry.label);
+            } else {
+                unloadSingleModel(entry.filename);
+            }
+        });
+
+        label.appendChild(checkbox);
+        label.append(` ${entry.label}`);
+        list.appendChild(label);
+        list.appendChild(document.createElement('br'));
+    });
+
+    button.addEventListener('click', () => {
+        if (button.dataset.state === 'closed') {
+            list.style.display = 'block';
+            button.dataset.state = 'open';
+        } else {
+            list.style.display = 'none';
+            button.dataset.state = 'closed';
+        }
+    });
+
+    container.appendChild(button);
+    container.appendChild(list);
+}
+
+
 // --- Gruppen-Checkboxen-Logik ---
 ['bones', 'muscles', 'tendons', 'other'].forEach(groupName => {
     document.getElementById(groupName).addEventListener('change', (e) => {
         const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
         clickCounts[groupName]++;
         if (clickCounts[groupName] === 1) {
-            subDropdown.style.display = 'block';
-            generateSubDropdown(groupName);
-            loadGroup(groupName);
-            console.log(`Gruppe ${groupName} aktiviert, Sub-Dropdown geöffnet, Modelle geladen`);
+    subDropdown.style.display = 'block';
+    generateSubDropdown(groupName);
+    loadGroup(groupName);
+
+    // Nur für Muskelgruppe: "mehr..."-Button einfügen
+    if (groupName === 'muscles') {
+        getMeta().then(meta => {
+            const subgroups = [...new Set(meta.filter(e => e.group === 'muscles').map(e => e.subgroup))];
+            subgroups.forEach(subgroup => {
+                const subgroupModels = meta.filter(e => e.subgroup === subgroup && e.group === 'muscles');
+                createMoreButton(subgroup, subgroupModels); // <- dein Button rechts neben arm-schulter etc.
+            });
+        });
+    }
+
+    console.log(`Gruppe ${groupName} aktiviert, Sub-Dropdown geöffnet, Modelle geladen`);
         } else if (clickCounts[groupName] === 2) {
             groups[groupName].forEach(model => {
                 scene.remove(model);
@@ -474,6 +618,66 @@ function changeColor(groupName, colorHex) {
     });
     console.log(`Farbe geändert: ${groupName} -> ${colorHex}`);
 }
+
+// === Einzelladung: Einzelnes Muskelmodell laden (z. B. per Checkbox bei "mehr...") ===
+function loadSingleModel(filename, label) {
+    const modelPath = getModelPath(filename, "muscles");
+
+    loader.load(modelPath, gltf => {
+        const model = gltf.scene;
+
+        // Rotation nur, wenn notwendig
+        model.rotation.x = -Math.PI / 2;
+
+
+        model.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+                child.material = child.material.clone();
+                child.material.color.set(colors["muscles"] || 0xffaaaa);
+            }
+        });
+
+        scene.add(model);
+
+
+
+        groups["muscles"].push(model);
+        modelNames.set(model, label);
+
+        console.log(`✅ Einzelmodell geladen: ${label}`);
+    }, undefined, error => {
+        console.error(`❌ Fehler beim Laden von ${label}:`, error);
+    });
+}
+
+
+
+
+
+
+// === Einzelentladung: Muskelmodell entfernen, z. B. beim Abwählen einer Checkbox ===
+function unloadSingleModel(filename) {
+    const toRemove = groups['muscles'].find(model =>
+        model.userData?.filename === filename ||
+        model.children.some(child => child.userData?.filename === filename)
+    );
+
+    if (toRemove) {
+        scene.remove(toRemove);
+        toRemove.traverse(child => {
+            if (child.isMesh) {
+                child.geometry.dispose();
+                child.material.dispose();
+            }
+        });
+        modelNames.delete(toRemove);
+        groups['muscles'] = groups['muscles'].filter(m => m !== toRemove);
+        console.log(`🗑️ Modell entfernt: ${filename}`);
+    }
+}
+
 
 // --- Farbänderung für einzelnes Modell ---
 function changeModelColorByLabel(label, colorHex) {
@@ -554,6 +758,18 @@ function hideInfoPanel() {
   }
   currentlySelected = null;
 }
+
+document.querySelectorAll('.more-button').forEach(button => {
+    button.addEventListener('click', () => {
+        const target = button.dataset.target;
+        const container = document.querySelector(`.more-container[data-group="${target}"]`);
+        if (container) {
+            const isVisible = container.style.display === 'block';
+            container.style.display = isVisible ? 'none' : 'block';
+            button.innerText = isVisible ? 'mehr...' : 'weniger...';
+        }
+    });
+});
 
 
 // --- Suchleiste mit Autovervollständigung ---
@@ -894,3 +1110,4 @@ function showPopup(message) {
   document.body.appendChild(popup);
   setTimeout(() => popup.remove(), 5000);
 }
+

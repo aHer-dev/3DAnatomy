@@ -555,3 +555,30 @@ button:hover {
   opacity: 1;
   pointer-events: auto;
 }
+
+.more-muscles-list {
+  margin-left: 20px;
+  margin-top: 5px;
+  display: none;
+}
+
+.more-muscles-list.visible {
+  display: block;
+}
+
+.more-button {
+  font-size: 0.8rem;
+  color: #ddd;
+  background-color: rgba(80, 80, 80, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  margin-left: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.more-button:hover {
+  background-color: rgba(120, 120, 120, 0.5);
+  color: #fff;
+}
