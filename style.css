@@ -15,9 +15,9 @@ body {
 /* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
 #controls {
     position: absolute;
-    top: 50px; /* Unter dem Hamburger-Menü */
+    top: 50px;
     left: 10px;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparentes Schwarz */
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 15px;
     border-radius: 10px;
@@ -26,12 +26,11 @@ body {
     min-height: 100px;
     max-width: 300px;
     max-height: 80vh;
-    resize: both; /* Resizable auf Desktop */
+    resize: both;
     overflow: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Schatten für Tiefe */
-    display: none; /* Initial ausgeblendet */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    display: none;
 }
-
 /* Überschriften im Steuerungspanel */
 #controls h2 {
     margin-top: 0;
@@ -115,6 +114,22 @@ button:hover {
 }
 
 /* Hamburger-Menü bei geöffnetem Zustand */
+#menu-icon {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1000;
+}
+#menu-icon div {
+    background-color: #ffffff;
+    height: 4px;
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: transform 0.4s, opacity 0.4s;
+}
 #menu-icon.open div:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -145,13 +160,6 @@ button:hover {
     background-color: #555555;
 }
 
-.dropdown-content {
-    display: none;
-    padding: 10px;
-    background-color: #222222; /* Dunkler Hintergrund für Inhalt */
-    border-radius: 5px;
-    margin-top: 5px;
-}
 
 .dropdown.active .dropdown-content {
     display: block;
@@ -431,18 +439,30 @@ button:hover {
 }
 
 #info-panel {
-  position: fixed;
-  z-index: 10;
-  max-width: 300px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  border-radius: 10px;
-  padding: 15px;
-  font-size: 14px;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
-  transition: transform 0.4s ease, opacity 0.3s ease;
-  opacity: 1;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    max-width: 300px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    display: none; /* Initial unsichtbar */
+    transition: display 0.4s ease, opacity 0.3s ease;
+}
+#info-panel.visible {
+    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.dropdown.active .dropdown-content {
+    display: block;
 }
 
 /* Startposition für Animation */
@@ -498,27 +518,7 @@ button:hover {
   margin: 4px 0;
 }
 
-.info-panel {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 300px;
-  max-height: 80vh;
-  background: rgba(30, 30, 30, 0.95);
-  color: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-  overflow-y: auto;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
 
-.info-panel.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-30px);
-}
 
 .info-header {
   display: flex;
@@ -539,16 +539,7 @@ button:hover {
   cursor: pointer;
 }
 
-#info-panel {
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  transform: translateY(150%);
-  opacity: 0;
-  pointer-events: none;
-  position: absolute; /* oder fixed je nach Layout */
-  bottom: 10px;
-  right: 10px;
-  /* weitere Styles wie background, padding etc. */
-}
+
 
 #info-panel.visible {
   transform: translateY(0%);
@@ -602,4 +593,15 @@ canvas {
 #controls, #info-panel, #loading {
     position: absolute;
     z-index: 10;
+}
+
+.dropdown-content {
+    display: block !important; /* Erzwinge Sichtbarkeit für Testzwecke */
+    padding: 10px;
+    background-color: #222222;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+.dropdown.active .dropdown-content {
+    display: block;
 }
