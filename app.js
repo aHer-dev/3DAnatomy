@@ -104,150 +104,45 @@ async function getMeta() {
     return metaData;
 }
 
+
+
 // --- Sub-Dropdown-Generierung ---
 async function generateSubDropdown(groupName) {
-    if (!groups[groupName]) groups[groupName] = [];
     const meta = await getMeta();
-    const groupEntries = meta.filter(entry => entry.group === groupName);
-    const subgroups = [...new Set(groupEntries.map(entry => entry.subgroup || 'uncategorized'))];
-
     const container = document.getElementById(`${groupName}-subgroups`);
-    container.innerHTML = ''; // Container leeren
+    container.innerHTML = "";
+
+    // Alle einzigartigen Subgruppen dieser Gruppe sammeln
+    const subgroups = [...new Set(
+        meta
+            .filter(entry => entry.group === groupName && entry.subgroup)
+            .map(entry => entry.subgroup)
+    )];
+
+    // Sortiere Subgruppen alphabetisch
+    subgroups.sort();
 
     subgroups.forEach(subgroup => {
-        // Subgruppen-Checkbox
-        const subgroupLabel = document.createElement('label');
-        subgroupLabel.innerHTML = `<input type="checkbox" class="subgroup-checkbox" data-subgroup="${subgroup}" data-group="${groupName}" aria-label="Subgruppe ${subgroup} togglen"> ${subgroup}`;
-        subgroupLabel.querySelector('input').checked = true;
-        groupStates[groupName][subgroup] = true;
-        container.appendChild(subgroupLabel);
+        const label = document.createElement("label");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.dataset.group = groupName;
+        checkbox.dataset.subgroup = subgroup;
+        checkbox.checked = false;
 
-        // Nested Dropdown für Seiten (left, right, none)
-        const sideDropdown = document.createElement('div');
-        sideDropdown.className = 'item-dropdown';
-        const sideButton = document.createElement('button');
-        sideButton.className = 'item-dropdown-button';
-        sideButton.innerText = 'Seiten auswählen';
-        sideButton.setAttribute('aria-expanded', 'false');
-        sideButton.onclick = function() {
-            const content = this.nextElementSibling;
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
-            this.parentElement.classList.toggle('active');
-            this.setAttribute('aria-expanded', this.parentElement.classList.contains('active'));
-        };
-        sideDropdown.appendChild(sideButton);
-
-        const sideContent = document.createElement('div');
-        sideContent.className = 'item-dropdown-content';
-        sideContent.style.display = 'none';
-        const sides = [...new Set(groupEntries.filter(entry => (entry.subgroup || 'uncategorized') === subgroup).map(entry => entry.side || 'none'))];
-        sides.forEach(side => {
-            const sideLabel = document.createElement('label');
-            sideLabel.innerHTML = `<input type="checkbox" class="side-checkbox" data-subgroup="${subgroup}" data-side="${side}" data-group="${groupName}" aria-label="Seite ${side} togglen"> ${side}`;
-            sideContent.appendChild(sideLabel);
-
-            // Nested Dropdown für Teile (parts)
-            const partsDropdown = document.createElement('div');
-            partsDropdown.className = 'item-dropdown';
-            const partsButton = document.createElement('button');
-            partsButton.className = 'item-dropdown-button';
-            partsButton.innerText = 'Teile auswählen';
-            partsButton.setAttribute('aria-expanded', 'false');
-            partsButton.onclick = function() {
-                const content = this.nextElementSibling;
-                content.style.display = content.style.display === 'block' ? 'none' : 'block';
-                this.parentElement.classList.toggle('active');
-                this.setAttribute('aria-expanded', this.parentElement.classList.contains('active'));
-            };
-            partsDropdown.appendChild(partsButton);
-
-            const partsContent = document.createElement('div');
-            partsContent.className = 'item-dropdown-content';
-            partsContent.style.display = 'none';
-            const subgroupItems = groupEntries.filter(entry => (entry.subgroup || 'uncategorized') === subgroup && (entry.side || 'none') === side);
-            subgroupItems.forEach(item => {
-                const itemLabel = document.createElement('label');
-                itemLabel.className = 'item-checkbox';
-                itemLabel.innerHTML = `
-                    <input type="checkbox" class="item-checkbox" data-filename="${item.filename}" data-group="${groupName}" aria-label="${item.label} togglen">
-                    ${item.label}
-                    <input type="color" class="color-picker" data-filename="${item.filename}" title="Farbe ändern" style="margin-left:10px; vertical-align:middle; width:20px; height:20px; border:none; background:none; cursor:pointer;">
-                `;
-                if (item.parts.length > 0) {
-                    itemLabel.innerHTML += `<span> (Parts: ${item.parts.join(', ')})</span>`;
-                }
-                partsContent.appendChild(itemLabel);
-            });
-            partsDropdown.appendChild(partsContent);
-            sideContent.appendChild(partsDropdown);
-        });
-        sideDropdown.appendChild(sideContent);
-        container.appendChild(sideDropdown);
-
-        // Event-Listener für Subgruppen-Checkbox
-        subgroupLabel.querySelector('input').addEventListener('change', (e) => {
-            const subgroup = e.target.dataset.subgroup;
-            const group = e.target.dataset.group;
-            const wasChecked = groupStates[group][subgroup] || false;
-            groupStates[group][subgroup] = !wasChecked;
-            loadSubgroup(group, subgroup, groupStates[group][subgroup]);
-
-            // Setze Seiten- und Einzel-Checkboxes
-            const sideListDiv = e.target.parentElement.nextElementSibling.querySelectorAll('.side-checkbox');
-            sideListDiv.forEach(checkbox => {
-                checkbox.checked = groupStates[group][subgroup];
-                const partsListDiv = checkbox.parentElement.nextElementSibling.querySelectorAll('.item-checkbox input');
-                partsListDiv.forEach(itemCheckbox => itemCheckbox.checked = groupStates[group][subgroup]);
-            });
+        checkbox.addEventListener("change", () => {
+            toggleSubgroup(groupName, subgroup, checkbox.checked);
         });
 
-        // Event-Listener für Seiten-Checkboxen
-        sideContent.querySelectorAll('.side-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                const group = e.target.dataset.group;
-                const subgroup = e.target.dataset.subgroup;
-                const side = e.target.dataset.side;
-                const checked = e.target.checked;
-                loadSide(group, subgroup, side, checked);
-            });
-        });
-
-        // Event-Listener für Einzel-Elemente
-        partsContent.querySelectorAll('.item-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                const group = e.target.dataset.group;
-                const file = e.target.dataset.filename;
-                const checked = e.target.checked;
-                loadSingleItem(group, file, checked);
-            });
-        });
-
-        // Event-Listener für Farbpicker
-        partsContent.querySelectorAll('.color-picker').forEach(picker => {
-            picker.addEventListener('input', async (e) => {
-                const filename = e.target.dataset.filename;
-                const newColor = parseInt(e.target.value.replace('#', '0x'));
-                const meta = await getMeta();
-                const entry = meta.find(e => e.filename === filename);
-                if (!entry) {
-                    console.warn("⚠️ Kein Metadaten-Eintrag für", filename);
-                    return;
-                }
-                for (const [model, label] of modelNames.entries()) {
-                    if (label === entry.label) {
-                        model.traverse(child => {
-                            if (child.isMesh) {
-                                child.material.color.set(newColor);
-                            }
-                        });
-                        console.log(`✅ Farbe für ${label} geändert zu ${e.target.value}`);
-                        return;
-                    }
-                }
-                console.warn(`⚠️ Modell ${entry.label} ist noch nicht geladen. Lade es zuerst!`);
-            });
-        });
+        label.appendChild(checkbox);
+        label.append(` ${subgroup}`);
+        container.appendChild(label);
+        container.appendChild(document.createElement("br"));
     });
+}
+
+function toggleSubgroup(groupName, subgroup, visible) {
+    loadSubgroup(groupName, subgroup, visible);
 }
 
 // --- Laden von Subgruppen ---
@@ -266,7 +161,7 @@ async function loadSubgroup(groupName, subgroup, visible) {
 
         const promises = subgroupEntries.map(entry => {
             return new Promise((resolve, reject) => {
-                const modelPath = getModelPath(entry.filename);
+                const modelPath = getModelPath(entry.filename, groupName);
                 fetch(modelPath, { method: 'HEAD' }).then(res => {
                     if (!res.ok) {
                         console.error(`Datei nicht gefunden: ${modelPath}`);
@@ -365,7 +260,7 @@ async function loadSide(groupName, subgroup, side, visible) {
 
         const promises = sideEntries.map(entry => {
             return new Promise((resolve, reject) => {
-                const modelPath = getModelPath(entry.filename);
+                const modelPath = getModelPath(entry.filename, groupName);
                 fetch(modelPath, { method: 'HEAD' }).then(res => {
                     if (!res.ok) {
                         console.error(`Datei nicht gefunden: ${modelPath}`);
@@ -791,25 +686,10 @@ function loadGroup(groupName) {
 
         let loadedCount = 0;
 
-        // Beispiel: Fehler beim Laden eines Modells
-fetch(modelPath + filename)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("404");
-    }
-    return response.arrayBuffer();
-  })
-  .then(buffer => {
-    // Weiterverarbeitung
-  })
-  .catch(error => {
-    console.error("Datei nicht gefunden:", modelPath + filename);
-    showPopup("❌ Fehler beim Laden der Gruppe. Prüfe die Dateistruktur.");
-  });
 
         const promises = groupEntries.map(entry => {
             return new Promise((resolve, reject) => {
-                const modelPath = getModelPath(entry.filename);
+                const modelPath = getModelPath(entry.filename, groupName); // ✅
                 fetch(modelPath, { method: 'HEAD' }).then(res => {
                     if (!res.ok) {
                         console.error(`Datei nicht gefunden: ${modelPath}`);
