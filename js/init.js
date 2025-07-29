@@ -41,6 +41,13 @@ function initThree() {
   controls.dampingFactor = 0.25;
   controls.screenSpacePanning = true;
   controls.maxPolarAngle = Math.PI / 2;
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
 }
 
 // ✅ Alle benötigten Exporte in einer Zeile

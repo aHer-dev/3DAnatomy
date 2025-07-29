@@ -119,11 +119,4 @@ function updateProgress(loaded, total, bar, text) {
   const progress = Math.round((loaded / total) * 100);
   bar.style.width = `${progress}%`;
   text.innerText = `${progress}%`;
-}
-
-// Testmodell-Laden (für Debugging, optional entfernen)
-const testPath = './models/muscles/FJ1322_BP50440_FMA49053_Left_superior_oblique.glb';
-loader.load(testPath, (gltf) => {
-  scene.add(gltf.scene);
-  console.log("Testmodell geladen:", testPath);
-});
+};
