@@ -1,7 +1,8 @@
 // js/modelLoader.js
+import * as THREE from './three.module.js';
 import { getMeta, getModelPath } from './utils.js';
 import { scene, loader } from './init.js';
-import { groups, modelNames, colors } from './state.js';
+import { state } from './state.js';
 
 export async function loadModels(entries, groupName, visible) {
   const loadingDiv = document.getElementById('loading');
@@ -15,7 +16,8 @@ export async function loadModels(entries, groupName, visible) {
 
     const promises = entries.map(entry => {
       return new Promise((resolve, reject) => {
-        const modelPath = getModelPath(entry.filename, groupName);
+    const modelPath = getModelPath(entry.filename, groupName);
+    console.log("🧪 Lade Modell:", entry.label, "→", modelPath);
         fetch(modelPath, { method: 'HEAD' }).then(res => {
           if (!res.ok) {
             console.error(`Datei nicht gefunden: ${modelPath}`);
@@ -31,13 +33,22 @@ export async function loadModels(entries, groupName, visible) {
               model.visible = true;
               const safeColor = colors[groupName] ?? 0xffffff;
               model.traverse(child => {
-                if (child.isMesh) {
-                  child.material = new THREE.MeshStandardMaterial({ color: safeColor });
-                }
-              });
+  if (child.isMesh && child.material) {
+    try {
+      if (Array.isArray(child.material)) {
+        child.material.forEach(m => m.color.setHex(safeColor));
+      } else {
+        child.material.color.setHex(safeColor);
+      }
+    } catch (e) {
+      // Fallback, falls Material nicht färbbar ist:
+      child.material = new THREE.MeshStandardMaterial({ color: safeColor });
+    }
+  }
+});
               scene.add(model);
-              groups[groupName].push(model);
-              modelNames.set(model, entry.label);
+              state.groups[groupName].push(model);
+              state.modelNames.set(model, entry.label);
               updateProgress(++loadedCount, totalModels, progressBar, progressText);
               resolve();
             },
@@ -64,12 +75,22 @@ export async function loadModels(entries, groupName, visible) {
       const isMatch = entries.some(entry => entry.label === label);
       if (isMatch) {
         scene.remove(model);
-        model.traverse(child => {
-          if (child.isMesh) {
-            child.geometry.dispose();
-            child.material.dispose();
-          }
-        });
+model.traverse(child => {
+  if (child.isMesh) {
+    try {
+      if (!child.material || !child.material.isMaterial) {
+        child.material = new THREE.MeshStandardMaterial({ color: safeColor });
+      } else {
+        const cloned = child.material.clone();
+        cloned.color.setHex(safeColor);
+        child.material = cloned;
+      }
+    } catch (e) {
+      console.warn("⚠️ Material konnte nicht gesetzt werden für", child.name || "unbenanntes Mesh", e);
+    }
+  }
+});
+
         modelNames.delete(model);
         return false;
       }
@@ -83,3 +104,12 @@ function updateProgress(loaded, total, bar, text) {
   bar.style.width = `${progress}%`;
   text.innerText = `${progress}%`;
 }
+
+
+
+
+const testPath = './models/muscles/FJ1322_BP50440_FMA49053_Left_superior_oblique.glb';
+loader.load(testPath, (gltf) => {
+  scene.add(gltf.scene);
+  console.log("Testmodell geladen:", testPath);
+});

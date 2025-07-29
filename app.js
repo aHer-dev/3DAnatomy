@@ -5,7 +5,6 @@ import * as utils from './js/utils.js';
 import { loadModels } from './js/modelLoader.js';
 import { setupUI } from './js/ui.js';
 import { setupInteractions } from './js/interaction.js';
-import * as THREE from './three.module.js';
 
 async function main() {
   console.log('app.js geladen, basePath:', utils.basePath);

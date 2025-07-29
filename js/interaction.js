@@ -1,6 +1,7 @@
 // js/interaction.js
+import * as THREE from './three.module.js';
 import { scene, camera } from './init.js';
-import { modelNames, currentlySelected } from './state.js';
+import { state } from './state.js';
 import { getMeta } from './utils.js';
 
 export function setupInteractions() {
@@ -17,7 +18,7 @@ export function setupInteractions() {
     if (intersects.length > 0) {
       const clickedObject = intersects[0].object;
       const selectedModel = clickedObject.parent;
-      const modelLabel = modelNames.get(selectedModel);
+      const modelLabel = state.modelNames.get(selectedModel);
 
       if (modelLabel) {
         getMeta().then(meta => {
@@ -53,18 +54,29 @@ function hideInfoPanel() {
   const infoPanel = document.getElementById('info-panel');
   infoPanel.classList.remove('visible');
   document.getElementById('info-content').innerHTML = '';
-  if (currentlySelected?.material?.emissive) {
-    currentlySelected.material.emissive.setHex(0x000000);
+  if (state.currentlySelected?.material?.emissive) {
+    state.currentlySelected.material.emissive.setHex(0x000000);
   }
-  currentlySelected = null;
+  state.currentlySelected = null;
 }
 
 function highlightObject(object) {
-  if (currentlySelected) {
-    currentlySelected.material.emissive?.setHex(0x000000);
+  if (state.currentlySelected) {
+    state.currentlySelected.material.emissive?.setHex(0x000000);
   }
   if (object.material.emissive) {
     object.material.emissive.setHex(0x222222);
   }
-  currentlySelected = object;
+  state.currentlySelected = object;
 }
+
+// Globale UI-Funktionen (z. B. für Menü und Lizenz-Dropdown)
+window.toggleMenu = function () {
+  const controls = document.getElementById('controls');
+  controls.style.display = controls.style.display === 'none' ? 'block' : 'none';
+};
+
+window.toggleLicense = function () {
+  const dropdown = document.getElementById('license-dropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+};

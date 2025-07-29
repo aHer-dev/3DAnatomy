@@ -1,7 +1,8 @@
 // js/ui.js
+import * as THREE from './three.module.js';
 import { loadModels } from './modelLoader.js';
 import { getMeta } from './utils.js';
-import { groups, modelNames, clickCounts, groupStates } from './state.js';
+import { state } from './state.js';
 
 export function setupUI() {
   const infoPanel = document.getElementById('info-panel');

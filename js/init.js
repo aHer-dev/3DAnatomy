@@ -1,7 +1,7 @@
-// js/init.js
-import * as THREE from '../three.module.js';
-import { OrbitControls } from '../OrbitControls.js';
-import { GLTFLoader } from '../GLTFLoader.js';
+import * as THREE from './three.module.js'; // ✅ korrekt für init.js
+import { OrbitControls } from '../js/OrbitControls.js';
+import { GLTFLoader } from '../js/GLTFLoader.js';
+
 
 export const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
