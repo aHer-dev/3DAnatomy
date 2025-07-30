@@ -1,21 +1,23 @@
-// js/ui.js
 import * as THREE from './three.module.js';
 import { loadModels } from './modelLoader.js';
 import { getMeta } from './utils.js';
 import { state } from './state.js';
-import { scene, loader } from './init.js'; // ✅ Loader importiert (falls nicht schon da)
+import { scene, loader } from './init.js';
 
 export function setupUI() {
   console.log('setupUI gestartet');
 
-  // Hamburger-Menü Toggle hinzufügen
+  // Hamburger-Menü Toggle hinzufügen – Panel startet offen
   const menuIcon = document.getElementById('menu-icon');
   const controlsPanel = document.getElementById('controls');
   if (menuIcon && controlsPanel) {
+    controlsPanel.style.display = 'block'; // Initial offen
+    menuIcon.classList.add('open');
     menuIcon.addEventListener('click', () => {
       const isOpen = controlsPanel.style.display === 'block';
       controlsPanel.style.display = isOpen ? 'none' : 'block';
       menuIcon.classList.toggle('open');
+      console.log(`Hamburger-Klick: Panel jetzt ${controlsPanel.style.display}`);
     });
   } else {
     console.error('menu-icon oder controls nicht gefunden');
@@ -30,6 +32,7 @@ export function setupUI() {
     infoClose.addEventListener('click', hideInfoPanel);
   }
 
+  // Neuer Block hier eingefügt
   ['bones', 'muscles', 'tendons', 'other'].forEach(groupName => {
     const checkbox = document.getElementById(groupName);
     if (!checkbox) {
@@ -38,8 +41,10 @@ export function setupUI() {
     }
 
     console.log(`Initialisiere Gruppe: ${groupName}`);
-    checkbox.addEventListener('change', async (e) => {
-      console.log(`Checkbox-Change getriggert für ${groupName}, checked: ${e.target.checked}`); // Debug: Bestätige Trigger
+    checkbox.addEventListener('click', async (e) => { // Ändere zu 'click' (statt 'change'), um jeden Klick zu fangen
+      e.preventDefault(); // Verhindere default Checkbox-Toggle
+      console.log(`Klick auf ${groupName}, aktueller Count: ${state.clickCounts[groupName]}`);
+
       const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
       if (!subDropdown) {
         console.error(`Sub-Dropdown für ${groupName} nicht gefunden`);
@@ -47,48 +52,61 @@ export function setupUI() {
       }
 
       try {
-        if (e.target.checked) {
-          // Alle anderen Submenüs schließen
-          ['bones', 'muscles', 'tendons', 'other'].forEach(id => {
-            if (id !== groupName) {
-              const otherDropdown = document.getElementById(`${id}-sub-dropdown`);
-              const otherCheckbox = document.getElementById(id);
-              if (otherDropdown) otherDropdown.style.display = 'none';
-              if (otherCheckbox) otherCheckbox.checked = false;
-            }
-          });
+        // Inkrementiere bei jedem Klick
+        state.clickCounts[groupName] = (state.clickCounts[groupName] + 1) % 4;
+        const clickCount = state.clickCounts[groupName];
+        console.log(`Neuer Click-Count für ${groupName}: ${clickCount}`);
 
+        // Schließe andere Submenüs
+        ['bones', 'muscles', 'tendons', 'other'].forEach(id => {
+          if (id !== groupName) {
+            const otherDropdown = document.getElementById(`${id}-sub-dropdown`);
+            const otherCheckbox = document.getElementById(id);
+            if (otherDropdown) otherDropdown.style.display = 'none';
+            if (otherCheckbox) otherCheckbox.checked = false;
+            state.clickCounts[id] = 0;
+          }
+        });
+
+        const meta = await getMeta();
+        const entries = meta.filter(entry => entry.group === groupName);
+        console.log(`📊 Entries für ${groupName}: ${entries.length} gefunden`);
+
+        if (clickCount === 1) { // Klick 1: Load + Open
           subDropdown.style.display = 'block';
-
+          checkbox.checked = true;
           await generateSubDropdown(groupName);
-          const meta = await getMeta();
-          console.log(`🔍 Meta geladen für ${groupName}, Gesamt-Einträge: ${meta.length}`);
-
-          const entries = meta.filter(entry => entry.group === groupName);
-          console.log(`📊 Entries für ${groupName}: ${entries.length} gefunden`);
-
           if (entries.length > 0) {
             console.log(`🚀 Starte Laden aller Modelle für ${groupName}`);
             await loadModels(entries, groupName, true, scene, loader);
-          } else {
-            console.warn(`⚠️ Keine Modelle für ${groupName} in meta.json – prüfe Datei!`);
           }
-        } else {
-          subDropdown.style.display = 'none';
-
-          const meta = await getMeta();
-          const entries = meta.filter(entry => entry.group === groupName);
+        } else if (clickCount === 2) { // Klick 2: Unload + Keep Open
+          subDropdown.style.display = 'block';
+          checkbox.checked = false;
           if (entries.length > 0) {
             console.log(`🛑 Starte Ausblenden aller Modelle für ${groupName}`);
             await loadModels(entries, groupName, false, scene, loader);
           }
+        } else if (clickCount === 3) { // Klick 3: Minimize Sub
+          subDropdown.style.display = 'none';
+          checkbox.checked = false;
+          console.log(`📌 Submenü für ${groupName} minimiert`);
+        } else if (clickCount === 0) { // Klick 4: Reset zu Phase 1
+          subDropdown.style.display = 'block';
+          checkbox.checked = true;
+          await generateSubDropdown(groupName);
+          if (entries.length > 0) {
+            console.log(`🔄 Reset: Starte Laden aller Modelle für ${groupName}`);
+            await loadModels(entries, groupName, true, scene, loader);
+          }
         }
       } catch (error) {
-        console.error(`Fehler im Change-Handler für ${groupName}:`, error);
+        console.error(`Fehler im Klick-Handler für ${groupName}:`, error);
       }
     });
   });
 
+  // Rest des Originalcodes (Dropdown, Suchleiste, Slider, etc.)
   // Initial aktives Dropdown öffnen
   const dropdown = document.querySelector('.dropdown');
   if (dropdown) {
@@ -163,13 +181,9 @@ export function setupUI() {
   document.querySelectorAll('.dropdown-button').forEach(button => {
     button.addEventListener('click', () => {
       const dropdown = button.closest('.dropdown');
-
-      // Alle anderen Dropdowns schließen
       document.querySelectorAll('.dropdown').forEach(d => {
         if (d !== dropdown) d.classList.remove('active');
       });
-
-      // Aktuellen Dropdown toggeln
       dropdown.classList.toggle('active');
     });
   });
@@ -178,8 +192,7 @@ export function setupUI() {
 export async function generateSubDropdown(groupName) {
   console.log(`📦 generateSubDropdown aufgerufen für ${groupName}`);
 
-  const meta = await getMeta();  // <- 🔥 WICHTIG! Hier wurde vorher ein Fehler geworfen
-
+  const meta = await getMeta();
   const container = document.getElementById(`${groupName}-subgroups`);
   container.innerHTML = '';
 
@@ -203,13 +216,11 @@ export async function generateSubDropdown(groupName) {
 
     checkbox.addEventListener('change', async () => {
       console.log(`☑️ Checkbox geklickt: Subgruppe = ${subgroup}, Checked = ${checkbox.checked}`);
-
       const meta = await getMeta();
       const entries = meta.filter(entry =>
         entry.group === groupName &&
         (entry.subgroup === subgroup || (subgroup === 'Allgemein' && entry.subgroup === 'none'))
       );
-
       await loadModels(entries, groupName, checkbox.checked, scene, loader);
     });
 

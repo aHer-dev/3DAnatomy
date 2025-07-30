@@ -14,16 +14,31 @@ body {
 /* --- Steuerungspanel (#controls) --- */
 /* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
 #controls {
-    display: none;
-    position: absolute;
-    top: 60px;
-    left: 10px;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.9); /* gut sichtbar */
-    padding: 10px;
-    color: white;
-    max-height: 80vh;
-    overflow-y: auto;
+  display: none; /* Initial none, aber JS setzt block */
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 10px;
+  color: white;
+  max-width: 250px; /* ✅ Enger machen, um View freizulassen */
+  max-height: 80vh;
+  overflow-y: auto;
+  pointer-events: auto; /* Klicks im Panel bleiben, außerhalb auf Canvas */
+}
+
+#controls .sub-dropdown {
+  transition: height 0.3s ease;
+}
+#controls .sub-dropdown.minimized {
+  height: 0;
+  overflow: hidden;
+}
+
+#controls.minimized {
+  max-height: 100px; /* Nur Hauptgruppen sichtbar */
+  overflow: hidden; /* Submenüs abschneiden */
 }
 
 /* Überschriften im Steuerungspanel */

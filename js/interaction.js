@@ -1,4 +1,3 @@
-// js/interaction.js
 import * as THREE from './three.module.js';
 import { scene, camera } from './init.js';
 import { state } from './state.js';
@@ -8,7 +7,12 @@ export function setupInteractions() {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-
+    // Initialisiere Panel als offen
+    const controls = document.getElementById('controls');
+    if (controls) {
+        controls.style.display = 'block';
+        console.log('Panel initial offen gesetzt');
+    }
 
     document.getElementById('menu-icon').addEventListener('click', () => {
         window.toggleMenu();
@@ -16,31 +20,25 @@ export function setupInteractions() {
         menuIcon.classList.toggle('open');
     });
 
-
-document.addEventListener('click', (event) => {
-    // Verzögerung, um Race-Conditions bei Checkbox-/Dropdown-Klicks zu vermeiden
-    setTimeout(() => {
-        const controls = document.getElementById('controls');
-        const menuIcon = document.getElementById('menu-icon');
-
-        const clickedInsideControls = controls.contains(event.target);
-        const clickedMenuIcon = menuIcon.contains(event.target);
-
-        if (!clickedInsideControls && !clickedMenuIcon) {
-            if (controls.style.display === 'block') {
-                controls.style.display = 'none';
-                console.log('Menü wurde geschlossen (nach Timeout)');
+    // Kein Schließen bei externen Klicks (auskommentiert)
+    /*
+    document.addEventListener('click', (event) => {
+        setTimeout(() => {
+            const controls = document.getElementById('controls');
+            const menuIcon = document.getElementById('menu-icon');
+            const clickedInsideControls = controls.contains(event.target);
+            const clickedMenuIcon = menuIcon.contains(event.target);
+            if (!clickedInsideControls && !clickedMenuIcon) {
+                if (controls.style.display === 'block') {
+                    controls.style.display = 'none';
+                    console.log('Menü wurde geschlossen (nach Timeout)');
+                }
+            } else {
+                console.log('Menü bleibt offen (Klick innerhalb)');
             }
-        } else {
-            console.log('Menü bleibt offen (Klick innerhalb)');
-        }
-    }, 10); // kleine Verzögerung reicht
-});
-
-
-
-
-
+        }, 10);
+    });
+    */
 }
 
 function showInfoPanel(meta) {
@@ -68,11 +66,10 @@ function showInfoPanel(meta) {
         return;
     }
 
-    infoPanel.classList.remove('hidden');   // <- das ist wichtig!
-    infoPanel.classList.add('visible');     // optional, falls du zusätzliche Effekte hast
+    infoPanel.classList.remove('hidden');
+    infoPanel.classList.add('visible');
     console.log('Info-Panel angezeigt');
 }
-
 
 function hideInfoPanel() {
     const infoPanel = document.getElementById('info-panel');
@@ -84,26 +81,6 @@ function hideInfoPanel() {
     }
     state.currentlySelected = null;
 }
-
-import { generateSubDropdown } from './ui.js';
-
-['bones', 'muscles', 'tendons', 'other'].forEach(group => {
-  const checkbox = document.getElementById(group);
-  if (checkbox) {
-    checkbox.addEventListener('change', async () => {
-      const dropdown = document.getElementById(`${group}-sub-dropdown`);
-      if (checkbox.checked) {
-        dropdown.style.display = 'block';
-        console.log(`🔧 Generiere Subgruppen für ${group}`);
-        await generateSubDropdown(group);
-      } else {
-        dropdown.style.display = 'none';
-      }
-    });
-  }
-});
-
-
 
 function highlightObject(object) {
     if (state.currentlySelected) {
@@ -122,7 +99,6 @@ window.toggleMenu = function () {
     controls.style.display = isVisible ? 'none' : 'block';
     console.log('ToggleMenu: display = ' + controls.style.display);
 
-
     if (!isVisible) {
         document.querySelectorAll('[id$="-sub-dropdown"]').forEach(drop => {
             drop.style.display = 'none';
@@ -135,7 +111,6 @@ window.toggleMenu = function () {
         });
     }
 };
-
 
 window.toggleLicense = function () {
     const dropdown = document.getElementById('license-dropdown');
