@@ -5,8 +5,6 @@ body {
     background-color: #333333; /* Dunkelgrauer Hintergrund für 3D-Viewer */
 }
 
-
-
 /* --- Steuerungspanel (#controls) --- */
 /* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
 #controls {
@@ -100,7 +98,6 @@ button:hover {
     margin-top: 5px;
 }
 
-
 /* Hamburger-Menü bei geöffnetem Zustand */
 #menu-icon {
     position: fixed;
@@ -148,8 +145,7 @@ button:hover {
     background-color: #555555;
 }
 
-
-/* --- Sub-Dropdowns (für Subgruppen wie arm-schulter) --- */
+/* --- Sub-Dropdowns (für Subgruppen wie Arm-Schulter) --- */
 #bones-sub-dropdown, #muscles-sub-dropdown, #tendons-sub-dropdown, #other-sub-dropdown {
     margin-left: 20px; /* Einrückung für Hierarchie */
 }
@@ -407,21 +403,56 @@ button:hover {
         font-size: 10px;
         padding: 3px 8px;
     }
+
+    /* Info-Panel Mobile: Unten mittig, sichtbar machen */
+    #info-panel {
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90vw;
+    }
+
+    #info-panel.hidden {
+        transform: translateX(-50%) translateY(150%);
+    }
+
+    #info-panel.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto !important;
+    }
 }
 
 /* --- Desktop-Optimierung --- */
 @media (min-width: 601px) {
     /* Steuerungspanel: Initial ausgeblendet, per Hamburger-Menü toggelbar */
-
     #menu-icon {
         display: block;
     }
+
+    /* Info-Panel Desktop: Oben rechts, sichtbar machen */
+    #info-panel {
+        top: 10px;
+        right: 10px;
+        bottom: auto;
+        left: auto;
+        transform: none;
+    }
+
+    #info-panel.hidden {
+        transform: translateY(150%);
+    }
+
+    #info-panel.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto !important;
+    }
 }
 
+/* Globale Regeln für Info-Panel (für beide Modi) */
 #info-panel {
   position: fixed !important;
-  top: 10px !important; /* Oben */
-  right: 10px !important; /* Rechts */
   max-width: 300px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
@@ -432,44 +463,27 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   z-index: 10;
   opacity: 0;
-  transform: translateY(150%);
   pointer-events: none !important;
   transition: opacity 0.3s ease, transform 0.3s ease; /* Nur animierbare Eigenschaften */
 }
 
 #info-panel.hidden {
   opacity: 0;
-  transform: translateY(150%);
   pointer-events: none;
 }
 
-
-/* Desktop: oben rechts */
-@media (min-width: 601px) {
-    #info-panel {
-    bottom: 10px;
-    left: 50%;
-    transform: none;
-    top: auto;
-    right: auto;
-  }
+#info-panel.visible {
+  opacity: 1;
+  pointer-events: auto !important; /* Interaktionen ermöglichen */
 }
 
-/* Mobile: unten mittig */
-@media (max-width: 600px) {
-  #info-panel {
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%); /* Entferne translateY(100%) für Basis */
-    width: 90vw;
-  }
-
-  #info-panel.visible {
-    transform: translateX(-50%);
-  }
+#info-panel * { /* Alle Kinder */
+  pointer-events: auto; /* Ermögliche Interaktion mit Buttons/Slider/Close */
 }
 
-
+#info-content {
+  pointer-events: auto; /* Sicherstellen */
+}
 
 #info-header {
   display: flex;
@@ -495,14 +509,9 @@ button:hover {
   margin: 4px 0;
 }
 
-
-
-
-
 .info-icon {
   font-size: 1.4em;
 }
-
 
 .more-button {
   font-size: 0.8rem;
@@ -524,13 +533,6 @@ button:hover {
 .item-checkbox {
   margin-right: 5px;
 }
-
-label {
-  display: block;
-  font-size: 12px;
-  color: white;
-}
-
 
 #container {
     width: 100vw;

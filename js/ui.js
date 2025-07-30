@@ -198,8 +198,20 @@ async function generateDetailedList(groupName, subgroup) {
   });
   list.appendChild(toggleSubBtn); // Zuerst Button anhängen
 
+  // Neu: Sortiere die Einträge – right vor left, dann nach FMA aufsteigend
+  const filtered = subEntries.sort((a, b) => {
+    // Primär: right vor left
+    if (a.side !== b.side) {
+      return a.side === 'right' ? -1 : 1;
+    }
+    // Sekundär: Nach FMA-ID (aufsteigend, extrahiere Zahl für numerische Sortierung)
+    const fmaA = parseInt(a.fma.replace(/\D/g, '')) || 0;
+    const fmaB = parseInt(b.fma.replace(/\D/g, '')) || 0;
+    return fmaA - fmaB;
+  });
+
   // Checkboxen generieren (nach Button)
-  subEntries.forEach(entry => {
+  filtered.forEach(entry => {
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -212,7 +224,7 @@ async function generateDetailedList(groupName, subgroup) {
       if (!state.subgroupStates[groupName][subgroup]) state.subgroupStates[groupName][subgroup] = {};
       state.subgroupStates[groupName][subgroup][entry.filename] = checkbox.checked;
       // Update Toggle-Button
-      subLoaded = subEntries.every(e => state.subgroupStates[groupName][subgroup]?.[e.filename] ?? false);
+      subLoaded = filtered.every(entry => state.subgroupStates[groupName][subgroup]?.[entry.filename] ?? false);
       toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
     });
     label.appendChild(checkbox);

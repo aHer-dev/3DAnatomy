@@ -5,7 +5,7 @@
     "fma": "FMA37464",
     "fj": "FJ1390M",
     "filename": "FJ1390M_BP50551_FMA37464_Abductor_digiti_minimi_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -16,7 +16,7 @@
     "fma": "FMA37397",
     "fj": "FJ1466M",
     "filename": "FJ1466M_BP49210_FMA37397_Abductor_digiti_minimi_of_left_hand.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -27,7 +27,7 @@
     "fma": "FMA37463",
     "fj": "FJ1390",
     "filename": "FJ1390_BP50570_FMA37463_Abductor_digiti_minimi_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -38,7 +38,7 @@
     "fma": "FMA37396",
     "fj": "FJ1466",
     "filename": "FJ1466_BP49139_FMA37396_Abductor_digiti_minimi_of_right_hand.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -49,7 +49,7 @@
     "fma": "FMA34683",
     "fj": "FJ1467M",
     "filename": "FJ1467M_BP49559_FMA34683_Acromial_part_of_left_deltoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Part"
@@ -62,7 +62,7 @@
     "fma": "FMA34682",
     "fj": "FJ1467",
     "filename": "FJ1467_BP49411_FMA34682_Acromial_part_of_right_deltoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Part"
@@ -75,7 +75,7 @@
     "fma": "FMA34681",
     "fj": "FJ1468M",
     "filename": "FJ1468M_BP49605_FMA34681_Clavicular_part_of_left_deltoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Part"
@@ -88,7 +88,7 @@
     "fma": "FMA34680",
     "fj": "FJ1468",
     "filename": "FJ1468_BP49410_FMA34680_Clavicular_part_of_right_deltoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Part"
@@ -101,7 +101,7 @@
     "fma": "FMA37459",
     "fj": "FJ1400",
     "filename": "FJ1400_BP50499_FMA37459_Right_abductor_hallucis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -112,7 +112,7 @@
     "fma": "FMA37386",
     "fj": "FJ1483",
     "filename": "FJ1483_BP49334_FMA37386_Right_abductor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -123,7 +123,7 @@
     "fma": "FMA38516",
     "fj": "FJ1484",
     "filename": "FJ1484_BP50123_FMA38516_Right_abductor_pollicis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -134,7 +134,7 @@
     "fma": "FMA37705",
     "fj": "FJ1485",
     "filename": "FJ1485_BP49947_FMA37705_Right_anconeus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -145,7 +145,7 @@
     "fma": "FMA55113",
     "fj": "FJ2792",
     "filename": "FJ2792_BP47828_FMA55113_Right_arytenoid_cartilage.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -156,7 +156,7 @@
     "fma": "FMA37668",
     "fj": "FJ1486",
     "filename": "FJ1486_BP50017_FMA37668_Right_brachialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -167,7 +167,7 @@
     "fma": "FMA38486",
     "fj": "FJ1487",
     "filename": "FJ1487_BP49983_FMA38486_Right_brachioradialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -178,7 +178,7 @@
     "fma": "FMA37665",
     "fj": "FJ1488",
     "filename": "FJ1488_BP50147_FMA37665_Right_coracobrachialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -189,7 +189,7 @@
     "fma": "FMA38498",
     "fj": "FJ1489",
     "filename": "FJ1489_BP50006_FMA38498_Right_extensor_carpi_radialis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -200,7 +200,7 @@
     "fma": "FMA38495",
     "fj": "FJ1490",
     "filename": "FJ1490_BP50231_FMA38495_Right_extensor_carpi_radialis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -211,7 +211,7 @@
     "fma": "FMA38507",
     "fj": "FJ1472",
     "filename": "FJ1472_BP50088_FMA38507_Right_extensor_carpi_ulnaris.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -222,7 +222,7 @@
     "fma": "FMA38504",
     "fj": "FJ1491",
     "filename": "FJ1491_BP49809_FMA38504_Right_extensor_digiti_minimi.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -233,7 +233,7 @@
     "fma": "FMA38501",
     "fj": "FJ1492",
     "filename": "FJ1492_BP50046_FMA38501_Right_extensor_digitorum.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -244,7 +244,7 @@
     "fma": "FMA22548",
     "fj": "FJ1406",
     "filename": "FJ1406_BP50285_FMA22548_Right_extensor_digitorum_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -255,7 +255,7 @@
     "fma": "FMA51144",
     "fj": "FJ1407",
     "filename": "FJ1407_BP49278_FMA51144_Right_extensor_hallucis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -266,7 +266,7 @@
     "fma": "FMA22546",
     "fj": "FJ1408",
     "filename": "FJ1408_BP50364_FMA22546_Right_extensor_hallucis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -277,7 +277,7 @@
     "fma": "FMA38525",
     "fj": "FJ1493",
     "filename": "FJ1493_BP49831_FMA38525_Right_extensor_indicis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -288,7 +288,7 @@
     "fma": "FMA38519",
     "fj": "FJ1494",
     "filename": "FJ1494_BP49848_FMA38519_Right_extensor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -299,7 +299,7 @@
     "fma": "FMA38522",
     "fj": "FJ1495",
     "filename": "FJ1495_BP49965_FMA38522_Right_extensor_pollicis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -310,7 +310,7 @@
     "fma": "FMA37465",
     "fj": "FJ1412",
     "filename": "FJ1412_BP50526_FMA37465_Right_flexor_accessorius.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -321,7 +321,7 @@
     "fma": "FMA38460",
     "fj": "FJ1496",
     "filename": "FJ1496_BP49998_FMA38460_Right_flexor_carpi_radialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -332,7 +332,7 @@
     "fma": "FMA37461",
     "fj": "FJ1413",
     "filename": "FJ1413_BP50684_FMA37461_Right_flexor_digitorum_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -343,7 +343,7 @@
     "fma": "FMA65016",
     "fj": "FJ1414",
     "filename": "FJ1414_BP50666_FMA65016_Right_flexor_digitorum_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -354,7 +354,7 @@
     "fma": "FMA38479",
     "fj": "FJ1497",
     "filename": "FJ1497_BP50112_FMA38479_Right_flexor_digitorum_profundus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -365,7 +365,7 @@
     "fma": "FMA38470",
     "fj": "FJ1475",
     "filename": "FJ1475_BP49951_FMA38470_Right_flexor_digitorum_superficialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -376,7 +376,7 @@
     "fma": "FMA65014",
     "fj": "FJ1415",
     "filename": "FJ1415_BP50660_FMA65014_Right_flexor_hallucis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -387,7 +387,7 @@
     "fma": "FMA37388",
     "fj": "FJ1469M",
     "filename": "FJ1469M_BP49121_FMA37388_Right_flexor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -398,7 +398,7 @@
     "fma": "FMA38482",
     "fj": "FJ1498",
     "filename": "FJ1498_BP50223_FMA38482_Right_flexor_pollicis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -409,7 +409,7 @@
     "fma": "FMA46580",
     "fj": "FJ2796",
     "filename": "FJ2796_BP46792_FMA46580_Right_lateral_crico-arytenoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -420,7 +420,7 @@
     "fma": "FMA37390",
     "fj": "FJ1501",
     "filename": "FJ1501_BP49258_FMA37390_Right_opponens_pollicis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -431,7 +431,7 @@
     "fma": "FMA38463",
     "fj": "FJ1502",
     "filename": "FJ1502_BP50020_FMA38463_Right_palmaris_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -442,7 +442,7 @@
     "fma": "FMA46577",
     "fj": "FJ2800",
     "filename": "FJ2800_BP47041_FMA46577_Right_posterior_crico-arytenoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -453,7 +453,7 @@
     "fma": "FMA38454",
     "fj": "FJ1503",
     "filename": "FJ1503_BP50109_FMA38454_Right_pronator_quadratus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -464,7 +464,7 @@
     "fma": "FMA46589",
     "fj": "FJ2802",
     "filename": "FJ2802_BP46907_FMA46589_Right_thyro-arytenoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -475,7 +475,7 @@
     "fma": "FMA46599",
     "fj": "FJ4502",
     "filename": "FJ4502_BP47672_FMA46599_Right_thyro-arytenoid_proper.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -486,7 +486,7 @@
     "fma": "FMA37718",
     "fj": "FJ1383M",
     "filename": "FJ1383M_BP50412_FMA37718_First_lumbrical_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -497,7 +497,7 @@
     "fma": "FMA37717",
     "fj": "FJ1383",
     "filename": "FJ1383_BP50495_FMA37717_First_lumbrical_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -508,7 +508,7 @@
     "fma": "FMA37472",
     "fj": "FJ1391M",
     "filename": "FJ1391M_BP50589_FMA37472_Flexor_digiti_minimi_brevis_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -519,7 +519,7 @@
     "fma": "FMA37399",
     "fj": "FJ1470M",
     "filename": "FJ1470M_BP49194_FMA37399_Flexor_digiti_minimi_brevis_of_left_hand.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -530,7 +530,7 @@
     "fma": "FMA37471",
     "fj": "FJ1391",
     "filename": "FJ1391_BP50369_FMA37471_Flexor_digiti_minimi_brevis_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -541,7 +541,7 @@
     "fma": "FMA37398",
     "fj": "FJ1470",
     "filename": "FJ1470_BP49231_FMA37398_Flexor_digiti_minimi_brevis_of_right_hand.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -552,7 +552,7 @@
     "fma": "FMA37484",
     "fj": "FJ1389M",
     "filename": "FJ1389M_BP50425_FMA37484_Fourth_lumbrical_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -563,7 +563,7 @@
     "fma": "FMA37483",
     "fj": "FJ1389",
     "filename": "FJ1389_BP50275_FMA37483_Fourth_lumbrical_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -574,7 +574,7 @@
     "fma": "FMA38618",
     "fj": "FJ1473M",
     "filename": "FJ1473M_BP47579_FMA38618_Humeral_head_of_left_flexor_carpi_ulnaris.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -587,7 +587,7 @@
     "fma": "FMA38561",
     "fj": "FJ1474M",
     "filename": "FJ1474M_BP47920_FMA38561_Humeral_head_of_left_pronator_teres.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -600,7 +600,7 @@
     "fma": "FMA38617",
     "fj": "FJ1473",
     "filename": "FJ1473_BP47911_FMA38617_Humeral_head_of_right_flexor_carpi_ulnaris.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -613,7 +613,7 @@
     "fma": "FMA38560",
     "fj": "FJ1474",
     "filename": "FJ1474_BP47787_FMA38560_Humeral_head_of_right_pronator_teres.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -626,7 +626,7 @@
     "fma": "FMA45974",
     "fj": "FJ1393M",
     "filename": "FJ1393M_BP49974_FMA45974_Lateral_head_of_left_flexor_hallucis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -639,7 +639,7 @@
     "fma": "FMA37698",
     "fj": "FJ1477M",
     "filename": "FJ1477M_BP49762_FMA37698_Lateral_head_of_left_triceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -652,7 +652,7 @@
     "fma": "FMA45973",
     "fj": "FJ1393",
     "filename": "FJ1393_BP50202_FMA45973_Lateral_head_of_right_flexor_hallucis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -665,7 +665,7 @@
     "fma": "FMA37697",
     "fj": "FJ1477",
     "filename": "FJ1477_BP49624_FMA37697_Lateral_head_of_right_triceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -678,7 +678,7 @@
     "fma": "FMA37687",
     "fj": "FJ1478M",
     "filename": "FJ1478M_BP47942_FMA37687_Long_head_of_left_biceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -691,7 +691,7 @@
     "fma": "FMA37700",
     "fj": "FJ1479M",
     "filename": "FJ1479M_BP49656_FMA37700_Long_head_of_left_triceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -704,7 +704,7 @@
     "fma": "FMA37686",
     "fj": "FJ1478",
     "filename": "FJ1478_BP47872_FMA37686_Long_head_of_right_biceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -717,7 +717,7 @@
     "fma": "FMA37699",
     "fj": "FJ1479",
     "filename": "FJ1479_BP49435_FMA37699_Long_head_of_right_triceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -730,7 +730,7 @@
     "fma": "FMA45972",
     "fj": "FJ1396M",
     "filename": "FJ1396M_BP50237_FMA45972_Medial_head_of_left_flexor_hallucis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -743,7 +743,7 @@
     "fma": "FMA37696",
     "fj": "FJ1480M",
     "filename": "FJ1480M_BP49689_FMA37696_Medial_head_of_left_triceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -756,7 +756,7 @@
     "fma": "FMA45971",
     "fj": "FJ1396",
     "filename": "FJ1396_BP49816_FMA45971_Medial_head_of_right_flexor_hallucis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -769,7 +769,7 @@
     "fma": "FMA37695",
     "fj": "FJ1480",
     "filename": "FJ1480_BP49531_FMA37695_Medial_head_of_right_triceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -782,7 +782,7 @@
     "fma": "FMA86035",
     "fj": "FJ1399M",
     "filename": "FJ1399M_BP50430_FMA86035_Opponens_digiti_minimi_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -793,7 +793,7 @@
     "fma": "FMA37401",
     "fj": "FJ1482M",
     "filename": "FJ1482M_BP49304_FMA37401_Opponens_digiti_minimi_of_left_hand.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -804,7 +804,7 @@
     "fma": "FMA86034",
     "fj": "FJ1399",
     "filename": "FJ1399_BP50455_FMA86034_Opponens_digiti_minimi_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -815,7 +815,7 @@
     "fma": "FMA37400",
     "fj": "FJ1482",
     "filename": "FJ1482_BP49292_FMA37400_Opponens_digiti_minimi_of_right_hand.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -826,7 +826,7 @@
     "fma": "FMA37720",
     "fj": "FJ1385M",
     "filename": "FJ1385M_BP50301_FMA37720_Second_lumbrical_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -837,7 +837,7 @@
     "fma": "FMA37719",
     "fj": "FJ1385",
     "filename": "FJ1385_BP50429_FMA37719_Second_lumbrical_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -848,7 +848,7 @@
     "fma": "FMA37685",
     "fj": "FJ1512M",
     "filename": "FJ1512M_BP50530_FMA37685_Short_head_of_left_biceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -861,7 +861,7 @@
     "fma": "FMA37684",
     "fj": "FJ1512",
     "filename": "FJ1512_BP50588_FMA37684_Short_head_of_right_biceps_brachii.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -874,7 +874,7 @@
     "fma": "FMA37460",
     "fj": "FJ1400M",
     "filename": "FJ1400M_BP50252_FMA37460_Left_abductor_hallucis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -885,7 +885,7 @@
     "fma": "FMA37387",
     "fj": "FJ1483M",
     "filename": "FJ1483M_BP49359_FMA37387_Left_abductor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -896,7 +896,7 @@
     "fma": "FMA38517",
     "fj": "FJ1484M",
     "filename": "FJ1484M_BP49905_FMA38517_Left_abductor_pollicis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -907,7 +907,7 @@
     "fma": "FMA37706",
     "fj": "FJ1485M",
     "filename": "FJ1485M_BP49881_FMA37706_Left_anconeus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -918,7 +918,7 @@
     "fma": "FMA55114",
     "fj": "FJ2775",
     "filename": "FJ2775_BP47562_FMA55114_Left_arytenoid_cartilage.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -929,7 +929,7 @@
     "fma": "FMA37669",
     "fj": "FJ1486M",
     "filename": "FJ1486M_BP49886_FMA37669_Left_brachialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -940,7 +940,7 @@
     "fma": "FMA38487",
     "fj": "FJ1487M",
     "filename": "FJ1487M_BP50195_FMA38487_Left_brachioradialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -951,7 +951,7 @@
     "fma": "FMA37666",
     "fj": "FJ1488M",
     "filename": "FJ1488M_BP49857_FMA37666_Left_coracobrachialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -962,7 +962,7 @@
     "fma": "FMA38499",
     "fj": "FJ1489M",
     "filename": "FJ1489M_BP50132_FMA38499_Left_extensor_carpi_radialis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -973,7 +973,7 @@
     "fma": "FMA38496",
     "fj": "FJ1490M",
     "filename": "FJ1490M_BP49869_FMA38496_Left_extensor_carpi_radialis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -984,7 +984,7 @@
     "fma": "FMA38508",
     "fj": "FJ1472M",
     "filename": "FJ1472M_BP50120_FMA38508_Left_extensor_carpi_ulnaris.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -995,7 +995,7 @@
     "fma": "FMA38505",
     "fj": "FJ1491M",
     "filename": "FJ1491M_BP50154_FMA38505_Left_extensor_digiti_minimi.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1006,7 +1006,7 @@
     "fma": "FMA38502",
     "fj": "FJ1492M",
     "filename": "FJ1492M_BP49939_FMA38502_Left_extensor_digitorum.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1017,7 +1017,7 @@
     "fma": "FMA22549",
     "fj": "FJ1406M",
     "filename": "FJ1406M_BP50479_FMA22549_Left_extensor_digitorum_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1028,7 +1028,7 @@
     "fma": "FMA51145",
     "fj": "FJ1407M",
     "filename": "FJ1407M_BP49227_FMA51145_Left_extensor_hallucis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1039,7 +1039,7 @@
     "fma": "FMA22547",
     "fj": "FJ1408M",
     "filename": "FJ1408M_BP50348_FMA22547_Left_extensor_hallucis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1050,7 +1050,7 @@
     "fma": "FMA38526",
     "fj": "FJ1493M",
     "filename": "FJ1493M_BP50019_FMA38526_Left_extensor_indicis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1061,7 +1061,7 @@
     "fma": "FMA38520",
     "fj": "FJ1494M",
     "filename": "FJ1494M_BP49807_FMA38520_Left_extensor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1072,7 +1072,7 @@
     "fma": "FMA38523",
     "fj": "FJ1495M",
     "filename": "FJ1495M_BP49849_FMA38523_Left_extensor_pollicis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1083,7 +1083,7 @@
     "fma": "FMA37466",
     "fj": "FJ1412M",
     "filename": "FJ1412M_BP50405_FMA37466_Left_flexor_accessorius.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1094,7 +1094,7 @@
     "fma": "FMA38461",
     "fj": "FJ1496M",
     "filename": "FJ1496M_BP49959_FMA38461_Left_flexor_carpi_radialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1105,7 +1105,7 @@
     "fma": "FMA37462",
     "fj": "FJ1413M",
     "filename": "FJ1413M_BP50518_FMA37462_Left_flexor_digitorum_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1116,7 +1116,7 @@
     "fma": "FMA65017",
     "fj": "FJ1414M",
     "filename": "FJ1414M_BP50545_FMA65017_Left_flexor_digitorum_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1127,7 +1127,7 @@
     "fma": "FMA38480",
     "fj": "FJ1497M",
     "filename": "FJ1497M_BP50022_FMA38480_Left_flexor_digitorum_profundus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1138,7 +1138,7 @@
     "fma": "FMA38471",
     "fj": "FJ1475M",
     "filename": "FJ1475M_BP49868_FMA38471_Left_flexor_digitorum_superficialis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1149,7 +1149,7 @@
     "fma": "FMA65015",
     "fj": "FJ1415M",
     "filename": "FJ1415M_BP50517_FMA65015_Left_flexor_hallucis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1160,7 +1160,7 @@
     "fma": "FMA37389",
     "fj": "FJ1469",
     "filename": "FJ1469_BP49321_FMA37389_Left_flexor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1171,7 +1171,7 @@
     "fma": "FMA38484",
     "fj": "FJ1498M",
     "filename": "FJ1498M_BP50220_FMA38484_Left_flexor_pollicis_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1182,7 +1182,7 @@
     "fma": "FMA46581",
     "fj": "FJ2778",
     "filename": "FJ2778_BP46811_FMA46581_Left_lateral_crico-arytenoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1193,7 +1193,7 @@
     "fma": "FMA37391",
     "fj": "FJ1501M",
     "filename": "FJ1501M_BP49379_FMA37391_Left_opponens_pollicis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1204,7 +1204,7 @@
     "fma": "FMA38464",
     "fj": "FJ1502M",
     "filename": "FJ1502M_BP49820_FMA38464_Left_palmaris_longus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1215,7 +1215,7 @@
     "fma": "FMA46578",
     "fj": "FJ2782",
     "filename": "FJ2782_BP46742_FMA46578_Left_posterior_crico-arytenoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1226,7 +1226,7 @@
     "fma": "FMA38455",
     "fj": "FJ1503M",
     "filename": "FJ1503M_BP49839_FMA38455_Left_pronator_quadratus.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1237,7 +1237,7 @@
     "fma": "FMA46590",
     "fj": "FJ2784",
     "filename": "FJ2784_BP46749_FMA46590_Left_thyro-arytenoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1248,7 +1248,7 @@
     "fma": "FMA46600",
     "fj": "FJ4473",
     "filename": "FJ4473_BP47741_FMA46600_Left_thyro-arytenoid_proper.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1259,7 +1259,7 @@
     "fma": "FMA34685",
     "fj": "FJ1513M",
     "filename": "FJ1513M_BP49403_FMA34685_Spinal_part_of_left_deltoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Part"
@@ -1272,7 +1272,7 @@
     "fma": "FMA34684",
     "fj": "FJ1513",
     "filename": "FJ1513_BP49606_FMA34684_Spinal_part_of_right_deltoid.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Part"
@@ -1285,7 +1285,7 @@
     "fma": "FMA65199",
     "fj": "FJ1514M",
     "filename": "FJ1514M_BP47899_FMA65199_Superficial_head_of_left_flexor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -1298,7 +1298,7 @@
     "fma": "FMA65198",
     "fj": "FJ1514",
     "filename": "FJ1514_BP47871_FMA65198_Superficial_head_of_right_flexor_pollicis_brevis.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -1311,7 +1311,7 @@
     "fma": "FMA37486",
     "fj": "FJ1387M",
     "filename": "FJ1387M_BP50386_FMA37486_Third_lumbrical_of_left_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1322,7 +1322,7 @@
     "fma": "FMA37485",
     "fj": "FJ1387",
     "filename": "FJ1387_BP50411_FMA37485_Third_lumbrical_of_right_foot.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1333,7 +1333,7 @@
     "fma": "FMA38620",
     "fj": "FJ1518M",
     "filename": "FJ1518M_BP47720_FMA38620_Ulnar_head_of_left_flexor_carpi_ulnaris.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -1346,7 +1346,7 @@
     "fma": "FMA38563",
     "fj": "FJ1516M",
     "filename": "FJ1516M_BP47829_FMA38563_Ulnar_head_of_left_pronator_teres.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "left",
     "parts": [
       "Head"
@@ -1359,7 +1359,7 @@
     "fma": "FMA38619",
     "fj": "FJ1518",
     "filename": "FJ1518_BP47924_FMA38619_Ulnar_head_of_right_flexor_carpi_ulnaris.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -1372,7 +1372,7 @@
     "fma": "FMA38562",
     "fj": "FJ1516",
     "filename": "FJ1516_BP47831_FMA38562_Ulnar_head_of_right_pronator_teres.glb",
-    "subgroup": "arm-schulter",
+    "subgroup": "Arm-Schulter",
     "side": "right",
     "parts": [
       "Head"
@@ -1385,7 +1385,7 @@
     "fma": "FMA46604",
     "fj": "FJ2791",
     "filename": "FJ2791_BP47686_FMA46604_Right_aryepiglotticus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1396,7 +1396,7 @@
     "fma": "FMA46292",
     "fj": "FJ1556",
     "filename": "FJ1556_BP47276_FMA46292_Right_digastric.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1407,7 +1407,7 @@
     "fma": "FMA46698",
     "fj": "FJ2750",
     "filename": "FJ2750_BP50317_FMA46698_Right_genioglossus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1418,7 +1418,7 @@
     "fma": "FMA46326",
     "fj": "FJ1580",
     "filename": "FJ1580_BP47518_FMA46326_Right_geniohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1429,7 +1429,7 @@
     "fma": "FMA46703",
     "fj": "FJ2751",
     "filename": "FJ2751_BP50282_FMA46703_Right_hyoglossus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1440,7 +1440,7 @@
     "fma": "FMA49050",
     "fj": "FJ1345",
     "filename": "FJ1345_BP50247_FMA49050_Right_inferior_oblique.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1451,7 +1451,7 @@
     "fma": "FMA46635",
     "fj": "FJ2752",
     "filename": "FJ2752_BP46778_FMA46635_Right_inferior_pharyngeal_constrictor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1462,7 +1462,7 @@
     "fma": "FMA49048",
     "fj": "FJ1357",
     "filename": "FJ1357_BP50265_FMA49048_Right_levator_palpebrae_superioris.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1473,7 +1473,7 @@
     "fma": "FMA46633",
     "fj": "FJ2742",
     "filename": "FJ2742_BP46870_FMA46633_Right_middle_pharyngeal_constrictor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1484,7 +1484,7 @@
     "fma": "FMA46321",
     "fj": "FJ1583",
     "filename": "FJ1583_BP47228_FMA46321_Right_mylohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1495,7 +1495,7 @@
     "fma": "FMA46584",
     "fj": "FJ2798",
     "filename": "FJ2798_BP46619_FMA46584_Right_oblique_arytenoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1506,7 +1506,7 @@
     "fma": "FMA32536",
     "fj": "FJ1584",
     "filename": "FJ1584_BP45382_FMA32536_Right_obliquus_capitis_inferior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1517,7 +1517,7 @@
     "fma": "FMA32534",
     "fj": "FJ1585",
     "filename": "FJ1585_BP45708_FMA32534_Right_obliquus_capitis_superior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1528,7 +1528,7 @@
     "fma": "FMA13348",
     "fj": "FJ1586",
     "filename": "FJ1586_BP47162_FMA13348_Right_omohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1539,7 +1539,7 @@
     "fma": "FMA46671",
     "fj": "FJ2755",
     "filename": "FJ2755_BP47489_FMA46671_Right_palatopharyngeus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1550,7 +1550,7 @@
     "fma": "FMA45739",
     "fj": "FJ1587",
     "filename": "FJ1587_BP47230_FMA45739_Right_platysma.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1561,7 +1561,7 @@
     "fma": "FMA46313",
     "fj": "FJ1588",
     "filename": "FJ1588_BP46336_FMA46313_Right_rectus_capitis_anterior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1572,7 +1572,7 @@
     "fma": "FMA46317",
     "fj": "FJ1591",
     "filename": "FJ1591_BP46193_FMA46317_Right_rectus_capitis_lateralis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1583,7 +1583,7 @@
     "fma": "FMA32530",
     "fj": "FJ1589",
     "filename": "FJ1589_BP45632_FMA32530_Right_rectus_capitis_posterior_major.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1594,7 +1594,7 @@
     "fma": "FMA32532",
     "fj": "FJ1590",
     "filename": "FJ1590_BP45638_FMA32532_Right_rectus_capitis_posterior_minor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1605,7 +1605,7 @@
     "fma": "FMA46669",
     "fj": "FJ2757",
     "filename": "FJ2757_BP47357_FMA46669_Right_salpingopharyngeus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1616,7 +1616,7 @@
     "fma": "FMA13392",
     "fj": "FJ1592",
     "filename": "FJ1592_BP47371_FMA13392_Right_scalenus_anterior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1627,7 +1627,7 @@
     "fma": "FMA13390",
     "fj": "FJ1593",
     "filename": "FJ1593_BP47297_FMA13390_Right_scalenus_medius.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1638,7 +1638,7 @@
     "fma": "FMA13388",
     "fj": "FJ1594",
     "filename": "FJ1594_BP47063_FMA13388_Right_scalenus_posterior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1649,7 +1649,7 @@
     "fma": "FMA22728",
     "fj": "FJ1545",
     "filename": "FJ1545_BP50468_FMA22728_Right_splenius_capitis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1660,7 +1660,7 @@
     "fma": "FMA22726",
     "fj": "FJ1546",
     "filename": "FJ1546_BP50671_FMA22726_Right_splenius_cervicis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1671,7 +1671,7 @@
     "fma": "FMA13408",
     "fj": "FJ1595",
     "filename": "FJ1595_BP47515_FMA13408_Right_sternocleidomastoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1682,7 +1682,7 @@
     "fma": "FMA13346",
     "fj": "FJ1596",
     "filename": "FJ1596_BP49326_FMA13346_Right_sternohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1693,7 +1693,7 @@
     "fma": "FMA13350",
     "fj": "FJ1597",
     "filename": "FJ1597_BP47347_FMA13350_Right_sternothyroid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1704,7 +1704,7 @@
     "fma": "FMA45826",
     "fj": "FJ1598",
     "filename": "FJ1598_BP47164_FMA45826_Right_stylohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1715,7 +1715,7 @@
     "fma": "FMA46667",
     "fj": "FJ2758",
     "filename": "FJ2758_BP47104_FMA46667_Right_stylopharyngeus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1726,7 +1726,7 @@
     "fma": "FMA49052",
     "fj": "FJ1373",
     "filename": "FJ1373_BP50315_FMA49052_Right_superior_oblique.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1737,7 +1737,7 @@
     "fma": "FMA46631",
     "fj": "FJ2759",
     "filename": "FJ2759_BP46809_FMA46631_Right_superior_pharyngeal_constrictor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1748,7 +1748,7 @@
     "fma": "FMA46731",
     "fj": "FJ2760",
     "filename": "FJ2760_BP50674_FMA46731_Right_tensor_veli_palatini.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1759,7 +1759,7 @@
     "fma": "FMA13352",
     "fj": "FJ1599",
     "filename": "FJ1599_BP47433_FMA13352_Right_thyrohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1770,7 +1770,7 @@
     "fma": "FMA46592",
     "fj": "FJ2806",
     "filename": "FJ2806_BP46982_FMA46592_Right_vocalis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [],
     "info": {}
@@ -1781,7 +1781,7 @@
     "fma": "FMA46288",
     "fj": "FJ1557",
     "filename": "FJ1557_BP48942_FMA46288_Inferior_oblique_part_of_left_longus_colli.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [
       "Part"
@@ -1794,7 +1794,7 @@
     "fma": "FMA46614",
     "fj": "FJ2781",
     "filename": "FJ2781_BP47891_FMA46614_Oblique_part_of_left_cricothyroid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [
       "Part"
@@ -1807,7 +1807,7 @@
     "fma": "FMA46613",
     "fj": "FJ2799",
     "filename": "FJ2799_BP47918_FMA46613_Oblique_part_of_right_cricothyroid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [
       "Part"
@@ -1820,7 +1820,7 @@
     "fma": "FMA46605",
     "fj": "FJ2774",
     "filename": "FJ2774_BP47626_FMA46605_Left_aryepiglotticus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1831,7 +1831,7 @@
     "fma": "FMA46293",
     "fj": "FJ1555",
     "filename": "FJ1555_BP47378_FMA46293_Left_digastric.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1842,7 +1842,7 @@
     "fma": "FMA46702",
     "fj": "FJ2738",
     "filename": "FJ2738_BP50424_FMA46702_Left_genioglossus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1853,7 +1853,7 @@
     "fma": "FMA46327",
     "fj": "FJ1559",
     "filename": "FJ1559_BP47103_FMA46327_Left_geniohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1864,7 +1864,7 @@
     "fma": "FMA46704",
     "fj": "FJ2739",
     "filename": "FJ2739_BP50274_FMA46704_Left_hyoglossus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1875,7 +1875,7 @@
     "fma": "FMA49051",
     "fj": "FJ1294",
     "filename": "FJ1294_BP50244_FMA49051_Left_inferior_oblique.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1886,7 +1886,7 @@
     "fma": "FMA46636",
     "fj": "FJ2740",
     "filename": "FJ2740_BP46736_FMA46636_Left_inferior_pharyngeal_constrictor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1897,7 +1897,7 @@
     "fma": "FMA49049",
     "fj": "FJ1306",
     "filename": "FJ1306_BP50271_FMA49049_Left_levator_palpebrae_superioris.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1908,7 +1908,7 @@
     "fma": "FMA46634",
     "fj": "FJ2754",
     "filename": "FJ2754_BP46814_FMA46634_Left_middle_pharyngeal_constrictor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1919,7 +1919,7 @@
     "fma": "FMA46322",
     "fj": "FJ1562",
     "filename": "FJ1562_BP47320_FMA46322_Left_mylohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1930,7 +1930,7 @@
     "fma": "FMA46585",
     "fj": "FJ2780",
     "filename": "FJ2780_BP46819_FMA46585_Left_oblique_arytenoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1941,7 +1941,7 @@
     "fma": "FMA32537",
     "fj": "FJ1563",
     "filename": "FJ1563_BP45390_FMA32537_Left_obliquus_capitis_inferior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1952,7 +1952,7 @@
     "fma": "FMA32535",
     "fj": "FJ1564",
     "filename": "FJ1564_BP45518_FMA32535_Left_obliquus_capitis_superior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1963,7 +1963,7 @@
     "fma": "FMA13349",
     "fj": "FJ1565",
     "filename": "FJ1565_BP47364_FMA13349_Left_omohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1974,7 +1974,7 @@
     "fma": "FMA46672",
     "fj": "FJ2743",
     "filename": "FJ2743_BP47353_FMA46672_Left_palatopharyngeus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1985,7 +1985,7 @@
     "fma": "FMA45740",
     "fj": "FJ1558",
     "filename": "FJ1558_BP47422_FMA45740_Left_platysma.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -1996,7 +1996,7 @@
     "fma": "FMA46314",
     "fj": "FJ1566",
     "filename": "FJ1566_BP46098_FMA46314_Left_rectus_capitis_anterior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2007,7 +2007,7 @@
     "fma": "FMA46318",
     "fj": "FJ1569",
     "filename": "FJ1569_BP45940_FMA46318_Left_rectus_capitis_lateralis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2018,7 +2018,7 @@
     "fma": "FMA32531",
     "fj": "FJ1567",
     "filename": "FJ1567_BP45861_FMA32531_Left_rectus_capitis_posterior_major.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2029,7 +2029,7 @@
     "fma": "FMA32533",
     "fj": "FJ1568",
     "filename": "FJ1568_BP45449_FMA32533_Left_rectus_capitis_posterior_minor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2040,7 +2040,7 @@
     "fma": "FMA46670",
     "fj": "FJ2745",
     "filename": "FJ2745_BP47111_FMA46670_Left_salpingopharyngeus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2051,7 +2051,7 @@
     "fma": "FMA13393",
     "fj": "FJ1570",
     "filename": "FJ1570_BP47190_FMA13393_Left_scalenus_anterior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2062,7 +2062,7 @@
     "fma": "FMA13391",
     "fj": "FJ1571",
     "filename": "FJ1571_BP47415_FMA13391_Left_scalenus_medius.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2073,7 +2073,7 @@
     "fma": "FMA13389",
     "fj": "FJ1572",
     "filename": "FJ1572_BP47115_FMA13389_Left_scalenus_posterior.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2084,7 +2084,7 @@
     "fma": "FMA22729",
     "fj": "FJ1545M",
     "filename": "FJ1545M_BP50404_FMA22729_Left_splenius_capitis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2095,7 +2095,7 @@
     "fma": "FMA22727",
     "fj": "FJ1546M",
     "filename": "FJ1546M_BP50564_FMA22727_Left_splenius_cervicis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2106,7 +2106,7 @@
     "fma": "FMA13409",
     "fj": "FJ1573",
     "filename": "FJ1573_BP47225_FMA13409_Left_sternocleidomastoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2117,7 +2117,7 @@
     "fma": "FMA13347",
     "fj": "FJ1574",
     "filename": "FJ1574_BP49091_FMA13347_Left_sternohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2128,7 +2128,7 @@
     "fma": "FMA13351",
     "fj": "FJ1575",
     "filename": "FJ1575_BP47129_FMA13351_Left_sternothyroid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2139,7 +2139,7 @@
     "fma": "FMA45827",
     "fj": "FJ1576",
     "filename": "FJ1576_BP47385_FMA45827_Left_stylohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2150,7 +2150,7 @@
     "fma": "FMA46668",
     "fj": "FJ2746",
     "filename": "FJ2746_BP47500_FMA46668_Left_stylopharyngeus.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2161,7 +2161,7 @@
     "fma": "FMA49053",
     "fj": "FJ1322",
     "filename": "FJ1322_BP50440_FMA49053_Left_superior_oblique.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2172,7 +2172,7 @@
     "fma": "FMA46632",
     "fj": "FJ2747",
     "filename": "FJ2747_BP46801_FMA46632_Left_superior_pharyngeal_constrictor.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2183,7 +2183,7 @@
     "fma": "FMA46732",
     "fj": "FJ2748",
     "filename": "FJ2748_BP50379_FMA46732_Left_tensor_veli_palatini.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2194,7 +2194,7 @@
     "fma": "FMA13353",
     "fj": "FJ1577",
     "filename": "FJ1577_BP47476_FMA13353_Left_thyrohyoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2205,7 +2205,7 @@
     "fma": "FMA46593",
     "fj": "FJ2788",
     "filename": "FJ2788_BP46815_FMA46593_Left_vocalis.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [],
     "info": {}
@@ -2216,7 +2216,7 @@
     "fma": "FMA46612",
     "fj": "FJ2783",
     "filename": "FJ2783_BP47819_FMA46612_Straight_part_of_left_cricothyroid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [
       "Part"
@@ -2229,7 +2229,7 @@
     "fma": "FMA46611",
     "fj": "FJ2801",
     "filename": "FJ2801_BP47676_FMA46611_Straight_part_of_right_cricothyroid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "right",
     "parts": [
       "Part"
@@ -2242,7 +2242,7 @@
     "fma": "FMA46284",
     "fj": "FJ1600",
     "filename": "FJ1600_BP48884_FMA46284_Superior_oblique_part_of_left_longus_colli.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [
       "Part"
@@ -2255,7 +2255,7 @@
     "fma": "FMA46582",
     "fj": "FJ2809",
     "filename": "FJ2809_BP47068_FMA46582_Transverse_arytenoid.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "none",
     "parts": [],
     "info": {}
@@ -2266,7 +2266,7 @@
     "fma": "FMA46733",
     "fj": "FJ2762",
     "filename": "FJ2762_BP47878_FMA46733_Uvular_muscle.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "none",
     "parts": [],
     "info": {}
@@ -2277,7 +2277,7 @@
     "fma": "FMA46286",
     "fj": "FJ1601",
     "filename": "FJ1601_BP48870_FMA46286_Vertical_intermediate_part_of_left_longus_colli.glb",
-    "subgroup": "head-neck",
+    "subgroup": "Nackenbereich",
     "side": "left",
     "parts": [
       "Part"
@@ -5821,7 +5821,7 @@
     "fma": "FMA45875",
     "fj": "FJ1446M",
     "filename": "FJ1446M_BP48855_FMA45875_Abdominal_part_of_left_pectoralis_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [
       "Part"
@@ -5834,7 +5834,7 @@
     "fma": "FMA45874",
     "fj": "FJ1446",
     "filename": "FJ1446_BP48862_FMA45874_Abdominal_part_of_right_pectoralis_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [
       "Part"
@@ -5847,7 +5847,7 @@
     "fma": "FMA33583",
     "fj": "FJ1520M",
     "filename": "FJ1520M_BP48291_FMA33583_Ascending_part_of_left_trapezius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [
       "Part"
@@ -5860,7 +5860,7 @@
     "fma": "FMA33581",
     "fj": "FJ1520",
     "filename": "FJ1520_BP48413_FMA33581_Ascending_part_of_right_trapezius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [
       "Part"
@@ -5873,7 +5873,7 @@
     "fma": "FMA34691",
     "fj": "FJ1447M",
     "filename": "FJ1447M_BP48892_FMA34691_Clavicular_part_of_left_pectoralis_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [
       "Part"
@@ -5886,7 +5886,7 @@
     "fma": "FMA34690",
     "fj": "FJ1447",
     "filename": "FJ1447_BP48979_FMA34690_Clavicular_part_of_right_pectoralis_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [
       "Part"
@@ -5899,7 +5899,7 @@
     "fma": "FMA33587",
     "fj": "FJ1521M",
     "filename": "FJ1521M_BP48336_FMA33587_Descending_part_of_left_trapezius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [
       "Part"
@@ -5912,7 +5912,7 @@
     "fma": "FMA33586",
     "fj": "FJ1521",
     "filename": "FJ1521_BP48358_FMA33586_Descending_part_of_right_trapezius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [
       "Part"
@@ -5925,7 +5925,7 @@
     "fma": "FMA81752",
     "fj": "FJ1524",
     "filename": "FJ1524_BP45682_FMA81752_Right_cervical_rotator.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -5936,7 +5936,7 @@
     "fma": "FMA22744",
     "fj": "FJ1526",
     "filename": "FJ1526_BP45380_FMA22744_Right_iliocostalis_cervicis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -5947,7 +5947,7 @@
     "fma": "FMA22740",
     "fj": "FJ1527",
     "filename": "FJ1527_BP50041_FMA22740_Right_iliocostalis_lumborum.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -5958,7 +5958,7 @@
     "fma": "FMA22742",
     "fj": "FJ1528",
     "filename": "FJ1528_BP49987_FMA22742_Right_iliocostalis_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -5969,7 +5969,7 @@
     "fma": "FMA32547",
     "fj": "FJ1500",
     "filename": "FJ1500_BP49859_FMA32547_Right_infraspinatus.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -5980,7 +5980,7 @@
     "fma": "FMA22890",
     "fj": "FJ1551",
     "filename": "FJ1551_BP50125_FMA22890_Right_interspinalis_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -5991,7 +5991,7 @@
     "fma": "FMA32540",
     "fj": "FJ1532",
     "filename": "FJ1532_BP49450_FMA32540_Right_levator_scapulae.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6002,7 +6002,7 @@
     "fma": "FMA22754",
     "fj": "FJ1533",
     "filename": "FJ1533_BP45404_FMA22754_Right_longissimus_capitis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6013,7 +6013,7 @@
     "fma": "FMA22757",
     "fj": "FJ1534",
     "filename": "FJ1534_BP45728_FMA22757_Right_longissimus_cervicis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6024,7 +6024,7 @@
     "fma": "FMA22751",
     "fj": "FJ1535",
     "filename": "FJ1535_BP49870_FMA22751_Right_longissimus_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6035,7 +6035,7 @@
     "fma": "FMA23089",
     "fj": "FJ1522",
     "filename": "FJ1522_BP49976_FMA23089_Right_lumbar_rotator.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6046,7 +6046,7 @@
     "fma": "FMA13375",
     "fj": "FJ1456",
     "filename": "FJ1456_BP49040_FMA13375_Right_pectoralis_minor.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6057,7 +6057,7 @@
     "fma": "FMA13381",
     "fj": "FJ1536",
     "filename": "FJ1536_BP49421_FMA13381_Right_rhomboid_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6068,7 +6068,7 @@
     "fma": "FMA13383",
     "fj": "FJ1537",
     "filename": "FJ1537_BP49679_FMA13383_Right_rhomboid_minor.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6079,7 +6079,7 @@
     "fma": "FMA22876",
     "fj": "FJ1538",
     "filename": "FJ1538_BP45501_FMA22876_Right_semispinalis_capitis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6090,7 +6090,7 @@
     "fma": "FMA22874",
     "fj": "FJ1539",
     "filename": "FJ1539_BP45750_FMA22874_Right_semispinalis_cervicis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6101,7 +6101,7 @@
     "fma": "FMA22872",
     "fj": "FJ1540",
     "filename": "FJ1540_BP50236_FMA22872_Right_semispinalis_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6112,7 +6112,7 @@
     "fma": "FMA13398",
     "fj": "FJ1459",
     "filename": "FJ1459_BP49180_FMA13398_Right_serratus_anterior.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6123,7 +6123,7 @@
     "fma": "FMA13405",
     "fj": "FJ1541",
     "filename": "FJ1541_BP49879_FMA13405_Right_serratus_posterior_inferior.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6134,7 +6134,7 @@
     "fma": "FMA13403",
     "fj": "FJ1542",
     "filename": "FJ1542_BP46900_FMA13403_Right_serratus_posterior_superior.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6145,7 +6145,7 @@
     "fma": "FMA13412",
     "fj": "FJ1460",
     "filename": "FJ1460_BP49068_FMA13412_Right_subclavius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6156,7 +6156,7 @@
     "fma": "FMA13414",
     "fj": "FJ1504",
     "filename": "FJ1504_BP49842_FMA13414_Right_subscapularis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6167,7 +6167,7 @@
     "fma": "FMA32544",
     "fj": "FJ1506",
     "filename": "FJ1506_BP49927_FMA32544_Right_supraspinatus.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6178,7 +6178,7 @@
     "fma": "FMA32551",
     "fj": "FJ1507",
     "filename": "FJ1507_BP49920_FMA32551_Right_teres_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6189,7 +6189,7 @@
     "fma": "FMA32553",
     "fj": "FJ1508",
     "filename": "FJ1508_BP49785_FMA32553_Right_teres_minor.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6200,7 +6200,7 @@
     "fma": "FMA9761",
     "fj": "FJ1461",
     "filename": "FJ1461_BP49291_FMA9761_Right_transversus_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6211,7 +6211,7 @@
     "fma": "FMA9756",
     "fj": "FJ1451",
     "filename": "FJ1451_BP47191_FMA9756_External_intercostal_muscle.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "none",
     "parts": [],
     "info": {}
@@ -6222,7 +6222,7 @@
     "fma": "FMA9758",
     "fj": "FJ1454",
     "filename": "FJ1454_BP47392_FMA9758_Innermost_intercostal_muscle.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "none",
     "parts": [],
     "info": {}
@@ -6233,7 +6233,7 @@
     "fma": "FMA9757",
     "fj": "FJ1455",
     "filename": "FJ1455_BP47093_FMA9757_Internal_intercostal_muscle.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "none",
     "parts": [],
     "info": {}
@@ -6244,7 +6244,7 @@
     "fma": "FMA22850",
     "fj": "FJ1547",
     "filename": "FJ1547_BP45557_FMA22850_Lateral_lumbar_intertransversarius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "none",
     "parts": [],
     "info": {}
@@ -6255,7 +6255,7 @@
     "fma": "FMA22851",
     "fj": "FJ1548",
     "filename": "FJ1548_BP45414_FMA22851_Medial_lumbar_intertransversarius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "none",
     "parts": [],
     "info": {}
@@ -6266,7 +6266,7 @@
     "fma": "FMA81753",
     "fj": "FJ1524M",
     "filename": "FJ1524M_BP45586_FMA81753_Left_cervical_rotator.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6277,7 +6277,7 @@
     "fma": "FMA22745",
     "fj": "FJ1526M",
     "filename": "FJ1526M_BP45470_FMA22745_Left_iliocostalis_cervicis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6288,7 +6288,7 @@
     "fma": "FMA22741",
     "fj": "FJ1527M",
     "filename": "FJ1527M_BP49882_FMA22741_Left_iliocostalis_lumborum.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6299,7 +6299,7 @@
     "fma": "FMA22743",
     "fj": "FJ1528M",
     "filename": "FJ1528M_BP50178_FMA22743_Left_iliocostalis_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6310,7 +6310,7 @@
     "fma": "FMA32548",
     "fj": "FJ1500M",
     "filename": "FJ1500M_BP49851_FMA32548_Left_infraspinatus.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6321,7 +6321,7 @@
     "fma": "FMA22891",
     "fj": "FJ1551M",
     "filename": "FJ1551M_BP49852_FMA22891_Left_interspinalis_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6332,7 +6332,7 @@
     "fma": "FMA32541",
     "fj": "FJ1532M",
     "filename": "FJ1532M_BP49641_FMA32541_Left_levator_scapulae.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6343,7 +6343,7 @@
     "fma": "FMA22756",
     "fj": "FJ1533M",
     "filename": "FJ1533M_BP45718_FMA22756_Left_longissimus_capitis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6354,7 +6354,7 @@
     "fma": "FMA22758",
     "fj": "FJ1534M",
     "filename": "FJ1534M_BP45752_FMA22758_Left_longissimus_cervicis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6365,7 +6365,7 @@
     "fma": "FMA22753",
     "fj": "FJ1535M",
     "filename": "FJ1535M_BP50179_FMA22753_Left_longissimus_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6376,7 +6376,7 @@
     "fma": "FMA23090",
     "fj": "FJ1522M",
     "filename": "FJ1522M_BP50122_FMA23090_Left_lumbar_rotator.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6387,7 +6387,7 @@
     "fma": "FMA13376",
     "fj": "FJ1456M",
     "filename": "FJ1456M_BP48882_FMA13376_Left_pectoralis_minor.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6398,7 +6398,7 @@
     "fma": "FMA13382",
     "fj": "FJ1536M",
     "filename": "FJ1536M_BP49711_FMA13382_Left_rhomboid_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6409,7 +6409,7 @@
     "fma": "FMA13384",
     "fj": "FJ1537M",
     "filename": "FJ1537M_BP49746_FMA13384_Left_rhomboid_minor.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6420,7 +6420,7 @@
     "fma": "FMA22877",
     "fj": "FJ1538M",
     "filename": "FJ1538M_BP45653_FMA22877_Left_semispinalis_capitis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6431,7 +6431,7 @@
     "fma": "FMA22875",
     "fj": "FJ1539M",
     "filename": "FJ1539M_BP45788_FMA22875_Left_semispinalis_cervicis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6442,7 +6442,7 @@
     "fma": "FMA22873",
     "fj": "FJ1540M",
     "filename": "FJ1540M_BP49873_FMA22873_Left_semispinalis_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6453,7 +6453,7 @@
     "fma": "FMA13399",
     "fj": "FJ1459M",
     "filename": "FJ1459M_BP49241_FMA13399_Left_serratus_anterior.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6464,7 +6464,7 @@
     "fma": "FMA13406",
     "fj": "FJ1541M",
     "filename": "FJ1541M_BP50158_FMA13406_Left_serratus_posterior_inferior.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6475,7 +6475,7 @@
     "fma": "FMA13404",
     "fj": "FJ1542M",
     "filename": "FJ1542M_BP46599_FMA13404_Left_serratus_posterior_superior.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6486,7 +6486,7 @@
     "fma": "FMA13411",
     "fj": "FJ1460M",
     "filename": "FJ1460M_BP48971_FMA13411_Left_subclavius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6497,7 +6497,7 @@
     "fma": "FMA13415",
     "fj": "FJ1504M",
     "filename": "FJ1504M_BP50058_FMA13415_Left_subscapularis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6508,7 +6508,7 @@
     "fma": "FMA32545",
     "fj": "FJ1506M",
     "filename": "FJ1506M_BP49999_FMA32545_Left_supraspinatus.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6519,7 +6519,7 @@
     "fma": "FMA32552",
     "fj": "FJ1507M",
     "filename": "FJ1507M_BP49926_FMA32552_Left_teres_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6530,7 +6530,7 @@
     "fma": "FMA32554",
     "fj": "FJ1508M",
     "filename": "FJ1508M_BP49793_FMA32554_Left_teres_minor.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6541,7 +6541,7 @@
     "fma": "FMA9762",
     "fj": "FJ1461M",
     "filename": "FJ1461M_BP49282_FMA9762_Left_transversus_thoracis.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [],
     "info": {}
@@ -6552,7 +6552,7 @@
     "fma": "FMA79980",
     "fj": "FJ1464M",
     "filename": "FJ1464M_BP49000_FMA79980_Sternocostal_part_of_left_pectoralis_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [
       "Part"
@@ -6565,7 +6565,7 @@
     "fma": "FMA79979",
     "fj": "FJ1464",
     "filename": "FJ1464_BP49055_FMA79979_Sternocostal_part_of_right_pectoralis_major.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [
       "Part"
@@ -6578,7 +6578,7 @@
     "fma": "FMA23083",
     "fj": "FJ1525",
     "filename": "FJ1525_BP45903_FMA23083_Thoracic_rotator.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "none",
     "parts": [],
     "info": {}
@@ -6589,7 +6589,7 @@
     "fma": "FMA33585",
     "fj": "FJ1554M",
     "filename": "FJ1554M_BP49367_FMA33585_Transverse_part_of_left_trapezius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "left",
     "parts": [
       "Part"
@@ -6602,7 +6602,7 @@
     "fma": "FMA33584",
     "fj": "FJ1554",
     "filename": "FJ1554_BP49109_FMA33584_Transverse_part_of_right_trapezius.glb",
-    "subgroup": "schulterguertel-rumpf",
+    "subgroup": "Schulterguertel-Rumpf",
     "side": "right",
     "parts": [
       "Part"
@@ -6615,7 +6615,7 @@
     "fma": "FMA22452",
     "fj": "FJ1401",
     "filename": "FJ1401_BP50456_FMA22452_Right_adductor_brevis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6626,7 +6626,7 @@
     "fma": "FMA22456",
     "fj": "FJ1402",
     "filename": "FJ1402_BP50613_FMA22456_Right_adductor_longus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6637,7 +6637,7 @@
     "fma": "FMA22459",
     "fj": "FJ1403",
     "filename": "FJ1403_BP50704_FMA22459_Right_adductor_magnus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6648,7 +6648,7 @@
     "fma": "FMA43886",
     "fj": "FJ1404",
     "filename": "FJ1404_BP50297_FMA43886_Right_adductor_minimus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6659,7 +6659,7 @@
     "fma": "FMA46443",
     "fj": "FJ2547",
     "filename": "FJ2547_BP47483_FMA46443_Right_coccygeus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6670,7 +6670,7 @@
     "fma": "FMA22336",
     "fj": "FJ1416",
     "filename": "FJ1416_BP45900_FMA22336_Right_gemellus_inferior.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6681,7 +6681,7 @@
     "fma": "FMA22334",
     "fj": "FJ1417",
     "filename": "FJ1417_BP46111_FMA22334_Right_gemellus_superior.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6692,7 +6692,7 @@
     "fma": "FMA22328",
     "fj": "FJ1418",
     "filename": "FJ1418_BP50477_FMA22328_Right_gluteus_maximus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6703,7 +6703,7 @@
     "fma": "FMA22330",
     "fj": "FJ1419",
     "filename": "FJ1419_BP50637_FMA22330_Right_gluteus_medius.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6714,7 +6714,7 @@
     "fma": "FMA22332",
     "fj": "FJ1420",
     "filename": "FJ1420_BP50631_FMA22332_Right_gluteus_minimus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6725,7 +6725,7 @@
     "fma": "FMA43883",
     "fj": "FJ1421",
     "filename": "FJ1421_BP50336_FMA43883_Right_gracilis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6736,7 +6736,7 @@
     "fma": "FMA22322",
     "fj": "FJ1422",
     "filename": "FJ1422_BP47447_FMA22322_Right_iliacus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6747,7 +6747,7 @@
     "fma": "FMA45858",
     "fj": "FJ2549",
     "filename": "FJ2549_BP47925_FMA45858_Right_iliococcygeus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6758,7 +6758,7 @@
     "fma": "FMA22326",
     "fj": "FJ1425",
     "filename": "FJ1425_BP50573_FMA22326_Right_obturator_externus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6769,7 +6769,7 @@
     "fma": "FMA22324",
     "fj": "FJ1426",
     "filename": "FJ1426_BP49695_FMA22324_Right_obturator_internus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6780,7 +6780,7 @@
     "fma": "FMA22450",
     "fj": "FJ1427",
     "filename": "FJ1427_BP50347_FMA22450_Right_pectineus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6791,7 +6791,7 @@
     "fma": "FMA22340",
     "fj": "FJ1428",
     "filename": "FJ1428_BP49700_FMA22340_Right_piriformis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6802,7 +6802,7 @@
     "fma": "FMA22342",
     "fj": "FJ1431",
     "filename": "FJ1431_BP48951_FMA22342_Right_psoas_major.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6813,7 +6813,7 @@
     "fma": "FMA45854",
     "fj": "FJ2550",
     "filename": "FJ2550_BP47650_FMA45854_Right_pubococcygeus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6824,7 +6824,7 @@
     "fma": "FMA45856",
     "fj": "FJ2551",
     "filename": "FJ2551_BP47535_FMA45856_Right_puborectalis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6835,7 +6835,7 @@
     "fma": "FMA22338",
     "fj": "FJ1432",
     "filename": "FJ1432_BP50957_FMA22338_Right_quadratus_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6846,7 +6846,7 @@
     "fma": "FMA38928",
     "fj": "FJ1433",
     "filename": "FJ1433_BP50057_FMA38928_Right_rectus_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6857,7 +6857,7 @@
     "fma": "FMA22354",
     "fj": "FJ1434",
     "filename": "FJ1434_BP50471_FMA22354_Right_sartorius.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6868,7 +6868,7 @@
     "fma": "FMA22448",
     "fj": "FJ1435",
     "filename": "FJ1435_BP50373_FMA22448_Right_semimembranosus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6879,7 +6879,7 @@
     "fma": "FMA22358",
     "fj": "FJ1436",
     "filename": "FJ1436_BP50710_FMA22358_Right_semitendinosus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6890,7 +6890,7 @@
     "fma": "FMA38934",
     "fj": "FJ1441",
     "filename": "FJ1441_BP49798_FMA38934_Right_vastus_intermedius.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6901,7 +6901,7 @@
     "fma": "FMA38930",
     "fj": "FJ1442",
     "filename": "FJ1442_BP50148_FMA38930_Right_vastus_lateralis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6912,7 +6912,7 @@
     "fma": "FMA38932",
     "fj": "FJ1443",
     "filename": "FJ1443_BP50166_FMA38932_Right_vastus_medialis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [],
     "info": {}
@@ -6923,7 +6923,7 @@
     "fma": "FMA45889",
     "fj": "FJ1395M",
     "filename": "FJ1395M_BP50191_FMA45889_Long_head_of_left_biceps_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [
       "Head"
@@ -6936,7 +6936,7 @@
     "fma": "FMA45888",
     "fj": "FJ1395",
     "filename": "FJ1395_BP50235_FMA45888_Long_head_of_right_biceps_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [
       "Head"
@@ -6949,7 +6949,7 @@
     "fma": "FMA46019",
     "fj": "FJ1398M",
     "filename": "FJ1398M_BP49900_FMA46019_Oblique_head_of_left_adductor_hallucis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [
       "Head"
@@ -6962,7 +6962,7 @@
     "fma": "FMA46122",
     "fj": "FJ1481M",
     "filename": "FJ1481M_BP47621_FMA46122_Oblique_head_of_left_adductor_pollicis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [
       "Head"
@@ -6975,7 +6975,7 @@
     "fma": "FMA46018",
     "fj": "FJ1398",
     "filename": "FJ1398_BP50140_FMA46018_Oblique_head_of_right_adductor_hallucis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [
       "Head"
@@ -6988,7 +6988,7 @@
     "fma": "FMA46121",
     "fj": "FJ1481",
     "filename": "FJ1481_BP47781_FMA46121_Oblique_head_of_right_adductor_pollicis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [
       "Head"
@@ -7001,7 +7001,7 @@
     "fma": "FMA45892",
     "fj": "FJ1444M",
     "filename": "FJ1444M_BP49953_FMA45892_Short_head_of_left_biceps_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [
       "Head"
@@ -7014,7 +7014,7 @@
     "fma": "FMA45891",
     "fj": "FJ1444",
     "filename": "FJ1444_BP50075_FMA45891_Short_head_of_right_biceps_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [
       "Head"
@@ -7027,7 +7027,7 @@
     "fma": "FMA22454",
     "fj": "FJ1401M",
     "filename": "FJ1401M_BP50422_FMA22454_Left_adductor_brevis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7038,7 +7038,7 @@
     "fma": "FMA22457",
     "fj": "FJ1402M",
     "filename": "FJ1402M_BP50238_FMA22457_Left_adductor_longus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7049,7 +7049,7 @@
     "fma": "FMA22460",
     "fj": "FJ1403M",
     "filename": "FJ1403M_BP50251_FMA22460_Left_adductor_magnus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7060,7 +7060,7 @@
     "fma": "FMA43887",
     "fj": "FJ1404M",
     "filename": "FJ1404M_BP50699_FMA43887_Left_adductor_minimus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7071,7 +7071,7 @@
     "fma": "FMA46444",
     "fj": "FJ2542",
     "filename": "FJ2542_BP47487_FMA46444_Left_coccygeus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7082,7 +7082,7 @@
     "fma": "FMA22337",
     "fj": "FJ1416M",
     "filename": "FJ1416M_BP45907_FMA22337_Left_gemellus_inferior.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7093,7 +7093,7 @@
     "fma": "FMA22335",
     "fj": "FJ1417M",
     "filename": "FJ1417M_BP46420_FMA22335_Left_gemellus_superior.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7104,7 +7104,7 @@
     "fma": "FMA22329",
     "fj": "FJ1418M",
     "filename": "FJ1418M_BP50528_FMA22329_Left_gluteus_maximus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7115,7 +7115,7 @@
     "fma": "FMA22331",
     "fj": "FJ1419M",
     "filename": "FJ1419M_BP50653_FMA22331_Left_gluteus_medius.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7126,7 +7126,7 @@
     "fma": "FMA22333",
     "fj": "FJ1420M",
     "filename": "FJ1420M_BP50649_FMA22333_Left_gluteus_minimus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7137,7 +7137,7 @@
     "fma": "FMA43884",
     "fj": "FJ1421M",
     "filename": "FJ1421M_BP50382_FMA43884_Left_gracilis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7148,7 +7148,7 @@
     "fma": "FMA22323",
     "fj": "FJ1422M",
     "filename": "FJ1422M_BP47502_FMA22323_Left_iliacus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7159,7 +7159,7 @@
     "fma": "FMA45859",
     "fj": "FJ2544",
     "filename": "FJ2544_BP47775_FMA45859_Left_iliococcygeus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7170,7 +7170,7 @@
     "fma": "FMA22327",
     "fj": "FJ1425M",
     "filename": "FJ1425M_BP50612_FMA22327_Left_obturator_externus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7181,7 +7181,7 @@
     "fma": "FMA22325",
     "fj": "FJ1426M",
     "filename": "FJ1426M_BP49494_FMA22325_Left_obturator_internus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7192,7 +7192,7 @@
     "fma": "FMA22451",
     "fj": "FJ1427M",
     "filename": "FJ1427M_BP50367_FMA22451_Left_pectineus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7203,7 +7203,7 @@
     "fma": "FMA22341",
     "fj": "FJ1428M",
     "filename": "FJ1428M_BP49466_FMA22341_Left_piriformis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7214,7 +7214,7 @@
     "fma": "FMA22343",
     "fj": "FJ1431M",
     "filename": "FJ1431M_BP48898_FMA22343_Left_psoas_major.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7225,7 +7225,7 @@
     "fma": "FMA45855",
     "fj": "FJ2545",
     "filename": "FJ2545_BP47904_FMA45855_Left_pubococcygeus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7236,7 +7236,7 @@
     "fma": "FMA45857",
     "fj": "FJ2546",
     "filename": "FJ2546_BP47662_FMA45857_Left_puborectalis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7247,7 +7247,7 @@
     "fma": "FMA22339",
     "fj": "FJ1432M",
     "filename": "FJ1432M_BP50724_FMA22339_Left_quadratus_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7258,7 +7258,7 @@
     "fma": "FMA38929",
     "fj": "FJ1433M",
     "filename": "FJ1433M_BP50029_FMA38929_Left_rectus_femoris.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7269,7 +7269,7 @@
     "fma": "FMA22355",
     "fj": "FJ1434M",
     "filename": "FJ1434M_BP50540_FMA22355_Left_sartorius.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7280,7 +7280,7 @@
     "fma": "FMA22449",
     "fj": "FJ1435M",
     "filename": "FJ1435M_BP50629_FMA22449_Left_semimembranosus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7291,7 +7291,7 @@
     "fma": "FMA22359",
     "fj": "FJ1436M",
     "filename": "FJ1436M_BP50693_FMA22359_Left_semitendinosus.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7302,7 +7302,7 @@
     "fma": "FMA38935",
     "fj": "FJ1441M",
     "filename": "FJ1441M_BP49946_FMA38935_Left_vastus_intermedius.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7313,7 +7313,7 @@
     "fma": "FMA38931",
     "fj": "FJ1442M",
     "filename": "FJ1442M_BP49806_FMA38931_Left_vastus_lateralis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7324,7 +7324,7 @@
     "fma": "FMA38933",
     "fj": "FJ1443M",
     "filename": "FJ1443M_BP50184_FMA38933_Left_vastus_medialis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7335,7 +7335,7 @@
     "fma": "FMA46021",
     "fj": "FJ1445M",
     "filename": "FJ1445M_BP49958_FMA46021_Transverse_head_of_left_adductor_hallucis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [
       "Head"
@@ -7348,7 +7348,7 @@
     "fma": "FMA46124",
     "fj": "FJ1515M",
     "filename": "FJ1515M_BP47816_FMA46124_Transverse_head_of_left_adductor_pollicis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "left",
     "parts": [
       "Head"
@@ -7361,7 +7361,7 @@
     "fma": "FMA46020",
     "fj": "FJ1445",
     "filename": "FJ1445_BP50152_FMA46020_Transverse_head_of_right_adductor_hallucis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [
       "Head"
@@ -7374,7 +7374,7 @@
     "fma": "FMA46123",
     "fj": "FJ1515",
     "filename": "FJ1515_BP47734_FMA46123_Transverse_head_of_right_adductor_pollicis.glb",
-    "subgroup": "unterkoerper-huefte-oberschenkel",
+    "subgroup": "Unterkoerper-Huefte-Oberschenkel",
     "side": "right",
     "parts": [
       "Head"
@@ -7387,7 +7387,7 @@
     "fma": "FMA22554",
     "fj": "FJ1409",
     "filename": "FJ1409_BP50409_FMA22554_Right_fibularis_brevis.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7398,7 +7398,7 @@
     "fma": "FMA22552",
     "fj": "FJ1410",
     "filename": "FJ1410_BP50312_FMA22552_Right_fibularis_longus.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7409,7 +7409,7 @@
     "fma": "FMA22550",
     "fj": "FJ1411",
     "filename": "FJ1411_BP50628_FMA22550_Right_fibularis_tertius.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7420,7 +7420,7 @@
     "fma": "FMA22560",
     "fj": "FJ1429",
     "filename": "FJ1429_BP50664_FMA22560_Right_plantaris.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7431,7 +7431,7 @@
     "fma": "FMA22591",
     "fj": "FJ1430",
     "filename": "FJ1430_BP50460_FMA22591_Right_popliteus.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7442,7 +7442,7 @@
     "fma": "FMA22558",
     "fj": "FJ1437",
     "filename": "FJ1437_BP50450_FMA22558_Right_soleus.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7453,7 +7453,7 @@
     "fma": "FMA22544",
     "fj": "FJ1439",
     "filename": "FJ1439_BP50284_FMA22544_Right_tibialis_anterior.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7464,7 +7464,7 @@
     "fma": "FMA65018",
     "fj": "FJ1440",
     "filename": "FJ1440_BP50708_FMA65018_Right_tibialis_posterior.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [],
     "info": {}
@@ -7475,7 +7475,7 @@
     "fma": "FMA45961",
     "fj": "FJ1394M",
     "filename": "FJ1394M_BP49835_FMA45961_Lateral_head_of_left_gastrocnemius.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [
       "Head"
@@ -7488,7 +7488,7 @@
     "fma": "FMA45960",
     "fj": "FJ1394",
     "filename": "FJ1394_BP49942_FMA45960_Lateral_head_of_right_gastrocnemius.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [
       "Head"
@@ -7501,7 +7501,7 @@
     "fma": "FMA45958",
     "fj": "FJ1397M",
     "filename": "FJ1397M_BP49949_FMA45958_Medial_head_of_left_gastrocnemius.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [
       "Head"
@@ -7514,7 +7514,7 @@
     "fma": "FMA45957",
     "fj": "FJ1397",
     "filename": "FJ1397_BP49797_FMA45957_Medial_head_of_right_gastrocnemius.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "right",
     "parts": [
       "Head"
@@ -7527,7 +7527,7 @@
     "fma": "FMA22555",
     "fj": "FJ1409M",
     "filename": "FJ1409M_BP50493_FMA22555_Left_fibularis_brevis.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7538,7 +7538,7 @@
     "fma": "FMA22553",
     "fj": "FJ1410M",
     "filename": "FJ1410M_BP50314_FMA22553_Left_fibularis_longus.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7549,7 +7549,7 @@
     "fma": "FMA22551",
     "fj": "FJ1411M",
     "filename": "FJ1411M_BP50689_FMA22551_Left_fibularis_tertius.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7560,7 +7560,7 @@
     "fma": "FMA22561",
     "fj": "FJ1429M",
     "filename": "FJ1429M_BP50344_FMA22561_Left_plantaris.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7571,7 +7571,7 @@
     "fma": "FMA22592",
     "fj": "FJ1430M",
     "filename": "FJ1430M_BP50527_FMA22592_Left_popliteus.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7582,7 +7582,7 @@
     "fma": "FMA22559",
     "fj": "FJ1437M",
     "filename": "FJ1437M_BP50394_FMA22559_Left_soleus.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7593,7 +7593,7 @@
     "fma": "FMA22545",
     "fj": "FJ1439M",
     "filename": "FJ1439M_BP50559_FMA22545_Left_tibialis_anterior.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
@@ -7604,7 +7604,7 @@
     "fma": "FMA65019",
     "fj": "FJ1440M",
     "filename": "FJ1440M_BP50351_FMA65019_Left_tibialis_posterior.glb",
-    "subgroup": "unterkoerper-unterschenkel-fuss",
+    "subgroup": "Unterkoerper-Unterschenkel-Fuss",
     "side": "left",
     "parts": [],
     "info": {}
