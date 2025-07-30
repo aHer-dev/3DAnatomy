@@ -199,9 +199,58 @@ export function setupUI() {
   });
 }
 
+async function generateDetailedList(groupName, subgroup) {
+  console.log(`Generating detailed list for ${groupName} - ${subgroup}`);
+  const meta = await getMeta();
+  const container = document.querySelector(`#${groupName}-subgroups .subgroup-line[data-subgroup="${subgroup}"]`);
+  if (!container) {
+    console.error(`Container for ${subgroup} not found`);
+    return;
+  }
+
+  // Filtere Entries für diese Subgruppe
+  let filtered = meta.filter(e => e.group === groupName && 
+    (e.subgroup === subgroup || (subgroup === 'Allgemein' && e.subgroup === 'none')));
+
+  // Sortiere: Zuerst right (von oben nach unten = FMA aufsteigend), dann left
+  filtered.sort((a, b) => {
+    if (a.side !== b.side) {
+      return a.side === 'right' ? -1 : 1; // right vor left
+    }
+    // Sortiere nach FMA-Code aufsteigend (niedrig = "oben"? Anpasse bei Bedarf zu FJ: a.fj.localeCompare(b.fj))
+    const fmaA = parseInt(a.fma.replace(/\D/g, '')) || 0;
+    const fmaB = parseInt(b.fma.replace(/\D/g, '')) || 0;
+    return fmaA - fmaB;
+  });
+
+  // Erstelle die Liste (nur wenn nicht existent)
+  let list = document.getElementById(`detailed-list-${groupName}-${subgroup}`);
+  if (!list) {
+    list = document.createElement('div');
+    list.className = 'more-muscles-list'; // Nutze bestehende CSS
+    list.id = `detailed-list-${groupName}-${subgroup}`;
+    container.appendChild(list);
+  } else {
+    list.innerHTML = ''; // Aktualisiere bei Bedarf
+  }
+
+  filtered.forEach(entry => {
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'item-checkbox';
+    checkbox.dataset.filename = entry.filename;
+    checkbox.addEventListener('change', async () => {
+      await loadModels([entry], groupName, checkbox.checked, scene, loader);
+    });
+    label.appendChild(checkbox);
+    label.append(` ${entry.label} (${entry.side})`); // Zeige side für Klarheit
+    list.appendChild(label);
+  });
+}
+
 export async function generateSubDropdown(groupName) {
   console.log(`📦 generateSubDropdown aufgerufen für ${groupName}`);
-
   const meta = await getMeta();
   const container = document.getElementById(`${groupName}-subgroups`);
   container.innerHTML = '';
@@ -216,6 +265,7 @@ export async function generateSubDropdown(groupName) {
   subgroups.forEach(subgroup => {
     const lineDiv = document.createElement('div');
     lineDiv.className = 'subgroup-line';
+    lineDiv.dataset.subgroup = subgroup; // Für Query
 
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
@@ -225,52 +275,51 @@ export async function generateSubDropdown(groupName) {
     checkbox.className = 'subgroup-checkbox';
 
     checkbox.addEventListener('change', async () => {
-      console.log(`☑️ Checkbox geklickt: Subgruppe = ${subgroup}, Checked = ${checkbox.checked}`);
+      console.log(`☑️ Subgroup checkbox: ${subgroup}, Checked = ${checkbox.checked}`);
       const meta = await getMeta();
       const entries = meta.filter(entry =>
         entry.group === groupName &&
         (entry.subgroup === subgroup || (subgroup === 'Allgemein' && entry.subgroup === 'none'))
       );
       await loadModels(entries, groupName, checkbox.checked, scene, loader);
+
+      // Optional: Sync individuelle Checkboxes (bei All on: check all, bei off: uncheck all)
+      const detailedList = document.getElementById(`detailed-list-${groupName}-${subgroup}`);
+      if (detailedList) {
+        detailedList.querySelectorAll('input.item-checkbox').forEach(cb => {
+          cb.checked = checkbox.checked;
+        });
+      }
     });
 
     label.appendChild(checkbox);
     label.append(` ${subgroup}`);
     lineDiv.appendChild(label);
+
+    // Füge More-Button hinzu (toggle detailed list)
+const moreButton = document.createElement('button');
+moreButton.className = 'more-button';
+moreButton.textContent = 'More';
+moreButton.addEventListener('click', async () => {  // async hinzufügen
+  const listId = `detailed-list-${groupName}-${subgroup}`;
+  const list = document.getElementById(listId);
+  
+  if (list && list.classList.contains('visible')) {
+    list.classList.remove('visible');
+  } else {
+    if (!list) {
+      await generateDetailedList(groupName, subgroup);  // await hinzufügen
+    }
+    const updatedList = document.getElementById(listId);
+    if (updatedList) {
+      updatedList.classList.add('visible');
+    }
+  }
+});
+lineDiv.appendChild(moreButton);
+
     container.appendChild(lineDiv);
-    console.log(`✅ Subgruppen-Zeile hinzugefügt: ${subgroup}`);
-  });
-}
-
-function generateMoreMuscleList(subgroup) {
-  getMeta().then(meta => {
-    const container = document.querySelector(`#muscles-subgroups .subgroup-container[data-subgroup="${subgroup}"]`);
-    if (!container) return;
-
-    const filtered = meta.filter(e => e.subgroup === subgroup && e.group === 'muscles').sort((a, b) =>
-      parseInt(b.fma.replace(/\D/g, '')) - parseInt(a.fma.replace(/\D/g, ''))
-    );
-
-    const list = document.createElement('div');
-    list.className = 'muscle-detailed-list';
-    list.id = `muscle-list-${subgroup}`;
-
-    filtered.forEach(entry => {
-      const label = document.createElement('label');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.className = 'item-checkbox';
-      checkbox.dataset.filename = entry.filename;
-      checkbox.addEventListener('change', () => {
-        loadModels([entry], 'muscles', checkbox.checked);
-      });
-      label.appendChild(checkbox);
-      label.append(` ${entry.label}`);
-      list.appendChild(label);
-      list.appendChild(document.createElement('br'));
-    });
-
-    container.appendChild(list);
+    console.log(`✅ Subgruppen-Zeile mit More-Button hinzugefügt: ${subgroup}`);
   });
 }
 
