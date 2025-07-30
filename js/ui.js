@@ -2,8 +2,10 @@ import * as THREE from './three.module.js';
 import { loadModels } from './modelLoader.js';
 import { getMeta } from './utils.js';
 import { state } from './state.js';
-import { scene, loader } from './init.js';
+import { scene, camera, renderer } from './init.js';
 import { hideInfoPanel } from './interaction.js';
+import { loader } from './init.js'; // Füge loader hinzu (neben scene, camera, etc.)
+
 
 export function setupUI() {
   console.log('setupUI gestartet');
@@ -113,7 +115,11 @@ async function generateSubDropdown(groupName) {
   loadAllBtn.textContent = 'Load All';
   loadAllBtn.addEventListener('click', async () => {
     const entries = meta.filter(entry => entry.group === groupName);
-    await loadModels(entries, groupName, true, scene, loader);
+if (entries.length === 0) {
+  console.warn(`Keine Modelle für ${groupName} – Button deaktivieren?`);
+  return; // Oder disable Button
+}
+await loadModels(entries, groupName, true, scene, loader);
     // Checkboxen updaten (alle checked)
     document.querySelectorAll(`#${groupName}-subgroups input.item-checkbox`).forEach(cb => cb.checked = true);
   });
@@ -190,12 +196,12 @@ async function generateDetailedList(groupName, subgroup) {
   const subEntries = meta.filter(e => e.group === groupName && (e.subgroup === subgroup || (subgroup === 'Allgemein' && !e.subgroup)));
   let subLoaded = subEntries.every(entry => state.groups[groupName].some(model => state.modelNames.get(model) === entry.label));
   toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
-  toggleSubBtn.addEventListener('click', async () => {
-    const visible = toggleSubBtn.textContent === 'Load All (Sub)';
-    await loadModels(subEntries, groupName, visible, scene, loader);
-    list.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = visible);
-    toggleSubBtn.textContent = visible ? 'Clear All (Sub)' : 'Load All (Sub)';
-  });
+ toggleSubBtn.addEventListener('click', async () => {
+  const visible = toggleSubBtn.textContent === 'Load All (Sub)'; // Explizit deklarieren
+  await loadModels(subEntries, groupName, visible, scene, loader);
+  list.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = visible);
+  toggleSubBtn.textContent = visible ? 'Clear All (Sub)' : 'Load All (Sub)';
+});
   list.appendChild(toggleSubBtn); // Zuerst Button anhängen
 
   // Neu: Sortiere die Einträge – right vor left, dann nach FMA aufsteigend
@@ -285,8 +291,24 @@ function resetAll() {
   document.querySelectorAll('.more-muscles-list').forEach(list => list.classList.remove('visible'));
   document.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = false);
 
-  // Szene rendern (um Änderungen sichtbar zu machen)
-  renderer.render(scene, camera);
+  // Neu: Skelett (Bones) automatisch laden, wie im Anfangszustand
+  (async () => {
+    const meta = await getMeta();
+    const bonesEntries = meta.filter(entry => entry.group === 'bones');
+    if (bonesEntries.length > 0) {
+      await loadModels(bonesEntries, 'bones', true, scene, loader);
+      console.log('Skelett nach Reset neu geladen.');
+    } else {
+      console.warn('Keine Bones-Modelle verfügbar – Skelett nicht geladen.');
+    }
+  })();
 
-  console.log('Reset ausgeführt – App im Anfangszustand');
+  // Szene rendern (um Änderungen sichtbar zu machen)
+  if (renderer) {
+    renderer.render(scene, camera);
+  } else {
+    console.warn('Renderer nicht verfügbar – Szene nicht gerendert.');
+  }
+
+  console.log('Reset ausgeführt – App im Anfangszustand mit Skelett.');
 }

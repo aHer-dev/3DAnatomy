@@ -11,10 +11,10 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
   if (!Array.isArray(entries)) entries = [entries];
 
   // Schutz vor ungültigen entries
-  if (visible && (!entries || entries.length === 0)) {
-    console.error(`Ungültige entries für Gruppe ${groupName} (visible=true). Überspringe Laden.`);
-    return;
-  }
+if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
+  console.warn(`Keine Modelle für Gruppe ${groupName} verfügbar (entries: ${entries?.length || 0}). Überspringe.`);
+  return;
+}
 
   if (!visible) {
     console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);

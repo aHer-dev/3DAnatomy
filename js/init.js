@@ -21,7 +21,19 @@ function initThree() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById('container').appendChild(renderer.domElement);
 
-  camera.position.set(0, 2, 5);
+  // Neue initiale Kamera-Position: Frontal, höher, mit Abstand
+  camera.position.set(0, 100, 300); // y=100 (Mitte Mensch), z=300 (Abstand)
+  camera.lookAt(0, 100, 0); // Schaue auf zentrale Mitte
+
+  // OrbitControls mit initialem Target
+  controls.target.set(0, 100, 0); // Ziel auf Skelett-Mitte
+  controls.update(); // Sofort anwenden
+  controls.minDistance = 1;
+  controls.maxDistance = 2000;
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
+  controls.screenSpacePanning = true;
+  controls.maxPolarAngle = Math.PI / 2;
 
   const lightFront = new THREE.DirectionalLight(0xffffff, 0.8);
   lightFront.position.set(1, 1, 1);
@@ -38,26 +50,12 @@ function initThree() {
   const ambientLight = new THREE.AmbientLight(0x606060);
   scene.add(ambientLight);
 
-  controls.mouseButtons = {
-    LEFT: THREE.MOUSE.ROTATE,
-    MIDDLE: THREE.MOUSE.DOLLY,
-    RIGHT: THREE.MOUSE.PAN
-  };
-  controls.minDistance = 1;
-  controls.maxDistance = 2000;
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.25;
-  controls.screenSpacePanning = true;
-  controls.maxPolarAngle = Math.PI / 2;
-
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
+  });
 }
 
 // ✅ Alle benötigten Exporte in einer Zeile
 export { initThree, scene, camera, renderer, loader, controls };
-
