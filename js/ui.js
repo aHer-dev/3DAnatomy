@@ -9,6 +9,19 @@ import { loader } from './init.js'; // Füge loader hinzu (neben scene, camera, 
 
 export function setupUI() {
   console.log('setupUI gestartet');
+// Initial alle Dropdowns schließen
+document.querySelectorAll('.dropdown').forEach(dropdown => {
+  dropdown.classList.remove('active');
+  const button = dropdown.querySelector('.dropdown-button');
+  if (button) {
+    button.textContent = button.textContent.replace(/▲/, '▼');
+  }
+  // Explizit den Content verstecken (Fallback für "Raum" und andere)
+  const content = dropdown.querySelector('.dropdown-content');
+  if (content) {
+    content.style.display = 'none';
+  }
+});
 
   // Hamburger-Menü Toggle
   const menuIcon = document.getElementById('menu-icon');
@@ -168,13 +181,26 @@ document.getElementById('room-brightness')?.addEventListener('input', (e) => {
   renderer.render(scene, camera);
 });
 
-  // Dropdown-Toggle für andere Sections
-  document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
-    button.addEventListener('click', () => {
-      const dropdown = button.closest('.dropdown');
-      dropdown.classList.toggle('active');
-    });
+// Dropdown-Toggle für andere Sections (wie Raum, Farben, Tools)
+document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
+  button.addEventListener('click', () => {
+    const dropdown = button.closest('.dropdown');
+    const isActive = dropdown.classList.contains('active');
+    
+    console.log('Dropdown geklickt:', button.textContent.trim(), 'Status vor Toggle:', isActive ? 'offen' : 'geschlossen');
+    
+    dropdown.classList.toggle('active');
+    button.textContent = button.textContent.replace(/▼|▲/, isActive ? '▼' : '▲');
+    
+    const content = dropdown.querySelector('.dropdown-content');
+    if (content) {
+      content.style.display = isActive ? 'none' : 'block';  // Manuell toggeln (Fallback)
+      console.log('Content Display nach manuellem Set:', content.style.display);
+    } else {
+      console.log('Content nicht gefunden');
+    }
   });
+});
 }
 
 async function generateSubDropdown(groupName) {
@@ -442,6 +468,15 @@ function resetAll() {
   document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
   document.querySelectorAll('.more-muscles-list').forEach(list => list.classList.remove('visible'));
   document.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = false);
+
+  // Alle Dropdowns nach Reset schließen
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.classList.remove('active');
+    const button = dropdown.querySelector('.dropdown-button');
+    if (button) {
+      button.textContent = button.textContent.replace(/▲/, '▼');
+    }
+  });
 
   // Skelett (Bones) automatisch laden, wie im Anfangszustand
   (async () => {

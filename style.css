@@ -557,7 +557,7 @@ canvas {
 }
 
 .dropdown-content {
-    display: none;
+    display: none !important;;
     padding: 10px;
     background-color: #222222;
     border-radius: 5px;
