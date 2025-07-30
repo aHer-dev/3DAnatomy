@@ -394,18 +394,56 @@ function resetAll() {
   state.subgroupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
   state.clickCounts = { bones: 0, muscles: 0, tendons: 0, other: 0 };
 
-  // Slider/Defaults zurücksetzen
-  document.getElementById('transparency-slider').value = state.defaultSettings.transparency;
-  document.getElementById('lighting-slider').value = state.defaultSettings.lighting;
-  document.getElementById('background-slider').value = state.defaultSettings.background;
-  state.colors = { ...state.defaultSettings.colors }; // Farben reset
+  // Slider/Defaults zurücksetzen (sichere Version ohne ?. )
+  const transparencySlider = document.getElementById('transparency-slider');
+  if (transparencySlider) transparencySlider.value = state.defaultSettings.transparency;
+
+  const lightingSlider = document.getElementById('lighting-slider');
+  if (lightingSlider) lightingSlider.value = state.defaultSettings.lighting;
+
+  const backgroundSlider = document.getElementById('background-slider');
+  if (backgroundSlider) backgroundSlider.value = state.defaultSettings.background;
+
+  // Raum-Farbe und Helligkeit auf Schwarz und dunkel zurücksetzen
+  const roomColor = document.getElementById('room-color');
+  if (roomColor) roomColor.value = '#000000'; // Standard: Schwarz
+
+  const roomBrightness = document.getElementById('room-brightness');
+  if (roomBrightness) roomBrightness.value = 1; // value=1 -> brightness=0 (dunkel)
+
+  // Farben reset und UI-Inputs aktualisieren
+  state.colors = { ...state.defaultSettings.colors };
+  ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+    const colorInput = document.getElementById(`${group}-color`);
+    if (colorInput) {
+      const hex = state.colors[group].toString(16).padStart(6, '0');
+      colorInput.value = `#${hex}`;
+    }
+  });
+
+  // Szene-Hintergrund auf Schwarz zurücksetzen (brightness=0 macht es komplett dunkel/schwarz)
+  const defaultColor = new THREE.Color('#000000');
+  const defaultBrightness = 0; // Dunkel
+  scene.background = defaultColor.multiplyScalar(defaultBrightness);
+
+  // Beleuchtung auf Initialwerte zurücksetzen
+  scene.children.forEach(child => {
+    if (child instanceof THREE.DirectionalLight) {
+      // Setze Initial-Intensitäten (passe an deine init.js an)
+      if (child.position.x === 1 && child.position.y === 1 && child.position.z === 1) child.intensity = 0.8;
+      if (child.position.x === -1 && child.position.y === 1 && child.position.z === -1) child.intensity = 0.6;
+      if (child.position.y === 1) child.intensity = 0.5;
+    } else if (child instanceof THREE.AmbientLight) {
+      child.intensity = 0.3; // Oder deinen Standard-Wert
+    }
+  });
 
   // UI aktualisieren (Submenüs schließen, Checkboxen deaktivieren)
   document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
   document.querySelectorAll('.more-muscles-list').forEach(list => list.classList.remove('visible'));
   document.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = false);
 
-  // Neu: Skelett (Bones) automatisch laden, wie im Anfangszustand
+  // Skelett (Bones) automatisch laden, wie im Anfangszustand
   (async () => {
     const meta = await getMeta();
     const bonesEntries = meta.filter(entry => entry.group === 'bones');

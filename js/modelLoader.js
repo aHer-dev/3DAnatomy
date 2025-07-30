@@ -80,7 +80,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
                 });
 
                 scene.add(model);
-                console.log("✅ Modell erfolgreich geladen:", entry.label, modelPath);
+                //console.log("✅ Modell erfolgreich geladen:", entry.label, modelPath);
                 state.groups[groupName].push(model);
                 state.modelNames.set(model, entry.label);
                 loadedCount++; // Erhöhe bei jedem erfolgreichen Laden
@@ -94,7 +94,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
               }
             },
             (xhr) => {
-              console.log(`Laden von ${entry.label}: ${(xhr.loaded / (xhr.total || 1) * 100).toFixed(2)}%`);
+              //console.log(`Laden von ${entry.label}: ${(xhr.loaded / (xhr.total || 1) * 100).toFixed(2)}%`);
             },
             (error) => {
               console.error(`🚫 Fehler beim Laden: ${modelPath}`, error);

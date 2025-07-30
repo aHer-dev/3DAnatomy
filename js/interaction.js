@@ -61,7 +61,7 @@ export function setupInteractions() {
         console.log('Kein valides Modell – Panel nicht gezeigt');
       }
     } else {
-      console.log('Kein Intersect – Klick auf Hintergrund? Panel nicht gezeigt');
+      //console.log('Kein Intersect – Klick auf Hintergrund? Panel nicht gezeigt');
     }
   }
 }
