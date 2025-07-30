@@ -3,47 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Anatomy Viewer</title>
+    <title>3D Anatomie Viewer</title>
     <link rel="stylesheet" href="style.css">
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "./js/three.module.js"
-        }
-    }
-    </script>
+    <link rel="icon" href="favicon.ico">
     <script type="module" src="app.js"></script>
 </head>
 <body>
     <div id="container"></div>
 
-    <div id="menu-icon" onclick="toggleMenu()">
+    <div id="menu-icon">
         <div></div>
         <div></div>
         <div></div>
     </div>
 
     <div id="controls">
-        <input type="text" id="search-bar" placeholder="Suche">
+        <input type="text" id="search-bar" placeholder="Suche nach Modell...">
 
         <div class="dropdown">
             <button class="dropdown-button">Gruppen</button>
             <div class="dropdown-content">
-                <label><input type="checkbox" id="bones"> Bones (Skelett)</label>
-                <div id="bones-sub-dropdown" style="display: none;">
-                    <div id="bones-subgroups"></div>
+                <!-- Reihenfolge angepasst: Muscles, Bones, Tendons, Other -->
+                <div class="dropdown-sub">
+                    <button class="sub-dropdown-button" data-group="muscles">Muscles (Muskeln) ▼</button>
+                    <div id="muscles-sub-dropdown" class="sub-dropdown"></div>
                 </div>
-                <label><input type="checkbox" id="muscles"> Muscles</label>
-                <div id="muscles-sub-dropdown" style="display: none;">
-                    <div id="muscles-subgroups"></div>
+                <div class="dropdown-sub">
+                    <button class="sub-dropdown-button" data-group="bones">Bones (Skelett) ▼</button>
+                    <div id="bones-sub-dropdown" class="sub-dropdown"></div>
                 </div>
-                <label><input type="checkbox" id="tendons"> Tendons</label>
-                <div id="tendons-sub-dropdown" style="display: none;">
-                    <div id="tendons-subgroups"></div>
+                <div class="dropdown-sub">
+                    <button class="sub-dropdown-button" data-group="tendons">Tendons ▼</button>
+                    <div id="tendons-sub-dropdown" class="sub-dropdown"></div>
                 </div>
-                <label><input type="checkbox" id="other"> Other</label>
-                <div id="other-sub-dropdown" style="display: none;">
-                    <div id="other-subgroups"></div>
+                <div class="dropdown-sub">
+                    <button class="sub-dropdown-button" data-group="other">Other ▼</button>
+                    <div id="other-sub-dropdown" class="sub-dropdown"></div>
                 </div>
             </div>
         </div>
@@ -51,23 +46,23 @@
         <div class="dropdown">
             <button class="dropdown-button">Farben ändern</button>
             <div class="dropdown-content">
-                Bones Farbe: <input type="color" id="bones-color" value="#ffffff">
-                Muscles Farbe: <input type="color" id="muscles-color" value="#ff0000">
-                Tendons Farbe: <input type="color" id="tendons-color" value="#ffff00">
-                Other Farbe: <input type="color" id="other-color" value="#00ff00">
+                <label>Bones Farbe: <input type="color" id="bones-color"></label>
+                <label>Muscles Farbe: <input type="color" id="muscles-color"></label>
+                <label>Tendons Farbe: <input type="color" id="tendons-color"></label>
+                <label>Other Farbe: <input type="color" id="other-color"></label>
             </div>
         </div>
 
         <div class="dropdown">
             <button class="dropdown-button">Tools</button>
             <div class="dropdown-content">
-                <button id="screenshot">Screenshot machen</button>
-                <button id="save">Einstellungen speichern</button>
-                <input type="text" id="load-code" placeholder="Code einfügen und laden">
-                <button id="load">Einstellungen laden</button>
-                Transparenz: <input type="range" id="transparency-slider" min="0" max="1" step="0.1" value="1">
-                Beleuchtung: <input type="range" id="lighting-slider" min="0.5" max="2" step="0.1" value="1">
-                Hintergrund: <input type="range" id="background-slider" min="0" max="1" step="0.1" value="0.5">
+                <button id="screenshot-button">Screenshot machen</button>
+                <button id="save-settings">Einstellungen speichern</button>
+                <input type="text" id="load-code" placeholder="Code zum Laden eingeben">
+                <button id="load-settings">Einstellungen laden</button>
+                <label>Transparenz: <input type="range" id="transparency-slider" min="0" max="1" step="0.01" value="1"></label>
+                <label>Beleuchtung: <input type="range" id="lighting-slider" min="0" max="2" step="0.1" value="1"></label>
+                <label>Hintergrund: <input type="range" id="background-slider" min="0" max="1" step="0.01" value="1"></label>
                 <button id="annotations-button">Annotations hinzufügen</button>
                 <button id="quiz-button">Quiz-Modus</button>
                 <button id="export-button">Exportieren</button>
@@ -75,7 +70,7 @@
         </div>
     </div>
 
-    <div id="loading" style="display: none;">
+    <div id="loading">
         <div id="progress-bar"></div>
         <div id="progress-text">0%</div>
     </div>
@@ -84,17 +79,19 @@
         <span class="license-link">© CC BY-SA</span>
     </div>
 
-    <div id="license-dropdown" style="display: none;">
+    <div id="license-dropdown">
         <p>BodyParts3D, © The Database Center for Life Science, licensed under CC BY-SA 2.1 Japan.</p>
         <p>Attribution: Modelle basieren auf Daten von Anatomography/BodyParts3D. Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.</p>
     </div>
 
     <div id="info-panel" class="hidden">
         <div id="info-header">
-            Modellteile
+            <span>Modell-Details</span>
             <button id="info-close">✖</button>
         </div>
         <div id="info-content"></div>
     </div>
+
+    <div id="tooltip"></div>
 </body>
 </html>

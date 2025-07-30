@@ -5,32 +5,45 @@ import { scene, loader } from './init.js'; // Füge loader hinzu (scene hast du 
 import { state } from './state.js';
 
 export async function loadModels(entries, groupName, visible, scene, loader) {
-  console.log(`loadModels aufgerufen für Gruppe: ${groupName}, visible: ${visible}, entries: ${entries ? entries.length + ' Einträge' : 'undefined oder kein Array'}`);
+  console.log(`loadModels aufgerufen für Gruppe: ${groupName}, visible: ${visible}, entries: ${entries ? (Array.isArray(entries) ? entries.length + ' Einträge' : '1 Eintrag') : 'undefined oder kein Array'}`);
+
+  // Stelle sicher, dass entries immer ein Array ist (für einzelne Modelle)
+  if (!Array.isArray(entries)) {
+    entries = [entries];
+  }
 
   // Schutz vor ungültigen entries
-  if (visible && (!entries || !Array.isArray(entries))) {
+  if (visible && (!entries || entries.length === 0)) {
     console.error(`Ungültige entries für Gruppe ${groupName} (visible=true). Überspringe Laden.`);
     return;
-
   }
 
   if (!visible) {
-  console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);
-}
+    console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);
+  }
 
   const loadingDiv = document.getElementById('loading');
   const progressBar = document.getElementById('progress-bar');
   const progressText = document.getElementById('progress-text');
 
-if (visible) {
+  if (visible) {
     loadingDiv.style.display = 'block';
     let loadedCount = 0;
     const totalModels = entries.length;
 
     const promises = entries.map(entry => {
       return new Promise((resolve, reject) => {
+        // Vermeide doppeltes Laden: Prüfe, ob das Modell schon in state.groups existiert
+        const existingModel = state.groups[groupName].find(m => state.modelNames.get(m) === entry.label);
+        if (existingModel) {
+          console.log(`🛑 Modell ${entry.label} bereits geladen. Überspringe.`);
+          updateProgress(++loadedCount, totalModels, progressBar, progressText);
+          resolve();
+          return;
+        }
+
         const modelPath = getModelPath(entry.filename, groupName);
-      //  console.log("🧪 Lade Modell:", entry.label, "→", modelPath);
+        // console.log("🧪 Lade Modell:", entry.label, "→", modelPath);
         fetch(modelPath, { method: 'HEAD' }).then(res => {
           if (!res.ok) {
             console.error(`Datei nicht gefunden: ${modelPath}`);
@@ -63,7 +76,7 @@ if (visible) {
                 scene.add(model);
                 state.groups[groupName].push(model);
                 state.modelNames.set(model, entry.label);
-             //   console.log("✅ Modell geladen:", entry.label);
+                // console.log("✅ Modell geladen:", entry.label);
                 updateProgress(++loadedCount, totalModels, progressBar, progressText);
                 resolve();
               } catch (e) {
@@ -90,12 +103,22 @@ if (visible) {
     await Promise.allSettled(promises);
     loadingDiv.style.display = 'none';
   } else {
-    console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);
-    state.groups[groupName].forEach(model => {
-      scene.remove(model);
-      state.modelNames.delete(model);
+    // Ausblenden: Für spezifische Modelle (einzeln oder Liste)
+    entries.forEach(entry => {
+      const model = state.groups[groupName].find(m => state.modelNames.get(m) === entry.label);
+      if (model) {
+        scene.remove(model);
+        state.groups[groupName] = state.groups[groupName].filter(m => m !== model);
+        state.modelNames.delete(model);
+        console.log(`❎ Modell ${entry.label} ausgeblendet.`);
+      } else {
+        console.warn(`Modell ${entry.label} nicht gefunden zum Ausblenden.`);
+      }
     });
-    state.groups[groupName] = []; // Leere state.groups bei Ausblenden
+    // Wenn alle Modelle entfernt wurden, leere das Array explizit (optional, aber konsistent)
+    if (state.groups[groupName].length === 0) {
+      state.groups[groupName] = [];
+    }
   }
 }
 
