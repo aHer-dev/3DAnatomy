@@ -80,15 +80,6 @@ searchBar?.addEventListener('input', async () => {
   console.log(`Gefundene Modelle: ${results.length}`);
 });
 
-  // Slider (unverändert)
-  document.getElementById('transparency-slider')?.addEventListener('input', (e) => {
-    const transparency = parseFloat(e.target.value);
-    Object.values(state.groups).flat().forEach(model => {
-      model.traverse(child => {
-        if (child.isMesh) child.material.opacity = transparency;
-      });
-    });
-  });
 
   document.getElementById('lighting-slider')?.addEventListener('input', (e) => {
     const intensity = parseFloat(e.target.value);
@@ -143,10 +134,39 @@ searchBar?.addEventListener('input', async () => {
   }
 });
 
-  document.getElementById('background-slider')?.addEventListener('input', (e) => {
-    const opacity = parseFloat(e.target.value);
-    document.body.style.backgroundColor = `rgba(51, 51, 51, ${opacity})`;
+document.getElementById('background-slider')?.addEventListener('input', (e) => {
+  const value = parseFloat(e.target.value); // 0-1
+  const color = new THREE.Color().setHSL(value, 0.5, 0.5); // HSL für Farbverlauf (z. B. 0=rot, 0.5=grün)
+  scene.background = color; // Ändert die Scene-Hintergrundfarbe
+  renderer.render(scene, camera); // Sofort-Render
+});
+
+// Raum-Beleuchtung (bestehender Lighting-Slider)
+document.getElementById('lighting-slider')?.addEventListener('input', (e) => {
+  const intensity = parseFloat(e.target.value);
+  scene.children.forEach(child => {
+    if (child instanceof THREE.DirectionalLight || child instanceof THREE.AmbientLight) {
+      child.intensity = intensity;
+    }
   });
+  renderer.render(scene, camera);
+});
+
+// Raum-Farbe (Color-Picker)
+document.getElementById('room-color')?.addEventListener('input', (e) => {
+  const color = new THREE.Color(e.target.value);
+  const brightness = 1 - parseFloat(document.getElementById('room-brightness').value); // Mit Helligkeit kombinieren
+  scene.background = color.multiplyScalar(brightness);
+  renderer.render(scene, camera);
+});
+
+// Raum-Helligkeit (Regler: 0=hell, 1=dunkel)
+document.getElementById('room-brightness')?.addEventListener('input', (e) => {
+  const brightness = 1 - parseFloat(e.target.value); // Umkehren: 0=hell (1), 1=dunkel (0)
+  const currentColor = new THREE.Color(document.getElementById('room-color').value);
+  scene.background = currentColor.multiplyScalar(brightness);
+  renderer.render(scene, camera);
+});
 
   // Dropdown-Toggle für andere Sections
   document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
