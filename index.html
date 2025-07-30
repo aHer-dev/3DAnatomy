@@ -23,22 +23,30 @@
         <div class="dropdown">
             <button class="dropdown-button">Gruppen</button>
             <div class="dropdown-content">
-                <!-- Reihenfolge angepasst: Muscles, Bones, Tendons, Other -->
+                <!-- Reihenfolge: Muscles, Bones, Tendons, Other -->
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="muscles">Muscles (Muskeln) ▼</button>
-                    <div id="muscles-sub-dropdown" class="sub-dropdown"></div>
+                    <div id="muscles-sub-dropdown" class="sub-dropdown">
+                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
+                    </div>
                 </div>
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="bones">Bones (Skelett) ▼</button>
-                    <div id="bones-sub-dropdown" class="sub-dropdown"></div>
+                    <div id="bones-sub-dropdown" class="sub-dropdown">
+                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
+                    </div>
                 </div>
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="tendons">Tendons ▼</button>
-                    <div id="tendons-sub-dropdown" class="sub-dropdown"></div>
+                    <div id="tendons-sub-dropdown" class="sub-dropdown">
+                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
+                    </div>
                 </div>
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="other">Other ▼</button>
-                    <div id="other-sub-dropdown" class="sub-dropdown"></div>
+                    <div id="other-sub-dropdown" class="sub-dropdown">
+                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,6 +76,9 @@
                 <button id="export-button">Exportieren</button>
             </div>
         </div>
+
+        <!-- Reset-Button am Ende von #controls -->
+        <button id="reset-button">Reset</button>
     </div>
 
     <div id="loading">

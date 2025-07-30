@@ -39,25 +39,22 @@ if (menuIcon && controlsPanel) {
   document.getElementById('info-close')?.addEventListener('click', hideInfoPanel);
 
   // Gruppen-Dropdown-Buttons
-  document.querySelectorAll('.sub-dropdown-button').forEach(button => {
-    const groupName = button.dataset.group;
-    button.addEventListener('click', async () => {
-      const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
-      const isOpen = subDropdown.style.display === 'block';
-      subDropdown.style.display = isOpen ? 'none' : 'block';
-      button.textContent = button.textContent.replace(/▼|▲/, isOpen ? '▼' : '▲');
+document.querySelectorAll('.sub-dropdown-button').forEach(button => {
+  const groupName = button.dataset.group;
+  button.addEventListener('click', async () => {
+    const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
+    const isOpen = subDropdown.style.display === 'block';
+    subDropdown.style.display = isOpen ? 'none' : 'block';
+    button.textContent = button.textContent.replace(/▼|▲/, isOpen ? '▼' : '▲');
 
-      if (!isOpen) {
-        // Beim Öffnen: Alle Modelle laden (falls nicht schon)
-        const meta = await getMeta();
-        const entries = meta.filter(entry => entry.group === groupName);
-        if (entries.length > 0 && state.groups[groupName].length === 0) {
-          await loadModels(entries, groupName, true, scene, loader);
-        }
-        await generateSubDropdown(groupName);
-      }
-    });
+    if (!isOpen) {
+      await generateSubDropdown(groupName); // Generiert Subgruppen + All/Clear-Buttons
+    }
   });
+});
+
+// Reset-Button
+document.getElementById('reset-button')?.addEventListener('click', resetAll);
 
   // Suchleiste (unverändert)
   const searchBar = document.getElementById('search-bar');
@@ -108,31 +105,68 @@ async function generateSubDropdown(groupName) {
   const container = document.getElementById(`${groupName}-subgroups`) || document.createElement('div');
   container.id = `${groupName}-subgroups`;
   container.innerHTML = '';
-  document.getElementById(`${groupName}-sub-dropdown`).appendChild(container);
 
-  const subgroups = [...new Set(meta.filter(entry => entry.group === groupName).map(entry => entry.subgroup || 'Allgemein'))].sort();
-
-  subgroups.forEach(subgroup => {
-    const subButton = document.createElement('button');
-    subButton.className = 'subgroup-button';
-    subButton.textContent = `${subgroup} ▼`;
-    subButton.dataset.subgroup = subgroup;
-    subButton.addEventListener('click', async () => {
-      const detailedList = document.getElementById(`detailed-list-${groupName}-${subgroup}`);
-      const isVisible = detailedList?.classList.contains('visible');
-      if (isVisible) {
-        detailedList.classList.remove('visible');
-        subButton.textContent = subButton.textContent.replace('▲', '▼');
-      } else {
-        await generateDetailedList(groupName, subgroup);
-        document.getElementById(`detailed-list-${groupName}-${subgroup}`).classList.add('visible');
-        subButton.textContent = subButton.textContent.replace('▼', '▲');
-      }
-    });
-    container.appendChild(subButton);
+  // Neu: All/Clear-Buttons für die gesamte Gruppe
+  const groupButtons = document.createElement('div');
+  groupButtons.className = 'group-buttons';
+  const loadAllBtn = document.createElement('button');
+  loadAllBtn.textContent = 'Load All';
+  loadAllBtn.addEventListener('click', async () => {
+    const entries = meta.filter(entry => entry.group === groupName);
+    await loadModels(entries, groupName, true, scene, loader);
+    // Checkboxen updaten (alle checked)
+    document.querySelectorAll(`#${groupName}-subgroups input.item-checkbox`).forEach(cb => cb.checked = true);
   });
+  const clearAllBtn = document.createElement('button');
+  clearAllBtn.textContent = 'Clear All';
+  clearAllBtn.addEventListener('click', async () => {
+    const entries = meta.filter(entry => entry.group === groupName);
+    await loadModels(entries, groupName, false, scene, loader);
+    // Checkboxen updaten (alle unchecked)
+    document.querySelectorAll(`#${groupName}-subgroups input.item-checkbox`).forEach(cb => cb.checked = false);
+  });
+  groupButtons.appendChild(loadAllBtn);
+  groupButtons.appendChild(clearAllBtn);
+  container.appendChild(groupButtons);
 
-  // Restauriere Zustände
+  // Bestehender Code für Subgruppen...
+  const subgroups = [...new Set(meta.filter(entry => entry.group === groupName).map(entry => entry.subgroup || 'Allgemein'))].sort();
+subgroups.forEach(subgroup => {
+  const subButton = document.createElement('button');
+  subButton.className = 'subgroup-button';
+  subButton.textContent = `${subgroup} ▼`;
+  subButton.dataset.subgroup = subgroup;
+  subButton.addEventListener('click', async () => {
+    const detailedListId = `detailed-list-${groupName}-${subgroup}`;
+    let detailedList = document.getElementById(detailedListId);
+    const isVisible = detailedList?.classList.contains('visible');
+
+    if (isVisible) {
+      detailedList.classList.remove('visible');
+      subButton.textContent = subButton.textContent.replace('▲', '▼');
+    } else {
+      if (!detailedList) {
+        // Generiere, wenn nicht existent
+        await generateDetailedList(groupName, subgroup);
+        detailedList = document.getElementById(detailedListId);
+      } else {
+        // Wenn existent, aktualisiere Toggle-Button-Text (Effizienz)
+        const toggleSubBtn = detailedList.querySelector('.toggle-all-button');
+        if (toggleSubBtn) {
+          const subEntries = meta.filter(e => e.group === groupName && (e.subgroup === subgroup || (subgroup === 'Allgemein' && !e.subgroup)));
+          const subLoaded = subEntries.every(entry => state.groups[groupName].some(model => state.modelNames.get(model) === entry.label));
+          toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
+        }
+      }
+      // Immer sichtbar machen
+      detailedList.classList.add('visible');
+      subButton.textContent = subButton.textContent.replace('▼', '▲');
+    }
+  });
+  container.appendChild(subButton);
+});
+
+  document.getElementById(`${groupName}-sub-dropdown`).appendChild(container);
   restoreSubgroupStates(groupName);
 }
 
@@ -146,28 +180,48 @@ async function generateDetailedList(groupName, subgroup) {
     list.className = 'more-muscles-list';
     const subButton = container.querySelector(`button[data-subgroup="${subgroup}"]`);
     subButton.after(list);
+  } else {
+    list.innerHTML = ''; // Leeren, falls aktualisiert
   }
-  list.innerHTML = '';
 
-  const filtered = meta.filter(e => e.group === groupName && (e.subgroup === subgroup || (subgroup === 'Allgemein' && !e.subgroup)));
-  filtered.forEach(entry => {
+  // Toggle-Button (unverändert)
+  const toggleSubBtn = document.createElement('button');
+  toggleSubBtn.className = 'toggle-all-button';
+  const subEntries = meta.filter(e => e.group === groupName && (e.subgroup === subgroup || (subgroup === 'Allgemein' && !e.subgroup)));
+  let subLoaded = subEntries.every(entry => state.groups[groupName].some(model => state.modelNames.get(model) === entry.label));
+  toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
+  toggleSubBtn.addEventListener('click', async () => {
+    const visible = toggleSubBtn.textContent === 'Load All (Sub)';
+    await loadModels(subEntries, groupName, visible, scene, loader);
+    list.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = visible);
+    toggleSubBtn.textContent = visible ? 'Clear All (Sub)' : 'Load All (Sub)';
+  });
+  list.appendChild(toggleSubBtn); // Zuerst Button anhängen
+
+  // Checkboxen generieren (nach Button)
+  subEntries.forEach(entry => {
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.className = 'item-checkbox';
     checkbox.dataset.filename = entry.filename;
-    checkbox.checked = state.subgroupStates[groupName]?.[subgroup]?.[entry.filename] ?? true; // Default an
+    checkbox.checked = state.subgroupStates[groupName]?.[subgroup]?.[entry.filename] ?? subLoaded;
     checkbox.addEventListener('change', async () => {
       await loadModels([entry], groupName, checkbox.checked, scene, loader);
-      // Speichere Zustand
       if (!state.subgroupStates[groupName]) state.subgroupStates[groupName] = {};
       if (!state.subgroupStates[groupName][subgroup]) state.subgroupStates[groupName][subgroup] = {};
       state.subgroupStates[groupName][subgroup][entry.filename] = checkbox.checked;
+      // Update Toggle-Button
+      subLoaded = subEntries.every(e => state.subgroupStates[groupName][subgroup]?.[e.filename] ?? false);
+      toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
     });
     label.appendChild(checkbox);
     label.append(` ${entry.label} (${entry.side || 'none'})`);
-    list.appendChild(label);
+    list.appendChild(label); // Nach Button anhängen
   });
+
+  // Initial sichtbar machen (falls neu generiert)
+  list.classList.add('visible');
 }
 
 function restoreGroupState(groupName) {
@@ -188,8 +242,39 @@ function restoreSubgroupStates(groupName) {
     if (Object.values(state.subgroupStates[groupName][subgroup]).some(checked => checked)) {
       const subButton = document.querySelector(`#${groupName}-subgroups .subgroup-button[data-subgroup="${subgroup}"]`);
       if (subButton) {
-        subButton.click(); // Öffne und lade Liste
+        subButton.click(); // Öffnet und zeigt Liste (inkl. Checkboxen)
       }
     }
   });
+}
+
+function resetAll() {
+  // Alle Modelle entfernen
+  Object.keys(state.groups).forEach(groupName => {
+    state.groups[groupName].forEach(model => scene.remove(model));
+    state.groups[groupName] = [];
+  });
+  state.modelNames.clear();
+  state.currentlySelected = null;
+
+  // Zustände zurücksetzen
+  state.groupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
+  state.subgroupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
+  state.clickCounts = { bones: 0, muscles: 0, tendons: 0, other: 0 };
+
+  // Slider/Defaults zurücksetzen
+  document.getElementById('transparency-slider').value = state.defaultSettings.transparency;
+  document.getElementById('lighting-slider').value = state.defaultSettings.lighting;
+  document.getElementById('background-slider').value = state.defaultSettings.background;
+  state.colors = { ...state.defaultSettings.colors }; // Farben reset
+
+  // UI aktualisieren (Submenüs schließen, Checkboxen deaktivieren)
+  document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
+  document.querySelectorAll('.more-muscles-list').forEach(list => list.classList.remove('visible'));
+  document.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = false);
+
+  // Szene rendern (um Änderungen sichtbar zu machen)
+  renderer.render(scene, camera);
+
+  console.log('Reset ausgeführt – App im Anfangszustand');
 }

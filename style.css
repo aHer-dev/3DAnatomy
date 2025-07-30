@@ -5,11 +5,7 @@ body {
     background-color: #333333; /* Dunkelgrauer Hintergrund für 3D-Viewer */
 }
 
-/* 3D-Viewer-Container: Vollbild */
-#container {
-    width: 100vw;
-    height: 100vh;
-}
+
 
 /* --- Steuerungspanel (#controls) --- */
 /* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
@@ -353,7 +349,7 @@ button:hover {
         border-radius: 10px 10px 0 0;
         resize: none;
         overflow-y: auto;
-        /* ❌ KEIN display: none mehr hier! */
+        display: block !important;
     }
 
     /* Sidebar: Als Overlay, vollbreit */
@@ -441,44 +437,19 @@ button:hover {
   transition: opacity 0.3s ease, transform 0.3s ease; /* Nur animierbare Eigenschaften */
 }
 
-#info-panel * { /* Alle Kinder */
-  pointer-events: auto; /* Ermögliche Interaktion mit Buttons/Slider/Close */
-}
-
-#info-content {
-  pointer-events: auto; /* Sicherstellen */
-}
-
 #info-panel.hidden {
   opacity: 0;
   transform: translateY(150%);
   pointer-events: none;
 }
 
-#info-panel.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-
-.dropdown.active .dropdown-content {
-    display: block;
-}
-
-/* Startposition für Animation */
-.hidden {
-  transform: translateY(150%);
-  opacity: 0;
-  pointer-events: none;
-}
 
 /* Desktop: oben rechts */
 @media (min-width: 601px) {
     #info-panel {
     bottom: 10px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: none;
     top: auto;
     right: auto;
   }
@@ -492,20 +463,13 @@ button:hover {
     transform: translateX(-50%); /* Entferne translateY(100%) für Basis */
     width: 90vw;
   }
-  #info-panel.hidden {
-    transform: translateX(-50%) translateY(150%);
-  }
+
   #info-panel.visible {
     transform: translateX(-50%);
   }
 }
 
-@media (min-width: 1200px) {
-  #info-panel {
-    right: 5vw; /* 5% vom Viewport-Rechtsrand – skalierbar für breite Screens */
-    /* Oder absolut: right: 0; für komplett am Rand */
-  }
-}
+
 
 #info-header {
   display: flex;
@@ -533,42 +497,12 @@ button:hover {
 
 
 
-.info-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
+
 
 .info-icon {
   font-size: 1.4em;
 }
 
-.close-button {
-  background: none;
-  color: white;
-  border: none;
-  font-size: 1.2em;
-  cursor: pointer;
-}
-
-
-
-#info-panel.visible {
-  transform: translateY(0%);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.more-muscles-list {
-  margin-left: 20px;
-  margin-top: 5px;
-  display: none;
-}
-
-.more-muscles-list.visible {
-  display: block;
-}
 
 .more-button {
   font-size: 0.8rem;
@@ -586,6 +520,17 @@ button:hover {
   background-color: rgba(120, 120, 120, 0.5);
   color: #fff;
 }
+
+.item-checkbox {
+  margin-right: 5px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: white;
+}
+
 
 #container {
     width: 100vw;
@@ -679,11 +624,46 @@ canvas {
 }
 
 .more-muscles-list {
-    display: none;
-    margin-left: 20px;
+  display: none;
+  margin-left: 20px;
+  margin-top: 5px;
 }
 
 .more-muscles-list.visible {
-    display: block;
+  display: block !important;
 }
 
+.group-buttons, .sub-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.group-buttons button, .sub-buttons button {
+  width: 48%;
+  background-color: #444444;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.group-buttons button:hover, .sub-buttons button:hover {
+  background-color: #555555;
+}
+
+#reset-button {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #622369; /* Rot für Warnung */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#reset-button:hover {
+  background-color: #9835a2;
+}

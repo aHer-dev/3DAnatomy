@@ -8,9 +8,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
   console.log(`loadModels aufgerufen für Gruppe: ${groupName}, visible: ${visible}, entries: ${entries ? (Array.isArray(entries) ? entries.length + ' Einträge' : '1 Eintrag') : 'undefined oder kein Array'}`);
 
   // Stelle sicher, dass entries immer ein Array ist (für einzelne Modelle)
-  if (!Array.isArray(entries)) {
-    entries = [entries];
-  }
+  if (!Array.isArray(entries)) entries = [entries];
 
   // Schutz vor ungültigen entries
   if (visible && (!entries || entries.length === 0)) {
