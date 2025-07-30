@@ -1,8 +1,10 @@
-// js/modelLoader.js
 import * as THREE from './three.module.js';
 import { getMeta, getModelPath } from './utils.js';
-import { scene, loader } from './init.js'; // Füge loader hinzu (scene hast du schon)
+import { scene, loader } from './init.js';
 import { state } from './state.js';
+
+let loadedCount = 0;
+let totalModels = 0;
 
 export async function loadModels(entries, groupName, visible, scene, loader) {
   console.log(`loadModels aufgerufen für Gruppe: ${groupName}, visible: ${visible}, entries: ${entries ? (Array.isArray(entries) ? entries.length + ' Einträge' : '1 Eintrag') : 'undefined oder kein Array'}`);
@@ -11,10 +13,10 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
   if (!Array.isArray(entries)) entries = [entries];
 
   // Schutz vor ungültigen entries
-if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
-  console.warn(`Keine Modelle für Gruppe ${groupName} verfügbar (entries: ${entries?.length || 0}). Überspringe.`);
-  return;
-}
+  if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
+    console.warn(`Keine Modelle für Gruppe ${groupName} verfügbar (entries: ${entries?.length || 0}). Überspringe.`);
+    return;
+  }
 
   if (!visible) {
     console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);
@@ -26,8 +28,9 @@ if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
 
   if (visible) {
     loadingDiv.style.display = 'block';
-    let loadedCount = 0;
-    const totalModels = entries.length;
+    totalModels = entries.length; // Setze totalModels auf die Anzahl der Einträge
+    loadedCount = 0; // Reset für jeden Aufruf
+    updateProgress(); // Initialer Aufruf, um Balken auf 0% zu setzen
 
     const promises = entries.map(entry => {
       return new Promise((resolve, reject) => {
@@ -35,17 +38,18 @@ if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
         const existingModel = state.groups[groupName].find(m => state.modelNames.get(m) === entry.label);
         if (existingModel) {
           console.log(`🛑 Modell ${entry.label} bereits geladen. Überspringe.`);
-          updateProgress(++loadedCount, totalModels, progressBar, progressText);
+          loadedCount++; // Erhöhe bei bereits geladenem Modell
+          updateProgress(); // Aktualisiere den Balken
           resolve();
           return;
         }
 
         const modelPath = getModelPath(entry.filename, groupName);
-        // console.log("🧪 Lade Modell:", entry.label, "→", modelPath);
         fetch(modelPath, { method: 'HEAD' }).then(res => {
           if (!res.ok) {
             console.error(`Datei nicht gefunden: ${modelPath}`);
-            updateProgress(++loadedCount, totalModels, progressBar, progressText);
+            loadedCount++; // Erhöhe trotz Fehler
+            updateProgress(); // Aktualisiere den Balken
             reject(new Error(`Datei ${modelPath} nicht gefunden`));
             return;
           }
@@ -68,31 +72,41 @@ if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
                       }
                     } catch (e) {
                       child.material = new THREE.MeshStandardMaterial({ color: safeColor });
+                      child.material.transparent = true;
+                      child.material.opacity = 1;
+                      child.material.needsUpdate = true;
                     }
                   }
                 });
+
                 scene.add(model);
+                console.log("✅ Modell erfolgreich geladen:", entry.label, modelPath);
                 state.groups[groupName].push(model);
                 state.modelNames.set(model, entry.label);
-                // console.log("✅ Modell geladen:", entry.label);
-                updateProgress(++loadedCount, totalModels, progressBar, progressText);
+                loadedCount++; // Erhöhe bei jedem erfolgreichen Laden
+                updateProgress(); // Aktualisiere den Balken
                 resolve();
               } catch (e) {
                 console.error("❌ Fehler beim Hinzufügen des Modells zur Szene:", entry.label, modelPath, e);
-                updateProgress(++loadedCount, totalModels, progressBar, progressText);
+                loadedCount++; // Erhöhe trotz Fehler
+                updateProgress(); // Aktualisiere den Balken
                 resolve();
               }
             },
-            undefined,
+            (xhr) => {
+              console.log(`Laden von ${entry.label}: ${(xhr.loaded / (xhr.total || 1) * 100).toFixed(2)}%`);
+            },
             (error) => {
               console.error(`🚫 Fehler beim Laden: ${modelPath}`, error);
-              updateProgress(++loadedCount, totalModels, progressBar, progressText);
+              loadedCount++; // Erhöhe trotz Fehler
+              updateProgress(); // Aktualisiere den Balken
               resolve();
             }
           );
         }).catch(error => {
           console.error(`Fehler beim Prüfen von ${modelPath}: ${error}`);
-          updateProgress(++loadedCount, totalModels, progressBar, progressText);
+          loadedCount++; // Erhöhe trotz Fehler
+          updateProgress(); // Aktualisiere den Balken
           resolve();
         });
       });
@@ -120,8 +134,10 @@ if (visible && (!entries || !Array.isArray(entries) || entries.length === 0)) {
   }
 }
 
-function updateProgress(loaded, total, bar, text) {
-  const progress = Math.round((loaded / total) * 100);
-  bar.style.width = `${progress}%`;
-  text.innerText = `${progress}%`;
-};
+function updateProgress() {
+  const progress = totalModels > 0 ? Math.round((loadedCount / totalModels) * 100) : 0;
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+  progressBar.style.width = `${progress}%`;
+  progressText.innerText = `${progress}%`;
+}

@@ -14,60 +14,57 @@ export function setupInteractions() {
     console.log('Panel initial closed gesetzt');
   }
 
-
   // Click-Event auf Canvas für Model-Selection
   renderer.domElement.addEventListener('click', onClick, false);
 
- async function onClick(event) {
-  event.preventDefault();
-  console.log('Klick erkannt – Starte Raycaster...');
+  async function onClick(event) {
+    event.preventDefault();
+    console.log('Klick erkannt – Starte Raycaster...');
 
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
 
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  console.log('Intersects gefunden:', intersects.length); // Sollte >0 sein, wenn Modell getroffen
+    const intersects = raycaster.intersectObjects(scene.children, true);
+    console.log('Intersects gefunden:', intersects.length); // Sollte >0 sein, wenn Modell getroffen
 
-  if (intersects.length > 0) {
-    const selectedObject = intersects[0].object;
-    console.log('Getroffenes Objekt:', selectedObject.name || selectedObject.type);
+    if (intersects.length > 0) {
+      const selectedObject = intersects[0].object;
+      console.log('Getroffenes Objekt:', selectedObject.name || selectedObject.type);
 
-    let model = selectedObject;
-    while (model && !state.modelNames.has(model)) {
-      model = model.parent;
-    }
-    console.log('Gefundenes Parent-Model:', model ? 'Ja' : 'Nein');
+      let model = selectedObject;
+      while (model && !state.modelNames.has(model)) {
+        model = model.parent;
+      }
+      console.log('Gefundenes Parent-Model:', model ? 'Ja' : 'Nein');
 
-    if (model && state.modelNames.has(model)) {
-      const label = state.modelNames.get(model);
-      console.log('Modell-Label:', label);
+      if (model && state.modelNames.has(model)) {
+        const label = state.modelNames.get(model);
+        console.log('Modell-Label:', label);
 
-      try {
-        const meta = (await getMeta()).find(entry => entry.label === label);
-        console.log('Meta gefunden:', meta ? 'Ja' : 'Nein');
+        try {
+          const meta = (await getMeta()).find(entry => entry.label === label);
+          console.log('Meta gefunden:', meta ? 'Ja' : 'Nein');
 
-        if (meta) {
-          console.log('Rufe highlightObject auf...');
-          highlightObject(model);
-          console.log('Rufe showInfoPanel auf...');
-          showInfoPanel(meta, model);
-        } else {
-          console.log('Kein Meta – Panel nicht gezeigt');
+          if (meta) {
+            console.log('Rufe highlightObject auf...');
+            highlightObject(model);
+            console.log('Rufe showInfoPanel auf...');
+            showInfoPanel(meta, model);
+          } else {
+            console.log('Kein Meta – Panel nicht gezeigt');
+          }
+        } catch (error) {
+          console.error('Fehler bei Meta-Suche:', error);
         }
-      } catch (error) {
-        console.error('Fehler bei Meta-Suche:', error);
+      } else {
+        console.log('Kein valides Modell – Panel nicht gezeigt');
       }
     } else {
-      console.log('Kein valides Modell – Panel nicht gezeigt');
+      console.log('Kein Intersect – Klick auf Hintergrund? Panel nicht gezeigt');
     }
-  } else {
-    console.log('Kein Intersect – Klick auf Hintergrund? Panel nicht gezeigt');
   }
 }
-}
-
-
 
 function showInfoPanel(meta, selectedModel) {
   console.log('showInfoPanel gestartet mit Meta:', meta.label, 'und Model:', selectedModel);
@@ -129,18 +126,32 @@ function showInfoPanel(meta, selectedModel) {
     }
   });
 
-  opacitySlider.addEventListener('input', (e) => {
-    const opacity = parseFloat(e.target.value);
-    if (selectedModel) {
-      selectedModel.traverse(child => {
-        if (child.isMesh && child.material) {
-          child.material.transparent = true;
-          child.material.opacity = opacity;
-          child.material.needsUpdate = true;
+
+// Transparenz-Änderung (fix für multi-mesh GLTF: Wechsel zu StandardMaterial)
+opacitySlider.addEventListener('input', (e) => {
+  const opacity = parseFloat(e.target.value);
+  if (selectedModel) {
+    selectedModel.traverse(child => {
+      if (child.isMesh && child.material) {
+        const currentColor = child.material.color ? child.material.color.clone() : new THREE.Color(0xffffff);
+        let newMat = new THREE.MeshStandardMaterial({
+          color: currentColor,
+          transparent: true,
+          opacity: opacity,
+          side: THREE.DoubleSide, // Rendert beide Seiten, fix für Löcher/Teile
+          depthWrite: opacity < 1 ? false : true // Fix für Sorting in multi-mesh
+        });
+        if (Array.isArray(child.material)) {
+          child.material = child.material.map(() => newMat.clone());
+        } else {
+          child.material = newMat;
         }
-      });
-    }
-  });
+        child.material.needsUpdate = true;
+      }
+    });
+    renderer.render(scene, camera); // Sofort-Render
+  }
+});
 
   toggleButton.addEventListener('click', () => {
     if (selectedModel) {
@@ -215,8 +226,7 @@ function highlightObject(object) {
   state.currentlySelected = object;
 }
 
-
 window.toggleLicense = function () {
-    const dropdown = document.getElementById('license-dropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  const dropdown = document.getElementById('license-dropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 };

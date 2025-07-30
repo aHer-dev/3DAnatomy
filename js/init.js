@@ -55,6 +55,8 @@ function initThree() {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+  renderer.sortObjects = true;
+  
 }
 
 // ✅ Alle benötigten Exporte in einer Zeile
