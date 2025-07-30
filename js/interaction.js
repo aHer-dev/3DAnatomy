@@ -4,42 +4,51 @@ import { state } from './state.js';
 import { getMeta } from './utils.js';
 
 export function setupInteractions() {
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
 
-    // Initialisiere Panel als offen
-    const controls = document.getElementById('controls');
-    if (controls) {
-        controls.style.display = 'block';
-        console.log('Panel initial offen gesetzt');
-    }
+  // Initial closed (Panel nicht sichtbar)
+  const controls = document.getElementById('controls');
+  if (controls) {
+    controls.style.display = 'none';
+    console.log('Panel initial closed gesetzt');
+  }
 
-    document.getElementById('menu-icon').addEventListener('click', () => {
-        window.toggleMenu();
-        const menuIcon = document.getElementById('menu-icon');
-        menuIcon.classList.toggle('open');
-    });
+  document.getElementById('menu-icon').addEventListener('click', () => {
+    window.toggleMenu();
+    const menuIcon = document.getElementById('menu-icon');
+    menuIcon.classList.toggle('open');
+  });
 
-    // Kein Schließen bei externen Klicks (auskommentiert)
-    /*
-    document.addEventListener('click', (event) => {
-        setTimeout(() => {
-            const controls = document.getElementById('controls');
-            const menuIcon = document.getElementById('menu-icon');
-            const clickedInsideControls = controls.contains(event.target);
-            const clickedMenuIcon = menuIcon.contains(event.target);
-            if (!clickedInsideControls && !clickedMenuIcon) {
-                if (controls.style.display === 'block') {
-                    controls.style.display = 'none';
-                    console.log('Menü wurde geschlossen (nach Timeout)');
-                }
-            } else {
-                console.log('Menü bleibt offen (Klick innerhalb)');
-            }
-        }, 10);
-    });
-    */
+  // Kein Schließen bei externen Klicks (bereits auskommentiert)
 }
+
+window.toggleMenu = function () {
+  const controls = document.getElementById('controls');
+  const isVisible = controls.style.display === 'block';
+
+  controls.style.display = isVisible ? 'none' : 'block';
+  console.log('ToggleMenu: display = ' + controls.style.display);
+
+  if (isVisible) {
+    // Bei Schließen: Sub-Dropdowns schließen, clickCounts resetten
+    document.querySelectorAll('[id$="-sub-dropdown"]').forEach(drop => {
+      drop.style.display = 'none';
+    });
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.style.display = 'none';
+    });
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.classList.remove('active');
+    });
+    ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+      state.clickCounts[group] = 0;
+      console.log(`Reset clickCount für ${group} zu 0`);
+    });
+  } else {
+    console.log('Menü geöffnet – Submenüs bleiben erhalten');
+  }
+};
 
 function showInfoPanel(meta) {
     console.log('showInfoPanel aufgerufen mit meta:', meta);
@@ -93,23 +102,28 @@ function highlightObject(object) {
 }
 
 window.toggleMenu = function () {
-    const controls = document.getElementById('controls');
-    const isVisible = controls.style.display === 'block';
+  const controls = document.getElementById('controls');
+  const isVisible = controls.style.display === 'block';
 
-    controls.style.display = isVisible ? 'none' : 'block';
-    console.log('ToggleMenu: display = ' + controls.style.display);
+  controls.style.display = isVisible ? 'none' : 'block';
+  console.log('ToggleMenu: display = ' + controls.style.display);
 
-    if (!isVisible) {
-        document.querySelectorAll('[id$="-sub-dropdown"]').forEach(drop => {
-            drop.style.display = 'none';
-        });
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.style.display = 'none';
-        });
-        document.querySelectorAll('.dropdown').forEach(dropdown => {
-            dropdown.classList.remove('active');
-        });
-    }
+  if (isVisible) {
+    // Bei Schließen: Sub-Dropdowns schließen
+    document.querySelectorAll('[id$="-sub-dropdown"]').forEach(drop => {
+      drop.style.display = 'none';
+    });
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.style.display = 'none';
+    });
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.classList.remove('active');
+    });
+    // Reset clickCounts
+    ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+      state.clickCounts[group] = 0;
+    });
+  }
 };
 
 window.toggleLicense = function () {

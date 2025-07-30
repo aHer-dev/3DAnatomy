@@ -11,13 +11,18 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
   if (visible && (!entries || !Array.isArray(entries))) {
     console.error(`Ungültige entries für Gruppe ${groupName} (visible=true). Überspringe Laden.`);
     return;
+
   }
+
+  if (!visible) {
+  console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);
+}
 
   const loadingDiv = document.getElementById('loading');
   const progressBar = document.getElementById('progress-bar');
   const progressText = document.getElementById('progress-text');
 
-  if (visible) {
+if (visible) {
     loadingDiv.style.display = 'block';
     let loadedCount = 0;
     const totalModels = entries.length;
@@ -25,7 +30,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
     const promises = entries.map(entry => {
       return new Promise((resolve, reject) => {
         const modelPath = getModelPath(entry.filename, groupName);
-        console.log("🧪 Lade Modell:", entry.label, "→", modelPath);
+      //  console.log("🧪 Lade Modell:", entry.label, "→", modelPath);
         fetch(modelPath, { method: 'HEAD' }).then(res => {
           if (!res.ok) {
             console.error(`Datei nicht gefunden: ${modelPath}`);
@@ -56,29 +61,28 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
                   }
                 });
                 scene.add(model);
-                console.log(`Modell ${entry.label} hinzugefügt zur Szene. Position:`, model.position); // Debug
                 state.groups[groupName].push(model);
                 state.modelNames.set(model, entry.label);
-                console.log("✅ Modell geladen:", entry.label);
+             //   console.log("✅ Modell geladen:", entry.label);
                 updateProgress(++loadedCount, totalModels, progressBar, progressText);
                 resolve();
               } catch (e) {
                 console.error("❌ Fehler beim Hinzufügen des Modells zur Szene:", entry.label, modelPath, e);
                 updateProgress(++loadedCount, totalModels, progressBar, progressText);
-                resolve(); // Weitermachen, um andere Modelle zu laden
+                resolve();
               }
             },
             undefined,
             (error) => {
               console.error(`🚫 Fehler beim Laden: ${modelPath}`, error);
               updateProgress(++loadedCount, totalModels, progressBar, progressText);
-              resolve(); // Weitermachen, um andere Modelle zu laden
+              resolve();
             }
           );
         }).catch(error => {
           console.error(`Fehler beim Prüfen von ${modelPath}: ${error}`);
           updateProgress(++loadedCount, totalModels, progressBar, progressText);
-          resolve(); // Weitermachen, um andere Modelle zu laden
+          resolve();
         });
       });
     });
@@ -86,33 +90,12 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
     await Promise.allSettled(promises);
     loadingDiv.style.display = 'none';
   } else {
-    // Fix für Tippfehler: state.groups und state.modelNames verwenden
-    const safeColor = state.colors[groupName] ?? 0xffffff;
-    state.groups[groupName] = state.groups[groupName].filter(model => {
-      const label = state.modelNames.get(model);
-      const isMatch = entries && Array.isArray(entries) ? entries.some(entry => entry.label === label) : false;
-      if (isMatch) {
-        scene.remove(model);
-        model.traverse(child => {
-          if (child.isMesh) {
-            try {
-              if (!child.material || !child.material.isMaterial) {
-                child.material = new THREE.MeshStandardMaterial({ color: safeColor });
-              } else {
-                const cloned = child.material.clone();
-                cloned.color.setHex(safeColor);
-                child.material = cloned;
-              }
-            } catch (e) {
-              console.warn("⚠️ Material konnte nicht gesetzt werden für", child.name || "unbenanntes Mesh", e);
-            }
-          }
-        });
-        state.modelNames.delete(model);
-        return false;
-      }
-      return true;
+    console.log(`🔍 Ausblenden für ${groupName}: ${state.groups[groupName].length} Modelle in Szene`);
+    state.groups[groupName].forEach(model => {
+      scene.remove(model);
+      state.modelNames.delete(model);
     });
+    state.groups[groupName] = []; // Leere state.groups bei Ausblenden
   }
 }
 

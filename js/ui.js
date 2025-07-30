@@ -7,12 +7,12 @@ import { scene, loader } from './init.js';
 export function setupUI() {
   console.log('setupUI gestartet');
 
-  // Hamburger-Menü Toggle hinzufügen – Panel startet offen
+  // Hamburger-Menü Toggle – Panel startet closed
   const menuIcon = document.getElementById('menu-icon');
   const controlsPanel = document.getElementById('controls');
   if (menuIcon && controlsPanel) {
-    controlsPanel.style.display = 'block'; // Initial offen
-    menuIcon.classList.add('open');
+    controlsPanel.style.display = 'none'; // Initial closed
+    menuIcon.classList.remove('open'); // Icon als Balken
     menuIcon.addEventListener('click', () => {
       const isOpen = controlsPanel.style.display === 'block';
       controlsPanel.style.display = isOpen ? 'none' : 'block';
@@ -32,7 +32,6 @@ export function setupUI() {
     infoClose.addEventListener('click', hideInfoPanel);
   }
 
-  // Neuer Block hier eingefügt
   ['bones', 'muscles', 'tendons', 'other'].forEach(groupName => {
     const checkbox = document.getElementById(groupName);
     if (!checkbox) {
@@ -41,7 +40,7 @@ export function setupUI() {
     }
 
     console.log(`Initialisiere Gruppe: ${groupName}`);
-    checkbox.addEventListener('click', async (e) => { // Ändere zu 'click' (statt 'change'), um jeden Klick zu fangen
+    checkbox.addEventListener('click', async (e) => {
       e.preventDefault(); // Verhindere default Checkbox-Toggle
       console.log(`Klick auf ${groupName}, aktueller Count: ${state.clickCounts[groupName]}`);
 
@@ -52,9 +51,9 @@ export function setupUI() {
       }
 
       try {
-        // Inkrementiere bei jedem Klick
+        // Inkrementiere bei jedem Klick (modulo 4)
         state.clickCounts[groupName] = (state.clickCounts[groupName] + 1) % 4;
-        const clickCount = state.clickCounts[groupName];
+        let clickCount = state.clickCounts[groupName];
         console.log(`Neuer Click-Count für ${groupName}: ${clickCount}`);
 
         // Schließe andere Submenüs
@@ -72,33 +71,44 @@ export function setupUI() {
         const entries = meta.filter(entry => entry.group === groupName);
         console.log(`📊 Entries für ${groupName}: ${entries.length} gefunden`);
 
-        if (clickCount === 1) { // Klick 1: Load + Open
+        if (clickCount === 1) { // Klick 1: Load + Open Submenü
           subDropdown.style.display = 'block';
           checkbox.checked = true;
           await generateSubDropdown(groupName);
-          if (entries.length > 0) {
+          // Prüfe, ob Subgruppen aktiviert sind
+          const activeSubgroups = Array.from(document.querySelectorAll(`#${groupName}-subgroups input:checked`)).map(cb => cb.dataset.subgroup);
+          if (entries.length > 0 && activeSubgroups.length === 0) { // Nur laden, wenn keine Subgruppen aktiv
             console.log(`🚀 Starte Laden aller Modelle für ${groupName}`);
             await loadModels(entries, groupName, true, scene, loader);
+          } else {
+            console.log(`ℹ️ Modelle für ${groupName} übersprungen (Subgruppen aktiv: ${activeSubgroups})`);
           }
-        } else if (clickCount === 2) { // Klick 2: Unload + Keep Open
+        } else if (clickCount === 2) { // Klick 2: Unload + Keep Submenü
           subDropdown.style.display = 'block';
           checkbox.checked = false;
           if (entries.length > 0) {
             console.log(`🛑 Starte Ausblenden aller Modelle für ${groupName}`);
             await loadModels(entries, groupName, false, scene, loader);
+            state.groups[groupName] = []; // Sicherstellen, dass state.groups geleert wird
+          } else {
+            console.warn(`⚠️ Keine Modelle für ${groupName} zum Ausblenden`);
           }
-        } else if (clickCount === 3) { // Klick 3: Minimize Sub
+        } else if (clickCount === 3) { // Klick 3: Minimize Submenü
           subDropdown.style.display = 'none';
           checkbox.checked = false;
           console.log(`📌 Submenü für ${groupName} minimiert`);
-        } else if (clickCount === 0) { // Klick 4: Reset zu Phase 1
+        } else if (clickCount === 0) { // Klick 4: Reset + Load + Open
           subDropdown.style.display = 'block';
           checkbox.checked = true;
           await generateSubDropdown(groupName);
+          // Reset Subgruppen-Checkboxen
+          document.querySelectorAll(`#${groupName}-subgroups input`).forEach(cb => cb.checked = false);
           if (entries.length > 0) {
             console.log(`🔄 Reset: Starte Laden aller Modelle für ${groupName}`);
+            state.groups[groupName] = []; // Leere vorher, um doppeltes Laden zu verhindern
             await loadModels(entries, groupName, true, scene, loader);
           }
+          state.clickCounts[groupName] = 0; // Reset für sauberen Loop
         }
       } catch (error) {
         console.error(`Fehler im Klick-Handler für ${groupName}:`, error);
@@ -106,15 +116,14 @@ export function setupUI() {
     });
   });
 
-  // Rest des Originalcodes (Dropdown, Suchleiste, Slider, etc.)
-  // Initial aktives Dropdown öffnen
-  const dropdown = document.querySelector('.dropdown');
-  if (dropdown) {
-    console.log('Dropdown gefunden, setze .active');
-    dropdown.classList.add('active');
-  } else {
-    console.error('Dropdown nicht gefunden');
-  }
+  // Initial aktives Dropdown – closed
+  // const dropdown = document.querySelector('.dropdown');
+  // if (dropdown) {
+  //   console.log('Dropdown gefunden, setze .active');
+  //   dropdown.classList.add('active');
+  // } else {
+  //   console.error('Dropdown nicht gefunden');
+  // }
 
   // Suchleiste
   const searchBar = document.getElementById('search-bar');
@@ -185,6 +194,7 @@ export function setupUI() {
         if (d !== dropdown) d.classList.remove('active');
       });
       dropdown.classList.toggle('active');
+      console.log(`Dropdown-Button geklickt: ${button.textContent}, jetzt active: ${dropdown.classList.contains('active')}`);
     });
   });
 }
