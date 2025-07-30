@@ -89,7 +89,7 @@ button:hover {
 #transparency-slider, #lighting-slider, #background-slider {
     width: 100%;
     margin: 10px 0;
-    accent-color: #00ff00; /* Grün für Konsistenz mit UI */
+    accent-color: #bb4cc8; /* Grün für Konsistenz mit UI */
 }
 
 /* Neue Buttons: Annotations, Quiz, Export */
@@ -502,7 +502,7 @@ button:hover {
 }
 
 #info-close:hover {
-  color: #00ff00;
+  color: #bb4cc8;
 }
 
 #info-content p {
@@ -567,6 +567,24 @@ canvas {
     display: block !important; /* Erzwinge Sichtbarkeit */
 }
 
+/* Farben-Dropdown: Vertikale Anordnung */
+.dropdown-content label {
+    display: block; /* Jede Label untereinander */
+    margin-bottom: 10px; /* Abstand zwischen Inputs */
+    font-size: 14px;
+    color: white;
+}
+
+.dropdown-content input[type="color"] {
+    width: 50px; /* Kleine Breite für Color-Picker */
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle; /* Zentriert im Label */
+}
+
+
+
 #edit-controls {
   margin-top: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -587,7 +605,7 @@ canvas {
 
 #edit-controls input[type="range"] {
   width: 100%;
-  accent-color: #00ff00; /* Grün passend zu UI */
+  accent-color: #bb4cc8; /* Grün passend zu UI */
 }
 
 #edit-controls button {

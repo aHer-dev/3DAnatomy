@@ -59,16 +59,26 @@ document.querySelectorAll('.sub-dropdown-button').forEach(button => {
 document.getElementById('reset-button')?.addEventListener('click', resetAll);
 
   // Suchleiste (unverändert)
-  const searchBar = document.getElementById('search-bar');
-  searchBar?.addEventListener('input', async () => {
-    const searchTerm = searchBar.value.toLowerCase();
-    const meta = await getMeta();
-    const results = meta.filter(entry =>
-      entry.label.toLowerCase().includes(searchTerm) ||
-      entry.fma.toLowerCase().includes(searchTerm)
-    );
-    results.forEach(result => loadModels([result], result.group, true, scene, loader));
-  });
+const searchBar = document.getElementById('search-bar');
+searchBar?.addEventListener('input', async () => {
+  const searchTerm = searchBar.value.toLowerCase().trim();
+  if (searchTerm === '') return; // Bei leerem Feld nichts tun
+
+  const meta = await getMeta();
+  const results = meta.filter(entry =>
+    entry.label.toLowerCase().includes(searchTerm) ||
+    entry.fma.toLowerCase().includes(searchTerm)
+  );
+
+  if (results.length === 0) {
+    console.log('Keine Ergebnisse gefunden.');
+    return;
+  }
+
+  // Alle alten Modelle clearen? Optional: state.groups = {} und scene.clear(), aber Vorsicht!
+  results.forEach(result => loadModels([result], result.group, true, scene, loader));
+  console.log(`Gefundene Modelle: ${results.length}`);
+});
 
   // Slider (unverändert)
   document.getElementById('transparency-slider')?.addEventListener('input', (e) => {
@@ -87,6 +97,51 @@ document.getElementById('reset-button')?.addEventListener('click', resetAll);
       else if (child instanceof THREE.AmbientLight) child.intensity = intensity * 0.3;
     });
   });
+
+  // Farben-Inputs initialisieren und Listener hinzufügen
+['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+  const colorInput = document.getElementById(`${group}-color`);
+  if (colorInput) {
+    // Initiale Farbe setzen (aus state.colors)
+    const initialHex = state.colors[group].toString(16).padStart(6, '0');
+    colorInput.value = `#${initialHex}`;
+    console.log(`Initiale Farbe für ${group} gesetzt: #${initialHex}`);
+
+    // Listener: Bei Änderung Farbe updaten und auf geladene Modelle anwenden
+    colorInput.addEventListener('input', (e) => {
+      const newColorStr = e.target.value.slice(1); // Entferne #
+      const newColorHex = parseInt(newColorStr, 16);
+      if (isNaN(newColorHex)) {
+        console.error(`Ungültige Farbe für ${group}: ${e.target.value}`);
+        return;
+      }
+
+      state.colors[group] = newColorHex;
+      console.log(`Farbe für ${group} geändert zu: 0x${newColorStr}`);
+
+      // Alle Modelle der Gruppe updaten
+      const models = state.groups[group] || [];
+      if (models.length === 0) {
+        console.warn(`Keine Modelle in Gruppe ${group} geladen – Farbe nicht angewendet.`);
+      } else {
+        models.forEach(model => {
+          model.traverse(child => {
+            if (child.isMesh && child.material) {
+              child.material.color.setHex(newColorHex);
+              child.material.needsUpdate = true;
+              console.log(`Material von ${child.name || 'Mesh'} upgedatet.`);
+            }
+          });
+        });
+      }
+
+      // Szene neu rendern
+      renderer.render(scene, camera);
+    });
+  } else {
+    console.error(`Farb-Input für ${group} (#${group}-color) nicht gefunden! Überprüfe HTML.`);
+  }
+});
 
   document.getElementById('background-slider')?.addEventListener('input', (e) => {
     const opacity = parseFloat(e.target.value);
@@ -174,6 +229,45 @@ subgroups.forEach(subgroup => {
 
   document.getElementById(`${groupName}-sub-dropdown`).appendChild(container);
   restoreSubgroupStates(groupName);
+
+  //Screenshot
+  document.getElementById('screenshot-button')?.addEventListener('click', () => {
+  renderer.render(scene, camera);
+  const dataURL = renderer.domElement.toDataURL('image/png');
+  const link = document.createElement('a');
+  link.href = dataURL;
+  link.download = 'screenshot.png';
+  link.click();
+  console.log('Screenshot gemacht.');
+});
+
+// Speichern
+document.getElementById('save-settings')?.addEventListener('click', () => {
+  const settings = JSON.stringify(state); // State speichern
+  const blob = new Blob([settings], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'settings.json';
+  link.click();
+  console.log('Einstellungen gespeichert.');
+});
+
+// Laden (aus Datei oder Code – für Code brauchst du <input type="file"> oder Textfeld)
+document.getElementById('load-settings')?.addEventListener('click', () => {
+  const code = document.getElementById('load-code').value;
+  if (code) {
+    const newState = JSON.parse(code);
+    Object.assign(state, newState);
+    // Modelle neu laden basierend auf state
+    Object.keys(state.groups).forEach(group => {
+      loadModels(/* basierend auf state */);
+    });
+    console.log('Einstellungen geladen.');
+  }
+});
+
+
 }
 
 async function generateDetailedList(groupName, subgroup) {
