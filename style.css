@@ -14,23 +14,18 @@ body {
 /* --- Steuerungspanel (#controls) --- */
 /* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
 #controls {
-    position: absolute;
-    top: 50px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    font-family: Arial, sans-serif;
-    min-width: 200px;
-    min-height: 100px;
-    max-width: 300px;
-    max-height: 80vh;
-    resize: both;
-    overflow: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     display: none;
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.9); /* gut sichtbar */
+    padding: 10px;
+    color: white;
+    max-height: 80vh;
+    overflow-y: auto;
 }
+
 /* Überschriften im Steuerungspanel */
 #controls h2 {
     margin-top: 0;
@@ -94,24 +89,6 @@ button:hover {
     margin-top: 5px;
 }
 
-/* --- Hamburger-Menü (#menu-icon) --- */
-#menu-icon {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    width: 30px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 1000; /* Über anderen Elementen */
-}
-
-#menu-icon div {
-    background-color: #ffffff;
-    height: 4px;
-    margin: 5px 0;
-    border-radius: 2px;
-    transition: transform 0.4s, opacity 0.4s; /* Animation für Toggle */
-}
 
 /* Hamburger-Menü bei geöffnetem Zustand */
 #menu-icon {
@@ -160,10 +137,6 @@ button:hover {
     background-color: #555555;
 }
 
-
-.dropdown.active .dropdown-content {
-    display: block;
-}
 
 /* --- Sub-Dropdowns (für Subgruppen wie arm-schulter) --- */
 #bones-sub-dropdown, #muscles-sub-dropdown, #tendons-sub-dropdown, #other-sub-dropdown {
@@ -365,7 +338,7 @@ button:hover {
         border-radius: 10px 10px 0 0;
         resize: none;
         overflow-y: auto;
-        display: none;
+        /* ❌ KEIN display: none mehr hier! */
     }
 
     /* Sidebar: Als Overlay, vollbreit */
@@ -428,18 +401,18 @@ button:hover {
 /* --- Desktop-Optimierung --- */
 @media (min-width: 601px) {
     /* Steuerungspanel: Initial ausgeblendet, per Hamburger-Menü toggelbar */
-    #controls {
-        display: none;
-    }
 
-    /* Hamburger-Menü: Sichtbar auf Desktop */
     #menu-icon {
         display: block;
     }
 }
 
 #info-panel {
-    position: fixed;
+
+  position: fixed;
+    transition: all 0.3s ease;
+    opacity: 1;
+    pointer-events: auto;
     top: 10px;
     right: 10px;
     max-width: 300px;
@@ -454,8 +427,14 @@ button:hover {
     display: none; /* Initial unsichtbar */
     transition: display 0.4s ease, opacity 0.3s ease;
 }
+#info-panel.hidden {
+    transform: translateY(150%);
+    opacity: 0;
+    pointer-events: none;
+}
+
 #info-panel.visible {
-    display: block !important;
+    transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
 }
@@ -474,9 +453,12 @@ button:hover {
 
 /* Desktop: oben rechts */
 @media (min-width: 601px) {
-  #info-panel {
-    top: 10px;
-    right: 10px;
+    #info-panel {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    right: auto;
   }
 }
 
@@ -596,12 +578,12 @@ canvas {
 }
 
 .dropdown-content {
-    display: block !important; /* Erzwinge Sichtbarkeit für Testzwecke */
+    display: none;
     padding: 10px;
     background-color: #222222;
     border-radius: 5px;
     margin-top: 5px;
 }
 .dropdown.active .dropdown-content {
-    display: block;
+    display: block !important; /* Erzwinge Sichtbarkeit */
 }

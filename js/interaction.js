@@ -8,44 +8,39 @@ export function setupInteractions() {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    window.addEventListener('click', (event) => {
-        if (event.target.closest('#menu-icon')) return;
-        console.log('Click detected, mouse:', mouse.x, mouse.y);
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(scene.children, true);
-        console.log('Intersects:', intersects.length);
-        if (intersects.length > 0) {
-            const clickedObject = intersects[0].object;
-            const selectedModel = clickedObject.parent;
-            const modelLabel = state.modelNames.get(selectedModel);
-            console.log('Model label:', modelLabel);
-            if (modelLabel) {
-                getMeta().then(meta => {
-                    const entry = meta.find(e => e.label === modelLabel);
-                    console.log('Meta entry:', entry);
-                    if (entry) {
-                        showInfoPanel(entry);
-                        highlightObject(clickedObject);
-                    } else {
-                        console.error('Kein Meta-Eintrag für Label:', modelLabel);
-                    }
-                });
-            } else {
-                console.error('Kein Modell-Label gefunden für:', selectedModel);
-            }
-        } else {
-            console.log('Kein Objekt getroffen');
-            hideInfoPanel();
-        }
-    });
+
 
     document.getElementById('menu-icon').addEventListener('click', () => {
         window.toggleMenu();
         const menuIcon = document.getElementById('menu-icon');
         menuIcon.classList.toggle('open');
     });
+
+
+document.addEventListener('click', (event) => {
+    // Verzögerung, um Race-Conditions bei Checkbox-/Dropdown-Klicks zu vermeiden
+    setTimeout(() => {
+        const controls = document.getElementById('controls');
+        const menuIcon = document.getElementById('menu-icon');
+
+        const clickedInsideControls = controls.contains(event.target);
+        const clickedMenuIcon = menuIcon.contains(event.target);
+
+        if (!clickedInsideControls && !clickedMenuIcon) {
+            if (controls.style.display === 'block') {
+                controls.style.display = 'none';
+                console.log('Menü wurde geschlossen (nach Timeout)');
+            }
+        } else {
+            console.log('Menü bleibt offen (Klick innerhalb)');
+        }
+    }, 10); // kleine Verzögerung reicht
+});
+
+
+
+
+
 }
 
 function showInfoPanel(meta) {
@@ -55,6 +50,7 @@ function showInfoPanel(meta) {
         console.error('info-content nicht gefunden');
         return;
     }
+
     infoContent.innerHTML = `
         <p><strong>Label:</strong> ${meta.label}</p>
         ${meta.fma ? `<p><strong>FMA-ID:</strong> ${meta.fma}</p>` : ''}
@@ -65,17 +61,22 @@ function showInfoPanel(meta) {
         ${meta.info?.insertion ? `<p><strong>Ansatz:</strong> ${meta.info.insertion}</p>` : ''}
         ${meta.info?.function ? `<p><strong>Funktion:</strong> ${meta.info.function}</p>` : ''}
     `;
+
     const infoPanel = document.getElementById('info-panel');
     if (!infoPanel) {
         console.error('info-panel nicht gefunden');
         return;
     }
-    infoPanel.classList.add('visible');
-    console.log('visible-Klasse hinzugefügt');
+
+    infoPanel.classList.remove('hidden');   // <- das ist wichtig!
+    infoPanel.classList.add('visible');     // optional, falls du zusätzliche Effekte hast
+    console.log('Info-Panel angezeigt');
 }
+
 
 function hideInfoPanel() {
     const infoPanel = document.getElementById('info-panel');
+    infoPanel.classList.add('hidden');
     infoPanel.classList.remove('visible');
     document.getElementById('info-content').innerHTML = '';
     if (state.currentlySelected?.material?.emissive) {
@@ -83,6 +84,26 @@ function hideInfoPanel() {
     }
     state.currentlySelected = null;
 }
+
+import { generateSubDropdown } from './ui.js';
+
+['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+  const checkbox = document.getElementById(group);
+  if (checkbox) {
+    checkbox.addEventListener('change', async () => {
+      const dropdown = document.getElementById(`${group}-sub-dropdown`);
+      if (checkbox.checked) {
+        dropdown.style.display = 'block';
+        console.log(`🔧 Generiere Subgruppen für ${group}`);
+        await generateSubDropdown(group);
+      } else {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+});
+
+
 
 function highlightObject(object) {
     if (state.currentlySelected) {
@@ -96,8 +117,25 @@ function highlightObject(object) {
 
 window.toggleMenu = function () {
     const controls = document.getElementById('controls');
-    controls.style.display = controls.style.display === 'none' ? 'block' : 'none';
+    const isVisible = controls.style.display === 'block';
+
+    controls.style.display = isVisible ? 'none' : 'block';
+    console.log('ToggleMenu: display = ' + controls.style.display);
+
+
+    if (!isVisible) {
+        document.querySelectorAll('[id$="-sub-dropdown"]').forEach(drop => {
+            drop.style.display = 'none';
+        });
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+        });
+    }
 };
+
 
 window.toggleLicense = function () {
     const dropdown = document.getElementById('license-dropdown');

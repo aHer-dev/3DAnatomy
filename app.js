@@ -11,6 +11,7 @@ initThree();
 
 console.log('UI wird initialisiert...');
 setupUI();
+//document.getElementById('controls').style.display = 'block'; // Für Testing; entferne für Prod der macht  essichtbar 
 
 console.log('Interaktionen werden initialisiert...');
 setupInteractions();
@@ -34,3 +35,4 @@ animate();
 
   await loadModels(bonesEntries, 'bones', true, scene, loader); // <- Übergib Szene und Loader, falls nötig
 })();
+

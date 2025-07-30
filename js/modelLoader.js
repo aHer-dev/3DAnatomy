@@ -1,7 +1,7 @@
 // js/modelLoader.js
 import * as THREE from './three.module.js';
 import { getMeta, getModelPath } from './utils.js';
-import { scene, loader } from './init.js'; // ✅ korrekt
+import { scene, loader } from './init.js'; // Füge loader hinzu (scene hast du schon)
 import { state } from './state.js';
 
 export async function loadModels(entries, groupName, visible, scene, loader) {
@@ -56,6 +56,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
                   }
                 });
                 scene.add(model);
+                console.log(`Modell ${entry.label} hinzugefügt zur Szene. Position:`, model.position); // Debug
                 state.groups[groupName].push(model);
                 state.modelNames.set(model, entry.label);
                 console.log("✅ Modell geladen:", entry.label);

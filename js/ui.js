@@ -7,6 +7,21 @@ import { scene } from './init.js';
 
 export function setupUI() {
     console.log('setupUI gestartet');
+
+    // Hamburger-Menü Toggle hinzufügen
+const menuIcon = document.getElementById('menu-icon');
+const controlsPanel = document.getElementById('controls');
+if (menuIcon && controlsPanel) {
+  menuIcon.addEventListener('click', () => {
+    const isOpen = controlsPanel.style.display === 'block';
+    controlsPanel.style.display = isOpen ? 'none' : 'block';
+    menuIcon.classList.toggle('open');
+  });
+} else {
+  console.error('menu-icon oder controls nicht gefunden');
+}
+
+
     const infoPanel = document.getElementById('info-panel');
     const infoClose = document.getElementById('info-close');
     if (!infoPanel || !infoClose) {
@@ -17,48 +32,49 @@ export function setupUI() {
     }
 
     ['bones', 'muscles', 'tendons', 'other'].forEach(groupName => {
-        state.clickCounts[groupName] = 0;
         const checkbox = document.getElementById(groupName);
         if (!checkbox) {
             console.error(`Checkbox für ${groupName} nicht gefunden`);
             return;
         }
+
         console.log(`Initialisiere Gruppe: ${groupName}`);
         checkbox.addEventListener('change', async (e) => {
-            console.log(`Checkbox ${groupName} geändert, checked: ${e.target.checked}`);
             const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
             if (!subDropdown) {
                 console.error(`Sub-Dropdown für ${groupName} nicht gefunden`);
                 return;
             }
-            state.clickCounts[groupName]++;
-            if (state.clickCounts[groupName] === 1) {
+
+            const isVisible = subDropdown.style.display === 'block';
+
+            if (isVisible) {
+                // Submenü schließen
+                subDropdown.style.display = 'none';
+                e.target.checked = false;
+            } else {
+                // Alle anderen Submenüs schließen
+                ['bones', 'muscles', 'tendons', 'other'].forEach(id => {
+                    if (id !== groupName) {
+                        const otherDropdown = document.getElementById(`${id}-sub-dropdown`);
+                        const otherCheckbox = document.getElementById(id);
+                        if (otherDropdown) otherDropdown.style.display = 'none';
+                        if (otherCheckbox) otherCheckbox.checked = false;
+                    }
+                });
+
                 subDropdown.style.display = 'block';
-                console.log(`Generiere Sub-Dropdown für ${groupName}`);
+                e.target.checked = true;
+
                 await generateSubDropdown(groupName);
                 const meta = await getMeta();
                 const entries = meta.filter(entry => entry.group === groupName);
-                console.log(`Meta für ${groupName}:`, entries.length, 'Einträge');
                 await loadModels(entries, groupName, true, scene, loader);
-            } else if (state.clickCounts[groupName] === 2) {
-                const meta = await getMeta();
-                const entries = meta.filter(entry => entry.group === groupName);
-                await loadModels(entries, groupName, false, scene, loader);
-                document.querySelectorAll(`#${groupName}-subgroups .subgroup-checkbox`).forEach(checkbox => {
-                    checkbox.checked = false;
-                    state.groupStates[groupName][checkbox.dataset.subgroup] = false;
-                });
-                document.querySelectorAll(`#${groupName}-subgroups .item-checkbox`).forEach(checkbox => checkbox.checked = false);
-                e.target.checked = true;
-            } else {
-                state.clickCounts[groupName] = 0;
-                subDropdown.style.display = 'none';
-                e.target.checked = false;
             }
         });
     });
 
-    // Öffne das Dropdown initial
+    // Initial aktives Dropdown öffnen
     const dropdown = document.querySelector('.dropdown');
     if (dropdown) {
         console.log('Dropdown gefunden, setze .active');
@@ -69,9 +85,7 @@ export function setupUI() {
 
     // Suchleiste
     const searchBar = document.getElementById('search-bar');
-    if (!searchBar) {
-        console.error('search-bar nicht gefunden');
-    } else {
+    if (searchBar) {
         console.log('search-bar gefunden');
         searchBar.addEventListener('input', async () => {
             const searchTerm = searchBar.value.toLowerCase();
@@ -83,14 +97,13 @@ export function setupUI() {
             console.log(`Suchergebnisse für "${searchTerm}":`, results.map(r => r.label));
             results.forEach(result => loadModels([result], result.group, true, scene, loader));
         });
+    } else {
+        console.error('search-bar nicht gefunden');
     }
 
     // Transparenz-Slider
     const transparencySlider = document.getElementById('transparency-slider');
-    if (!transparencySlider) {
-        console.error('transparency-slider nicht gefunden');
-    } else {
-        console.log('transparency-slider gefunden');
+    if (transparencySlider) {
         transparencySlider.addEventListener('input', (e) => {
             const transparency = parseFloat(e.target.value);
             Object.values(state.groups).flat().forEach(model => {
@@ -102,14 +115,13 @@ export function setupUI() {
                 });
             });
         });
+    } else {
+        console.error('transparency-slider nicht gefunden');
     }
 
     // Licht-Slider
     const lightingSlider = document.getElementById('lighting-slider');
-    if (!lightingSlider) {
-        console.error('lighting-slider nicht gefunden');
-    } else {
-        console.log('lighting-slider gefunden');
+    if (lightingSlider) {
         lightingSlider.addEventListener('input', (e) => {
             const intensity = parseFloat(e.target.value);
             scene.children.forEach(child => {
@@ -120,65 +132,86 @@ export function setupUI() {
                 }
             });
         });
+    } else {
+        console.error('lighting-slider nicht gefunden');
     }
 
     // Hintergrund-Slider
     const backgroundSlider = document.getElementById('background-slider');
-    if (!backgroundSlider) {
-        console.error('background-slider nicht gefunden');
-    } else {
-        console.log('background-slider gefunden');
+    if (backgroundSlider) {
         backgroundSlider.addEventListener('input', (e) => {
             const opacity = parseFloat(e.target.value);
             document.body.style.backgroundColor = `rgba(51, 51, 51, ${opacity})`;
         });
     }
+
+document.querySelectorAll('.dropdown-button').forEach(button => {
+    button.addEventListener('click', () => {
+        const dropdown = button.closest('.dropdown');
+
+        // Alle anderen Dropdowns schließen
+        document.querySelectorAll('.dropdown').forEach(d => {
+            if (d !== dropdown) d.classList.remove('active');
+        });
+
+        // Aktuellen Dropdown toggeln
+        dropdown.classList.toggle('active');
+    });
+});
 }
 
 export async function generateSubDropdown(groupName) {
-  const meta = await getMeta();
+  console.log(`📦 generateSubDropdown aufgerufen für ${groupName}`);
+
+  const meta = await getMeta();  // <- 🔥 WICHTIG! Hier wurde vorher ein Fehler geworfen
+
   const container = document.getElementById(`${groupName}-subgroups`);
   container.innerHTML = '';
+
   const subgroups = [...new Set(
-    meta.filter(entry => entry.group === groupName && entry.subgroup)
-      .map(entry => entry.subgroup)
+    meta
+      .filter(entry => entry.group === groupName)
+      .map(entry => entry.subgroup === 'none' ? 'Allgemein' : entry.subgroup)
   )].sort();
+    console.log(`📋 Gefundene Subgruppen für ${groupName}:`, subgroups);
+
 
   subgroups.forEach(subgroup => {
     const lineDiv = document.createElement('div');
     lineDiv.className = 'subgroup-line';
+
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.dataset.group = groupName;
     checkbox.dataset.subgroup = subgroup;
     checkbox.className = 'subgroup-checkbox';
+
     checkbox.addEventListener('change', async () => {
+        console.log(`☑️ Checkbox geklickt: Subgruppe = ${subgroup}, Checked = ${checkbox.checked}`);
+
       const meta = await getMeta();
-      const entries = meta.filter(entry => entry.group === groupName && entry.subgroup === subgroup);
-      loadModels(entries, groupName, checkbox.checked);
+      const entries = meta.filter(entry =>
+        entry.group === groupName &&
+        (entry.subgroup === subgroup || (subgroup === 'Allgemein' && entry.subgroup === 'none'))
+      );
+
+      await loadModels(entries, groupName, checkbox.checked, scene, loader);
+      // Sicherstellen, dass Sub-Dropdown sichtbar ist (Fallback)
+subDropdown.style.display = 'block';
     });
+
     label.appendChild(checkbox);
     label.append(` ${subgroup}`);
     lineDiv.appendChild(label);
-
-    const moreButton = document.createElement('button');
-    moreButton.className = 'more-button';
-    moreButton.innerText = 'mehr...';
-    moreButton.addEventListener('click', () => {
-      const existing = document.getElementById(`muscle-list-${subgroup}`);
-      if (existing) {
-        existing.remove();
-      } else {
-        generateMoreMuscleList(subgroup);
-      }
-    });
-    lineDiv.appendChild(moreButton);
-    lineDiv.setAttribute('data-subgroup', subgroup);
-    lineDiv.classList.add('subgroup-container');
     container.appendChild(lineDiv);
+        console.log(`✅ Subgruppen-Zeile hinzugefügt: ${subgroup}`);
+
   });
+  
 }
+
+
 
 function generateMoreMuscleList(subgroup) {
   getMeta().then(meta => {
@@ -221,3 +254,4 @@ function hideInfoPanel() {
   }
   state.currentlySelected = null;
 }
+
