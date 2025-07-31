@@ -10,10 +10,27 @@ import { state } from './js/state.js';
 
 console.log('app.js geladen, basePath:', utils.basePath);
 
-// Dynamische Bild-Pfade setzen (für GitHub vs. lokal)
-document.getElementById('loading-sticker').src = utils.basePath + '/images/loading-sticker.png';
-document.getElementById('live-loading-sticker').src = utils.basePath + '/images/loading-sticker.png';
-document.getElementById('go-sticker').src = utils.basePath + '/images/go-sticker.png';
+// Dynamische Imports (setze src mit basePath)
+const basePath = utils.basePath || ''; // Fallback, falls utils undefiniert
+
+// Setze src für Sticker
+const stickerIds = ['loading-sticker', 'live-loading-sticker', 'go-sticker'];
+stickerIds.forEach(id => {
+  const img = document.getElementById(id);
+  if (img) {
+    img.src = basePath + '/images/' + id + '.png'; // Dynamisch: id + '.png' für Einfachheit
+  } else {
+    console.error(`Image-Element ${id} nicht gefunden!`);
+  }
+});
+
+// Optional: Für favicon (füge <link rel="icon" id="favicon-link" href=""> in HTML <head>)
+const faviconLink = document.getElementById('favicon-link');
+if (faviconLink) {
+  faviconLink.href = basePath + '/favicon.ico';
+} else {
+  console.warn('Favicon-Link nicht gefunden – ignoriere.');
+}
 
 
 // Lade- und Splash-Screen Elemente
