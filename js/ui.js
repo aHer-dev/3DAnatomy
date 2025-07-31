@@ -123,6 +123,7 @@ export function setupUI() {
 
     searchResults.style.display = 'block';
     console.log(`Gefundene Ergebnisse: ${results.length}`);
+    
   });
 
   document.addEventListener('click', event => {
