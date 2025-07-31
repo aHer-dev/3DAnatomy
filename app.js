@@ -10,6 +10,12 @@ import { state } from './js/state.js';
 
 console.log('app.js geladen, basePath:', utils.basePath);
 
+// Dynamische Bild-Pfade setzen (für GitHub vs. lokal)
+document.getElementById('loading-sticker').src = utils.basePath + '/images/loading-sticker.png';
+document.getElementById('live-loading-sticker').src = utils.basePath + '/images/loading-sticker.png';
+document.getElementById('go-sticker').src = utils.basePath + '/images/go-sticker.png';
+
+
 // Lade- und Splash-Screen Elemente
 const initialScreen = document.getElementById('initial-loading-screen');
 const splashScreen = document.getElementById('splash-screen');
