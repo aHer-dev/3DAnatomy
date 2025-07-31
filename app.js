@@ -14,7 +14,7 @@ console.log('app.js geladen, basePath:', utils.basePath);
 const basePath = utils.basePath || ''; // Fallback, falls utils undefiniert
 
 // Setze src für Sticker
-const stickerIds = ['loading-sticker', 'live-loading-sticker', 'go-sticker'];
+const stickerIds = ['loading-sticker', 'go-sticker'];
 stickerIds.forEach(id => {
   const img = document.getElementById(id);
   if (img) {
