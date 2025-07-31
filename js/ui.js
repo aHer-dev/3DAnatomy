@@ -186,19 +186,29 @@ export function setupUI() {
     renderer.render(scene, camera);
   });
 
-  document.getElementById('room-color')?.addEventListener('input', e => {
-    const color = new THREE.Color(e.target.value);
-    const brightness = 1 - parseFloat(document.getElementById('room-brightness').value);
-    scene.background = color.multiplyScalar(brightness);
-    renderer.render(scene, camera);
-  });
+// Raum-Farbe (Color-Picker)
+document.getElementById('room-color')?.addEventListener('input', (e) => {
+  const baseColor = new THREE.Color(e.target.value);
+  const brightness = parseFloat(document.getElementById('room-brightness')?.value || 0.5);
+  const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
+  const originalL = hsl.l; // Original Lightness der gewählten Farbe
+  hsl.l = Math.max(0, Math.min(1, originalL + (brightness - 0.5))); // Relativ ±0.5
+  baseColor.setHSL(hsl.h, hsl.s, hsl.l);
+  scene.background = baseColor;
+  renderer.render(scene, camera); // Nur Raum rendern
+});
 
-  document.getElementById('room-brightness')?.addEventListener('input', e => {
-    const brightness = 1 - parseFloat(e.target.value);
-    const currentColor = new THREE.Color(document.getElementById('room-color').value);
-    scene.background = currentColor.multiplyScalar(brightness);
-    renderer.render(scene, camera);
-  });
+// Raum-Helligkeit (Slider: 0=dunkler, 0.5=original der Farbe, 1=heller)
+document.getElementById('room-brightness')?.addEventListener('input', (e) => {
+  const brightness = parseFloat(e.target.value);
+  const baseColor = new THREE.Color(document.getElementById('room-color')?.value || '#0d0419ff');
+  const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
+  const originalL = hsl.l; // Original Lightness der gewählten Farbe
+  hsl.l = Math.max(0, Math.min(1, originalL + (brightness - 0.5))); // Relativ ±0.5
+  baseColor.setHSL(hsl.h, hsl.s, hsl.l);
+  scene.background = baseColor;
+  renderer.render(scene, camera); // Nur Raum rendern
+});
 
   document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
     button.addEventListener('click', () => {
@@ -608,7 +618,7 @@ function resetAll() {
   state.subgroupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
   state.clickCounts = { bones: 0, muscles: 0, tendons: 0, other: 0 };
 
-  // Slider/Defaults zurücksetzen (sichere Version ohne ?. )
+  // Slider/Defaults zurücksetzen
   const transparencySlider = document.getElementById('transparency-slider');
   if (transparencySlider) transparencySlider.value = state.defaultSettings.transparency;
 
@@ -616,14 +626,29 @@ function resetAll() {
   if (lightingSlider) lightingSlider.value = state.defaultSettings.lighting;
 
   const backgroundSlider = document.getElementById('background-slider');
-  if (backgroundSlider) backgroundSlider.value = state.defaultSettings.background;
+  if (backgroundSlider) {
+    backgroundSlider.value = 0.5; // 50% Helligkeit
+    backgroundSlider.dispatchEvent(new Event('input')); // Trigger Update
+  }
 
-  // Raum-Farbe und Helligkeit auf Schwarz und dunkel zurücksetzen
-  const roomColor = document.getElementById('room-color');
-  if (roomColor) roomColor.value = '#000000'; // Standard: Schwarz
+// Raum-Farbe und Helligkeit zurücksetzen (Slider bei 0.5 = original dunkel)
+const roomColor = document.getElementById('room-color');
+if (roomColor) {
+  roomColor.value = '#0d0419ff';
+  roomColor.dispatchEvent(new Event('input')); // Trigger Update
+}
 
-  const roomBrightness = document.getElementById('room-brightness');
-  if (roomBrightness) roomBrightness.value = 1; // value=1 -> brightness=0 (dunkel)
+const roomBrightness = document.getElementById('room-brightness');
+if (roomBrightness) {
+  roomBrightness.value = 0.5; // Original Helligkeit (dunkel)
+  roomBrightness.dispatchEvent(new Event('input')); // Trigger Update
+}
+
+// Szene rendern (nur Raum geändert)
+renderer.render(scene, camera);
+
+// Szene rendern (nur Raum geändert)
+renderer.render(scene, camera);
 
   // Farben reset und UI-Inputs aktualisieren
   state.colors = { ...state.defaultSettings.colors };
@@ -635,22 +660,6 @@ function resetAll() {
     }
   });
 
-  // Szene-Hintergrund auf Schwarz zurücksetzen (brightness=0 macht es komplett dunkel/schwarz)
-  const defaultColor = new THREE.Color('#000000');
-  const defaultBrightness = 0; // Dunkel
-  scene.background = defaultColor.multiplyScalar(defaultBrightness);
-
-  // Beleuchtung auf Initialwerte zurücksetzen
-  scene.children.forEach(child => {
-    if (child instanceof THREE.DirectionalLight) {
-      // Setze Initial-Intensitäten (passe an deine init.js an)
-      if (child.position.x === 1 && child.position.y === 1 && child.position.z === 1) child.intensity = 0.8;
-      if (child.position.x === -1 && child.position.y === 1 && child.position.z === -1) child.intensity = 0.6;
-      if (child.position.y === 1) child.intensity = 0.5;
-    } else if (child instanceof THREE.AmbientLight) {
-      child.intensity = 0.3; // Oder deinen Standard-Wert
-    }
-  });
 
   // UI aktualisieren (Submenüs schließen, Checkboxen deaktivieren)
   document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
@@ -666,7 +675,7 @@ function resetAll() {
     }
   });
 
-  // Skelett (Bones) automatisch laden, wie im Anfangszustand
+  // Skelett (Bones) automatisch laden
   (async () => {
     const meta = await getMeta();
     const bonesEntries = meta.filter(entry => entry.group === 'bones');
@@ -678,7 +687,7 @@ function resetAll() {
     }
   })();
 
-  // Szene rendern (um Änderungen sichtbar zu machen)
+  // Szene rendern
   if (renderer) {
     renderer.render(scene, camera);
   } else {

@@ -134,11 +134,25 @@ label[for="load-file"]:hover {
     padding: 8px;
 }
 
+#room-color {
+  width: 50px;
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#room-brightness {
+  width: 100%;
+  margin: 10px 0;
+  accent-color: #7f2489;
+}
+
 /* Neue Sliders: Transparenz, Beleuchtung, Hintergrund */
 #transparency-slider, #lighting-slider, #background-slider {
     width: 100%;
     margin: 10px 0;
-    accent-color: #bb4cc8; /* Grün für Konsistenz mit UI */
+    accent-color: #7f2489; /* Grün für Konsistenz mit UI */
 }
 
 /* Neue Buttons: Annotations, Quiz, Export */
@@ -551,7 +565,7 @@ label[for="load-file"]:hover {
 }
 
 #info-close:hover {
-  color: #bb4cc8;
+  color: #7f2489;
 }
 
 #info-content p {
@@ -654,7 +668,7 @@ canvas {
 
 #edit-controls input[type="range"] {
   width: 100%;
-  accent-color: #bb4cc8; /* Grün passend zu UI */
+  accent-color: #7f2489; /* Grün passend zu UI */
 }
 
 #edit-controls button {

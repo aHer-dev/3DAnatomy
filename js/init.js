@@ -50,13 +50,20 @@ function initThree() {
   const ambientLight = new THREE.AmbientLight(0x606060);
   scene.add(ambientLight);
 
+
+
+// Setze initiale Hintergrundfarbe (original dunkel)
+scene.background = new THREE.Color('#0d0419');
+renderer.render(scene, camera); // Nur Raum rendern
+
+// ... Rest der Funktion ...
+
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
   renderer.sortObjects = true;
-  
 }
 
 // ✅ Alle benötigten Exporte in einer Zeile
