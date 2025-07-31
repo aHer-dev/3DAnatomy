@@ -5,202 +5,390 @@ import { state } from './state.js';
 import { scene, camera, renderer } from './init.js';
 import { hideInfoPanel } from './interaction.js';
 import { loader } from './init.js'; // Füge loader hinzu (neben scene, camera, etc.)
+import { highlightObject, showInfoPanel } from './interaction.js';
 
 
 export function setupUI() {
   console.log('setupUI gestartet');
-// Initial alle Dropdowns schließen
-document.querySelectorAll('.dropdown').forEach(dropdown => {
-  dropdown.classList.remove('active');
-  const button = dropdown.querySelector('.dropdown-button');
-  if (button) {
-    button.textContent = button.textContent.replace(/▲/, '▼');
-  }
-  // Explizit den Content verstecken (Fallback für "Raum" und andere)
-  const content = dropdown.querySelector('.dropdown-content');
-  if (content) {
-    content.style.display = 'none';
-  }
-});
+  // Initial alle Dropdowns schließen
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.classList.remove('active');
+    const button = dropdown.querySelector('.dropdown-button');
+    if (button) {
+      button.textContent = button.textContent.replace(/▲/, '▼');
+    }
+    const content = dropdown.querySelector('.dropdown-content');
+    if (content) {
+      content.style.display = 'none';
+    }
+  });
 
   // Hamburger-Menü Toggle
   const menuIcon = document.getElementById('menu-icon');
   const controlsPanel = document.getElementById('controls');
 
-if (menuIcon && controlsPanel) {
-  controlsPanel.style.display = 'none'; // Initial closed
-  menuIcon.classList.remove('open'); // Icon als Balken
-  menuIcon.addEventListener('click', () => {
-    const isOpen = controlsPanel.style.display === 'block';
-    controlsPanel.style.display = isOpen ? 'none' : 'block';
-    menuIcon.classList.toggle('open');
-    console.log(`Hamburger-Klick: Panel jetzt ${controlsPanel.style.display}`);
-    if (isOpen) {
-      // Menü geschlossen – Zustände bleiben persistent (kein Reset!)
-      console.log('Menü geschlossen – Zustände persistent');
-    } else {
-      // Menü geöffnet – Zustände restaurieren
-      ['muscles', 'bones', 'tendons', 'other'].forEach(groupName => {
-        restoreGroupState(groupName);
-      });
-      console.log('Menü geöffnet – Zustände restauriert');
-    }
-  });
-} else {
-  console.error('menu-icon oder controls nicht gefunden');
-}
+  if (menuIcon && controlsPanel) {
+    controlsPanel.style.display = 'none'; // Initial closed
+    menuIcon.classList.remove('open'); // Icon als Balken
+    menuIcon.addEventListener('click', () => {
+      const isOpen = controlsPanel.style.display === 'block';
+      controlsPanel.style.display = isOpen ? 'none' : 'block';
+      menuIcon.classList.toggle('open');
+      console.log(`Hamburger-Klick: Panel jetzt ${controlsPanel.style.display}`);
+      if (isOpen) {
+        console.log('Menü geschlossen – Zustände persistent');
+      } else {
+        ['muscles', 'bones', 'tendons', 'other'].forEach(groupName => {
+          restoreGroupState(groupName);
+        });
+        console.log('Menü geöffnet – Zustände restauriert');
+      }
+    });
+  } else {
+    console.error('menu-icon oder controls nicht gefunden');
+  }
 
   // Info-Panel Close
   document.getElementById('info-close')?.addEventListener('click', hideInfoPanel);
 
   // Gruppen-Dropdown-Buttons
-document.querySelectorAll('.sub-dropdown-button').forEach(button => {
-  const groupName = button.dataset.group;
-  button.addEventListener('click', async () => {
-    const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
-    const isOpen = subDropdown.style.display === 'block';
-    subDropdown.style.display = isOpen ? 'none' : 'block';
-    button.textContent = button.textContent.replace(/▼|▲/, isOpen ? '▼' : '▲');
+  document.querySelectorAll('.sub-dropdown-button').forEach(button => {
+    const groupName = button.dataset.group;
+    button.addEventListener('click', async () => {
+      const subDropdown = document.getElementById(`${groupName}-sub-dropdown`);
+      const isOpen = subDropdown.style.display === 'block';
+      subDropdown.style.display = isOpen ? 'none' : 'block';
+      button.textContent = button.textContent.replace(/▼|▲/, isOpen ? '▼' : '▲');
 
-    if (!isOpen) {
-      await generateSubDropdown(groupName); // Generiert Subgruppen + All/Clear-Buttons
+      if (!isOpen) {
+        await generateSubDropdown(groupName);
+      }
+    });
+  });
+
+  // Reset-Button
+  document.getElementById('reset-button')?.addEventListener('click', resetAll);
+
+  // Suchleiste
+  const searchBar = document.getElementById('search-bar');
+  const searchResults = document.getElementById('search-results');
+
+  searchBar?.addEventListener('input', async () => {
+    const searchTerm = searchBar.value.toLowerCase().trim();
+    searchResults.innerHTML = '';
+    searchResults.style.display = 'none';
+
+    if (searchTerm === '') return;
+
+    const meta = await getMeta();
+    const results = meta.filter(
+      entry =>
+        entry.label.toLowerCase().includes(searchTerm) ||
+        entry.fma.toLowerCase().includes(searchTerm)
+    );
+
+    if (results.length === 0) {
+      console.log('Keine Ergebnisse gefunden.');
+      return;
+    }
+
+    results.forEach(result => {
+      const item = document.createElement('div');
+      item.className = 'search-item';
+      item.textContent = `${result.label} (${result.group}${result.side ? ', ' + result.side : ''})`;
+      item.dataset.entry = JSON.stringify(result);
+
+      item.addEventListener('click', async () => {
+        const entry = JSON.parse(item.dataset.entry);
+        await loadModels([entry], entry.group, true, scene, loader);
+
+        const model = state.groups[entry.group].find(
+          m => state.modelNames.get(m) === entry.label
+        );
+        if (model) {
+          highlightObject(model);
+          showInfoPanel(entry, model);
+          console.log(`Modell ${entry.label} geladen und ausgewählt.`);
+        } else {
+          console.warn(`Modell ${entry.label} konnte nicht gefunden werden nach Laden.`);
+        }
+
+        searchResults.style.display = 'none';
+        searchBar.value = '';
+      });
+
+      searchResults.appendChild(item);
+    });
+
+    searchResults.style.display = 'block';
+    console.log(`Gefundene Ergebnisse: ${results.length}`);
+  });
+
+  document.addEventListener('click', event => {
+    if (!searchBar.contains(event.target) && !searchResults.contains(event.target)) {
+      searchResults.style.display = 'none';
     }
   });
-});
 
-// Reset-Button
-document.getElementById('reset-button')?.addEventListener('click', resetAll);
-
-  // Suchleiste (unverändert)
-const searchBar = document.getElementById('search-bar');
-searchBar?.addEventListener('input', async () => {
-  const searchTerm = searchBar.value.toLowerCase().trim();
-  if (searchTerm === '') return; // Bei leerem Feld nichts tun
-
-  const meta = await getMeta();
-  const results = meta.filter(entry =>
-    entry.label.toLowerCase().includes(searchTerm) ||
-    entry.fma.toLowerCase().includes(searchTerm)
-  );
-
-  if (results.length === 0) {
-    console.log('Keine Ergebnisse gefunden.');
-    return;
-  }
-
-  // Alle alten Modelle clearen? Optional: state.groups = {} und scene.clear(), aber Vorsicht!
-  results.forEach(result => loadModels([result], result.group, true, scene, loader));
-  console.log(`Gefundene Modelle: ${results.length}`);
-});
-
-
-  document.getElementById('lighting-slider')?.addEventListener('input', (e) => {
+  document.getElementById('lighting-slider')?.addEventListener('input', e => {
     const intensity = parseFloat(e.target.value);
     scene.children.forEach(child => {
-      if (child instanceof THREE.DirectionalLight) child.intensity = intensity * (child.position.y === 1 ? 0.5 : child.position.x === -1 ? 0.6 : 0.8);
+      if (child instanceof THREE.DirectionalLight)
+        child.intensity = intensity * (child.position.y === 1 ? 0.5 : child.position.x === -1 ? 0.6 : 0.8);
       else if (child instanceof THREE.AmbientLight) child.intensity = intensity * 0.3;
     });
   });
 
-  // Farben-Inputs initialisieren und Listener hinzufügen
-['bones', 'muscles', 'tendons', 'other'].forEach(group => {
-  const colorInput = document.getElementById(`${group}-color`);
-  if (colorInput) {
-    // Initiale Farbe setzen (aus state.colors)
-    const initialHex = state.colors[group].toString(16).padStart(6, '0');
-    colorInput.value = `#${initialHex}`;
-    console.log(`Initiale Farbe für ${group} gesetzt: #${initialHex}`);
+  ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+    const colorInput = document.getElementById(`${group}-color`);
+    if (colorInput) {
+      const initialHex = state.colors[group].toString(16).padStart(6, '0');
+      colorInput.value = `#${initialHex}`;
+      console.log(`Initiale Farbe für ${group} gesetzt: #${initialHex}`);
 
-    // Listener: Bei Änderung Farbe updaten und auf geladene Modelle anwenden
-    colorInput.addEventListener('input', (e) => {
-      const newColorStr = e.target.value.slice(1); // Entferne #
-      const newColorHex = parseInt(newColorStr, 16);
-      if (isNaN(newColorHex)) {
-        console.error(`Ungültige Farbe für ${group}: ${e.target.value}`);
-        return;
-      }
+      colorInput.addEventListener('input', e => {
+        const newColorStr = e.target.value.slice(1);
+        const newColorHex = parseInt(newColorStr, 16);
+        if (isNaN(newColorHex)) {
+          console.error(`Ungültige Farbe für ${group}: ${e.target.value}`);
+          return;
+        }
 
-      state.colors[group] = newColorHex;
-      console.log(`Farbe für ${group} geändert zu: 0x${newColorStr}`);
+        state.colors[group] = newColorHex;
+        console.log(`Farbe für ${group} geändert zu: 0x${newColorStr}`);
 
-      // Alle Modelle der Gruppe updaten
-      const models = state.groups[group] || [];
-      if (models.length === 0) {
-        console.warn(`Keine Modelle in Gruppe ${group} geladen – Farbe nicht angewendet.`);
-      } else {
-        models.forEach(model => {
-          model.traverse(child => {
-            if (child.isMesh && child.material) {
-              child.material.color.setHex(newColorHex);
-              child.material.needsUpdate = true;
-              console.log(`Material von ${child.name || 'Mesh'} upgedatet.`);
-            }
+        const models = state.groups[group] || [];
+        if (models.length === 0) {
+          console.warn(`Keine Modelle in Gruppe ${group} geladen – Farbe nicht angewendet.`);
+        } else {
+          models.forEach(model => {
+            model.traverse(child => {
+              if (child.isMesh && child.material) {
+                child.material.color.setHex(newColorHex);
+                child.material.needsUpdate = true;
+                console.log(`Material von ${child.name || 'Mesh'} upgedatet.`);
+              }
+            });
           });
-        });
+        }
+
+        renderer.render(scene, camera);
+      });
+    } else {
+      console.error(`Farb-Input für ${group} (#${group}-color) nicht gefunden! Überprüfe HTML.`);
+    }
+  });
+
+  document.getElementById('background-slider')?.addEventListener('input', e => {
+    const value = parseFloat(e.target.value);
+    const color = new THREE.Color().setHSL(value, 0.5, 0.5);
+    scene.background = color;
+    renderer.render(scene, camera);
+  });
+
+  document.getElementById('room-color')?.addEventListener('input', e => {
+    const color = new THREE.Color(e.target.value);
+    const brightness = 1 - parseFloat(document.getElementById('room-brightness').value);
+    scene.background = color.multiplyScalar(brightness);
+    renderer.render(scene, camera);
+  });
+
+  document.getElementById('room-brightness')?.addEventListener('input', e => {
+    const brightness = 1 - parseFloat(e.target.value);
+    const currentColor = new THREE.Color(document.getElementById('room-color').value);
+    scene.background = currentColor.multiplyScalar(brightness);
+    renderer.render(scene, camera);
+  });
+
+  document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
+    button.addEventListener('click', () => {
+      const dropdown = button.closest('.dropdown');
+      const isActive = dropdown.classList.contains('active');
+
+      console.log('Dropdown geklickt:', button.textContent.trim(), 'Status vor Toggle:', isActive ? 'offen' : 'geschlossen');
+
+      dropdown.classList.toggle('active');
+      button.textContent = button.textContent.replace(/▼|▲/, isActive ? '▼' : '▲');
+
+      const content = dropdown.querySelector('.dropdown-content');
+      if (content) {
+        content.style.display = isActive ? 'none' : 'block';
+        console.log('Content Display nach manuellem Set:', content.style.display);
+      } else {
+        console.log('Content nicht gefunden');
+      }
+    });
+  });
+
+  // Screenshot
+  document.getElementById('screenshot-button')?.addEventListener('click', () => {
+    renderer.render(scene, camera);
+    const dataURL = renderer.domElement.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'screenshot.png';
+    link.click();
+    console.log('Screenshot gemacht.');
+  });
+
+  // Exportieren: Generiere Base64-Code nur für geladene Strukturen und lade als Text-Datei herunter
+// Exportieren: Generiere Base64-Code nur für geladene Strukturen und lade als Text-Datei herunter
+document.getElementById('export-button')?.addEventListener('click', async () => {
+  const serializableState = {
+    loadedModels: {}
+  };
+
+  Object.keys(state.groups).forEach(group => {
+    serializableState.loadedModels[group] = state.groups[group]
+      .filter(model => model.visible)
+      .map(model => state.modelNames.get(model))
+      .filter(Boolean);
+  });
+
+  const jsonStr = JSON.stringify(serializableState);
+  const code = btoa(jsonStr);
+
+  const blob = new Blob([code], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'settings_code.txt';
+  link.click();
+  URL.revokeObjectURL(url);
+  console.log('Strukturen als Code exportiert:', code);
+});
+
+// Laden aus File-Upload (automatisch bei Auswahl, einzigster Weg)
+document.getElementById('load-file')?.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    // Clean den Code: Entferne alle Whitespace
+    const code = e.target.result.replace(/\s+/g, '');
+    console.log('Geladener Code (gereinigt):', code);
+
+    if (!code) {
+      alert('Datei ist leer oder ungültig!');
+      return;
+    }
+
+    try {
+      const jsonStr = atob(code);
+      const loadedState = JSON.parse(jsonStr);
+
+      Object.keys(state.groups).forEach(group => {
+        state.groups[group].forEach(model => scene.remove(model));
+        state.groups[group] = [];
+      });
+      state.modelNames.clear();
+
+      const meta = await getMeta();
+      for (const [group, labels] of Object.entries(loadedState.loadedModels)) {
+        const entries = meta.filter(entry => labels.includes(entry.label) && entry.group === group);
+        if (entries.length > 0) {
+          await loadModels(entries, group, true, scene, loader);
+        }
       }
 
-      // Szene neu rendern
+      fitCameraToSkeleton();
       renderer.render(scene, camera);
-    });
-  } else {
-    console.error(`Farb-Input für ${group} (#${group}-color) nicht gefunden! Überprüfe HTML.`);
+      console.log('Strukturen geladen aus Datei.');
+    } catch (error) {
+      console.error('Fehler beim Laden der Datei:', error);
+      alert('Ungültige Datei! Bitte überprüfen.');
+    }
+  };
+  reader.onerror = () => {
+    alert('Fehler beim Lesen der Datei!');
+  };
+  reader.readAsText(file);
+});
+
+  // Laden aus Code-Input (manuell eingeben)
+  document.getElementById('load-settings')?.addEventListener('click', () => loadFromCode());
+
+  // Laden aus File-Upload (automatisch bei Auswahl)
+  document.getElementById('load-file')?.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const code = e.target.result.replace(/\s+/g, '');
+      loadFromCode(code);
+    };
+    reader.onerror = () => {
+      alert('Fehler beim Lesen der Datei!');
+    };
+    reader.readAsText(file);
+  });
+
+  // Hilfsfunktion: Lade aus Code (verwendet von beiden)
+  async function loadFromCode(providedCode = null) {
+    let code = providedCode || document.getElementById('load-code').value.replace(/\s+/g, '');
+    if (!code) {
+      alert('Bitte einen gültigen Code eingeben oder Datei auswählen!');
+      return;
+    }
+
+    console.log('Geladener Code (gereinigt):', code);
+
+    try {
+      const jsonStr = atob(code);
+      const loadedState = JSON.parse(jsonStr);
+
+      Object.keys(state.groups).forEach(group => {
+        state.groups[group].forEach(model => scene.remove(model));
+        state.groups[group] = [];
+      });
+      state.modelNames.clear();
+
+      const meta = await getMeta();
+      for (const [group, labels] of Object.entries(loadedState.loadedModels)) {
+        const entries = meta.filter(entry => labels.includes(entry.label) && entry.group === group);
+        if (entries.length > 0) {
+          await loadModels(entries, group, true, scene, loader);
+        }
+      }
+
+      fitCameraToSkeleton();
+      renderer.render(scene, camera);
+      console.log('Strukturen geladen aus Code.');
+      alert('Strukturen erfolgreich geladen!');
+    } catch (error) {
+      console.error('Fehler beim Laden des Codes:', error);
+      alert('Ungültiger Code! Bitte überprüfen.');
+    }
   }
-});
 
-document.getElementById('background-slider')?.addEventListener('input', (e) => {
-  const value = parseFloat(e.target.value); // 0-1
-  const color = new THREE.Color().setHSL(value, 0.5, 0.5); // HSL für Farbverlauf (z. B. 0=rot, 0.5=grün)
-  scene.background = color; // Ändert die Scene-Hintergrundfarbe
-  renderer.render(scene, camera); // Sofort-Render
-});
-
-// Raum-Beleuchtung (bestehender Lighting-Slider)
-document.getElementById('lighting-slider')?.addEventListener('input', (e) => {
-  const intensity = parseFloat(e.target.value);
-  scene.children.forEach(child => {
-    if (child instanceof THREE.DirectionalLight || child instanceof THREE.AmbientLight) {
-      child.intensity = intensity;
-    }
-  });
-  renderer.render(scene, camera);
-});
-
-// Raum-Farbe (Color-Picker)
-document.getElementById('room-color')?.addEventListener('input', (e) => {
-  const color = new THREE.Color(e.target.value);
-  const brightness = 1 - parseFloat(document.getElementById('room-brightness').value); // Mit Helligkeit kombinieren
-  scene.background = color.multiplyScalar(brightness);
-  renderer.render(scene, camera);
-});
-
-// Raum-Helligkeit (Regler: 0=hell, 1=dunkel)
-document.getElementById('room-brightness')?.addEventListener('input', (e) => {
-  const brightness = 1 - parseFloat(e.target.value); // Umkehren: 0=hell (1), 1=dunkel (0)
-  const currentColor = new THREE.Color(document.getElementById('room-color').value);
-  scene.background = currentColor.multiplyScalar(brightness);
-  renderer.render(scene, camera);
-});
-
-// Dropdown-Toggle für andere Sections (wie Raum, Farben, Tools)
-document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
-  button.addEventListener('click', () => {
-    const dropdown = button.closest('.dropdown');
-    const isActive = dropdown.classList.contains('active');
+  // Kamera an alle sichtbaren Strukturen anpassen
+  function fitCameraToSkeleton() {
+    const box = new THREE.Box3();
     
-    console.log('Dropdown geklickt:', button.textContent.trim(), 'Status vor Toggle:', isActive ? 'offen' : 'geschlossen');
-    
-    dropdown.classList.toggle('active');
-    button.textContent = button.textContent.replace(/▼|▲/, isActive ? '▼' : '▲');
-    
-    const content = dropdown.querySelector('.dropdown-content');
-    if (content) {
-      content.style.display = isActive ? 'none' : 'block';  // Manuell toggeln (Fallback)
-      console.log('Content Display nach manuellem Set:', content.style.display);
+    Object.values(state.groups).flat().forEach(model => {
+      if (model.visible) {
+        box.expandByObject(model);
+      }
+    });
+
+    if (!box.isEmpty()) {
+      const size = box.getSize(new THREE.Vector3()).length();
+      const center = box.getCenter(new THREE.Vector3());
+
+      camera.position.set(0, center.y, size * 0.75);
+      camera.lookAt(center);
+      if (controls && controls.target) {
+        controls.target.copy(center);
+        controls.update();
+      }
+      renderer.render(scene, camera);
+      console.log('Kamera auf alle Strukturen gefittet:', camera.position);
     } else {
-      console.log('Content nicht gefunden');
+      console.warn('Keine Strukturen geladen – Kamera nicht angepasst.');
     }
-  });
-});
+  }
 }
 
 async function generateSubDropdown(groupName) {

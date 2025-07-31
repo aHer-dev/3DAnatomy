@@ -1,34 +1,3 @@
-.
-├── app.js
-├── data
-│   ├── meta.json
-│   ├── meta.json.backup
-│   ├── meta.json.bak
-│   └── meta.json.bak5
-├── favicon.ico
-├── index.html
-├── js
-│   ├── GLTFLoader.js
-│   ├── OrbitControls.js
-│   ├── init.js
-│   ├── interaction.js
-│   ├── modelLoader.js
-│   ├── state.js
-│   ├── three
-│   │   └── examples
-│   ├── three.module.js
-│   ├── ui.js
-│   └── utils.js
-├── models
-│   ├── bones
-│   │   ├── FJ1228_BP50206_FMA45097_Sesamoid_bone_of_right_foot.glb
-│   │   ├── FJ1245_BP50167_FMA23725_Right_trapezoid.glb
-│   │   ├── FJ1254_BP49769_FMA55704_Left_first_lower_molar_tooth.glb
-│   │   ├── FJ1255_BP49761_FMA55693_Left_first_lower_premolar_tooth.glb
 
-│       └── FJ3131_BP49147_FMA13295_Diaphragm.glb
-├── ordnerstruktur.txt
-├── style.css
-└── three.min.js
-
-11 directories, 701 files
+app.js  data  favicon.ico  index.html  js  models  ordnerstruktur.txt  style.css  three.min.js
+BufferGeometryUtils.js  GLTFLoader.js  OrbitControls.js  init.js  interaction.js  modelLoader.js  state.js  three.module.js  ui.js  utils.js

@@ -8,8 +8,8 @@ body {
 /* --- Steuerungspanel (#controls) --- */
 /* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
 #controls {
+  position: relative;  
   display: none; /* Initial none, aber JS setzt block */
-  position: absolute;
   top: 60px;
   left: 10px;
   z-index: 1000;
@@ -43,7 +43,7 @@ body {
 
 /* Suchleiste: Breite, Padding, Design */
 #search-bar {
-    width: 100%;
+    width: auto;
     padding: 8px;
     margin-bottom: 15px;
     border: none;
@@ -51,6 +51,36 @@ body {
     background-color: #222222;
     color: white;
     font-size: 14px;
+}
+
+#search-results {
+    display: none;
+    position: relative;
+    top: 100%;  /* Direkt unter der Suchleiste */
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #222222;
+    border-radius: 0 0 5px 5px;  /* Abgerundet unten */
+    z-index: 1001;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.search-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid #333333;
+    transition: background-color 0.2s;
+}
+
+.search-item:hover {
+    background-color: #444444;
+}
+
+.search-item:last-child {
+    border-bottom: none;
 }
 
 /* Labels: Block-Anzeige für klare Struktur */
@@ -74,9 +104,28 @@ button:hover {
     background-color: #555555; /* Heller bei Hover */
 }
 
+#load-file {
+  display: none;  /* Verstecke den Standard-Input, nutze Label als Button */
+}
+
+label[for="load-file"] {
+  display: block;
+  background-color: #444444;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 5px;
+}
+
+label[for="load-file"]:hover {
+  background-color: #555555;
+}
+
 /* Eingabefeld für Lade-Code: Breite, Design */
 #load-code {
-    width: 100%;
+    width: auto;
     margin-top: 10px;
     background-color: #222222;
     color: white;
@@ -93,7 +142,7 @@ button:hover {
 }
 
 /* Neue Buttons: Annotations, Quiz, Export */
-#annotations-button, #quiz-button, #export-button {
+#export-button, #screenshot-button {
     width: 100%;
     margin-top: 5px;
 }

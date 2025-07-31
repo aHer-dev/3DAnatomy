@@ -18,8 +18,9 @@
     </div>
 
     <div id="controls">
-        <input type="text" id="search-bar" placeholder="Suche nach Modell...">
-
+  <input id="search-bar" type="text" placeholder="Suche nach Modellen...">
+  <div id="search-results"></div>  <!-- Direkt hier platzieren, kein inline-style -->
+  
         <div class="dropdown">
             <button class="dropdown-button">Gruppen</button>
             <div class="dropdown-content">
@@ -64,12 +65,12 @@
 
         <div class="dropdown">
   <button class="dropdown-button">Tools</button>
-  <div class="dropdown-content">
-    <button id="screenshot-button">Screenshot machen</button>
-    <input type="text" id="load-code" placeholder="Code zum Laden eingeben">
-    <button id="load-settings">Einstellungen laden</button>
-    <button id="export-button">Exportieren</button>
-  </div>
+<div class="dropdown-content">
+  <button id="screenshot-button">Screenshot</button>
+  <button id="export-button">Exportieren</button>
+  <input id="load-file" type="file" accept=".txt" style="margin-top: 10px;">
+  <label for="load-file" style="font-size: 12px; color: #aaa; cursor: pointer;">Code-Importieren(.txt)</label>
+</div>
 </div>
 
 <!-- 🔁 Raum-Dropdown jetzt eigenständig -->

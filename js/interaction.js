@@ -206,6 +206,8 @@ export function hideInfoPanel() {
   }
 }
 
+
+
 function highlightObject(object) {
   // De-highlight previous (traverse for groups)
   if (state.currentlySelected) {
@@ -226,7 +228,10 @@ function highlightObject(object) {
   state.currentlySelected = object;
 }
 
+export { highlightObject, showInfoPanel };
+
 window.toggleLicense = function () {
   const dropdown = document.getElementById('license-dropdown');
   dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+
 };
