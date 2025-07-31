@@ -18,83 +18,70 @@
     </div>
 
     <div id="controls">
-  <input id="search-bar" type="text" placeholder="Suche nach Modellen...">
-  <div id="search-results"></div>  <!-- Direkt hier platzieren, kein inline-style -->
-  
+        <input id="search-bar" type="text" placeholder="Suche nach Modellen...">
+        <div id="search-results"></div>
+
         <div class="dropdown">
             <button class="dropdown-button">Gruppen</button>
             <div class="dropdown-content">
-                <!-- Reihenfolge: Muscles, Bones, Tendons, Other -->
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="muscles">Muskeln ▼</button>
-                    <div id="muscles-sub-dropdown" class="sub-dropdown">
-                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
-                    </div>
+                    <div id="muscles-sub-dropdown" class="sub-dropdown"></div>
                 </div>
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="bones">Knochen ▼</button>
-                    <div id="bones-sub-dropdown" class="sub-dropdown">
-                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
-                    </div>
+                    <div id="bones-sub-dropdown" class="sub-dropdown"></div>
                 </div>
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="tendons">Sehnen ▼</button>
-                    <div id="tendons-sub-dropdown" class="sub-dropdown">
-                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
-                    </div>
+                    <div id="tendons-sub-dropdown" class="sub-dropdown"></div>
                 </div>
                 <div class="dropdown-sub">
                     <button class="sub-dropdown-button" data-group="other">Weitere ▼</button>
-                    <div id="other-sub-dropdown" class="sub-dropdown">
-                        <!-- Hier kommen dynamisch All/Clear-Buttons und Subgruppen -->
-                    </div>
+                    <div id="other-sub-dropdown" class="sub-dropdown"></div>
                 </div>
             </div>
         </div>
 
-<div class="dropdown">
-    <button class="dropdown-button">Farben ändern</button>
-    <div class="dropdown-content">
-        <label>Bones Farbe: <input type="color" id="bones-color"></label>
-        <label>Muscles Farbe: <input type="color" id="muscles-color"></label>
-        <label>Tendons Farbe: <input type="color" id="tendons-color"></label>
-        <label>Other Farbe: <input type="color" id="other-color"></label>
-    </div>
-</div>
-
+        <div class="dropdown">
+            <button class="dropdown-button">Farben ändern</button>
+            <div class="dropdown-content">
+                <label>Bones Farbe: <input type="color" id="bones-color"></label>
+                <label>Muscles Farbe: <input type="color" id="muscles-color"></label>
+                <label>Tendons Farbe: <input type="color" id="tendons-color"></label>
+                <label>Other Farbe: <input type="color" id="other-color"></label>
+            </div>
+        </div>
 
         <div class="dropdown">
-  <button class="dropdown-button">Tools</button>
-<div class="dropdown-content">
-  <button id="screenshot-button">Screenshot</button>
-  <button id="export-button">Exportieren</button>
-  <input id="load-file" type="file" accept=".txt" style="margin-top: 10px;">
-  <label for="load-file" style="font-size: 12px; color: #aaa; cursor: pointer;">Code-Importieren(.txt)</label>
-</div>
-</div>
+            <button class="dropdown-button">Tools</button>
+            <div class="dropdown-content">
+                <button id="screenshot-button">Screenshot</button>
+                <button id="export-button">Exportieren</button>
+                <input id="load-file" type="file" accept=".txt">
+                <label for="load-file" class="file-label">Code-Importieren (.txt)</label>
+            </div>
+        </div>
 
-<!-- 🔁 Raum-Dropdown jetzt eigenständig -->
-<div class="dropdown">
-  <button class="dropdown-button">Raum </button>
-  <div class="dropdown-content">
-    <label>Beleuchtung: <input type="range" id="lighting-slider" min="0" max="2" step="0.1" value="1"></label>
-    <label>Raum-Farbe: <input type="color" id="room-color" value="#0d0419ff">
-    <label>Helligkeit: <input type="range" id="room-brightness" min="0" max="1" step="0.01" value="0.5"></label>
-  </div>
-</div>
+        <div class="dropdown">
+            <button class="dropdown-button">Raum</button>
+            <div class="dropdown-content">
+                <label>Beleuchtung: <input type="range" id="lighting-slider" min="0" max="2" step="0.1" value="1"></label>
+                <label>Raum-Farbe: <input type="color" id="room-color" value="#0d0419"></label>
+                <label>Helligkeit: <input type="range" id="room-brightness" min="0" max="1" step="0.01" value="0.5"></label>
+            </div>
+        </div>
 
-<div class="dropdown">
-    <button class="dropdown-button">Set</button>
-    <div class="dropdown-content" id="set-dropdown-content">
-        <button id="show-set">Set anzeigen</button>
-        <button id="clear-set">Clear Set</button>
-        <button id="list-set">Strukturen im Set</button>
-        <div id="set-structures-list" style="display: none; max-height: 200px; overflow-y: auto; background-color: #222222; border-radius: 5px; padding: 10px;"></div>
-    </div>
-</div>
+        <div class="dropdown">
+            <button class="dropdown-button">Set</button>
+            <div class="dropdown-content" id="set-dropdown-content">
+                <button id="show-set">Set anzeigen</button>
+                <button id="clear-set">Clear Set</button>
+                <button id="list-set">Strukturen im Set</button>
+                <div id="set-structures-list" class="set-structures-list"></div>
+            </div>
+        </div>
 
-
-        <!-- Reset-Button am Ende von #controls -->
         <button id="reset-button">Reset</button>
     </div>
 
@@ -103,31 +90,41 @@
         <div id="progress-text">0%</div>
     </div>
 
-<div id="footer-container">
-  <button id="music-button" title="Musik abspielen">♪</button>
-  <div id="footer" onclick="toggleLicense()">
-    <span id="volume-container" style="display: none;">
-  <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" title="Lautstärke">
-</span>
+    <div id="footer-container">
+        <button id="music-button" title="Musik abspielen">♪</button>
+        <button id="next-song-button" style="display: none;">➤</button>
+        <button id="song-info-button" style="display: none;">🛈</button>
+        <div id="volume-container" style="display: none;">
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" title="Lautstärke">
+        </div>
+        <div id="footer" onclick="toggleLicense()">
+            <span class="license-link">© CC BY-SA</span>
+        </div>
+        <audio id="bg-music" loop></audio>
+        <div id="song-license-dropdown" style="display: none; position: fixed; bottom: 50px; right: 10px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 15px; border-radius: 10px; width: 250px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
+            <p id="song-license-text"></p>
+            <button id="close-song-license">✖</button>
+        </div>
+    </div>
 
-    <span class="license-link">© CC BY-SA</span>
-  </div>
+<div id="license-dropdown">
+    <p>
+        BodyParts3D, © The Database Center for Life Science, 
+        licensed under 
+        <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener noreferrer">
+            CC BY-SA 2.1 Japan
+        </a>.
+    </p>
+    <p>
+        Attribution: Modelle basieren auf Daten von <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener noreferrer">Anatomography/BodyParts3D</a>. 
+        Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.
+    </p>
 </div>
 
-<audio id="bg-music" src="./audio/backroundmusic.mp3" loop></audio>
-
-    <div id="license-dropdown">
-        <p>BodyParts3D, © The Database Center for Life Science, licensed under CC BY-SA 2.1 Japan.</p>
-        <p>Attribution: Modelle basieren auf Daten von Anatomography/BodyParts3D. Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.</p>
-    </div>
-
-    <div id="info-panel" class="hidden">
-        <div id="info-header">
-            <span>Modell-Details</span>
-            <button id="info-close">✖</button>
-        </div>
-        <div id="info-content"></div>
-    </div>
+<div id="info-panel" class="hidden">
+    <div id="info-header"></div>  <!-- Leer – wird in JS gefüllt -->
+    <div id="info-content"></div>
+</div>
 
     <div id="tooltip"></div>
 </body>

@@ -1,6 +1,6 @@
 import * as THREE from './three.module.js';
 import { loadModels } from './modelLoader.js';
-import { getMeta } from './utils.js';
+import { getMeta, basePath } from './utils.js';
 import { state } from './state.js';
 import { scene, camera, renderer } from './init.js';
 import { hideInfoPanel } from './interaction.js';
@@ -400,28 +400,55 @@ document.getElementById('load-file')?.addEventListener('change', (event) => {
       console.warn('Keine Strukturen geladen – Kamera nicht angepasst.');
     }
   }
-
     // Musikbutton: Play / Pause mit Icon-Wechsel
 const musicButton = document.getElementById('music-button');
 const bgMusic = document.getElementById('bg-music');
 const volumeContainer = document.getElementById('volume-container');
 const volumeSlider = document.getElementById('volume-slider');
+const nextButton = document.getElementById('next-song-button');
+const infoButton = document.getElementById('song-info-button');
+const songLicenseDropdown = document.getElementById('song-license-dropdown');
+const songLicenseText = document.getElementById('song-license-text');
+const closeSongLicense = document.getElementById('close-song-license');
+
+// Neu: Songs-Array mit deinen Pfaden und einheitlicher Lizenz-Struktur (als HTML)
+const songs = [
+  {
+    src: `${basePath}/audio/backroundmusic.mp3`,
+    license: '<strong>Quelle:</strong> Pixabay<br><strong>Hinweis:</strong> KI-generiert, lizenzfrei nutzbar unter der Pixabay-Inhaltslizenz<br><strong>Spotify:</strong> Spotify-Playlist von lofidreams99'
+  },
+  {
+    src: `${basePath}/audio/backroundmusic1.mp3`,
+    license: '<strong>Quelle:</strong> Pixabay<br><strong>Musik:</strong> Just Fine von Isaiah Mathew<br><strong>Instagram/Twitter:</strong> @imathewmusic<br><strong>Website:</strong> isaiahmathew.com'
+  },
+  {
+    src: `${basePath}/audio/backroundmusic2.mp3`,
+    license: '<strong>Quelle:</strong> <a href="https://pixabay.com/music/id-163947" target="_blank">Pixabay</a><br><strong>Musik:</strong> Horizon von Verzand<br><strong>Lizenz:</strong> Frei verwendbar unter der Pixabay-Inhaltslizenz. Keine Namensnennung erforderlich – aber gerne gesehen.'
+  }
+];
+
+let currentSongIndex = 0; // Start bei Song 0
+let isPlaying = false;
 
 if (musicButton && bgMusic) {
-  let isPlaying = !bgMusic.paused;
-  musicButton.textContent = isPlaying ? '♪' : 'X♪';
-  volumeContainer.style.display = isPlaying ? 'inline' : 'none';
+  bgMusic.src = songs[currentSongIndex].src; // Initial src setzen
   bgMusic.volume = parseFloat(volumeSlider?.value || '0.5');
+  bgMusic.loop = true; // Loop aktivieren
 
   musicButton.addEventListener('click', () => {
     if (isPlaying) {
       bgMusic.pause();
       musicButton.textContent = 'X♪';
       volumeContainer.style.display = 'none';
+      nextButton.style.display = 'none';
+      infoButton.style.display = 'none';
+      songLicenseDropdown.style.display = 'none';
     } else {
       bgMusic.play();
       musicButton.textContent = '♪';
       volumeContainer.style.display = 'inline';
+      nextButton.style.display = 'inline';
+      infoButton.style.display = 'inline';
     }
     isPlaying = !isPlaying;
   });
@@ -430,6 +457,26 @@ if (musicButton && bgMusic) {
     const volume = parseFloat(volumeSlider.value);
     bgMusic.volume = volume;
     console.log(`Lautstärke: ${volume}`);
+  });
+
+  // Next-Button: Wechselt Song
+  nextButton.addEventListener('click', () => {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    bgMusic.src = songs[currentSongIndex].src;
+    bgMusic.play();
+    console.log(`Wechsel zu Song ${currentSongIndex + 1}`);
+    songLicenseDropdown.style.display = 'none'; // Schließe bei Wechsel
+  });
+
+  // Info-Button: Zeigt Lizenz
+  infoButton.addEventListener('click', () => {
+    songLicenseText.innerHTML = songs[currentSongIndex].license; // Setze HTML
+    songLicenseDropdown.style.display = 'block';
+  });
+
+  // Close-Button für Song-Lizenz
+  closeSongLicense.addEventListener('click', () => {
+    songLicenseDropdown.style.display = 'none';
   });
 }
 

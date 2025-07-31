@@ -1,3 +1,6 @@
+ ls
+Lizenses.txt  app.js  audio  data  favicon.ico  index.html  js  models  ordnerstruktur.txt  style.css  three.min.js
 
-app.js  data  favicon.ico  index.html  js  models  ordnerstruktur.txt  style.css  three.min.js
 BufferGeometryUtils.js  GLTFLoader.js  OrbitControls.js  init.js  interaction.js  modelLoader.js  state.js  three.module.js  ui.js  utils.js
+
+backroundmusic.mp3  backroundmusic1.mp3  backroundmusic2.mp3

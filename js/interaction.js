@@ -75,9 +75,45 @@ function showInfoPanel(meta, selectedModel) {
     return;
   }
 
-  // Bestehende Infos
-  infoContent.innerHTML = `
-    <p><strong>Label:</strong> ${meta.label}</p>
+  // Leere den Inhalt
+  infoContent.innerHTML = '';
+
+  // Header mit Überschrift und Schließen-Symbol in einer Zeile
+  const header = document.getElementById('info-header');
+  header.innerHTML = '';
+  const headline = document.createElement('h3');
+  headline.textContent = `${meta.label}`;
+  headline.style.display = 'inline-block'; // In einer Zeile
+  headline.style.margin = '0 10px 10px 0'; // Abstand rechts
+  headline.style.fontSize = '18px'; // Größer
+  headline.style.fontWeight = 'bold'; // Dicker
+  header.appendChild(headline);
+
+  const closeButton = document.createElement('button');
+  closeButton.id = 'info-close';
+  closeButton.textContent = '✖';
+  closeButton.style.display = 'inline-block'; // In einer Zeile
+  closeButton.style.float = 'right'; // Rechts ausrichten
+  closeButton.addEventListener('click', hideInfoPanel);
+  header.appendChild(closeButton);
+
+  // Details-Dropdown Button "Details anzeigen"
+  const detailsButton = document.createElement('button');
+  detailsButton.className = 'details-dropdown-button';
+  detailsButton.textContent = 'Details anzeigen ▼';
+  detailsButton.addEventListener('click', () => {
+    const detailsContent = document.getElementById('details-content');
+    const isOpen = detailsContent.style.display === 'block';
+    detailsContent.style.display = isOpen ? 'none' : 'block';
+    detailsButton.textContent = isOpen ? 'Details anzeigen ▼' : 'Details ausblenden ▲';
+  });
+  infoContent.appendChild(detailsButton);
+
+  // Details-Content (versteckt initial, mit Scroll-Stil)
+  const detailsContent = document.createElement('div');
+  detailsContent.id = 'details-content';
+  detailsContent.style.display = 'none';
+  detailsContent.innerHTML = `
     ${meta.fma ? `<p><strong>FMA-ID:</strong> ${meta.fma}</p>` : ''}
     ${meta.group ? `<p><strong>Gruppe:</strong> ${meta.group}</p>` : ''}
     ${meta.subgroup && meta.subgroup !== 'none' ? `<p><strong>Subgruppe:</strong> ${meta.subgroup}</p>` : ''}
@@ -86,26 +122,26 @@ function showInfoPanel(meta, selectedModel) {
     ${meta.info?.insertion ? `<p><strong>Ansatz:</strong> ${meta.info.insertion}</p>` : ''}
     ${meta.info?.function ? `<p><strong>Funktion:</strong> ${meta.info.function}</p>` : ''}
   `;
+  infoContent.appendChild(detailsContent);
 
-  // Bearbeitungs-Section
+  // Bearbeitungs-Section "Struktur bearbeiten"
   const editSection = document.createElement('div');
   editSection.id = 'edit-controls';
   editSection.innerHTML = `
-    <h3>Bearbeiten - Struktur</h3>
+    <h3>Struktur bearbeiten</h3>
     <label>Farbe: <input type="color" id="edit-color"></label>
     <label>Transparenz: <input type="range" id="edit-opacity" min="0" max="1" step="0.01" value="1"></label>
     <button id="edit-toggle-visible">Verstecken/Anzeigen</button>
   `;
   infoContent.appendChild(editSection);
 
-  //set
+  // Add-to-Set Button
   const addButton = document.createElement('button');
   addButton.id = 'add-to-set';
   addButton.textContent = 'Zum Set hinzufügen';
   addButton.addEventListener('click', () => {
     if (!state.setStructures.some(e => e.label === meta.label && e.group === meta.group)) {
       state.setStructures.push(meta);
-      // Update Liste, wenn offen
       const list = document.getElementById('set-structures-list');
       if (list.style.display === 'block') {
         const item = document.createElement('div');
@@ -121,12 +157,11 @@ function showInfoPanel(meta, selectedModel) {
   });
   infoContent.appendChild(addButton);
 
-  // Event-Listener für Bearbeitung
+  // Event-Listener für Edit-Controls (unverändert)
   const colorInput = document.getElementById('edit-color');
   const opacitySlider = document.getElementById('edit-opacity');
   const toggleButton = document.getElementById('edit-toggle-visible');
 
-  // Initiale Werte setzen
   if (selectedModel) {
     selectedModel.traverse(child => {
       if (child.isMesh && child.material) {
@@ -149,32 +184,30 @@ function showInfoPanel(meta, selectedModel) {
     }
   });
 
-
-// Transparenz-Änderung (fix für multi-mesh GLTF: Wechsel zu StandardMaterial)
-opacitySlider.addEventListener('input', (e) => {
-  const opacity = parseFloat(e.target.value);
-  if (selectedModel) {
-    selectedModel.traverse(child => {
-      if (child.isMesh && child.material) {
-        const currentColor = child.material.color ? child.material.color.clone() : new THREE.Color(0xffffff);
-        let newMat = new THREE.MeshStandardMaterial({
-          color: currentColor,
-          transparent: true,
-          opacity: opacity,
-          side: THREE.DoubleSide, // Rendert beide Seiten, fix für Löcher/Teile
-          depthWrite: opacity < 1 ? false : true // Fix für Sorting in multi-mesh
-        });
-        if (Array.isArray(child.material)) {
-          child.material = child.material.map(() => newMat.clone());
-        } else {
-          child.material = newMat;
+  opacitySlider.addEventListener('input', (e) => {
+    const opacity = parseFloat(e.target.value);
+    if (selectedModel) {
+      selectedModel.traverse(child => {
+        if (child.isMesh && child.material) {
+          const currentColor = child.material.color ? child.material.color.clone() : new THREE.Color(0xffffff);
+          let newMat = new THREE.MeshStandardMaterial({
+            color: currentColor,
+            transparent: true,
+            opacity: opacity,
+            side: THREE.DoubleSide,
+            depthWrite: opacity < 1 ? false : true
+          });
+          if (Array.isArray(child.material)) {
+            child.material = child.material.map(() => newMat.clone());
+          } else {
+            child.material = newMat;
+          }
+          child.material.needsUpdate = true;
         }
-        child.material.needsUpdate = true;
-      }
-    });
-    renderer.render(scene, camera); // Sofort-Render
-  }
-});
+      });
+      renderer.render(scene, camera);
+    }
+  });
 
   toggleButton.addEventListener('click', () => {
     if (selectedModel) {
@@ -183,33 +216,28 @@ opacitySlider.addEventListener('input', (e) => {
     }
   });
 
+  // Panel sichtbar machen (unverändert)
   const infoPanel = document.getElementById('info-panel');
   if (!infoPanel) {
     console.error('info-panel Element nicht gefunden – Kann nicht zeigen');
     return;
   }
 
-  // Debug: Prüfe aktuelle CSS-Styles und Position
-  console.log('info-panel Style vor Update:', {
-    display: infoPanel.style.display,
-    visibility: infoPanel.style.visibility,
-    opacity: infoPanel.style.opacity,
+  console.log('Vor Klassen-Update:', {
     classes: infoPanel.classList.toString(),
-    boundingRect: infoPanel.getBoundingClientRect()
+    display: infoPanel.style.display,
+    opacity: infoPanel.style.opacity
   });
-
   infoPanel.classList.remove('hidden');
   infoPanel.classList.add('visible');
-  console.log('Panel classes updated: Jetzt visible');
-
-  // Debug: Nach Update, prüfe DOM-Status
-  console.log('info-panel Style nach Update:', {
-    display: infoPanel.style.display,
-    visibility: infoPanel.style.visibility,
-    opacity: infoPanel.style.opacity,
+  infoPanel.style.display = 'block';
+  console.log('Nach Klassen-Update:', {
     classes: infoPanel.classList.toString(),
+    display: infoPanel.style.display,
+    opacity: infoPanel.style.opacity,
     boundingRect: infoPanel.getBoundingClientRect()
   });
+  renderer.render(scene, camera);
 }
 
 export function hideInfoPanel() {
