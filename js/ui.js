@@ -191,19 +191,19 @@ document.getElementById('room-color')?.addEventListener('input', (e) => {
   const baseColor = new THREE.Color(e.target.value);
   const brightness = parseFloat(document.getElementById('room-brightness')?.value || 0.5);
   const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
-  const originalL = hsl.l; // Original Lightness der gewählten Farbe
-  hsl.l = Math.max(0, Math.min(1, originalL + (brightness - 0.5))); // Relativ ±0.5
+  const originalL = hsl.l; // Original Lightness (~0.1 für #210B41)
+  hsl.l = Math.max(0, Math.min(1, originalL + (brightness - 0.5))); // Relativ ±0.5: Bei 0.5 = original dunkel
   baseColor.setHSL(hsl.h, hsl.s, hsl.l);
   scene.background = baseColor;
   renderer.render(scene, camera); // Nur Raum rendern
 });
 
-// Raum-Helligkeit (Slider: 0=dunkler, 0.5=original der Farbe, 1=heller)
+// Raum-Helligkeit (Slider: 0=dunkler, 0.5=original dunkel, 1=heller)
 document.getElementById('room-brightness')?.addEventListener('input', (e) => {
   const brightness = parseFloat(e.target.value);
-  const baseColor = new THREE.Color(document.getElementById('room-color')?.value || '#0d0419ff');
+  const baseColor = new THREE.Color(document.getElementById('room-color')?.value || '#210B41');
   const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
-  const originalL = hsl.l; // Original Lightness der gewählten Farbe
+  const originalL = hsl.l;
   hsl.l = Math.max(0, Math.min(1, originalL + (brightness - 0.5))); // Relativ ±0.5
   baseColor.setHSL(hsl.h, hsl.s, hsl.l);
   scene.background = baseColor;
@@ -628,24 +628,21 @@ function resetAll() {
   const backgroundSlider = document.getElementById('background-slider');
   if (backgroundSlider) {
     backgroundSlider.value = 0.5; // 50% Helligkeit
-    backgroundSlider.dispatchEvent(new Event('input')); // Trigger Update
+    backgroundSlider.dispatchEvent(new Event('input'));
   }
 
-// Raum-Farbe und Helligkeit zurücksetzen (Slider bei 0.5 = original dunkel)
+// Raum-Farbe und Helligkeit zurücksetzen (Slider bei 0.4 = dunkler)
 const roomColor = document.getElementById('room-color');
 if (roomColor) {
-  roomColor.value = '#0d0419ff';
-  roomColor.dispatchEvent(new Event('input')); // Trigger Update
+  roomColor.value = '#210B41';
+  roomColor.dispatchEvent(new Event('input'));
 }
 
 const roomBrightness = document.getElementById('room-brightness');
 if (roomBrightness) {
-  roomBrightness.value = 0.5; // Original Helligkeit (dunkel)
-  roomBrightness.dispatchEvent(new Event('input')); // Trigger Update
+  roomBrightness.value = 0.4; // 40% für dunkleres Reset
+  roomBrightness.dispatchEvent(new Event('input'));
 }
-
-// Szene rendern (nur Raum geändert)
-renderer.render(scene, camera);
 
 // Szene rendern (nur Raum geändert)
 renderer.render(scene, camera);
@@ -659,7 +656,6 @@ renderer.render(scene, camera);
       colorInput.value = `#${hex}`;
     }
   });
-
 
   // UI aktualisieren (Submenüs schließen, Checkboxen deaktivieren)
   document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
@@ -687,12 +683,8 @@ renderer.render(scene, camera);
     }
   })();
 
-  // Szene rendern
-  if (renderer) {
-    renderer.render(scene, camera);
-  } else {
-    console.warn('Renderer nicht verfügbar – Szene nicht gerendert.');
-  }
+  // Szene rendern (um Änderungen sichtbar zu machen)
+  renderer.render(scene, camera);
 
   console.log('Reset ausgeführt – App im Anfangszustand mit Skelett.');
 }

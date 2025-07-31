@@ -52,10 +52,11 @@ function initThree() {
 
 
 
-// Setze initiale Hintergrundfarbe (original dunkel)
-scene.background = new THREE.Color('#0d0419');
+// Setze initiale Hintergrundfarbe mit 40% Helligkeit via HSL
+const initialColor = new THREE.Color('#210B41');
+initialColor.setHSL(initialColor.getHSL({ h: 0, s: 0, l: 0 }).h, initialColor.getHSL({ h: 0, s: 0, l: 0 }).s, 0.06); // Lightness = 0.4
+scene.background = initialColor;
 renderer.render(scene, camera); // Nur Raum rendern
-
 // ... Rest der Funktion ...
 
   window.addEventListener('resize', () => {

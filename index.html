@@ -93,9 +93,14 @@
         <div id="progress-text">0%</div>
     </div>
 
-    <div id="footer" onclick="toggleLicense()">
-        <span class="license-link">© CC BY-SA</span>
-    </div>
+<div id="footer-container">
+  <button id="music-button" title="Musik abspielen">♪</button>
+  <div id="footer" onclick="toggleLicense()">
+    <span class="license-link">© CC BY-SA</span>
+  </div>
+</div>
+
+<audio id="bg-music" src="musik.mp3" loop></audio>
 
     <div id="license-dropdown">
         <p>BodyParts3D, © The Database Center for Life Science, licensed under CC BY-SA 2.1 Japan.</p>
