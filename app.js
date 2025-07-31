@@ -80,6 +80,7 @@ animate();
   setTimeout(() => initialScreen.style.display = 'none', 500);
 
   // Splash-Screen einblenden (GO-Sticker wartet auf Klick)
+  splashScreen.style.display = 'flex'; // Neu: Setze display explizit, um Sichtbarkeit zu erzwingen
   splashScreen.classList.add('visible');
 })();
 
@@ -91,5 +92,4 @@ goSticker?.addEventListener('click', () => {
     // Sicherstellen, dass Live-Sticker auch weg ist (Fallback)
     document.getElementById('live-loading-sticker').style.display = 'none';
   }, 500);
-  document.getElementById('controls').style.display = 'block'; // UI sichtbar machen
 });
