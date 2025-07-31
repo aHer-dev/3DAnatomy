@@ -2,12 +2,20 @@
 import * as THREE from './three.module.js';
 import { OrbitControls } from './OrbitControls.js';
 import { GLTFLoader } from './GLTFLoader.js';
+import { DRACOLoader } from './DRACOLoader.js';
 import { hideInfoPanel } from './interaction.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const loader = new GLTFLoader();
+
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('/optimized/');
+dracoLoader.setDecoderConfig({ type: 'js' }); // Nur nötig, weil du JS nutzt
+loader.setDRACOLoader(dracoLoader);
+
+
 const controls = new OrbitControls(camera, renderer.domElement);
 
 controls.addEventListener('change', () => {

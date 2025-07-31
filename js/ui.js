@@ -156,9 +156,7 @@ export function setupUI() {
           return;
         }
 
-        state.colors[group] = newColorHex;
-        console.log(`Farbe für ${group} geändert zu: 0x${newColorStr}`);
-
+        state.colors[group] = newColorHex;so
         const models = state.groups[group] || [];
         if (models.length === 0) {
           console.warn(`Keine Modelle in Gruppe ${group} geladen – Farbe nicht angewendet.`);
@@ -168,7 +166,6 @@ export function setupUI() {
               if (child.isMesh && child.material) {
                 child.material.color.setHex(newColorHex);
                 child.material.needsUpdate = true;
-                console.log(`Material von ${child.name || 'Mesh'} upgedatet.`);
               }
             });
           });

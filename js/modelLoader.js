@@ -14,6 +14,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
   try {
     // Stelle sicher, dass entries immer ein Array ist
     if (!Array.isArray(entries)) entries = [entries];
+    const loadPromises = [];
 
     // Schutz vor ungültigen entries
     if (visible && (!entries || entries.length === 0)) {
@@ -125,6 +126,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
         }
       });
     });
+
   } catch (error) {
     console.error('Fehler beim Laden:', error);
   } finally {
