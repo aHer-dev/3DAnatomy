@@ -341,45 +341,13 @@ label[for="load-file"]:hover {
     font-size: 14px;
 }
 
-/* --- Ladebalken (#loading) --- */
-#loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 30px;
-    background-color: #000000; /* Schwarzer Hintergrund */
-    border-radius: 5px;
-    overflow: hidden;
-    animation: pulse 2s infinite; /* Pulsier-Animation */
-    z-index: 2000;
-    display: none;
-}
 
-#progress-bar {
-    height: 100%;
-    width: 0%;
-    background-color: #ffffff; /* Weißer Fortschrittsbalken */
-    transition: width 0.3s ease;
-}
 
-#progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-}
 
-/* Pulsier-Animation für Ladebalken */
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
+
+
+
+
 
 /* --- Footer und Lizenz-Dropdown --- */
 #footer {
@@ -579,7 +547,7 @@ canvas {
 }
 
 /* Sicherstellen, dass UI-Elemente nicht überlagern */
-#controls, #info-panel, #loading {
+#controls, #info-panel {
     position: absolute;
     z-index: 10;
 }
@@ -861,6 +829,98 @@ canvas {
 #close-song-license:hover {
     color: #7f2489;
 }
+
+/* Initialer Loadingscreen: Vollbild, farbig, zentriert */
+#initial-loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #210B41; /* Default-Farbe (aus deinem Code); mach wählbar via JS */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Über allem */
+    opacity: 1;
+    transition: opacity 0.5s ease; /* Für Fade-Out */
+}
+
+/* Pulsierender Sticker */
+#loading-sticker {
+    width: 150px; /* Passe Größe an dein PNG an */
+    height: auto;
+    animation: pulse 1.5s infinite ease-in-out; /* Pulsieren: Opacity-Wechsel */
+}
+
+/* Live-Laden Sticker: Zentriert, klein, blinkt */
+#live-loading-sticker {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; /* Kleiner als initial */
+    height: auto;
+    z-index: 1500;
+    display: none;
+    animation: blink 0.5s ease-in-out; /* Kurzes Blinken (einmalig) */
+}
+
+/* Splash-Screen: Vollbild, zentriert, klickbar */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8); /* Dunkler Overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#splash-screen.visible {
+    opacity: 1;
+}
+
+#go-sticker {
+    width: 200px; /* Passe an */
+    height: auto;
+    cursor: pointer; /* Zeigt Klickbarkeit */
+    transition: transform 0.2s; /* Leichter Hover-Effekt */
+}
+
+#go-sticker:hover {
+    transform: scale(1.1); /* Vergrößert bei Hover */
+}
+
+/* Animationen */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; } /* Transparenter */
+    100% { opacity: 1; }
+}
+
+@keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; } /* Blinkt und verschwindet */
+}
+
+/* Mobile-Optimierung */
+@media (max-width: 600px) {
+    #loading-sticker, #live-loading-sticker {
+        width: 100px; /* Kleiner auf Mobile */
+    }
+    #go-sticker {
+        width: 150px;
+    }
+}
+
+
 @media (max-width: 600px) {
     #search-bar {
         width: 90%; /* Schmaler für Zentrierung */
@@ -912,7 +972,7 @@ canvas {
        position: fixed;
         bottom: 0;
         left: 0;
-        width: 100%; /* Neu: Volle Breite für Mobile, statt 40% – besser für Usability */
+        width: 40%; /* Neu: Volle Breite für Mobile, statt 40% – besser für Usability */
         max-height: 50vh;
         overflow-y: auto;
         max-height: 50vh;
@@ -951,10 +1011,7 @@ canvas {
         pointer-events: auto; /* Klicks ermöglichen */
     }
 
-    /* Ladebalken: Breiter auf Mobilgeräten */
-    #loading {
-        width: 80vw;
-    }
+    
 
     /* Footer: Kleinere Schrift, weniger Padding */
     #footer {

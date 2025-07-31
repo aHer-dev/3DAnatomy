@@ -212,6 +212,17 @@ document.getElementById('room-brightness')?.addEventListener('input', (e) => {
   renderer.render(scene, camera); // Nur Raum rendern
 });
 
+const loadingColorPicker = document.createElement('input');
+loadingColorPicker.type = 'color';
+loadingColorPicker.id = 'loading-color';
+loadingColorPicker.value = state.loadingScreenColor;
+loadingColorPicker.addEventListener('input', (e) => {
+  state.loadingScreenColor = e.target.value;
+  document.getElementById('initial-loading-screen').style.backgroundColor = e.target.value;
+});
+document.getElementById('room-dropdown-content').appendChild(loadingColorPicker);  // Jetzt mit ID
+
+
   document.querySelectorAll('.dropdown-button:not([data-group])').forEach(button => {
     button.addEventListener('click', () => {
       const dropdown = button.closest('.dropdown');
@@ -556,7 +567,7 @@ async function generateSubDropdown(groupName) {
   const groupButtons = document.createElement('div');
   groupButtons.className = 'group-buttons';
   const loadAllBtn = document.createElement('button');
-  loadAllBtn.textContent = 'Load All';
+  loadAllBtn.textContent = 'Load';
   loadAllBtn.addEventListener('click', async () => {
     const entries = meta.filter(entry => entry.group === groupName);
 if (entries.length === 0) {
@@ -568,7 +579,7 @@ await loadModels(entries, groupName, true, scene, loader);
     document.querySelectorAll(`#${groupName}-subgroups input.item-checkbox`).forEach(cb => cb.checked = true);
   });
   const clearAllBtn = document.createElement('button');
-  clearAllBtn.textContent = 'Clear All';
+  clearAllBtn.textContent = 'Clear';
   clearAllBtn.addEventListener('click', async () => {
     const entries = meta.filter(entry => entry.group === groupName);
     await loadModels(entries, groupName, false, scene, loader);
@@ -605,7 +616,7 @@ subgroups.forEach(subgroup => {
         if (toggleSubBtn) {
           const subEntries = meta.filter(e => e.group === groupName && (e.subgroup === subgroup || (subgroup === 'Allgemein' && !e.subgroup)));
           const subLoaded = subEntries.every(entry => state.groups[groupName].some(model => state.modelNames.get(model) === entry.label));
-          toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
+          toggleSubBtn.textContent = subLoaded ? 'Clear (Sub)' : 'Load (Sub)';
         }
       }
       // Immer sichtbar machen
@@ -678,12 +689,12 @@ async function generateDetailedList(groupName, subgroup) {
   toggleSubBtn.className = 'toggle-all-button';
   const subEntries = meta.filter(e => e.group === groupName && (e.subgroup === subgroup || (subgroup === 'Allgemein' && !e.subgroup)));
   let subLoaded = subEntries.every(entry => state.groups[groupName].some(model => state.modelNames.get(model) === entry.label));
-  toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
+  toggleSubBtn.textContent = subLoaded ? 'Clear (Sub)' : 'Load (Sub)';
  toggleSubBtn.addEventListener('click', async () => {
-  const visible = toggleSubBtn.textContent === 'Load All (Sub)'; // Explizit deklarieren
+  const visible = toggleSubBtn.textContent === 'Load (Sub)'; // Explizit deklarieren
   await loadModels(subEntries, groupName, visible, scene, loader);
   list.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = visible);
-  toggleSubBtn.textContent = visible ? 'Clear All (Sub)' : 'Load All (Sub)';
+  toggleSubBtn.textContent = visible ? 'Clear (Sub)' : 'Load (Sub)';
 });
   list.appendChild(toggleSubBtn); // Zuerst Button anhängen
 
@@ -714,7 +725,7 @@ async function generateDetailedList(groupName, subgroup) {
       state.subgroupStates[groupName][subgroup][entry.filename] = checkbox.checked;
       // Update Toggle-Button
       subLoaded = filtered.every(entry => state.subgroupStates[groupName][subgroup]?.[entry.filename] ?? false);
-      toggleSubBtn.textContent = subLoaded ? 'Clear All (Sub)' : 'Load All (Sub)';
+      toggleSubBtn.textContent = subLoaded ? 'Clear (Sub)' : 'Load (Sub)';
     });
     label.appendChild(checkbox);
     label.append(` ${entry.label} (${entry.side || 'none'})`);

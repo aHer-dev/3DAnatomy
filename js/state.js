@@ -11,6 +11,7 @@ export const state = {
     transparency: 1,
     lighting: 1,
     background: 1,
-    colors: { bones: 0xE8DCD3, muscles: 0xB31919, tendons: 0xffff00, other: 0xB31919 }
+    colors: { bones: 0xE8DCD3, muscles: 0xB31919, tendons: 0xffff00, other: 0xB31919 },
+    loadingScreenColor: '#210B41',
   }
 };
