@@ -83,6 +83,16 @@
   </div>
 </div>
 
+<div class="dropdown">
+    <button class="dropdown-button">Set</button>
+    <div class="dropdown-content" id="set-dropdown-content">
+        <button id="show-set">Set anzeigen</button>
+        <button id="clear-set">Clear Set</button>
+        <button id="list-set">Strukturen im Set</button>
+        <div id="set-structures-list" style="display: none; max-height: 200px; overflow-y: auto; background-color: #222222; border-radius: 5px; padding: 10px;"></div>
+    </div>
+</div>
+
 
         <!-- Reset-Button am Ende von #controls -->
         <button id="reset-button">Reset</button>
@@ -96,11 +106,15 @@
 <div id="footer-container">
   <button id="music-button" title="Musik abspielen">♪</button>
   <div id="footer" onclick="toggleLicense()">
+    <span id="volume-container" style="display: none;">
+  <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" title="Lautstärke">
+</span>
+
     <span class="license-link">© CC BY-SA</span>
   </div>
 </div>
 
-<audio id="bg-music" src="musik.mp3" loop></audio>
+<audio id="bg-music" src="./audio/backroundmusic.mp3" loop></audio>
 
     <div id="license-dropdown">
         <p>BodyParts3D, © The Database Center for Life Science, licensed under CC BY-SA 2.1 Japan.</p>

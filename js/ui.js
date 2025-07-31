@@ -9,6 +9,7 @@ import { highlightObject, showInfoPanel } from './interaction.js';
 
 
 export function setupUI() {
+
   console.log('setupUI gestartet');
   // Initial alle Dropdowns schließen
   document.querySelectorAll('.dropdown').forEach(dropdown => {
@@ -399,7 +400,103 @@ document.getElementById('load-file')?.addEventListener('change', (event) => {
       console.warn('Keine Strukturen geladen – Kamera nicht angepasst.');
     }
   }
+
+    // Musikbutton: Play / Pause mit Icon-Wechsel
+const musicButton = document.getElementById('music-button');
+const bgMusic = document.getElementById('bg-music');
+const volumeContainer = document.getElementById('volume-container');
+const volumeSlider = document.getElementById('volume-slider');
+
+if (musicButton && bgMusic) {
+  let isPlaying = !bgMusic.paused;
+  musicButton.textContent = isPlaying ? '♪' : 'X♪';
+  volumeContainer.style.display = isPlaying ? 'inline' : 'none';
+  bgMusic.volume = parseFloat(volumeSlider?.value || '0.5');
+
+  musicButton.addEventListener('click', () => {
+    if (isPlaying) {
+      bgMusic.pause();
+      musicButton.textContent = 'X♪';
+      volumeContainer.style.display = 'none';
+    } else {
+      bgMusic.play();
+      musicButton.textContent = '♪';
+      volumeContainer.style.display = 'inline';
+    }
+    isPlaying = !isPlaying;
+  });
+
+  volumeSlider?.addEventListener('input', () => {
+    const volume = parseFloat(volumeSlider.value);
+    bgMusic.volume = volume;
+    console.log(`Lautstärke: ${volume}`);
+  });
 }
+
+// Set anzeigen (alle anderen Strukturen entfernen, nur Set laden)
+document.getElementById('show-set')?.addEventListener('click', async () => {
+  if (state.setStructures.length === 0) {
+    console.log('Set ist leer – Nichts zu laden.');
+    return;
+  }
+
+  // Schritt 1: Alle anderen Strukturen aus der Szene entfernen (nur Set-Modelle bleiben/werden geladen)
+  Object.keys(state.groups).forEach(groupName => {
+    state.groups[groupName] = state.groups[groupName].filter(model => {
+      const label = state.modelNames.get(model);
+      const isInSet = state.setStructures.some(entry => entry.label === label && entry.group === groupName);
+      if (!isInSet) {
+        scene.remove(model); // Entferne nicht-Set-Modelle
+        state.modelNames.delete(model);
+        return false; // Filtere aus dem Array
+      }
+      return true; // Behalte Set-Modelle
+    });
+  });
+  console.log('Alle nicht-Set-Strukturen aus Szene entfernt.');
+
+  // Schritt 2: Set-Strukturen laden (falls noch nicht in Szene)
+  await loadModels(state.setStructures, null, true, scene, loader); // groupName=null für mixed Gruppen
+
+  // Kamera anpassen und rendern
+  fitCameraToSkeleton();
+  renderer.render(scene, camera);
+  console.log('Nur Set angezeigt.');
+});
+
+// Clear Set
+document.getElementById('clear-set')?.addEventListener('click', () => {
+  state.setStructures = [];
+  const list = document.getElementById('set-structures-list');
+  list.innerHTML = '';
+  list.style.display = 'none'; // Optional: Liste schließen nach Clear
+  console.log('Set geleert – Szene bleibt unverändert.');
+});
+
+// Strukturen im Set (Toggle Liste)
+document.getElementById('list-set')?.addEventListener('click', () => {
+  const list = document.getElementById('set-structures-list');
+  list.style.display = list.style.display === 'block' ? 'none' : 'block';
+  if (list.style.display === 'block') {
+    list.innerHTML = '';
+    state.setStructures.forEach(entry => {
+      const item = document.createElement('div');
+      item.className = 'set-item';
+      item.textContent = `${entry.label} (${entry.group})`;
+      item.addEventListener('click', () => {
+        const model = state.groups[entry.group]?.find(m => state.modelNames.get(m) === entry.label);
+        if (model) {
+          highlightObject(model);
+          showInfoPanel(entry, model);
+        }
+      });
+      list.appendChild(item);
+    });
+  }
+});
+
+}
+
 
 async function generateSubDropdown(groupName) {
   const meta = await getMeta();

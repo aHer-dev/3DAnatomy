@@ -98,6 +98,29 @@ function showInfoPanel(meta, selectedModel) {
   `;
   infoContent.appendChild(editSection);
 
+  //set
+  const addButton = document.createElement('button');
+  addButton.id = 'add-to-set';
+  addButton.textContent = 'Zum Set hinzufügen';
+  addButton.addEventListener('click', () => {
+    if (!state.setStructures.some(e => e.label === meta.label && e.group === meta.group)) {
+      state.setStructures.push(meta);
+      // Update Liste, wenn offen
+      const list = document.getElementById('set-structures-list');
+      if (list.style.display === 'block') {
+        const item = document.createElement('div');
+        item.className = 'set-item';
+        item.textContent = `${meta.label} (${meta.group})`;
+        item.addEventListener('click', () => {
+          highlightObject(selectedModel);
+          showInfoPanel(meta, selectedModel);
+        });
+        list.appendChild(item);
+      }
+    }
+  });
+  infoContent.appendChild(addButton);
+
   // Event-Listener für Bearbeitung
   const colorInput = document.getElementById('edit-color');
   const opacitySlider = document.getElementById('edit-opacity');

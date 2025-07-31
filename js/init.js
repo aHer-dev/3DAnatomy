@@ -32,8 +32,10 @@ function initThree() {
   controls.maxDistance = 2000;
   controls.enableDamping = true;
   controls.dampingFactor = 0.25;
-  controls.screenSpacePanning = true;
-  controls.maxPolarAngle = Math.PI / 2;
+controls.screenSpacePanning = true;
+controls.enableRotate = true;
+controls.minPolarAngle = 0; // Von oben erlauben (default)
+controls.maxPolarAngle = Math.PI; // Volle 180° – von unten erlauben
 
   const lightFront = new THREE.DirectionalLight(0xffffff, 0.8);
   lightFront.position.set(1, 1, 1);

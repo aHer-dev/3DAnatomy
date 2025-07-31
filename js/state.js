@@ -1,5 +1,6 @@
 export const state = {
   clickCounts: { bones: 0, muscles: 0, tendons: 0, other: 0 }, // Kann bleiben, wird aber nicht mehr für Laden verwendet
+  setStructures: [], // Array von Meta-Entries (z.B. {label, group, ...})
   groups: { bones: [], muscles: [], tendons: [], other: [] },
   colors: { bones: 0xE8DCD3, muscles: 0xB31919, tendons: 0xffff00, other: 0xB31919 },
   modelNames: new Map(),
