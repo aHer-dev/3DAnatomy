@@ -1,5 +1,7 @@
 import * as THREE from './three.module.js';
 import { scene, camera, renderer } from './init.js';
+// Kamera-Utilities (zentriert alle Modelle, setzt Standard-Position)
+import { setCameraToDefault, fitCameraToModels } from './cameraUtils.js';
 import { state } from './state.js';
 import { getMeta } from './utils.js';
 

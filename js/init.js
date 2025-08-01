@@ -3,6 +3,7 @@ import * as THREE from './three.module.js';
 import { OrbitControls } from './OrbitControls.js';
 import { GLTFLoader } from './GLTFLoader.js';
 import { DRACOLoader } from './DRACOLoader.js';
+import { setCameraToDefault } from './cameraUtils.js';
 import { hideInfoPanel } from './interaction.js';
 
 const scene = new THREE.Scene();
@@ -29,13 +30,8 @@ function initThree() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById('container').appendChild(renderer.domElement);
 
-  // Neue initiale Kamera-Position: Frontal, höher, mit Abstand
-  camera.position.set(0, 100, 300); // y=100 (Mitte Mensch), z=300 (Abstand)
-  camera.lookAt(0, 100, 0); // Schaue auf zentrale Mitte
-
-  // OrbitControls mit initialem Target
-  controls.target.set(0, 100, 0); // Ziel auf Skelett-Mitte
-  controls.update(); // Sofort anwenden
+  setCameraToDefault(camera, controls);
+  
   controls.minDistance = 1;
   controls.maxDistance = 2000;
   controls.enableDamping = true;

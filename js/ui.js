@@ -5,6 +5,7 @@ import { state } from './state.js';
 import { scene, camera, renderer, loader, controls } from './init.js';
 import { hideInfoPanel } from './interaction.js';
 import { highlightObject, showInfoPanel } from './interaction.js';
+import { fitCameraToModels } from './cameraUtils.js';
 
 
 export function setupUI() {
@@ -311,9 +312,13 @@ document.getElementById('load-file')?.addEventListener('change', (event) => {
         }
       }
 
-      fitCameraToSkeleton();
-      renderer.render(scene, camera);
-      console.log('Strukturen geladen aus Datei.');
+       fitCameraToModels(
+       camera,
+      controls,
+      Object.values(state.groups).flat(),
+      renderer,
+      scene
+      );
     } catch (error) {
       console.error('Fehler beim Laden der Datei:', error);
       alert('Ungültige Datei! Bitte überprüfen.');
@@ -407,10 +412,7 @@ document.getElementById('load-file')?.addEventListener('change', (event) => {
       console.log('Kamera auf alle Strukturen gefittet:', camera.position);
     } else {
       console.warn('Keine Strukturen geladen – Kamera nicht angepasst.');
-      camera.position.set(0, 100, 300); // Geändert: Kamera auf Standardposition zurücksetzen
-      camera.lookAt(0, 100, 0);
-      controls.target.set(0, 100, 0);
-      controls.update();
+      setCameraToDefault(camera, controls);
       renderer.render(scene, camera);
       console.log('Kamera-Position nach Reset (Standard):', camera.position);
     }
@@ -518,7 +520,8 @@ document.getElementById('show-set')?.addEventListener('click', async () => {
   console.log('Alle nicht-Set-Strukturen aus Szene entfernt.');
 
   // Schritt 2: Set-Strukturen laden (falls noch nicht in Szene)
-  await loadModels(state.setStructures, null, true, scene, loader); // groupName=null für mixed Gruppen
+  await loadModels(state.setStructures, null, true, scene, loader); 
+  fitCameraToModels(camera, controls, state.setStructures, renderer, scene);
 
   // Kamera anpassen und rendern
   fitCameraToSkeleton();
@@ -802,11 +805,8 @@ function restoreSubgroupStates(groupName) {
     }
 
     // Kamera auf Startposition zurücksetzen
-    camera.position.set(0, 100, 300); // Geändert: Feste Startposition für Reset
-    camera.lookAt(0, 100, 0);
-    controls.target.set(0, 100, 0);
-    controls.update();
-
+setCameraToDefault(camera, controls);
+renderer.render(scene, camera);
     // Farben reset und UI-Inputs aktualisieren
     state.colors = { ...state.defaultSettings.colors };
     ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
@@ -838,11 +838,7 @@ function restoreSubgroupStates(groupName) {
   if (bonesEntries.length > 0) {
     await loadModels(bonesEntries, 'bones', true, scene, loader);
     console.log('Skelett nach Reset neu geladen.');
-    // Geändert: Kamera fest auf Startposition setzen
-    camera.position.set(0, 100, 300);
-    camera.lookAt(0, 100, 0);
-    controls.target.set(0, 100, 0);
-    controls.update();
+    setCameraToDefault(camera, controls);
     renderer.render(scene, camera);
   } else {
     console.warn('Keine Bones-Modelle verfügbar – Skelett nicht geladen.');
