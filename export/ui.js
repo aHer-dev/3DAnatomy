@@ -860,24 +860,5 @@ function restoreSubgroupStates(groupName) {
   });
 
   renderer.render(scene, camera);
-
-  const box = new THREE.Box3();
-Object.values(state.groups).flat().forEach(model => {
-  if (model.visible) box.expandByObject(model);
-});
-
-if (!box.isEmpty()) {
-  const size = box.getSize(new THREE.Vector3()).length();
-  const center = box.getCenter(new THREE.Vector3());
-
-  camera.position.set(0, center.y, size * 0.75);
-  camera.lookAt(center);
-  controls.target.copy(center);
-  controls.update();
-  console.log('Kamera-Position nach Reset (auto-fit):', camera.position);
-  renderer.render(scene, camera);
-} else {
-  console.warn('Keine sichtbaren Modelle für Kamera-Fit.');
-}
 })();
 }
