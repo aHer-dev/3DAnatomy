@@ -2,9 +2,8 @@ import * as THREE from './three.module.js';
 import { loadModels } from './modelLoader.js';
 import { getMeta, basePath } from './utils.js';
 import { state } from './state.js';
-import { scene, camera, renderer } from './init.js';
+import { scene, camera, renderer, loader, controls } from './init.js';
 import { hideInfoPanel } from './interaction.js';
-import { loader } from './init.js'; // Füge loader hinzu (neben scene, camera, etc.)
 import { highlightObject, showInfoPanel } from './interaction.js';
 
 
@@ -200,7 +199,7 @@ document.getElementById('room-color')?.addEventListener('input', (e) => {
 // Raum-Helligkeit (Slider: 0=dunkler, 0.5=original dunkel, 1=heller)
 document.getElementById('room-brightness')?.addEventListener('input', (e) => {
   const brightness = parseFloat(e.target.value);
-  const baseColor = new THREE.Color(document.getElementById('room-color')?.value || '#210B41');
+ const baseColor = new THREE.Color(document.getElementById('room-color')?.value || '#020a1d');
   const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
   const originalL = hsl.l;
   hsl.l = Math.max(0, Math.min(1, originalL + (brightness - 0.5))); // Relativ ±0.5
@@ -402,11 +401,18 @@ document.getElementById('load-file')?.addEventListener('change', (event) => {
       if (controls && controls.target) {
         controls.target.copy(center);
         controls.update();
+        console.log('Kamera-Position nach Reset:', camera.position);
       }
       renderer.render(scene, camera);
       console.log('Kamera auf alle Strukturen gefittet:', camera.position);
     } else {
       console.warn('Keine Strukturen geladen – Kamera nicht angepasst.');
+      camera.position.set(0, 100, 300); // Geändert: Kamera auf Standardposition zurücksetzen
+      camera.lookAt(0, 100, 0);
+      controls.target.set(0, 100, 0);
+      controls.update();
+      renderer.render(scene, camera);
+      console.log('Kamera-Position nach Reset (Standard):', camera.position);
     }
   }
     // Musikbutton: Play / Pause mit Icon-Wechsel
@@ -757,87 +763,95 @@ function restoreSubgroupStates(groupName) {
   });
 }
 
-function resetAll() {
-  // Alle Modelle entfernen
-  Object.keys(state.groups).forEach(groupName => {
-    state.groups[groupName].forEach(model => scene.remove(model));
-    state.groups[groupName] = [];
-  });
-  state.modelNames.clear();
-  state.currentlySelected = null;
+  function resetAll() {
+    // Alle Modelle entfernen
+    Object.keys(state.groups).forEach(groupName => {
+      state.groups[groupName].forEach(model => scene.remove(model));
+      state.groups[groupName] = [];
+    });
+    state.modelNames.clear();
+    state.currentlySelected = null;
 
-  // Zustände zurücksetzen
-  state.groupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
-  state.subgroupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
-  state.clickCounts = { bones: 0, muscles: 0, tendons: 0, other: 0 };
+    // Zustände zurücksetzen
+    state.groupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
+    state.subgroupStates = { bones: {}, muscles: {}, tendons: {}, other: {} };
+    state.clickCounts = { bones: 0, muscles: 0, tendons: 0, other: 0 };
 
-  // Slider/Defaults zurücksetzen
-  const transparencySlider = document.getElementById('transparency-slider');
-  if (transparencySlider) transparencySlider.value = state.defaultSettings.transparency;
+    // Slider zurücksetzen
+    const transparencySlider = document.getElementById('transparency-slider');
+    if (transparencySlider) transparencySlider.value = state.defaultSettings.transparency;
 
-  const lightingSlider = document.getElementById('lighting-slider');
-  if (lightingSlider) lightingSlider.value = state.defaultSettings.lighting;
+    const lightingSlider = document.getElementById('lighting-slider');
+    if (lightingSlider) lightingSlider.value = state.defaultSettings.lighting;
 
-  const backgroundSlider = document.getElementById('background-slider');
-  if (backgroundSlider) {
-    backgroundSlider.value = 0.5; // 50% Helligkeit
-    backgroundSlider.dispatchEvent(new Event('input'));
+    // Hintergrundfarbe auf Startwert zurücksetzen (#020a1d wie in init.js)
+    scene.background = new THREE.Color('#020a1d');
+    const roomColor = document.getElementById('room-color');
+    if (roomColor) {
+      roomColor.value = '#020a1d';
+      roomColor.dispatchEvent(new Event('input'));
+    }
+    const roomBrightness = document.getElementById('room-brightness');
+    if (roomBrightness) {
+      roomBrightness.value = 0.5;
+      roomBrightness.dispatchEvent(new Event('input'));
+    }
+    const backgroundSlider = document.getElementById('background-slider');
+    if (backgroundSlider) {
+      backgroundSlider.value = 0.5;
+    }
+
+    // Kamera auf Startposition zurücksetzen
+    camera.position.set(0, 100, 300); // Geändert: Feste Startposition für Reset
+    camera.lookAt(0, 100, 0);
+    controls.target.set(0, 100, 0);
+    controls.update();
+
+    // Farben reset und UI-Inputs aktualisieren
+    state.colors = { ...state.defaultSettings.colors };
+    ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
+      const colorInput = document.getElementById(`${group}-color`);
+      if (colorInput) {
+        const hex = state.colors[group].toString(16).padStart(6, '0');
+        colorInput.value = `#${hex}`;
+      }
+    });
+
+    // UI aktualisieren (Submenüs schließen, Checkboxen deaktivieren)
+    document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
+    document.querySelectorAll('.more-muscles-list').forEach(list => list.classList.remove('visible'));
+    document.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = false);
+
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.classList.remove('active');
+      const button = dropdown.querySelector('.dropdown-button');
+      if (button) {
+        button.textContent = button.textContent.replace(/▲/, '▼');
+      }
+    });
+
+    // Skelett (Bones) automatisch laden
+// In resetAll, ersetze den async-Block durch:
+(async () => {
+  const meta = await getMeta();
+  const bonesEntries = meta.filter(entry => entry.group === 'bones');
+  if (bonesEntries.length > 0) {
+    await loadModels(bonesEntries, 'bones', true, scene, loader);
+    console.log('Skelett nach Reset neu geladen.');
+    // Geändert: Kamera fest auf Startposition setzen
+    camera.position.set(0, 100, 300);
+    camera.lookAt(0, 100, 0);
+    controls.target.set(0, 100, 0);
+    controls.update();
+    renderer.render(scene, camera);
+  } else {
+    console.warn('Keine Bones-Modelle verfügbar – Skelett nicht geladen.');
   }
-
-// Raum-Farbe und Helligkeit zurücksetzen (Slider bei 0.4 = dunkler)
-const roomColor = document.getElementById('room-color');
-if (roomColor) {
-  roomColor.value = '#210B41';
-  roomColor.dispatchEvent(new Event('input'));
-}
-
-const roomBrightness = document.getElementById('room-brightness');
-if (roomBrightness) {
-  roomBrightness.value = 0.4; // 40% für dunkleres Reset
-  roomBrightness.dispatchEvent(new Event('input'));
-}
-
-// Szene rendern (nur Raum geändert)
-renderer.render(scene, camera);
-
-  // Farben reset und UI-Inputs aktualisieren
-  state.colors = { ...state.defaultSettings.colors };
-  ['bones', 'muscles', 'tendons', 'other'].forEach(group => {
-    const colorInput = document.getElementById(`${group}-color`);
-    if (colorInput) {
-      const hex = state.colors[group].toString(16).padStart(6, '0');
-      colorInput.value = `#${hex}`;
-    }
+  // Nach dem Laden die Gruppenzustände wiederherstellen
+  ['muscles', 'bones', 'tendons', 'other'].forEach(groupName => {
+    restoreGroupState(groupName);
   });
-
-  // UI aktualisieren (Submenüs schließen, Checkboxen deaktivieren)
-  document.querySelectorAll('.sub-dropdown').forEach(drop => drop.style.display = 'none');
-  document.querySelectorAll('.more-muscles-list').forEach(list => list.classList.remove('visible'));
-  document.querySelectorAll('input.item-checkbox').forEach(cb => cb.checked = false);
-
-  // Alle Dropdowns nach Reset schließen
-  document.querySelectorAll('.dropdown').forEach(dropdown => {
-    dropdown.classList.remove('active');
-    const button = dropdown.querySelector('.dropdown-button');
-    if (button) {
-      button.textContent = button.textContent.replace(/▲/, '▼');
-    }
-  });
-
-  // Skelett (Bones) automatisch laden
-  (async () => {
-    const meta = await getMeta();
-    const bonesEntries = meta.filter(entry => entry.group === 'bones');
-    if (bonesEntries.length > 0) {
-      await loadModels(bonesEntries, 'bones', true, scene, loader);
-      console.log('Skelett nach Reset neu geladen.');
-    } else {
-      console.warn('Keine Bones-Modelle verfügbar – Skelett nicht geladen.');
-    }
-  })();
-
-  // Szene rendern (um Änderungen sichtbar zu machen)
+  console.log('Gruppenzustände nach Reset wiederhergestellt.');
   renderer.render(scene, camera);
-
-  console.log('Reset ausgeführt – App im Anfangszustand mit Skelett.');
-}
+})();
+  }

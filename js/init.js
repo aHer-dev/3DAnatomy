@@ -65,8 +65,6 @@ controls.maxPolarAngle = Math.PI; // Volle 180° – von unten erlauben
 // Setze initiale Hintergrundfarbe mit 40% Helligkeit via HSL
   scene.background = new THREE.Color('#020a1d');
   renderer.render(scene, camera);
-// ... Rest der Funktion ...
-
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
