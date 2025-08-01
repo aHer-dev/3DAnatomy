@@ -1,0 +1,62 @@
+.
+├── Lizenses.txt
+├── app.js
+├── audio
+│   ├── backroundmusic.mp3
+│   ├── backroundmusic1.mp3
+│   └── backroundmusic2.mp3
+├── data
+│   ├── meta.json
+│   ├── meta.json.backup
+│   ├── meta.json.bak
+│   ├── meta.json.bak5
+│   └── ordnerstruktur.txt
+├── favicon.ico
+├── favicon.png
+├── images
+│   ├── go-sticker.png
+│   ├── live-loading-sticker.png
+│   └── loading-sticker.png
+├── index.html
+├── js
+│   ├── BufferGeometryUtils.js
+│   ├── DRACOLoader.js
+│   ├── GLTFLoader.js
+│   ├── OrbitControls.js
+│   ├── init.js
+│   ├── interaction.js
+│   ├── modelLoader.js
+│   ├── state.js
+│   ├── three.module.js
+│   ├── ui.js
+│   └── utils.js
+├── loading-sticker.png
+├── models
+│   ├── bones
+│   ├── draco_decoder.js
+│   ├── draco_decoder.wasm
+│   ├── draco_wasm_wrapper.js
+│   ├── ligaments
+│   │   ├── FJ1423M_BP49864_FMA58777_Left_iliotibial_tract.glb.bin
+│   │   ├── FJ1438_BP50248_FMA22425_Right_tensor_fasciae_latae.glb.bin
+│   │   └── FJ7211_BP48699_FMA21965_Left_inguinal_ligament.glb.bin
+│   ├── muscles
+│   └── other
+│       └── FJ3131_BP49147_FMA13295_Diaphragm.glb.bin
+├── optimized
+│   ├── bones
+│   ├── draco_decoder.js
+│   ├── draco_decoder.wasm
+│   ├── draco_wasm_wrapper.js
+│   ├── ligaments
+│   │   ├── FJ1423M_BP49864_FMA58777_Left_iliotibial_tract.glb.bin
+│   │   ├── FJ1438_BP50248_FMA22425_Right_tensor_fasciae_latae.glb.bin
+│   │   └── FJ7211_BP48699_FMA21965_Left_inguinal_ligament.glb.bin
+│   ├── muscles
+│   └── other
+│       └── FJ3131_BP49147_FMA13295_Diaphragm.glb.bin
+├── ordnerstruktur.txt
+├── style.css
+└── three.min.js
+
+15 directories, 45 files

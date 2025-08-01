@@ -138,7 +138,7 @@ function showInfoPanel(meta, selectedModel) {
   // Add-to-Set Button
   const addButton = document.createElement('button');
   addButton.id = 'add-to-set';
-  addButton.textContent = 'Zum Set hinzufügen';
+  addButton.textContent = 'Zur Sammlung';
   addButton.addEventListener('click', () => {
     if (!state.setStructures.some(e => e.label === meta.label && e.group === meta.group)) {
       state.setStructures.push(meta);
