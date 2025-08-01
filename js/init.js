@@ -63,10 +63,8 @@ controls.maxPolarAngle = Math.PI; // Volle 180° – von unten erlauben
 
 
 // Setze initiale Hintergrundfarbe mit 40% Helligkeit via HSL
-const initialColor = new THREE.Color('#210B41');
-initialColor.setHSL(initialColor.getHSL({ h: 0, s: 0, l: 0 }).h, initialColor.getHSL({ h: 0, s: 0, l: 0 }).s, 0.06); // Lightness = 0.4
-scene.background = initialColor;
-renderer.render(scene, camera); // Nur Raum rendern
+  scene.background = new THREE.Color('#020a1d');
+  renderer.render(scene, camera);
 // ... Rest der Funktion ...
 
   window.addEventListener('resize', () => {

@@ -168,14 +168,14 @@ label[for="load-file"]:hover {
 #room-brightness {
   width: 100%;
   margin: 10px 0;
-  accent-color: #7f2489;
+  accent-color: #3419cf;
 }
 
 /* Neue Sliders: Transparenz, Beleuchtung, Hintergrund */
 #transparency-slider, #lighting-slider, #background-slider {
     width: 100%;
     margin: 10px 0;
-    accent-color: #7f2489; /* Grün für Konsistenz mit UI */
+    accent-color: #3419cf; /* Grün für Konsistenz mit UI */
 }
 
 /* Neue Buttons: Annotations, Quiz, Export */
@@ -388,7 +388,7 @@ label[for="load-file"]:hover {
 }
 
 #close-cc:hover {
-  color: #7f2489;
+  color: #3419cf;
 }
 
 #volume-slider {
@@ -431,7 +431,7 @@ label[for="load-file"]:hover {
 }
 
 #license-dropdown a {
-    color: #6b0f7d; /* Grün für Links */
+    color: #3419cf; /* Grün für Links */
     text-decoration: none;
 }
 
@@ -498,7 +498,7 @@ label[for="load-file"]:hover {
 }
 
 #info-close:hover {
-    color: #7f2489;
+    color: #3419cf;
 }
 
 #info-content p {
@@ -642,6 +642,7 @@ canvas {
   margin-top: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: 10px;
+  accent-color: #3419cf;
 }
 
 #edit-controls label {
@@ -658,7 +659,7 @@ canvas {
 
 #edit-controls input[type="range"] {
   width: 100%;
-  accent-color: #7f2489; /* Grün passend zu UI */
+  accent-color: #3419cf; /* Grün passend zu UI */
 }
 
 #edit-controls button {
@@ -729,7 +730,7 @@ canvas {
 #reset-button {
   width: 100%;
   margin-top: 20px;
-  background-color: #622369; /* Rot für Warnung */
+  background-color: #1d13ac; /* Rot für Warnung */
   color: white;
   border: none;
   padding: 10px;
@@ -738,7 +739,7 @@ canvas {
 }
 
 #reset-button:hover {
-  background-color: #9835a2;
+  background-color: #2215ce;
 }
 
 #footer-container {
@@ -823,11 +824,11 @@ canvas {
 }
 
 #song-license-text strong {
-    color: #4c1050; /* Grün für Überschriften wie Quelle/Lizenz */
+    color: #3419cf; /* Grün für Überschriften wie Quelle/Lizenz */
 }
 
 #close-song-license:hover {
-    color: #7f2489;
+    color: #3419cf;
 }
 
 /* Initialer Loadingscreen: Vollbild, farbig, zentriert */
@@ -856,15 +857,16 @@ canvas {
 /* Live-Laden Sticker: Zentriert, klein, blinkt */
 #live-loading-sticker {
     position: fixed;
-    top: 50%;
-    left: 50%;
+    bottom: 5%;
+    right: 0%;
     transform: translate(-50%, -50%);
-    width: 150px;
+    width: 50px;
     height: auto;
-    z-index: 1500;
+    z-index: 900;
     display: none;
     animation: blink 0.5s ease-in-out;
     background: transparent;
+    opacity: 1;
 }
 
 /* Splash-Screen: Vollbild, zentriert, klickbar */
@@ -913,9 +915,24 @@ canvas {
 
 /* Mobile-Optimierung */
 @media (max-width: 600px) {
-    #loading-sticker, #live-loading-sticker {
+    #loading-sticker {
         width: 200px; /* Kleiner auf Mobile */
     }
+
+#live-loading-sticker {
+    position: fixed;
+    bottom: 5%;
+    right: 0%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: auto;
+    z-index: 1500;
+    display: none;
+    animation: blink 0.5s ease-in-out;
+    background: transparent;
+    opacity: 1;
+}
+
     #go-sticker {
         width: 150px;
     }
@@ -1065,7 +1082,7 @@ canvas {
     }
 }
 
-@media (max-width: 600px) {
+
    @media (max-width: 600px) {
     #search-bar {
         width: 90%; /* Dein bestehender Wert */
@@ -1083,9 +1100,28 @@ canvas {
         border-radius: 5px;
         z-index: 1002; /* Höher als Buttons im Panel */
     }
-}
+
     .search-item {
         padding: 6px 8px ; /* Kompakter für Mobile */
         font-size: 12px;
     }
+
+    #info-panel {
+    position: fixed;
+    max-width: 100px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    top: 10px;
+    right: 10px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
+
+   }

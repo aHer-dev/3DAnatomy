@@ -9,6 +9,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
   if (visible) {
     liveSticker.style.display = 'block'; // Zeige Sticker nur bei sichtbarem Laden
     liveSticker.style.animation = 'blink 0.5s ease-in-out';
+  console.log('Live-Sticker wird angezeigt:', liveSticker.src); // Debug
   }
 
   try {
@@ -53,7 +54,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
 
         const existingModel = state.groups[currentGroup].find(m => state.modelNames.get(m) === entry.label);
         if (existingModel) {
-          console.log(`🛑 Modell ${entry.label} bereits geladen in Gruppe ${currentGroup}. Überspringe.`);
+          //console.log(`🛑 Modell ${entry.label} bereits geladen in Gruppe ${currentGroup}. Überspringe.`);
           resolve();
           return;
         }
@@ -134,7 +135,7 @@ export async function loadModels(entries, groupName, visible, scene, loader) {
       setTimeout(() => {
         liveSticker.style.display = 'none';
         liveSticker.style.animation = ''; // Reset Animation
-      }, 600); // Etwas länger als Animation (0.5s)
+      }, 1000); // Etwas länger als Animation (0.5s)
     }
   }
 }

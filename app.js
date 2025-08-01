@@ -14,11 +14,11 @@ console.log('app.js geladen, basePath:', utils.basePath);
 const basePath = utils.basePath || ''; // Fallback, falls utils undefiniert
 
 // Setze src für Sticker
-const stickerIds = ['loading-sticker', 'go-sticker'];
+const stickerIds = ['loading-sticker', 'go-sticker', 'live-loading-sticker'];
 stickerIds.forEach(id => {
   const img = document.getElementById(id);
   if (img) {
-    img.src = basePath + '/images/' + id + '.png'; // Dynamisch: id + '.png' für Einfachheit
+    img.src = basePath + '/images/' + id + '.png';
   } else {
     console.error(`Image-Element ${id} nicht gefunden!`);
   }
@@ -39,7 +39,7 @@ const splashScreen = document.getElementById('splash-screen');
 const goSticker = document.getElementById('go-sticker');
 
 // Initial: Ladebildschirm anzeigen (mit Hintergrund, Modell unsichtbar – Szene rendert noch nicht voll)
-initialScreen.style.backgroundColor = state.loadingScreenColor;
+initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
 initialScreen.style.display = 'flex';
 
 // UI & Interaktionen vorbereiten (vor Laden, um UI bereit zu haben)
