@@ -16,10 +16,10 @@ import { scene, loader } from '../init.js';
 export async function loadGroup(groupName, subgroup = null, centerCamera = false) {
   const meta = await getMeta();
 
-  const filteredEntries = meta.filter(entry =>
-    entry.group === groupName &&
-    (subgroup === null || entry.subgroup === subgroup)
-  );
+const results = meta.filter(entry =>
+  entry.labels?.en?.toLowerCase().includes(searchTerm) ||
+  entry.id?.toLowerCase().includes(searchTerm)
+);
 
   if (!state.groups[groupName]) {
     state.groups[groupName] = [];

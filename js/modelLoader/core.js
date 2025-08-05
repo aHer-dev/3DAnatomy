@@ -44,6 +44,21 @@ for (let i = 0; i < entries.length; i++) {
 
   try {
     await loadSingleModel(entry, group, scene, loader, i === 0 && centerCamera);
+
+// 📏 Debug: BoundingBox und Mittelpunkt ausgeben
+    const lastModel = state.groups[group][state.groups[group].length - 1];
+    const box = new THREE.Box3().setFromObject(lastModel);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    console.log(`📐 Modell: ${entry.model.filename} – Größe:`, size, "Zentrum:", center);
+
+// Optional: Kamera nach erstem Modell ausrichten
+
+    if (i === 0) {
+      fitCameraToScene(camera, controls, renderer, scene);
+
+    }
+
   } catch (err) {
     console.error(`Fehler beim Laden von ${entry.model.filename}:`, err);
   }
@@ -104,7 +119,10 @@ export function loadSingleModel(entry, group, scene, loader, focusCamera = false
             child.material = new THREE.MeshStandardMaterial({
               color: state.colors[group] || entry.model.default_color || 0xB31919,
               transparent: true,
-              opacity: state.transparency ?? 1,
+              
+              opacity: 1 // sichtbar!
+//DEBUG DRÜBER
+              //opacity: state.transparency ?? 1,
             });
           }
         });
@@ -115,8 +133,9 @@ export function loadSingleModel(entry, group, scene, loader, focusCamera = false
         }
         if (Array.isArray(entry.model.scale)) {
           model.scale.set(...entry.model.scale);
-        }
-
+        } else {
+       model.scale.set(1, 1, 1); // Fallback!
+}
         // Modell benennen und Metadaten sichern
         model.name = filename;
         model.userData = { meta: entry };
@@ -128,6 +147,15 @@ export function loadSingleModel(entry, group, scene, loader, focusCamera = false
 
         // Modell zur Szene hinzufügen
         scene.add(model);
+
+// !!Debug: Modell sichtbar machen + Kameraausrichtung testen
+const box = new THREE.Box3().setFromObject(model);
+const size = box.getSize(new THREE.Vector3());
+const center = box.getCenter(new THREE.Vector3());
+
+console.log(`📐 Modell: ${filename} – Größe:`, size, "Zentrum:", center);
+
+//DEBUG ENDE
 
         // Optional: Kamera-Fokus auf dieses Modell setzen
         if (focusCamera) {

@@ -56,9 +56,12 @@ export async function getMeta() {
 //
 export async function initializeGroupsFromMeta() {
   const meta = await getMeta();
-  const allGroups = [...new Set(meta.map(entry => entry.group))];
 
-  state.availableGroups = allGroups;
+  const allGroups = [...new Set(
+    meta.map(entry => entry.classification?.group).filter(Boolean)
+  )];
+
+  state.availableGroups = allGroups.sort(); // oder deine eigene Reihenfolge
 
   allGroups.forEach(group => {
     state.groups[group] = [];
@@ -71,3 +74,4 @@ export async function initializeGroupsFromMeta() {
 
   console.log("✅ initializeGroupsFromMeta: Gruppen initialisiert:", allGroups);
 }
+

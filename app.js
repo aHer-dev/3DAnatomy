@@ -63,7 +63,7 @@ async function startApp() {
 
   // 📦 Modelle gruppenweise laden
   for (const group of state.availableGroups) {
-    const entries = meta.filter(entry => entry.group === group);
+    const entries = meta.filter(entry => entry.classification?.group === group);
     if (entries.length === 0) continue;
 
     console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
@@ -115,21 +115,3 @@ function setupSplashScreenExit() {
 // Initialisierung starten
 setupSplashScreenExit();
 startApp();
-state.availableGroups = [
-  "arteries",
-  "bones",
-  "brain",
-  "cartilage",
-  "ear",
-  "eyes",
-  "glands",
-  "heart",
-  "ligaments",
-  "lungs",
-  "muscles",
-  "nerves",
-  "organs",
-  "skin_hair",
-  "teeth",
-  "veins"
-];
