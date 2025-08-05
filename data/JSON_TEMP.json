@@ -1,0 +1,86 @@
+  [
+    {
+    "id": "fma59763",
+    "labels": {
+      "en": "Maxillary gingiva",
+      "de": "",
+      "la": ""
+    },
+    "synonyms": {
+      "en": [],
+      "de": []
+    },
+    "classification": {
+      "group": "veins",
+      "subgroup": "",
+      "side": "",
+      "system": "",
+      "region": ""
+    },
+    "relations": {
+      "is_a": [],
+      "part_of": [],
+      "has_parts": [],
+      "adjacent_to": [],
+      "cross_references": {}
+    },
+    "model": {
+      "filename": "FJ1252.glb",
+      "format": "glb",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "default_color": "#cccccc",
+      "visible_by_default": true,
+      "path": "",
+      "highlight_color": "",
+      "bounding_box": [
+        [],
+        []
+      ],
+      "checksum": ""
+    },
+    "info": {
+      "description": {
+        "en": "",
+        "de": ""
+      },
+      "keywords": {
+        "en": [],
+        "de": []
+      },
+      "links": {
+        "wikipedia_en": "",
+        "fma": "fma59763",
+        "wikipedia_de": "",
+        "uberon": ""
+      },
+      "images": []
+    },
+    "meta": {
+      "sources": [
+        "BodyParts3D"
+      ],
+      "license": "CC BY-SA 2.1 JP",
+      "attribution": "Copyright © 2008 DBCLS",
+      "version": "1.0.0",
+      "last_updated": "2025-08-04",
+      "reliability_score": null,
+      "notes": "",
+      "validation_status": "",
+      "purpose": "",
+      "creator": "",
+      "contributor": [],
+      "ontology_version": "",
+      "language": ""
+    },
+    "type": "structure"
+  }
+]

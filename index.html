@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlueBody 3D</title>
+
+  <!-- Icons & Manifest -->
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <!-- Optional: SVG-Favicon & WebApp manifest bei Bedarf aktivieren -->
+  <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
+  <!-- <link rel="manifest" href="manifest.webmanifest"> -->
+
+  <!-- Styles & Script -->
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="app.js"></script>
+</head>
+
+<body>
+  <!-- 🎨 Canvas für 3D-Szene -->
+  <canvas id="canvas"></canvas>
+
+  <!-- 📑 Submenü -->
+  <div id="submenu-container"></div>
+
+  <!-- 🎛️ UI Controls -->
+  <div id="controls">
+    <!-- 🔍 Suche -->
+    <input id="search-bar" type="text" placeholder="Suche nach Modellen..." />
+    <div id="search-results"></div>
+
+    <!-- 📂 Strukturen -->
+    <div class="dropdown">
+      <button class="dropdown-button">Strukturen laden</button>
+      <div class="dropdown-content">
+        <div class="dropdown-sub">
+          <button class="sub-dropdown-button" data-group="muscles">Muskeln ▼</button>
+          <div id="muscles-sub-dropdown" class="sub-dropdown"></div>
+        </div>
+        <div class="dropdown-sub">
+          <button class="sub-dropdown-button" data-group="bones">Knochen ▼</button>
+          <div id="bones-sub-dropdown" class="sub-dropdown"></div>
+        </div>
+        <div class="dropdown-sub">
+          <button class="sub-dropdown-button" data-group="tendons">Sehnen ▼</button>
+          <div id="tendons-sub-dropdown" class="sub-dropdown"></div>
+        </div>
+        <div class="dropdown-sub">
+          <button class="sub-dropdown-button" data-group="other">Weitere ▼</button>
+          <div id="other-sub-dropdown" class="sub-dropdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🎨 Farben -->
+    <div class="dropdown">
+      <button class="dropdown-button">Farben</button>
+      <div class="dropdown-content" id="color-controls">
+        <label>Bones Farbe: <input type="color" id="bones-color" /></label>
+        <label>Muscles Farbe: <input type="color" id="muscles-color" /></label>
+        <label>Tendons Farbe: <input type="color" id="tendons-color" /></label>
+        <label>Other Farbe: <input type="color" id="other-color" /></label>
+      </div>
+    </div>
+
+    <!-- 🛠️ Tools -->
+    <div class="dropdown">
+      <button class="dropdown-button">Tools</button>
+      <div class="dropdown-content">
+        <button id="screenshot-button">Screenshot</button>
+        <button id="export-button">Exportieren</button>
+        <input id="load-file" type="file" accept=".txt" />
+        <label for="load-file" class="file-label">Code-Importieren (.txt)</label>
+      </div>
+    </div>
+
+    <!-- 🏠 Raum -->
+    <div class="dropdown">
+      <button class="dropdown-button">Raum</button>
+      <div class="dropdown-content" id="room-dropdown-content">
+        <label>Beleuchtung: <input type="range" id="lighting-slider" min="0" max="2" step="0.1" value="1" /></label>
+        <label>Farbe: <input type="color" id="room-color" value="#210B41" /></label>
+        <label>Helligkeit: <input type="range" id="room-brightness" min="0" max="1" step="0.01" value="0.4" /></label>
+      </div>
+    </div>
+
+    <!-- 📦 Sammlung -->
+    <div class="dropdown">
+      <button class="dropdown-button">Sammlung</button>
+      <div class="dropdown-content" id="set-dropdown-content">
+        <button id="show-set">Anzeigen</button>
+        <button id="clear-set">Löschen</button>
+        <button id="list-set">Meine Sammlung</button>
+        <div id="set-structures-list" class="set-structures-list"></div>
+      </div>
+    </div>
+
+    <!-- 🔄 Reset -->
+    <button id="reset-button">Reset</button>
+  </div>
+
+  <!-- 📦 Container für 3D-Objekte -->
+  <div id="container"></div>
+
+  <!-- 🍔 Menü-Icon -->
+  <div id="menu-icon">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- ⏳ Ladeanzeige -->
+  <div id="loading">
+    <div id="progress-bar"></div>
+    <div id="progress-text">0%</div>
+  </div>
+
+  <!-- 🎵 Footer: Musik + Lizenz -->
+  <div id="footer-container">
+    <button id="music-button" title="Musik abspielen">♪</button>
+    <button id="next-song-button" style="display: none;">➤</button>
+    <button id="song-info-button" style="display: none;">🛈</button>
+    <div id="volume-container" style="display: none;">
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" title="Lautstärke" />
+    </div>
+    <div id="footer" onclick="toggleLicense()">
+      <span class="license-link">© CC BY-SA</span>
+    </div>
+    <audio id="bg-music" loop></audio>
+    <div id="song-license-dropdown" style="display: none;">
+      <p id="song-license-text"></p>
+      <button id="close-song-license">✖</button>
+    </div>
+  </div>
+
+  <!-- 📃 Lizenzinfo -->
+  <div id="license-dropdown">
+    <p>
+      BodyParts3D, © The Database Center for Life Science,<br />
+      lizenziert unter
+      <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener noreferrer">
+        CC BY-SA 2.1 Japan
+      </a>.
+    </p>
+    <p>
+      Attribution: Modelle basieren auf Daten von
+      <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener noreferrer">
+        Anatomography / BodyParts3D
+      </a>.
+      Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.
+    </p>
+  </div>
+
+  <!-- ℹ️ Info-Panel -->
+  <div id="info-panel" class="hidden">
+    <div id="info-header"></div>
+    <div id="info-content"></div>
+  </div>
+
+  <!-- 🧠 Tooltip -->
+  <div id="tooltip"></div>
+
+  <!-- 🚀 Splash / Loading Screens -->
+  <div id="initial-loading-screen" style="display: none;">
+    <img id="loading-sticker" src="" alt="Loading Icon" />
+  </div>
+  <img id="live-loading-sticker" src="" alt="Live Loading" style="display: none;" />
+  <div id="splash-screen" style="display: none;">
+    <img id="go-sticker" src="" alt="Go" />
+  </div>
+</body>
+</html>
