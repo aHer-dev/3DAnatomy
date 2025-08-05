@@ -53,16 +53,34 @@ for (let i = 0; i < entries.length; i++) {
 export async function loadSingleModel(entry, group, scene, loader, focusCamera = false) {
   return new Promise((resolve, reject) => {
     // 🧠 Schritt 1: Validierung
-    const filename = entry?.model?.filename;
-    if (!filename) {
-      console.warn("⛔ Kein gültiger filename in Entry:", entry?.id || entry);
-      resolve(); // Modell überspringen
-      return;
-    }
+// 🔒 Sicherheitsprüfung: Variantenstruktur vorhanden?
 
-    // 🧠 Schritt 2: Fallback-Logik für den Pfad
-    const subfolder = entry.model.path || group;
-    const url = (`models/${subfolder}/${filename}`).replace(/\/+/g, '/');
+
+// 🔒 Sicherheitsprüfung: Variantenstruktur vorhanden
+const currentVariant = entry.model.current || state.defaultSettings.modelVariant || 'draco';
+const variant = entry.model.variants?.[currentVariant];
+
+if (!variant || !variant.filename || !variant.path) {
+  console.warn('⚠️ Ungültiger Modell-Variant-Eintrag bei:', entry.id, '| Variante:', currentVariant);
+  return; // ⛔ Modell überspringen
+}
+
+// 🧠 Pfad- und Dateiname aus der gewählten Variante
+const filename = variant.filename;
+const subfolder = variant.path;
+
+// 🌐 Pfad zum Modell zusammenbauen
+const url = `models/${subfolder}/${filename}`.replace(/\/+/g, '/');
+
+// 🧪 Debug-Ausgabe
+console.log("📦 Lade Modell:", {
+  id: entry.id,
+  filename,
+  group,
+  path: subfolder,
+  url
+});
+
 
     // 🧪 Debug-Ausgabe
     console.log("📦 Lade Modell:", {

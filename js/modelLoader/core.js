@@ -92,16 +92,18 @@ for (let i = 0; i < entries.length; i++) {
 export function loadSingleModel(entry, group, scene, loader, focusCamera = false) {
   return new Promise((resolve, reject) => {
     // Dateiname validieren
-    const filename = entry?.model?.filename;
-    if (!filename) {
-      console.warn('Modell ohne gültigen Dateinamen übersprungen:', entry?.id || entry);
-      resolve();
-      return;
-    }
+  const variant = entry?.model?.variants?.[entry?.model?.current];
+  if (!variant || !variant.filename || !variant.path) {
+  console.warn("⛔ Modell ohne gültige Variantenstruktur übersprungen:", entry?.id || entry);
+  resolve();
+  return;
+}
 
-    // Modellpfad zusammenbauen und auf redundante Slashes prüfen
-    const subfolder = entry.model.path || '';
-    const url = (`models/${subfolder}/${filename}`).replace(/\/+/g, '/');
+const filename = variant.filename;
+const path = variant.path;
+const url = `models/${path}/${filename}`.replace(/\/+/g, '/');
+
+
 
     // Datei laden
     loader.load(
