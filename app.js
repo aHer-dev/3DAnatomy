@@ -115,3 +115,21 @@ function setupSplashScreenExit() {
 // Initialisierung starten
 setupSplashScreenExit();
 startApp();
+state.availableGroups = [
+  "arteries",
+  "bones",
+  "brain",
+  "cartilage",
+  "ear",
+  "eyes",
+  "glands",
+  "heart",
+  "ligaments",
+  "lungs",
+  "muscles",
+  "nerves",
+  "organs",
+  "skin_hair",
+  "teeth",
+  "veins"
+];

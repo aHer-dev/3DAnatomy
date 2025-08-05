@@ -1,91 +1,138 @@
-// modelLoader-core.js
+/**
+ * @file modelLoader-core.js
+ * @description Lädt GLTF-Modelle in Gruppen, zeigt Ladefortschritt an und zentriert optional die Kamera.
+ */
+
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
 import { getModelPath } from '../utils.js';
 import { state } from '../state.js';
 import { showLoadingBar, updateLoadingBar, hideLoadingBar } from './progress.js';
 import { fitCameraToScene } from '../cameraUtils.js';
 
-
 /**
- * Lädt mehrere Modelle anhand der gegebenen Meta-Entries.
- * @param {Array} entries - Liste von Metaeinträgen
- * @param {string} group - Gruppenname (z. B. "bones")
- * @param {boolean} centerCamera - Ob nach dem ersten Modell Kamera gesetzt werden soll
- * @param {THREE.Scene} scene
- * @param {THREE.GLTFLoader} loader
+ * Lädt mehrere Modelle anhand der übergebenen Meta-Einträge.
+ * Zeigt einen Ladebalken für den Fortschritt und zentriert die Kamera optional nach dem Laden.
+ *
+ * @param {Array<Object>} entries - Meta-Daten zu den Modellen (enthält filename, path, rotation, scale, labels).
+ * @param {string} group - Gruppenname, unter dem die Modelle in state.groups abgelegt werden.
+ * @param {boolean} centerCamera - Wenn true, wird nach dem Laden der ersten Datei die Kamera passend gesetzt.
+ * @param {THREE.Scene} scene - Szene, in die die Modelle eingefügt werden.
+ * @param {THREE.GLTFLoader} loader - GLTFLoader zum Einlesen der Dateien.
+ * @param {THREE.Camera} camera - Kamera, die ggf. neu positioniert wird.
+ * @param {THREE.OrbitControls} controls - Steuerung für die Kamera, um fitCameraToScene zu ermöglichen.
+ * @param {THREE.Renderer} renderer - Renderer, um die Szene neu zu zeichnen.
  */
-export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer)
- {
-  if (!entries?.length) {
+export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer) {
+  // Abbruch, falls keine Einträge übergeben wurden
+  if (!Array.isArray(entries) || entries.length === 0) {
     console.warn(`Keine Modelle für Gruppe "${group}" gefunden.`);
     return;
   }
 
-  showLoadingBar(); // ✅ Ladebalken zeigen
+  // Ladebalken einblenden
+  showLoadingBar();
 
-  for (let i = 0; i < entries.length; i++) {
-    const entry = entries[i];
-    try {
-      await loadSingleModel(entry, group, scene, loader, i === 0 && centerCamera);
-    } catch (err) {
-      console.error(`❌ Fehler beim Laden von ${entry.filename}:`, err);
-    }
+  // Alle Modelle nacheinander laden
+for (let i = 0; i < entries.length; i++) {
+  const entry = entries[i];
 
-    // ✅ Ladefortschritt aktualisieren
-    const percent = Math.round(((i + 1) / entries.length) * 100);
-    updateLoadingBar(percent);
+  // Sicherheitsprüfung
+  if (!entry?.model?.filename) {
+    console.warn(`⛔ Kein Dateiname für Eintrag ${entry?.id || i}. Übersprungen.`);
+    continue;
   }
 
-  hideLoadingBar(); // ✅ Ladebalken ausblenden
-  
-if (centerCamera) {
-  fitCameraToScene(camera, controls, renderer, scene);
+  try {
+    await loadSingleModel(entry, group, scene, loader, i === 0 && centerCamera);
+  } catch (err) {
+    console.error(`Fehler beim Laden von ${entry.model.filename}:`, err);
+  }
+
+  updateLoadingBar(Math.round(((i + 1) / entries.length) * 100));
 }
-  console.log(`✅ Alle Modelle für Gruppe "${group}" geladen.`);
+
+
+  // Ladebalken ausblenden
+  hideLoadingBar();
+
+  // Kamera passend zur Szene setzen, falls gewünscht
+  if (centerCamera) {
+    fitCameraToScene(camera, controls, renderer, scene);
+  }
+
+  console.log(`Alle Modelle für Gruppe "${group}" geladen.`);
 }
 
 /**
- * Lädt ein einzelnes Modell anhand des Meta-Eintrags.
- * @param {Object} entry - Metaeintrag mit .filename, .label usw.
- * @param {string} group
- * @param {THREE.Scene} scene
- * @param {THREE.GLTFLoader} loader
- * @param {boolean} focusCamera - Kamera auf erstes Modell zentrieren
+ * Lädt ein einzelnes GLTF-Modell und fügt es der Szene hinzu.
+ * Wendet Material, Transformationen und Metadaten an.
+ *
+ * @param {Object} entry - Meta-Eintrag mit Feldern: model.filename, model.path, model.rotation, model.scale, labels
+ * @param {string} group - Name der Gruppe, in die das Modell einsortiert wird.
+ * @param {THREE.Scene} scene - Zielszene für das Modell.
+ * @param {THREE.GLTFLoader} loader - Loader-Instanz zum Einlesen der Datei.
+ * @param {boolean} focusCamera - Wenn true, könnte hier die Kamera auf das Modell positioniert werden.
+ * @returns {Promise<void>} Promise, die beim Abschluss des Ladevorgangs aufgelöst wird.
  */
-export async function loadSingleModel(entry, group, scene, loader, focusCamera = false) {
-  const url = getModelPath(entry.filename, group);
-
+export function loadSingleModel(entry, group, scene, loader, focusCamera = false) {
   return new Promise((resolve, reject) => {
+    // Dateiname validieren
+    const filename = entry?.model?.filename;
+    if (!filename) {
+      console.warn('Modell ohne gültigen Dateinamen übersprungen:', entry?.id || entry);
+      resolve();
+      return;
+    }
+
+    // Modellpfad zusammenbauen und auf redundante Slashes prüfen
+    const subfolder = entry.model.path || '';
+    const url = (`models/${subfolder}/${filename}`).replace(/\/+/g, '/');
+
+    // Datei laden
     loader.load(
       url,
       gltf => {
         const model = gltf.scene;
         if (!model) {
-          reject(`⚠️ Kein scene-Objekt in GLTF: ${entry.filename}`);
+          reject(new Error(`Kein scene-Objekt in GLTF: ${filename}`));
           return;
         }
 
-        // Material und Farbe setzen
+        // Material auf alle Meshes anwenden
         model.traverse(child => {
           if (child.isMesh) {
             child.material = new THREE.MeshStandardMaterial({
-              color: state.colors[group] || 0xB31919,
+              color: state.colors[group] || entry.model.default_color || 0xB31919,
               transparent: true,
-              opacity: state.transparency || 1,
+              opacity: state.transparency ?? 1,
             });
           }
         });
 
-        // Modell benennen & in State speichern
-        model.name = entry.filename;
-        model.userData = { meta: entry }; // Info-Panel später
-        state.groups[group].push(model);
-        state.modelNames.set(model, entry.label);
-        state.groupStates[group][entry.filename] = true;
+        // Rotation und Skalierung setzen, falls im Meta-Eintrag vorhanden
+        if (Array.isArray(entry.model.rotation)) {
+          model.rotation.set(...entry.model.rotation);
+        }
+        if (Array.isArray(entry.model.scale)) {
+          model.scale.set(...entry.model.scale);
+        }
 
+        // Modell benennen und Metadaten sichern
+        model.name = filename;
+        model.userData = { meta: entry };
+
+        // Modell in den globalen Zustand einfügen
+        state.groups[group].push(model);
+        state.modelNames.set(model, entry.labels?.en || filename);
+        state.groupStates[group][filename] = true;
+
+        // Modell zur Szene hinzufügen
         scene.add(model);
 
-        // Kamera ggf. auf erstes Modell zentrieren
+        // Optional: Kamera-Fokus auf dieses Modell setzen
+        if (focusCamera) {
+          // TODO: Kamera-Ausrichtungsfunktion implementieren
+        }
 
         resolve();
       },
