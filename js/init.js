@@ -1,8 +1,8 @@
 // In js/init.js
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
+import * as THREE from './three.module.js';
 import { OrbitControls } from './OrbitControls.js';
 import { GLTFLoader } from './GLTFLoader.js';
-import { DRACOLoader } from './DRACOLoader.js';
+import { DRACOLoader } from './DRACOLoader.js'; // nur, falls du Draco nutzt
 import { setCameraToDefault } from './cameraUtils.js';
 import { hideInfoPanel } from './interaction.js';
 
@@ -70,4 +70,13 @@ controls.maxPolarAngle = Math.PI; // Volle 180° – von unten erlauben
 }
 
 // ✅ Alle benötigten Exporte in einer Zeile
-export { THREE, initThree, scene, camera, renderer, loader, controls };
+export {
+  THREE,
+  scene,
+  camera,
+  renderer,
+  loader,
+  controls,
+  initThree
+};
+

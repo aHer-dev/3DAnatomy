@@ -1,8 +1,7 @@
 // ui-room.js
 // 🌌 Ermöglicht dem Nutzer, die Hintergrundfarbe und -helligkeit der 3D-Szene live zu verändern
 
-import { THREE } from '../init.js'; // 🎨 THREE.js für Farbbehandlung
-import { scene, renderer, camera } from '../init.js'; // 🌐 Zugriff auf 3D-Szene, Renderer und Kamera
+import { THREE, scene, renderer, camera } from '../init.js';
 
 /**
  * Initialisiert die UI-Elemente zur Anpassung der Raumfarbe und Helligkeit.
