@@ -25,33 +25,107 @@
   <div id="submenu-container"></div>
 
   <!-- 🎛️ UI Controls -->
-  <div id="controls">
-    <!-- 🔍 Suche -->
-    <input id="search-bar" type="text" placeholder="Suche nach Modellen..." />
-    <div id="search-results"></div>
-
-    <!-- 📂 Strukturen -->
-    <div class="dropdown">
-      <button class="dropdown-button">Strukturen laden</button>
-      <div class="dropdown-content">
-        <div class="dropdown-sub">
-          <button class="sub-dropdown-button" data-group="muscles">Muskeln ▼</button>
-          <div id="muscles-sub-dropdown" class="sub-dropdown"></div>
-        </div>
-        <div class="dropdown-sub">
-          <button class="sub-dropdown-button" data-group="bones">Knochen ▼</button>
-          <div id="bones-sub-dropdown" class="sub-dropdown"></div>
-        </div>
-        <div class="dropdown-sub">
-          <button class="sub-dropdown-button" data-group="tendons">Sehnen ▼</button>
-          <div id="tendons-sub-dropdown" class="sub-dropdown"></div>
-        </div>
-        <div class="dropdown-sub">
-          <button class="sub-dropdown-button" data-group="other">Weitere ▼</button>
-          <div id="other-sub-dropdown" class="sub-dropdown"></div>
-        </div>
-      </div>
-    </div>
+<div class="dropdown">
+    <button id="load-bones-btn" aria-label="Knochen laden">Knochen ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-muscles-btn" aria-label="Muskeln laden">Muskeln ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-tendons-btn" aria-label="Sehnen laden">Sehnen ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-arteries-btn" aria-label="Arterien laden">Arterien ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-brain-btn" aria-label="Gehirn laden">Gehirn ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-cartilage-btn" aria-label="Knorpel laden">Knorpel ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-ear-btn" aria-label="Ohr laden">Ohr ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-eyes-btn" aria-label="Augen laden">Augen ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-glands-btn" aria-label="Drüsen laden">Drüsen ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-heart-btn" aria-label="Herz laden">Herz ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-ligaments-btn" aria-label="Bänder laden">Bänder ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-lungs-btn" aria-label="Lungen laden">Lungen ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-nerves-btn" aria-label="Nerven laden">Nerven ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-organs-btn" aria-label="Organe laden">Organe ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-skin_hair-btn" aria-label="Haut/Haare laden">Haut/Haare ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-teeth-btn" aria-label="Zähne laden">Zähne ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="load-veins-btn" aria-label="Venen laden">Venen ▼</button>
+    <div class="dropdown-content"></div>
+  </div>
+  <div class="dropdown">
+    <button id="add-to-set-button" aria-label="Zur Sammlung hinzufügen">Anzeigen</button>
+    <div id="set-list">Meine Sammlung</div>
+  </div>
+  <div class="dropdown">
+    <input id="bones-color" type="color" value="#cccccc" aria-label="Knochenfarbe">
+    <input id="muscles-color" type="color" value="#ff0000" aria-label="Muskelnfarbe">
+    <input id="tendons-color" type="color" value="#ffffff" aria-label="Sehnenfarbe">
+    <input id="arteries-color" type="color" value="#ff0000" aria-label="Arterienfarbe">
+    <input id="brain-color" type="color" value="#cccccc" aria-label="Gehirnfarbe">
+    <input id="cartilage-color" type="color" value="#cccccc" aria-label="Knorpelfarbe">
+    <input id="ear-color" type="color" value="#cccccc" aria-label="Ohrfarbe">
+    <input id="eyes-color" type="color" value="#cccccc" aria-label="Augenfarbe">
+    <input id="glands-color" type="color" value="#cccccc" aria-label="Drüsenfarbe">
+    <input id="heart-color" type="color" value="#ff0000" aria-label="Herzfarbe">
+    <input id="ligaments-color" type="color" value="#ffffff" aria-label="Bänderfarbe">
+    <input id="lungs-color" type="color" value="#cccccc" aria-label="Lungenfarbe">
+    <input id="nerves-color" type="color" value="#ffff00" aria-label="Nervenfarbe">
+    <input id="organs-color" type="color" value="#cccccc" aria-label="Organefarbe">
+    <input id="skin_hair-color" type="color" value="#cccccc" aria-label="Haut/Haarefarbe">
+    <input id="teeth-color" type="color" value="#ffffff" aria-label="Zähnefarbe">
+    <input id="veins-color" type="color" value="#0000ff" aria-label="Venenfarbe">
+  </div>
+  <div class="dropdown">
+    <button id="export-set-button" aria-label="Exportieren">Exportieren</button>
+    <input type="file" id="import-set-file" accept=".json" aria-label="Importieren">
+    <button id="screenshot-button" aria-label="Screenshot">Screenshot</button>
+  </div>
+  <div class="dropdown">
+    <input id="lighting" type="range" min="0" max="2" step="0.1" value="1" aria-label="Beleuchtung">
+    <input id="background-color" type="color" value="#020a1d" aria-label="Hintergrundfarbe">
+    <input id="brightness" type="range" min="0" max="2" step="0.1" value="1" aria-label="Helligkeit">
+  </div>
 
     <!-- 🎨 Farben -->
     <div class="dropdown">
@@ -116,22 +190,11 @@
     <div id="progress-text">0%</div>
   </div>
 
-  <!-- 🎵 Footer: Musik + Lizenz -->
+  
   <div id="footer-container">
-    <button id="music-button" title="Musik abspielen">♪</button>
-    <button id="next-song-button" style="display: none;">➤</button>
-    <button id="song-info-button" style="display: none;">🛈</button>
-    <div id="volume-container" style="display: none;">
-      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" title="Lautstärke" />
-    </div>
+  
     <div id="footer" onclick="toggleLicense()">
       <span class="license-link">© CC BY-SA</span>
-    </div>
-    <audio id="bg-music" loop></audio>
-    <div id="song-license-dropdown" style="display: none;">
-      <p id="song-license-text"></p>
-      <button id="close-song-license">✖</button>
-    </div>
   </div>
 
   <!-- 📃 Lizenzinfo -->

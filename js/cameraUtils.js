@@ -1,5 +1,5 @@
 // cameraUtils.js
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
+import { THREE } from './init.js';
 
 /**
  * Utility zur Erkennung mobiler Endgeräte (Viewport-basiert).

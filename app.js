@@ -1,47 +1,45 @@
 // app.js
 
 // 🔧 Imports
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';                  // Wird z. B. für Box3 benötigt
-import * as utils from './js/utils.js';                         // getMeta(), basePath usw.
-import { initializeGroupsFromMeta } from './js/utils.js';       // Gruppenstruktur aus Meta erzeugen
-import { loadModels } from './js/modelLoader/index.js';         // Model-Ladefunktion
-import { setupUI } from './js/ui/ui-init.js';                   // UI-Initialisierung
-import { setupInteractions } from './js/interaction.js';        // UI-Interaktion
-import { initThree, scene, camera, controls, renderer, loader } from './js/init.js'; // Three.js Setup
+import * as utils from './js/utils.js';
+import { initializeGroupsFromMeta } from './js/utils.js';
+import { loadModels } from './js/modelLoader/index.js';
+import { setupUI } from './js/ui/ui-init.js';
+import { setupInteractions } from './js/interaction.js';
+import {
+  THREE,
+  initThree,
+  scene,
+  camera,
+  controls,
+  renderer,
+  loader
+} from './js/init.js';
 import { state } from './js/state.js';
 import { setCameraToDefault } from './js/cameraUtils.js';
+import { showLoadingBar, hideLoadingBar } from './js/modelLoader/progress.js';
 
 console.log('📦 app.js geladen, basePath:', utils.basePath);
 
-//
-// =========================
-// 🔧 Statische Assets setzen (Sticker, Favicon, etc.)
-// =========================
+// 📁 Statische Assets (Sticker, Favicon)
 function setupStaticAssets() {
   const basePath = utils.basePath || '';
   ['loading-sticker', 'go-sticker', 'live-loading-sticker'].forEach(id => {
     const img = document.getElementById(id);
     if (img) img.src = `${basePath}/images/${id}.png`;
-    else console.warn(`❌ Image-Element ${id} nicht gefunden`);
   });
 
   const faviconLink = document.querySelector('link[rel="icon"]');
-  if (faviconLink) {
-    faviconLink.href = `${basePath}/favicon.ico`;
-  } else {
-    console.warn('⚠️ Favicon-Link nicht gefunden');
-  }
+  if (faviconLink) faviconLink.href = `${basePath}/favicon.ico`;
 }
 
-//
-// =========================
 // 🚀 Hauptstart der Anwendung
-// =========================
 async function startApp() {
-const urlParams = new URLSearchParams(window.location.search);
-const isDevMode = urlParams.get('dev') === '1'; // ?dev=1 in URL aktivieren
+  const urlParams = new URLSearchParams(window.location.search);
+  const isDevMode = urlParams.get('dev') === '1';
 
   setupStaticAssets();
+
   const initialScreen = document.getElementById('initial-loading-screen');
   initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
   initialScreen.style.display = 'flex';
@@ -50,12 +48,11 @@ const isDevMode = urlParams.get('dev') === '1'; // ?dev=1 in URL aktivieren
   setupUI();
   setupInteractions();
   await initializeGroupsFromMeta();
+
   console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
-
-//DEVMODE
-if (isDevMode) {
-    console.log('Developer-Modus aktiviert: Lade alle Gruppen...');
+  if (isDevMode) {
+    console.log('🔧 Developer-Modus: Lade alle Gruppen...');
     for (const group of state.availableGroups) {
       const entries = state.groupedMeta[group] || [];
       if (entries.length) {
@@ -78,38 +75,9 @@ if (isDevMode) {
   const splashScreen = document.getElementById('splash-screen');
   splashScreen.style.display = 'flex';
   splashScreen.classList.add('visible');
-
-  // Event-Listener für weitere Gruppen
-  document.getElementById('load-muscles-btn')?.addEventListener('click', async () => {
-    try {
-      const muscleEntries = state.groupedMeta['muscles'] || [];
-      if (muscleEntries.length) {
-        showLoadingBar();
-        await loadModels(muscleEntries, 'muscles', true, scene, loader, camera, controls, renderer);
-        hideLoadingBar(); // Sicherstellen, dass Ladebalken ausgeblendet wird
-      }
-    } catch (err) {
-      console.error('Fehler beim Laden von muscles:', err);
-      hideLoadingBar();
-    }
-  });
 }
 
-//
-// =========================
-// 🎬 Render-Loop
-// =========================
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
-}
-animate();
-
-//
-// =========================
-// 🎯 Interaktion: Splashscreen beenden
-// =========================
+// 🎯 Splashscreen beenden
 function setupSplashScreenExit() {
   const goSticker = document.getElementById('go-sticker');
   const splashScreen = document.getElementById('splash-screen');
@@ -124,9 +92,35 @@ function setupSplashScreenExit() {
   });
 }
 
-// Initialisierung starten
+// 📦 Manuelles Nachladen weiterer Gruppen (z. B. Muskeln)
+function setupDynamicGroupLoading() {
+  document.getElementById('load-muscles-btn')?.addEventListener('click', async () => {
+    try {
+      const muscleEntries = state.groupedMeta['muscles'] || [];
+      if (muscleEntries.length) {
+        showLoadingBar();
+        await loadModels(muscleEntries, 'muscles', true, scene, loader, camera, controls, renderer);
+        hideLoadingBar();
+      }
+    } catch (err) {
+      console.error('❌ Fehler beim Laden von "muscles":', err);
+      hideLoadingBar();
+    }
+  });
+}
+
+// 🎬 Render-Loop
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+// 🔁 DOM fertig → Initialisierung
 document.addEventListener('DOMContentLoaded', () => {
-setupSplashScreenExit();
-console.log('▶️ Starte App')
-startApp();
+  console.log('▶️ DOM vollständig geladen – Starte App');
+  setupSplashScreenExit();
+  setupDynamicGroupLoading();
+  startApp();
+  animate();
 });

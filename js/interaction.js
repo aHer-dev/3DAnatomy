@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
+import { THREE } from './init.js';
 import { scene, camera, renderer } from './init.js';
 // Kamera-Utilities (zentriert alle Modelle, setzt Standard-Position)
 import { setCameraToDefault, fitCameraToScene } from './cameraUtils.js';

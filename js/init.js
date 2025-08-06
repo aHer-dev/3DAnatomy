@@ -1,4 +1,4 @@
-// js/init.js
+// In js/init.js
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
 import { OrbitControls } from './OrbitControls.js';
 import { GLTFLoader } from './GLTFLoader.js';
@@ -13,7 +13,7 @@ const loader = new GLTFLoader();
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('/draco/');
-dracoLoader.setDecoderConfig({ type: 'js' }); // Nur nötig, weil du JS nutzt
+dracoLoader.setDecoderConfig({ type: 'js' });
 dracoLoader.preload();
 loader.setDRACOLoader(dracoLoader);
 

@@ -13,13 +13,13 @@ import { scene, loader, camera, controls, renderer } from '../init.js';         
 export function setupSetUI() {
   console.log('setupSetUI aufgerufen');
 
-  // Helper-Funktion für Gruppen-Buttons
   const setupGroupButton = (buttonId, groupName) => {
     const button = document.getElementById(buttonId);
     if (!button) {
       console.warn(`⚠️ Button ${buttonId} nicht gefunden.`);
       return;
     }
+    console.log(`Button ${buttonId} gefunden, füge Listener hinzu...`);
     button.addEventListener('click', async () => {
       try {
         button.disabled = true;
@@ -39,13 +39,10 @@ export function setupSetUI() {
     });
   };
 
-  // Setze Listener für alle Gruppen
-  setupGroupButton('load-bones-btn', 'bones');
-  setupGroupButton('load-muscles-btn', 'muscles');
-  setupGroupButton('load-tendons-btn', 'tendons');
-  setupGroupButton('load-other-btn', 'other');
+  // Alle Gruppen aus /models/
+  const groups = ['bones', 'muscles', 'tendons', 'arteries', 'brain', 'cartilage', 'ear', 'eyes', 'glands', 'heart', 'ligaments', 'lungs', 'nerves', 'organs', 'skin_hair', 'teeth', 'veins'];
+  groups.forEach(group => setupGroupButton(`load-${group}-btn`, group));
 
-  // Sammlungssystem
   const addButton = document.getElementById('add-to-set-button');
   const setList = document.getElementById('set-list');
   if (!addButton || !setList) {

@@ -4,7 +4,6 @@ import { setupColorUI } from './ui-color.js';
 import { setupSetUI } from './ui-set.js';
 import { setupResetUI } from './ui-reset.js';
 import { setupSubmenuUI } from './ui-submenu.js';
-import { setupMusicUI } from './ui-music.js';
 import { setupExportUI } from './ui-export.js';
 import { setupControlsUI } from './ui-controls.js';
 import { setupRoomUI } from './ui-room.js';
@@ -17,7 +16,6 @@ export function setupUI() {
   setupSetUI();
   setupResetUI();
   setupSubmenuUI();
-  setupMusicUI();
   setupExportUI();
   setupControlsUI();
   setupRoomUI();
