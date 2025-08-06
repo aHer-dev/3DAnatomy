@@ -9,10 +9,8 @@ import { state } from '../state.js'; // 🔁 Zugriff auf globale Zustände (Sets
  */
 export function setupExportUI() {
   // 🧭 Referenzen zu UI-Elementen: Export-Button & Import-File-Input
-  const exportBtn = document.getElementById('export-set-button');
-  const importInput = document.getElementById('import-set-file');
-
-  // ❌ Wenn eines der UI-Elemente fehlt, logge Warnung und brich ab
+  const exportBtn = document.getElementById('btn-export-set');
+  const importInput = document.getElementById('input-import-set');
   if (!exportBtn || !importInput) {
     console.warn('⚠️ Export-UI: Button oder File-Input fehlt.');
     return;

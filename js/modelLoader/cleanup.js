@@ -1,6 +1,8 @@
 // cleanup.js
-import { state } from '../state.js';
-import { scene } from '../init.js';
+import { scene } from '../scene.js'; // Oder './scene.js' je nach Pfad
+import { camera } from '../camera.js';
+import { renderer } from '../renderer.js';
+import { controls } from '../controls.js'; // Falls benötigt
 
 /**
  * 🔄 Entfernt alle Modelle einer Gruppe oder einer Subgruppe aus der Szene.

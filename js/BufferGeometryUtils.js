@@ -1,4 +1,4 @@
-import { THREE } from './init.js';
+import * as THREE from 'three';
 import { mergeGeometries } from './BufferGeometryUtils.js';
 
 // Anwendung

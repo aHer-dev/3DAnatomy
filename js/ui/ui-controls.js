@@ -9,11 +9,8 @@ import { restoreGroupState } from '../modelLoader/index.js'; // Funktion zur Wie
  * Sorgt dafür, dass das Panel ein-/ausgeblendet werden kann und Gruppenstatus wiederhergestellt wird.
  */
 export function setupControlsUI() {
-  // 🔍 Hole Referenzen zum Menü-Icon und zum Steuerungs-Panel
   const menuIcon = document.getElementById('menu-icon');
   const controlsPanel = document.getElementById('controls');
-
-  // ❌ Falls eines der UI-Elemente fehlt, brich ab und logge Warnung
   if (!menuIcon || !controlsPanel) {
     console.warn('⚠️ ui-controls: Menü-Icon oder Panel fehlt.');
     return;

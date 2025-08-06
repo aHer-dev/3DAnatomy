@@ -1,9 +1,8 @@
 // js/ui/ui-reset.js
 // 🔁 Stellt den Ursprungszustand der gesamten Webanwendung wieder her (Kamera, Farben, Sichtbarkeit, UI-Slider, Transparenz etc.)
-
+import * as THREE from 'three'; // 🌐 Zentrale 3D-Komponenten inkl. THREE
 import { state } from '../state.js'; // 🔁 Globale Zustandsverwaltung
 import { setCameraToDefault } from '../cameraUtils.js'; // 📷 Funktion zum Zurücksetzen der Kamera
-import { THREE, scene, camera, controls } from '../init.js'; // 🌐 Zentrale 3D-Komponenten inkl. THREE
 import { updateModelColors, updateGroupVisibility } from '../modelLoader/index.js'; // 🎨 Sichtbarkeit & Farbe updaten
 
 
@@ -11,7 +10,7 @@ import { updateModelColors, updateGroupVisibility } from '../modelLoader/index.j
  * Initialisiert den Reset-Button und definiert, wie der Zustand der App vollständig zurückgesetzt wird.
  */
 export function setupResetUI() {
-  const resetBtn = document.getElementById('reset-button');
+  const resetBtn = document.getElementById('btn-reset');
 
   // ❌ Abbruch bei fehlendem Reset-Button
   if (!resetBtn) {

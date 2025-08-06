@@ -1,4 +1,3 @@
-// ui-init.js
 import { setupSearchUI } from './ui-search.js';
 import { setupColorUI } from './ui-color.js';
 import { setupSetUI } from './ui-set.js';
@@ -8,18 +7,22 @@ import { setupExportUI } from './ui-export.js';
 import { setupControlsUI } from './ui-controls.js';
 import { setupRoomUI } from './ui-room.js';
 import { setupLoadingUI } from './ui-loading.js';
-import { loadModels } from '../modelLoader/index.js';
+// import { loadModels } from '../modelLoader/index.js'; // Nicht nötig hier – in app.js
 
 export function setupUI() {
-  setupSearchUI();
-  setupColorUI();
-  setupSetUI();
-  setupResetUI();
-  setupSubmenuUI();
-  setupExportUI();
-  setupControlsUI();
-  setupRoomUI();
-  setupLoadingUI();
+  try {
+    setupSearchUI();
+    setupColorUI();
+    setupSetUI();
+    setupResetUI();
+    setupSubmenuUI();
+    setupExportUI();
+    setupControlsUI();
+    setupRoomUI();
+    setupLoadingUI();
 
-  console.log('UI initialisiert, einschließlich setupSetUI');
+    console.log('✅ UI initialisiert, einschließlich setupSetUI');
+  } catch (err) {
+    console.error('❌ Fehler bei UI-Setup:', err);
+  }
 }

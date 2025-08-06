@@ -1,27 +1,23 @@
-// app.js
-
 // 🔧 Imports
+import { scene } from './js/scene.js';
+import { camera } from './js/camera.js';
+import { renderer } from './js/renderer.js';
+import { controls } from './js/controls.js';
 import * as utils from './js/utils.js';
 import { initializeGroupsFromMeta } from './js/utils.js';
 import { loadModels } from './js/modelLoader/index.js';
 import { setupUI } from './js/ui/ui-init.js';
 import { setupInteractions } from './js/interaction.js';
-import {
-  THREE,
-  initThree,
-  scene,
-  camera,
-  controls,
-  renderer,
-  loader
-} from './js/init.js';
 import { state } from './js/state.js';
 import { setCameraToDefault } from './js/cameraUtils.js';
 import { showLoadingBar, hideLoadingBar } from './js/modelLoader/progress.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { dracoLoader } from './js/modelLoader/dracoLoader.js'; // Neu: Zentraler Draco-Loader
+import { lightFront, lightBack, lightTop, ambientLight } from './js/lights.js';
 
 console.log('📦 app.js geladen, basePath:', utils.basePath);
 
-// 📁 Statische Assets (Sticker, Favicon)
+// 📁 Statische Assets (Sticker, Favicon) – Für UX-Loading-Bilder
 function setupStaticAssets() {
   const basePath = utils.basePath || '';
   ['loading-sticker', 'go-sticker', 'live-loading-sticker'].forEach(id => {
@@ -33,7 +29,7 @@ function setupStaticAssets() {
   if (faviconLink) faviconLink.href = `${basePath}/favicon.ico`;
 }
 
-// 🚀 Hauptstart der Anwendung
+// 🚀 Hauptstart der Anwendung – Asynchron für Laden-Warten
 async function startApp() {
   const urlParams = new URLSearchParams(window.location.search);
   const isDevMode = urlParams.get('dev') === '1';
@@ -41,49 +37,82 @@ async function startApp() {
   setupStaticAssets();
 
   const initialScreen = document.getElementById('initial-loading-screen');
+  if (!initialScreen) {
+    console.error('❌ Initial-Loading-Screen nicht gefunden');
+    return;
+  }
   initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
   initialScreen.style.display = 'flex';
 
-  initThree();
   setupUI();
   setupInteractions();
   await initializeGroupsFromMeta();
 
   console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
-  if (isDevMode) {
-    console.log('🔧 Developer-Modus: Lade alle Gruppen...');
-    for (const group of state.availableGroups) {
+  // Erstelle Loader mit zentralem Draco
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
+
+  try {
+    if (isDevMode) {
+      console.log('🔧 Developer-Modus: Lade alle Gruppen...');
+      for (const group of state.availableGroups) {
+        const entries = state.groupedMeta[group] || [];
+        if (entries.length) {
+          showLoadingBar();
+          console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
+          await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+          hideLoadingBar();
+        }
+      }
+    } else {
+      const group = 'bones';
       const entries = state.groupedMeta[group] || [];
       if (entries.length) {
+        showLoadingBar();
         console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
         await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+        hideLoadingBar();
       }
     }
-  } else {
-    const group = 'bones';
-    const entries = state.groupedMeta[group] || [];
-    if (entries.length) {
-      console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-      await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
-    }
+  } catch (err) {
+    console.error('❌ Fehler beim Modell-Laden:', err);
+    hideLoadingBar();
   }
 
+  // Verstecke Initial-Screen mit Fade-Out (UX: Sanft)
   initialScreen.style.opacity = '0';
   setTimeout(() => initialScreen.style.display = 'none', 500);
 
+  // Zeige Splash-Screen
   const splashScreen = document.getElementById('splash-screen');
+  if (!splashScreen) {
+    console.error('❌ Splash-Screen nicht gefunden');
+    return;
+  }
   splashScreen.style.display = 'flex';
   splashScreen.classList.add('visible');
+
+  // UX: Zentrierte Startansicht
+  setCameraToDefault(camera, controls);
+
+  // Starte Render-Loop
+  animate();
 }
 
-// 🎯 Splashscreen beenden
+// 🎯 Splashscreen beenden – UX: Klick zum Start
 function setupSplashScreenExit() {
   const goSticker = document.getElementById('go-sticker');
   const splashScreen = document.getElementById('splash-screen');
   const liveSticker = document.getElementById('live-loading-sticker');
 
-  goSticker?.addEventListener('click', () => {
+  if (!goSticker || !splashScreen) {
+    console.error('❌ Go-Sticker oder Splash-Screen nicht gefunden');
+    return;
+  }
+
+  goSticker.addEventListener('click', () => {
     splashScreen.style.opacity = '0';
     setTimeout(() => {
       splashScreen.style.display = 'none';
@@ -92,15 +121,25 @@ function setupSplashScreenExit() {
   });
 }
 
-// 📦 Manuelles Nachladen weiterer Gruppen (z. B. Muskeln)
+// 📦 Manuelles Nachladen weiterer Gruppen (z. B. Muskeln) – Skalierbar
 function setupDynamicGroupLoading() {
-  document.getElementById('load-muscles-btn')?.addEventListener('click', async () => {
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
+  const musclesBtn = document.getElementById('btn-load-muscles'); // War 'load-muscles-btn'
+  if (!musclesBtn) {
+    console.warn('⚠️ Load-Muscles-Button nicht gefunden');
+    return;
+  }
+  musclesBtn.addEventListener('click', async () => {
+
     try {
       const muscleEntries = state.groupedMeta['muscles'] || [];
       if (muscleEntries.length) {
         showLoadingBar();
         await loadModels(muscleEntries, 'muscles', true, scene, loader, camera, controls, renderer);
         hideLoadingBar();
+      } else {
+        console.warn('⚠️ Keine Muskel-Modelle in groupedMeta gefunden');
       }
     } catch (err) {
       console.error('❌ Fehler beim Laden von "muscles":', err);
@@ -109,7 +148,7 @@ function setupDynamicGroupLoading() {
   });
 }
 
-// 🎬 Render-Loop
+// 🎬 Render-Loop – Für flüssige 3D (OrbitControls + Render)
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -122,5 +161,4 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSplashScreenExit();
   setupDynamicGroupLoading();
   startApp();
-  animate();
 });

@@ -1,5 +1,5 @@
-// cameraUtils.js
-import { THREE } from './init.js';
+import * as THREE from 'three';
+import { camera } from './camera.js'; // Behalte das, falls du es lokal brauchst – aber Funktionen verwenden Parameter
 
 /**
  * Utility zur Erkennung mobiler Endgeräte (Viewport-basiert).
@@ -12,7 +12,7 @@ export function isMobile() {
  * Setzt Kamera und Controls auf eine definierte Standardposition.
  */
 export function setCameraToDefault(camera, controls) {
-  const defaultPosition = new THREE.Vector3(0, 1.6, 3.0); // Nah ran!
+  const defaultPosition = new THREE.Vector3(0, 1.6, 3.0); // Nah ran für Anatomie-Übersicht
   const defaultTarget = new THREE.Vector3(0, 1.0, 0);
 
   camera.position.copy(defaultPosition);
@@ -20,56 +20,47 @@ export function setCameraToDefault(camera, controls) {
   controls.update();
   camera.lookAt(defaultTarget);
   
-console.log('📷 Kamera-Position gesetzt:', camera.position.toArray());
-console.log('🎯 Controls.target gesetzt:', controls.target.toArray());
+  console.log('📷 Kamera-Position gesetzt:', camera.position.toArray());
+  console.log('🎯 Controls.target gesetzt:', controls.target.toArray());
 }
 
 /**
  * Zentriert die Kamera auf sichtbare Modelle und wählt eine passende Zoom-Distanz.
  * Berücksichtigt mobile Geräte durch größeren Abstand.
  */
-export function fitCameraToScene(camera, controls, renderer, scene, paddingFactor = 1.2)
-{
+export function fitCameraToScene(camera, controls, renderer, scene, paddingFactor = 1.2) {
   const boundingBox = new THREE.Box3();
   const tempBox = new THREE.Box3();
   const visibleMeshes = [];
 
-scene.traverse(obj => {
-  if (obj.isMesh && obj.visible) {
-    visibleMeshes.push(obj);
+  scene.traverse(obj => {
+    if (obj.isMesh && obj.visible) {
+      visibleMeshes.push(obj);
+    }
+  });
+
+  if (visibleMeshes.length === 0) {
+    console.warn('[fitCameraToScene] Keine sichtbaren Modelle. Setze auf Default.');
+    setCameraToDefault(camera, controls);
+    return;
   }
-});
 
-if (visibleMeshes.length === 0) {
-  console.warn('[fitCameraToScene] Keine sichtbaren Modelle. Setze auf Default.');
-  setCameraToDefault(camera, controls);
-  renderer.render(scene, camera);
-  return;
-}
-
-//DEBUG OBJEKT IN BOX ?
-  // 📦 BoundingBox berechnen
+  // BoundingBox berechnen
   visibleMeshes.forEach(mesh => {
     tempBox.setFromObject(mesh);
     boundingBox.union(tempBox);
   });
 
-  // 🟥 BoundingBox anzeigen
-const debugMode = false;
-if (debugMode) {
-  const helper = new THREE.Box3Helper(box, 0xff0000);
-  scene.add(helper);
-}
-
-visibleMeshes.forEach(mesh => {
-  tempBox.setFromObject(mesh);
-  boundingBox.union(tempBox);
-});
+  // Debug: BoundingBox anzeigen
+  const debugMode = false;
+  if (debugMode) {
+    const helper = new THREE.Box3Helper(boundingBox, 0xff0000);
+    scene.add(helper);
+  }
 
   if (boundingBox.isEmpty()) {
-    console.warn('[fitCameraToModels] Keine sichtbaren Modelle. Setze auf Default.');
+    console.warn('[fitCameraToScene] BoundingBox leer. Setze auf Default.');
     setCameraToDefault(camera, controls);
-    renderer.render(scene, camera);
     return;
   }
 
@@ -78,7 +69,7 @@ visibleMeshes.forEach(mesh => {
 
   const maxDim = Math.max(size.x, size.y, size.z);
   const baseDistance = maxDim * paddingFactor;
-  const adjustedDistance = isMobile() ? baseDistance * 1.2 : baseDistance * 0.9;
+  const adjustedDistance = isMobile() ? baseDistance * 1.2 : baseDistance * 0.9; // UX: Mehr Raum auf Mobile
 
   const offset = new THREE.Vector3(0, maxDim * 0.2, adjustedDistance); // Von vorne (Z+)
   const newPosition = center.clone().add(offset);
@@ -88,7 +79,6 @@ visibleMeshes.forEach(mesh => {
   controls.update();
   camera.lookAt(center);
 
-  renderer.render(scene, camera);
   console.log('[fitCameraToScene] Kamera angepasst:', newPosition.toArray());
 }
 

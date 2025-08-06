@@ -1,20 +1,17 @@
-// ui-room.js
-// 🌌 Ermöglicht dem Nutzer, die Hintergrundfarbe und -helligkeit der 3D-Szene live zu verändern
-
-import { THREE, scene, renderer, camera } from '../init.js';
-
 /**
- * Initialisiert die UI-Elemente zur Anpassung der Raumfarbe und Helligkeit.
- * Ändert live den Scene-Background anhand des Farbwerts + Brightness.
+ * @file ui-room.js
+ * @description Initialisiert UI-Elemente für Raum-Einstellungen (Beleuchtung, Farbe, Helligkeit).
  */
-export function setupRoomUI() {
-  // 🔍 HTML-Elemente referenzieren
-  const colorPicker = document.getElementById('room-color');              // Farbwahl-Element (#RRGGBB)
-  const brightnessSlider = document.getElementById('room-brightness');    // Helligkeit (Range 0–1)
-  const roomContent = document.getElementById('room-dropdown-content');   // UI-Container
+import * as THREE from 'three';
+import { scene } from '../scene.js';
+import { lightFront, lightBack, lightTop, ambientLight } from '../lights.js';
 
-  // ❌ Abbruch, falls Elemente nicht gefunden werden
-  if (!colorPicker || !brightnessSlider || !roomContent) {
+export function setupRoomUI() {
+  const lightingSlider = document.getElementById('slider-lighting');
+  const colorInput = document.getElementById('color-room');
+  const brightnessSlider = document.getElementById('slider-room-brightness');
+
+  if (!lightingSlider || !colorInput || !brightnessSlider) {
     console.warn('⚠️ ui-room: Farb-/Helligkeitselemente fehlen.');
     return;
   }
@@ -24,22 +21,31 @@ export function setupRoomUI() {
    * Kombiniert die gewählte Farbe mit der eingestellten Helligkeit via HSL-Korrektur.
    */
   function updateRoomColor() {
-    const baseColor = new THREE.Color(colorPicker.value);       // Basisfarbe aus Farbwähler
-    const brightness = parseFloat(brightnessSlider.value);      // Helligkeit als Zahl (0.0–1.0)
+    const baseColor = new THREE.Color(colorInput.value); // Fix: colorInput statt colorPicker
+    const brightness = parseFloat(brightnessSlider.value);
 
     // 🎨 Umrechnen in HSL, Helligkeit anpassen
     const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
-    hsl.l = Math.max(0, Math.min(1, hsl.l + (brightness - 0.5))); // l = Lichtanteil (zwischen 0 und 1)
-    baseColor.setHSL(hsl.h, hsl.s, hsl.l);                      // Zurück in RGB wandeln
+    hsl.l = Math.max(0, Math.min(1, hsl.l + (brightness - 0.5)));
+    baseColor.setHSL(hsl.h, hsl.s, hsl.l);
 
-    // 🌌 Szene-Hintergrundfarbe setzen und neu rendern
+    // 🌌 Szene-Hintergrundfarbe setzen
     scene.background = baseColor;
-    renderer.render(scene, camera);
+    console.log(`🎨 Raumfarbe geändert: ${baseColor.getHexString()}`);
   }
 
-  // 📌 Event-Listener verbinden Eingabefelder mit Updatefunktion
-  colorPicker.addEventListener('input', updateRoomColor);
+  // 📌 Event-Listener
+  colorInput.addEventListener('input', updateRoomColor);
   brightnessSlider.addEventListener('input', updateRoomColor);
+
+  lightingSlider.addEventListener('input', (e) => {
+    const intensity = parseFloat(e.target.value);
+    lightFront.intensity = intensity;
+    lightBack.intensity = intensity * 0.75;
+    lightTop.intensity = intensity * 0.5;
+    ambientLight.intensity = intensity * 0.5;
+    console.log(`💡 Beleuchtungsintensität geändert: ${intensity}`);
+  });
 
   // 🟢 Erfolgsmeldung
   console.log('🌌 ui-room initialisiert.');

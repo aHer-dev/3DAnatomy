@@ -1,10 +1,17 @@
-// modelLoader-groups.js
-
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { dracoLoader } from './dracoLoader.js'; // Zentraler Draco-Loader
+import { scene } from '../scene.js';
+import { camera } from '../camera.js';
+import { renderer } from '../renderer.js';
 import { getMeta } from '../utils.js';
 import { loadModels } from './modelLoader-core.js';
-import { removeModelsByGroupOrSubgroup } from './cleanup.js'; // Wichtig für unloadGroup()
+import { removeModelsByGroupOrSubgroup } from './cleanup.js';
 import { state } from '../state.js';
-import { scene, loader } from '../init.js';
+
+const loader = new GLTFLoader();
+loader.setDRACOLoader(dracoLoader); // Nutze zentralen Draco-Loader
+
 
 /**
  * 📦 Lädt eine gesamte Gruppe (z. B. "muscles") mit optionaler Subgruppe.

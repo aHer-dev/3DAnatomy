@@ -1,18 +1,18 @@
 // ui-submenu.js
 // 📂 Erstellt ein dynamisches Submenü für anatomische Gruppen mit Checkbox-Steuerung (Gruppen, Subgruppen, einzelne Modelle)
-
+import { scene } from '../scene.js';
 import { state } from '../state.js';
 import { loadGroup, unloadGroup, updateGroupVisibility, loadModels, removeModelByFilename } from '../modelLoader/index.js';
 import { getMeta } from '../utils.js';
-import { scene, loader } from '../init.js';
+
 
 /**
  * Initialisiert das UI-Menü für anatomische Hauptgruppen (z. B. muscles, bones)
  * mit ausklappbaren Untergruppen und Checkboxen zum gezielten (De-)Laden.
  */
 export function setupSubmenuUI() {
-  const container = document.getElementById('submenu-container');
-  if (!container) {
+const submenuContainer = document.getElementById('submenu-container');
+  if (!submenuContainer) {
     console.warn('⚠️ Kein Container mit ID "submenu-container" gefunden.');
     return;
   }

@@ -1,7 +1,13 @@
-import { THREE } from './init.js';
-import { scene, camera, renderer } from './init.js';
-// Kamera-Utilities (zentriert alle Modelle, setzt Standard-Position)
+import * as THREE from 'three'; // Direkt importieren – kein init.js mehr nötig
+
+// Neue Module für Szene, Kamera, Renderer (ersetzt alte init.js-Imports)
+import { scene } from './scene.js';
+import { camera } from './camera.js';
+import { renderer } from './renderer.js';
+
+// Kamera-Utilities (zentriert alle Modelle, setzt Standard-Position) – OK, bleibt
 import { setCameraToDefault, fitCameraToScene } from './cameraUtils.js';
+
 import { state } from './state.js';
 import { getMeta } from './utils.js';
 

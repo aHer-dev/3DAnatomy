@@ -1,8 +1,13 @@
 // ui-search.js
 // 🔍 Sucht anatomische Strukturen anhand ihrer Labels oder FMA-ID und lädt sie in die Szene.
 
-import { state } from '../state.js';                        // 🔁 Globaler App-Zustand
-import { scene, loader } from '../init.js';                // 🌐 Zugriff auf Szene und GLTF-Loader
+// In js/ui/ui-search.js
+import * as THREE from 'three';
+import { scene } from '../scene.js'; // Ersetzt init.js
+import { controls } from '../controls.js'; // Falls für Interaktionen nötig
+
+// ... Rest des Code
+import { state } from '../state.js';                        // 🔁 Globaler App-Zustand              
 import { getMeta } from '../utils.js';                     // 📄 Lädt Metadaten der Modelle
 import { highlightObject, showInfoPanel } from '../interaction.js'; // ✨ Interaktion (Highlight & Info-Fenster)
 import { loadModels } from '../modelLoader/index.js';      // 🔄 Funktion zum Laden einzelner Modelle

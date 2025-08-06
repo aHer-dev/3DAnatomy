@@ -1,236 +1,181 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BlueBody 3D</title>
 
-  <!-- Icons & Manifest -->
-  <link rel="icon" href="favicon.ico" sizes="any" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <!-- Optional: SVG-Favicon & WebApp manifest bei Bedarf aktivieren -->
-  <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
-  <!-- <link rel="manifest" href="manifest.webmanifest"> -->
+  <!-- Import-Map für Three.js r179 -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.179.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.179.0/examples/jsm/"
+      }
+    }
+  </script>
 
-  <!-- Styles & Script -->
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="app.js"></script>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- 🎨 Canvas für 3D-Szene -->
-  <canvas id="canvas"></canvas>
-
-  <!-- 📑 Submenü -->
-  <div id="submenu-container"></div>
-
-  <!-- 🎛️ UI Controls -->
-<div class="dropdown">
-    <button id="load-bones-btn" aria-label="Knochen laden">Knochen ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-muscles-btn" aria-label="Muskeln laden">Muskeln ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-tendons-btn" aria-label="Sehnen laden">Sehnen ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-arteries-btn" aria-label="Arterien laden">Arterien ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-brain-btn" aria-label="Gehirn laden">Gehirn ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-cartilage-btn" aria-label="Knorpel laden">Knorpel ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-ear-btn" aria-label="Ohr laden">Ohr ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-eyes-btn" aria-label="Augen laden">Augen ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-glands-btn" aria-label="Drüsen laden">Drüsen ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-heart-btn" aria-label="Herz laden">Herz ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-ligaments-btn" aria-label="Bänder laden">Bänder ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-lungs-btn" aria-label="Lungen laden">Lungen ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-nerves-btn" aria-label="Nerven laden">Nerven ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-organs-btn" aria-label="Organe laden">Organe ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-skin_hair-btn" aria-label="Haut/Haare laden">Haut/Haare ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-teeth-btn" aria-label="Zähne laden">Zähne ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="load-veins-btn" aria-label="Venen laden">Venen ▼</button>
-    <div class="dropdown-content"></div>
-  </div>
-  <div class="dropdown">
-    <button id="add-to-set-button" aria-label="Zur Sammlung hinzufügen">Anzeigen</button>
-    <div id="set-list">Meine Sammlung</div>
-  </div>
-  <div class="dropdown">
-    <input id="bones-color" type="color" value="#cccccc" aria-label="Knochenfarbe">
-    <input id="muscles-color" type="color" value="#ff0000" aria-label="Muskelnfarbe">
-    <input id="tendons-color" type="color" value="#ffffff" aria-label="Sehnenfarbe">
-    <input id="arteries-color" type="color" value="#ff0000" aria-label="Arterienfarbe">
-    <input id="brain-color" type="color" value="#cccccc" aria-label="Gehirnfarbe">
-    <input id="cartilage-color" type="color" value="#cccccc" aria-label="Knorpelfarbe">
-    <input id="ear-color" type="color" value="#cccccc" aria-label="Ohrfarbe">
-    <input id="eyes-color" type="color" value="#cccccc" aria-label="Augenfarbe">
-    <input id="glands-color" type="color" value="#cccccc" aria-label="Drüsenfarbe">
-    <input id="heart-color" type="color" value="#ff0000" aria-label="Herzfarbe">
-    <input id="ligaments-color" type="color" value="#ffffff" aria-label="Bänderfarbe">
-    <input id="lungs-color" type="color" value="#cccccc" aria-label="Lungenfarbe">
-    <input id="nerves-color" type="color" value="#ffff00" aria-label="Nervenfarbe">
-    <input id="organs-color" type="color" value="#cccccc" aria-label="Organefarbe">
-    <input id="skin_hair-color" type="color" value="#cccccc" aria-label="Haut/Haarefarbe">
-    <input id="teeth-color" type="color" value="#ffffff" aria-label="Zähnefarbe">
-    <input id="veins-color" type="color" value="#0000ff" aria-label="Venenfarbe">
-  </div>
-  <div class="dropdown">
-    <button id="export-set-button" aria-label="Exportieren">Exportieren</button>
-    <input type="file" id="import-set-file" accept=".json" aria-label="Importieren">
-    <button id="screenshot-button" aria-label="Screenshot">Screenshot</button>
-  </div>
-  <div class="dropdown">
-    <input id="lighting" type="range" min="0" max="2" step="0.1" value="1" aria-label="Beleuchtung">
-    <input id="background-color" type="color" value="#020a1d" aria-label="Hintergrundfarbe">
-    <input id="brightness" type="range" min="0" max="2" step="0.1" value="1" aria-label="Helligkeit">
+  <!-- Container für Renderer -->
+  <div id="container">
+    <canvas id="canvas" aria-label="3D Anatomie-Ansicht"></canvas>
   </div>
 
-    <!-- 🎨 Farben -->
-    <div class="dropdown">
-      <button class="dropdown-button">Farben</button>
-      <div class="dropdown-content" id="color-controls">
-        <label>Bones Farbe: <input type="color" id="bones-color" /></label>
-        <label>Muscles Farbe: <input type="color" id="muscles-color" /></label>
-        <label>Tendons Farbe: <input type="color" id="tendons-color" /></label>
-        <label>Other Farbe: <input type="color" id="other-color" /></label>
-      </div>
-    </div>
-
-    <!-- 🛠️ Tools -->
-    <div class="dropdown">
-      <button class="dropdown-button">Tools</button>
-      <div class="dropdown-content">
-        <button id="screenshot-button">Screenshot</button>
-        <button id="export-set-button">Exportieren</button>
-        <input type="file" id="import-set-file" accept=".json">
-        <label for="load-file" class="file-label">Code-Importieren (.txt)</label>
-      </div>
-    </div>
-
-    <!-- 🏠 Raum -->
-    <div class="dropdown">
-      <button class="dropdown-button">Raum</button>
-      <div class="dropdown-content" id="room-dropdown-content">
-        <label>Beleuchtung: <input type="range" id="lighting-slider" min="0" max="2" step="0.1" value="1" /></label>
-        <label>Farbe: <input type="color" id="room-color" value="#210B41" /></label>
-        <label>Helligkeit: <input type="range" id="room-brightness" min="0" max="1" step="0.01" value="0.4" /></label>
-      </div>
-    </div>
-
-    <!-- 📦 Sammlung -->
-    <div class="dropdown">
-      <button class="dropdown-button">Sammlung</button>
-      <div class="dropdown-content" id="set-dropdown-content">
-        <button id="show-set">Anzeigen</button>
-        <button id="clear-set">Löschen</button>
-        <button id="list-set">Meine Sammlung</button>
-        <div id="set-structures-list" class="set-structures-list"></div>
-      </div>
-    </div>
-
-    <!-- 🔄 Reset -->
-    <button id="reset-button">Reset</button>
-  </div>
-
-  <!-- 📦 Container für 3D-Objekte -->
-  <div id="container"></div>
-
-  <!-- 🍔 Menü-Icon -->
-  <div id="menu-icon">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <!-- ⏳ Ladeanzeige -->
-  <div id="loading">
+  <!-- Ladeanzeige -->
+  <div id="initial-loading-screen" aria-hidden="true">
+    <img id="loading-sticker" src="images/loading-sticker.png" alt="Ladeanimation">
     <div id="progress-bar"></div>
     <div id="progress-text">0%</div>
   </div>
 
-  
-  <div id="footer-container">
-  
-    <div id="footer" onclick="toggleLicense()">
-      <span class="license-link">© CC BY-SA</span>
+  <!-- Splash-Screen -->
+  <div id="splash-screen" aria-hidden="true">
+    <img id="go-sticker" src="images/go-sticker.png" alt="Starten" role="button">
+    <img id="live-loading-sticker" src="images/live-loading-sticker.png" alt="Live-Ladeanimation">
   </div>
 
-  <!-- 📃 Lizenzinfo -->
-  <div id="license-dropdown">
-    <p>
-      BodyParts3D, © The Database Center for Life Science,<br />
-      lizenziert unter
-      <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener noreferrer">
-        CC BY-SA 2.1 Japan
-      </a>.
-    </p>
-    <p>
-      Attribution: Modelle basieren auf Daten von
-      <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener noreferrer">
-        Anatomography / BodyParts3D
-      </a>.
-      Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.
-    </p>
+  <!-- UI Controls -->
+  <div id="controls" role="region" aria-label="Steuerung der 3D-Anatomie">
+    <!-- Struktur-Ladebuttons -->
+    <div class="dropdown">
+      <button id="btn-load-bones" aria-haspopup="true" aria-expanded="false">Knochen ▼</button>
+      <ul id="menu-bones" class="dropdown-menu" aria-label="Knochen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-muscles" aria-haspopup="true" aria-expanded="false">Muskeln ▼</button>
+      <ul id="menu-muscles" class="dropdown-menu" aria-label="Muskel-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-tendons" aria-haspopup="true" aria-expanded="false">Sehnen ▼</button>
+      <ul id="menu-tendons" class="dropdown-menu" aria-label="Sehnen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-arteries" aria-haspopup="true" aria-expanded="false">Arterien ▼</button>
+      <ul id="menu-arteries" class="dropdown-menu" aria-label="Arterien-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-brain" aria-haspopup="true" aria-expanded="false">Gehirn ▼</button>
+      <ul id="menu-brain" class="dropdown-menu" aria-label="Gehirn-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-cartilage" aria-haspopup="true" aria-expanded="false">Knorpel ▼</button>
+      <ul id="menu-cartilage" class="dropdown-menu" aria-label="Knorpel-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-ear" aria-haspopup="true" aria-expanded="false">Ohr ▼</button>
+      <ul id="menu-ear" class="dropdown-menu" aria-label="Ohr-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-eyes" aria-haspopup="true" aria-expanded="false">Augen ▼</button>
+      <ul id="menu-eyes" class="dropdown-menu" aria-label="Augen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-glands" aria-haspopup="true" aria-expanded="false">Drüsen ▼</button>
+      <ul id="menu-glands" class="dropdown-menu" aria-label="Drüsen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-heart" aria-haspopup="true" aria-expanded="false">Herz ▼</button>
+      <ul id="menu-heart" class="dropdown-menu" aria-label="Herz-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-ligaments" aria-haspopup="true" aria-expanded="false">Bänder ▼</button>
+      <ul id="menu-ligaments" class="dropdown-menu" aria-label="Bänder-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-lungs" aria-haspopup="true" aria-expanded="false">Lunge ▼</button>
+      <ul id="menu-lungs" class="dropdown-menu" aria-label="Lungen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-nerves" aria-haspopup="true" aria-expanded="false">Nerven ▼</button>
+      <ul id="menu-nerves" class="dropdown-menu" aria-label="Nerven-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-organs" aria-haspopup="true" aria-expanded="false">Organe ▼</button>
+      <ul id="menu-organs" class="dropdown-menu" aria-label="Organe-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-skin_hair" aria-haspopup="true" aria-expanded="false">Haut/Haare ▼</button>
+      <ul id="menu-skin_hair" class="dropdown-menu" aria-label="Haut/Haar-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-teeth" aria-haspopup="true" aria-expanded="false">Zähne ▼</button>
+      <ul id="menu-teeth" class="dropdown-menu" aria-label="Zähne-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-veins" aria-haspopup="true" aria-expanded="false">Venen ▼</button>
+      <ul id="menu-veins" class="dropdown-menu" aria-label="Venen-Modelle"></ul>
+    </div>
+
+    <!-- Farbauswahl -->
+    <fieldset id="color-controls" aria-label="Farbsteuerung">
+      <legend>Farben</legend>
+      <label for="color-bones">Knochen:</label>
+      <input id="color-bones" type="color" value="#cccccc" aria-label="Farbe für Knochen">
+      <label for="color-muscles">Muskeln:</label>
+      <input id="color-muscles" type="color" value="#ff0000" aria-label="Farbe für Muskeln">
+      <label for="color-tendons">Sehnen:</label>
+      <input id="color-tendons" type="color" value="#ffffff" aria-label="Farbe für Sehnen">
+    </fieldset>
+
+    <!-- Sammlung (Set) -->
+    <div class="dropdown" aria-label="Sammlungssteuerung">
+      <button id="btn-add-to-set" aria-label="Zur Sammlung hinzufügen">Zur Sammlung</button>
+      <div id="set-list" aria-live="polite">Meine Sammlung</div>
+    </div>
+    <div class="dropdown">
+      <button id="btn-show-set" aria-label="Sammlung anzeigen">Sammlung anzeigen</button>
+      <button id="btn-clear-set" aria-label="Sammlung leeren">Sammlung leeren</button>
+    </div>
+
+    <!-- Export / Import / Screenshot -->
+    <div id="tools" aria-label="Werkzeuge">
+      <button id="btn-export-set" aria-label="Sammlung exportieren">Exportieren</button>
+      <input type="file" id="input-import-set" accept=".json" aria-label="Sammlung importieren">
+      <button id="btn-screenshot" aria-label="Screenshot erstellen">Screenshot</button>
+    </div>
+
+    <!-- Raum-Einstellungen -->
+    <fieldset id="room-controls" aria-label="Raumeinstellungen">
+      <legend>Raum</legend>
+      <label for="slider-lighting">Beleuchtung:</label>
+      <input id="slider-lighting" type="range" min="0" max="2" step="0.1" value="1" aria-valuetext="1">
+      <label for="color-room">Farbe:</label>
+      <input id="color-room" type="color" value="#210B41" aria-label="Raumfarbe">
+      <label for="slider-room-brightness">Helligkeit:</label>
+      <input id="slider-room-brightness" type="range" min="0" max="1" step="0.01" value="0.4" aria-valuetext="0.4">
+    </fieldset>
+
+    <!-- Reset-Knopf -->
+    <button id="btn-reset" aria-label="Ansicht zurücksetzen">Reset</button>
+
+    <!-- Submenü und Dropdown-Content -->
+    <div id="submenu-container" class="dropdown-menu" aria-label="Submenü"></div>
+    <div id="room-dropdown-content" class="dropdown-menu" aria-label="Raumoptionen"></div>
+    <button id="menu-icon" aria-label="Menü öffnen">☰</button>
   </div>
 
-  <!-- ℹ️ Info-Panel -->
-  <div id="info-panel" class="hidden">
-    <div id="info-header"></div>
-    <div id="info-content"></div>
+  <!-- Info-Panel und Tooltip -->
+  <div id="info-panel" class="hidden" role="dialog" aria-labelledby="info-header">
+    <header id="info-header"></header>
+    <section id="info-content"></section>
   </div>
+  <div id="tooltip" role="tooltip" aria-hidden="true"></div>
 
-  <!-- 🧠 Tooltip -->
-  <div id="tooltip"></div>
+  <!-- Footer & Lizenz -->
+  <footer id="footer" role="contentinfo">
+    <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">© CC BY-SA</button>
+    <div id="license-info" class="hidden" aria-hidden="true">
+      <p>BodyParts3D, © The Database Center for Life Science, lizenziert unter
+        <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener noreferrer">
+          CC BY-SA 2.1 Japan</a>.</p>
+      <p>Modelle basieren auf Anatomography / BodyParts3D. Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.</p>
+    </div>
+  </footer>
 
-  <!-- 🚀 Splash / Loading Screens -->
-  <div id="initial-loading-screen" style="display: none;">
-    <img id="loading-sticker" src="" alt="Loading Icon" />
-  </div>
-  <img id="live-loading-sticker" src="" alt="Live Loading" style="display: none;" />
-  <div id="splash-screen" style="display: none;">
-    <img id="go-sticker" src="" alt="Go" />
-  </div>
+  <!-- Script -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>

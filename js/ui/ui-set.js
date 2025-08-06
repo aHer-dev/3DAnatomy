@@ -1,17 +1,26 @@
-// ui-set.js
-// 📦 Ermöglicht dem Nutzer, anatomische Strukturen zu einer persönlichen Sammlung (Set) hinzuzufügen,
-// alle Muskeln auf einmal zu laden und Einträge aus dem Set wieder zu entfernen.
-
-import { state } from '../state.js';                                // 🔁 Globaler Zustand
-import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js'; // 🔄 Modell-Ladevorgänge & Ladeanzeige
-import { scene, loader, camera, controls, renderer } from '../init.js';               // 🌐 3D-Szene, Kamera, Renderer usw.
+/**
+ * @file ui-set.js
+ * @description Ermöglicht dem Nutzer, anatomische Strukturen zu einer persönlichen Sammlung (Set) hinzuzufügen,
+ * alle Muskeln auf einmal zu laden und Einträge aus dem Set wieder zu entfernen.
+ */
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { dracoLoader } from '../modelLoader/dracoLoader.js';
+import { scene } from '../scene.js';
+import { camera } from '../camera.js';
+import { renderer } from '../renderer.js';
+import { controls } from '../controls.js';
+import { state } from '../state.js';
+import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
 
 /**
  * Initialisiert das UI-System zur Verwaltung von Sets (Sammlungen).
- * Bietet: Einzelne Struktur hinzufügen, alle Muskeln laden, Liste aktualisieren, Einträge löschen.
  */
 export function setupSetUI() {
   console.log('setupSetUI aufgerufen');
+
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
 
   const setupGroupButton = (buttonId, groupName) => {
     const button = document.getElementById(buttonId);
@@ -31,7 +40,7 @@ export function setupSetUI() {
           hideLoadingBar();
         }
       } catch (err) {
-        console.error(`Fehler beim Laden von ${groupName}:`, err);
+        console.error(`❌ Fehler beim Laden von ${groupName}:`, err);
         hideLoadingBar();
       } finally {
         button.disabled = false;
@@ -39,14 +48,14 @@ export function setupSetUI() {
     });
   };
 
-  // Alle Gruppen aus /models/
+  // Alle Gruppen aus meta.json
   const groups = ['bones', 'muscles', 'tendons', 'arteries', 'brain', 'cartilage', 'ear', 'eyes', 'glands', 'heart', 'ligaments', 'lungs', 'nerves', 'organs', 'skin_hair', 'teeth', 'veins'];
-  groups.forEach(group => setupGroupButton(`load-${group}-btn`, group));
+  groups.forEach(group => setupGroupButton(`btn-load-${group}`, group));
 
-  const addButton = document.getElementById('add-to-set-button');
+  const addButton = document.getElementById('btn-add-to-set');
   const setList = document.getElementById('set-list');
   if (!addButton || !setList) {
-    console.warn('⚠️ Set-UI: add-to-set-button oder set-list nicht gefunden.');
+    console.warn('⚠️ Set-UI: btn-add-to-set oder set-list nicht gefunden.');
     return;
   }
 
