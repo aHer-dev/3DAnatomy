@@ -13,33 +13,29 @@ import { showLoadingBar, updateLoadingBar, hideLoadingBar } from './modelLoader-
  * @param {THREE.Scene} scene
  * @param {THREE.GLTFLoader} loader
  */
-export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer)
- {
-  if (!entries?.length) {
-    console.warn(`Keine Modelle für Gruppe "${group}" gefunden.`);
-    return;
+export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer) {
+  if (!Array.isArray(entries) || entries.length === 0) return;
+
+  showLoadingBar();
+
+  // 📦 Paralleles Laden aller Modelle
+  await Promise.all(entries.map(async (entry, i) => {
+    try {
+      await loadSingleModel(entry, group, scene, loader, camera, controls, i === 0 && centerCamera);
+    } catch (err) {
+      console.warn(`⚠️ Modell ${entry.id} konnte nicht geladen werden:`, err);
+    }
+  }));
+
+  hideLoadingBar();
+
+  // 🧭 Kamera zentrieren nach erstem Modell
+  if (centerCamera) {
+    fitCameraToScene(camera, controls, renderer, scene);
   }
 
-  showLoadingBar(); // ✅ Ladebalken zeigen
-
-for (let i = 0; i < entries.length; i++) {
-  const entry = entries[i];
-
-  if (!entry?.model?.filename) {
-    console.warn(`⛔ Modell ohne gültigen Dateinamen übersprungen:`, entry?.id || entry);
-    continue;
-  }
-
-  try {
-    await loadSingleModel(entry, group, scene, loader, i === 0 && centerCamera);
-  } catch (err) {
-    console.error(`❌ Fehler beim Laden von ${entry.model?.filename || 'unbekannt'}:`, err);
-  }
-}
-
-  hideLoadingBar(); // ✅ Ladebalken ausblenden
-
-  console.log(`✅ Alle Modelle für Gruppe "${group}" geladen.`);
+  // 📋 Log zum Abschluss
+  console.log(`✅ Gruppe "${group}" vollständig geladen! (${state.groups[group]?.length || 0} Modelle)`);
 }
 
 /**
@@ -50,51 +46,37 @@ for (let i = 0; i < entries.length; i++) {
  * @param {THREE.GLTFLoader} loader
  * @param {boolean} focusCamera - Kamera ggf. auf das Modell zentrieren
  */
-export async function loadSingleModel(entry, group, scene, loader, focusCamera = false) {
+export async function loadSingleModel(entry, group, scene, loader, camera, controls, focusCamera = false) {
   return new Promise((resolve, reject) => {
-    // 🧠 Schritt 1: Validierung
-// 🔒 Sicherheitsprüfung: Variantenstruktur vorhanden?
+    // 🔒 Sicherheitsprüfung: Variantenstruktur vorhanden
+    const currentVariant = entry.model.current || state.defaultSettings.modelVariant || 'draco';
+    const variant = entry.model.variants?.[currentVariant];
 
+    if (!variant || !variant.filename || !variant.path) {
+      console.warn('⚠️ Ungültiger Modell-Variant-Eintrag bei:', entry.id, '| Variante:', currentVariant);
+      resolve(); // Überspringen, aber Promise auflösen, um loadModels fortzusetzen
+      return;
+    }
 
-// 🔒 Sicherheitsprüfung: Variantenstruktur vorhanden
-const currentVariant = entry.model.current || state.defaultSettings.modelVariant || 'draco';
-const variant = entry.model.variants?.[currentVariant];
+    // 🧠 Pfad- und Dateiname aus der gewählten Variante
+    const filename = variant.filename;
+    const subfolder = variant.path;
+    const url = `models/${subfolder}/${filename}`.replace(/\/+/g, '/');
 
-if (!variant || !variant.filename || !variant.path) {
-  console.warn('⚠️ Ungültiger Modell-Variant-Eintrag bei:', entry.id, '| Variante:', currentVariant);
-  return; // ⛔ Modell überspringen
-}
+    // 🧪 Debug-Ausgabe (nur 1 Log)
+    console.log('📦 Lade Modell:', { id: entry.id, filename, group, path: subfolder, url });
 
-// 🧠 Pfad- und Dateiname aus der gewählten Variante
-const filename = variant.filename;
-const subfolder = variant.path;
+    // 🔍 Duplikat-Prüfung VOR dem Hinzufügen
+    if (state.groups[group]?.some(m => m.name === filename)) {
+      console.warn(`⚠️ Modell ${filename} bereits geladen – übersprungen.`);
+      resolve();
+      return;
+    }
 
-// 🌐 Pfad zum Modell zusammenbauen
-const url = `models/${subfolder}/${filename}`.replace(/\/+/g, '/');
-
-// 🧪 Debug-Ausgabe
-console.log("📦 Lade Modell:", {
-  id: entry.id,
-  filename,
-  group,
-  path: subfolder,
-  url
-});
-
-
-    // 🧪 Debug-Ausgabe
-    console.log("📦 Lade Modell:", {
-      id: entry.id,
-      filename,
-      group,
-      path: subfolder,
-      url
-    });
-
-    // 🧠 Schritt 3: Modell laden
+    // 🧠 Modell laden
     loader.load(
       url,
-      gltf => {
+      (gltf) => {
         const model = gltf.scene;
         if (!model) {
           reject(new Error(`⚠️ Kein scene-Objekt in GLTF: ${filename}`));
@@ -102,10 +84,10 @@ console.log("📦 Lade Modell:", {
         }
 
         // 🌈 Material anwenden
-        model.traverse(child => {
+        model.traverse((child) => {
           if (child.isMesh) {
             child.material = new THREE.MeshStandardMaterial({
-              color: state.colors[group] || entry.model.default_color || 0xB31919,
+              color: state.colors[group] || entry.model.default_color || state.defaultSettings.defaultColor || 0xcccccc, // Fallback aus state
               transparent: true,
               opacity: state.transparency ?? 1,
             });
@@ -125,6 +107,7 @@ console.log("📦 Lade Modell:", {
         model.userData = { meta: entry };
 
         // 💾 Modell in State speichern
+        state.groups[group] = state.groups[group] || []; // Sicherstellen, dass Array existiert
         state.groups[group].push(model);
         state.modelNames.set(model, entry.labels?.en || filename);
         state.groupStates[group][filename] = true;
@@ -132,11 +115,20 @@ console.log("📦 Lade Modell:", {
         // ➕ Szene hinzufügen
         scene.add(model);
 
-        // TODO: Kamera ggf. zentrieren
+        // 🎯 Kamera zentrieren, wenn focusCamera=true
+        if (focusCamera) {
+          const box = new THREE.Box3().setFromObject(model);
+          const center = box.getCenter(new THREE.Vector3());
+          camera.position.set(center.x, center.y + 1, center.z + 2); // Heuristische Position
+          camera.lookAt(center);
+          controls.target.copy(center);
+          controls.update();
+        }
+
         resolve();
       },
       undefined,
-      error => {
+      (error) => {
         console.warn(`❌ Fehler beim Laden von ${url}:`, error);
         reject(error);
       }

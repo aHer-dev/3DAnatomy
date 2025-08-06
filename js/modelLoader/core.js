@@ -32,35 +32,39 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
   // Ladebalken einblenden
   showLoadingBar();
 
-  // Alle Modelle nacheinander laden
+// Alle Modelle nacheinander laden
 for (let i = 0; i < entries.length; i++) {
   const entry = entries[i];
+  const currentVariant = entry.model.current || state.defaultSettings.modelVariant || 'draco';
+  const variant = entry.model.variants?.[currentVariant];
 
-  // Sicherheitsprüfung
-  if (!entry?.model?.filename) {
-    console.warn(`⛔ Kein Dateiname für Eintrag ${entry?.id || i}. Übersprungen.`);
+  if (!variant || !variant.filename || !variant.path) {
+    console.warn(`⛔ Kein gültiger Modell-Pfad für Eintrag ${entry.id} (${currentVariant}). Übersprungen.`);
     continue;
   }
 
-  try {
-    await loadSingleModel(entry, group, scene, loader, i === 0 && centerCamera);
+  const filename = variant.filename;
 
-// 📏 Debug: BoundingBox und Mittelpunkt ausgeben
+  console.log("🧩 Lade Modell:", entry.id, filename);
+
+  try {
+    await loadSingleModel(entry, group, scene, loader, camera, controls, i === 0 && centerCamera);
+
+    // 📏 Debug: BoundingBox und Mittelpunkt
     const lastModel = state.groups[group][state.groups[group].length - 1];
     const box = new THREE.Box3().setFromObject(lastModel);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
-    console.log(`📐 Modell: ${entry.model.filename} – Größe:`, size, "Zentrum:", center);
 
-// Optional: Kamera nach erstem Modell ausrichten
+    console.log("📐 Modell:", filename, "– Größe:", size, "Zentrum:", center);
 
+    // Optional Kameraausrichtung
     if (i === 0) {
       fitCameraToScene(camera, controls, renderer, scene);
-
     }
 
   } catch (err) {
-    console.error(`Fehler beim Laden von ${entry.model.filename}:`, err);
+    console.error(`❌ Fehler beim Laden von ${filename}:`, err);
   }
 
   updateLoadingBar(Math.round(((i + 1) / entries.length) * 100));
@@ -89,23 +93,22 @@ for (let i = 0; i < entries.length; i++) {
  * @param {boolean} focusCamera - Wenn true, könnte hier die Kamera auf das Modell positioniert werden.
  * @returns {Promise<void>} Promise, die beim Abschluss des Ladevorgangs aufgelöst wird.
  */
-export function loadSingleModel(entry, group, scene, loader, focusCamera = false) {
+export function loadSingleModel(entry, group, scene, loader, camera, controls, focusCamera = false) {
   return new Promise((resolve, reject) => {
-    // Dateiname validieren
-  const variant = entry?.model?.variants?.[entry?.model?.current];
-  if (!variant || !variant.filename || !variant.path) {
-  console.warn("⛔ Modell ohne gültige Variantenstruktur übersprungen:", entry?.id || entry);
-  resolve();
-  return;
-}
+    // 🔒 Sicherheitsprüfung: Variantenstruktur vorhanden?
+    const variant = entry?.model?.variants?.[entry?.model?.current];
+    if (!variant || !variant.filename || !variant.path) {
+      console.warn("⛔ Modell ohne gültige Variantenstruktur übersprungen:", entry?.id || entry);
+      resolve();
+      return;
+    }
 
-const filename = variant.filename;
-const path = variant.path;
-const url = `models/${path}/${filename}`.replace(/\/+/g, '/');
+    // ✅ Pfad korrekt zusammensetzen
+    const filename = variant.filename;
+    const path = variant.path;
+    const url = `models/${path}/${filename}`.replace(/\/+/g, '/');
 
-
-
-    // Datei laden
+    // 📦 Modell laden
     loader.load(
       url,
       gltf => {
@@ -115,62 +118,61 @@ const url = `models/${path}/${filename}`.replace(/\/+/g, '/');
           return;
         }
 
-        // Material auf alle Meshes anwenden
+        // 🎨 Material anwenden
         model.traverse(child => {
           if (child.isMesh) {
             child.material = new THREE.MeshStandardMaterial({
               color: state.colors[group] || entry.model.default_color || 0xB31919,
               transparent: true,
-              
-              opacity: 1 // sichtbar!
-//DEBUG DRÜBER
-              //opacity: state.transparency ?? 1,
+              opacity: 1 // Du kannst das später dynamisch anpassen
             });
           }
         });
 
-        // Rotation und Skalierung setzen, falls im Meta-Eintrag vorhanden
+        // 🔁 Rotation & Skalierung aus Metadaten setzen
         if (Array.isArray(entry.model.rotation)) {
           model.rotation.set(...entry.model.rotation);
         }
         if (Array.isArray(entry.model.scale)) {
           model.scale.set(...entry.model.scale);
         } else {
-       model.scale.set(1, 1, 1); // Fallback!
-}
-        // Modell benennen und Metadaten sichern
+          model.scale.set(1, 1, 1); // Fallback
+        }
+
+        // 🏷️ Metadaten zuweisen
         model.name = filename;
         model.userData = { meta: entry };
-
-        // Modell in den globalen Zustand einfügen
         state.groups[group].push(model);
         state.modelNames.set(model, entry.labels?.en || filename);
         state.groupStates[group][filename] = true;
 
-        // Modell zur Szene hinzufügen
+        // ➕ Modell zur Szene hinzufügen
         scene.add(model);
 
-// !!Debug: Modell sichtbar machen + Kameraausrichtung testen
-const box = new THREE.Box3().setFromObject(model);
-const size = box.getSize(new THREE.Vector3());
-const center = box.getCenter(new THREE.Vector3());
+        // 📐 Debug-Info: Bounding-Box
+        const box = new THREE.Box3().setFromObject(model);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
 
-console.log(`📐 Modell: ${filename} – Größe:`, size, "Zentrum:", center);
+        console.log("📐 Modell:", entry.id || filename, "– Größe:", size, "Zentrum:", center);
 
-//DEBUG ENDE
-
-        // Optional: Kamera-Fokus auf dieses Modell setzen
+        // 🎯 Optional Kamera-Ausrichtung
         if (focusCamera) {
-          // TODO: Kamera-Ausrichtungsfunktion implementieren
+          // Kamera auf das erste Modell fokussieren
+          camera.position.set(center.x, center.y + 1, center.z + 2); // einfache heuristische Position
+          camera.lookAt(center);
+          controls.target.copy(center);
+          controls.update();
         }
 
-        resolve();
+        resolve(); // 🟢 Versprochenes Ergebnis liefern
       },
       undefined,
       error => {
-        console.warn(`Fehler beim Laden von ${url}:`, error);
+        console.warn(`❌ Fehler beim Laden von ${url}:`, error);
         reject(error);
       }
     );
   });
 }
+

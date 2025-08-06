@@ -61,17 +61,18 @@ async function startApp() {
   const meta = await utils.getMeta();
   console.log('✅ Metadaten geladen:', meta.length);
 
-  // 📦 Modelle gruppenweise laden
-  for (const group of state.availableGroups) {
-    const entries = meta.filter(entry => entry.classification?.group === group);
-    if (entries.length === 0) continue;
 
-    console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-    await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+// 📦 Modelle gruppenweise laden (Testweise nur bones + muscles)
+const groupsToLoad = ['bones', 'muscles'];
 
+for (const group of groupsToLoad) {
+  const entries = meta.filter(entry => entry.classification?.group === group);
+  if (entries.length === 0) continue;
 
-  }
-
+  console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
+  await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+}
+  
 
   // 🧼 Ladebildschirm ausblenden
   initialScreen.style.opacity = '0';
@@ -114,4 +115,5 @@ function setupSplashScreenExit() {
 
 // Initialisierung starten
 setupSplashScreenExit();
+console.log('▶️ Starte App')
 startApp();

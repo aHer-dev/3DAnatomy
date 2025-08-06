@@ -1,8 +1,7 @@
-  [
-    {
-    "id": "fma59763",
+  {
+    "id": "fma10951",
     "labels": {
-      "en": "Maxillary gingiva",
+      "en": "Inferior vena cava",
       "de": "",
       "la": ""
     },
@@ -25,22 +24,37 @@
       "cross_references": {}
     },
     "model": {
-      "filename": "FJ1252.glb",
-      "format": "glb",
-      "scale": [
-        1,
-        1,
-        1
-      ],
+      "current": "draco",
+      "variants": {
+        "draco": {
+          "path": "veins",
+          "filename": "FJ3659.glb",
+          "format": "glb"
+        },
+        "hifi": {
+          "path": "hifi/veins",
+          "filename": "FJ3659.glb",
+          "format": "glb"
+        },
+        "lofi": {
+          "path": "lofi/veins",
+          "filename": "FJ3659.glb",
+          "format": "glb"
+        }
+      },
+      "default_color": "#cccccc",
+      "visible_by_default": true,
+      "highlight_color": "",
       "rotation": [
         0,
         0,
         0
       ],
-      "default_color": "#cccccc",
-      "visible_by_default": true,
-      "path": "",
-      "highlight_color": "",
+      "scale": [
+        1,
+        1,
+        1
+      ],
       "bounding_box": [
         [],
         []
@@ -58,7 +72,7 @@
       },
       "links": {
         "wikipedia_en": "",
-        "fma": "fma59763",
+        "fma": "fma10951",
         "wikipedia_de": "",
         "uberon": ""
       },
@@ -83,4 +97,3 @@
     },
     "type": "structure"
   }
-]

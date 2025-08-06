@@ -12,10 +12,12 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 const loader = new GLTFLoader();
 
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('/optimized/');
+dracoLoader.setDecoderPath('/draco/');
 dracoLoader.setDecoderConfig({ type: 'js' }); // Nur nötig, weil du JS nutzt
+dracoLoader.preload();
 loader.setDRACOLoader(dracoLoader);
 
+console.log('🚀 Draco wird verwendet:', loader.dracoLoader !== undefined);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
