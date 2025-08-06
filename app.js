@@ -39,6 +39,9 @@ function setupStaticAssets() {
 // 🚀 Hauptstart der Anwendung
 // =========================
 async function startApp() {
+const urlParams = new URLSearchParams(window.location.search);
+const isDevMode = urlParams.get('dev') === '1'; // ?dev=1 in URL aktivieren
+
   setupStaticAssets();
   const initialScreen = document.getElementById('initial-loading-screen');
   initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
@@ -50,12 +53,25 @@ async function startApp() {
   await initializeGroupsFromMeta();
   console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
-  // Nur 'bones' zunächst laden
-  const group = 'bones';
-  const entries = state.groupedMeta[group] || [];
-  if (entries.length) {
-    console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-    await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+
+//DEVMODE
+if (isDevMode) {
+    console.log('Developer-Modus aktiviert: Lade alle Gruppen...');
+    for (const group of state.availableGroups) {
+      const entries = state.groupedMeta[group] || [];
+      if (entries.length) {
+        console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
+        await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+      }
+    }
+  } else {
+    // Normaler Modus: Nur bones initial
+    const group = 'bones';
+    const entries = state.groupedMeta[group] || [];
+    if (entries.length) {
+      console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
+      await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+    }
   }
 
   initialScreen.style.opacity = '0';

@@ -23,5 +23,5 @@ export function setupUI() {
   setupRoomUI();
   setupLoadingUI();
 
-  console.log('✅ UI initialisiert.');
+  console.log('UI initialisiert, einschließlich setupSetUI');
 }
