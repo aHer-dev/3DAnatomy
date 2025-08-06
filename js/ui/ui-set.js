@@ -1,13 +1,34 @@
 // ui-set.js
 import { state } from '../state.js';
+import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
+import { scene, loader, camera, controls, renderer } from '../init.js';
 
 export function setupSetUI() {
   const addButton = document.getElementById('add-to-set-button');
   const setList = document.getElementById('set-list');
+  const loadMusclesBtn = document.getElementById('load-muscles-btn');
 
   if (!addButton || !setList) {
     console.warn('⚠️ Set-UI: Button oder Liste nicht gefunden.');
     return;
+  }
+
+  if (!loadMusclesBtn) {
+    console.warn('⚠️ load-muscles-btn nicht gefunden.');
+  } else {
+    loadMusclesBtn.addEventListener('click', async () => {
+      try {
+        const muscleEntries = state.groupedMeta['muscles'] || [];
+        if (muscleEntries.length) {
+          showLoadingBar();
+          await loadModels(muscleEntries, 'muscles', true, scene, loader, camera, controls, renderer);
+          hideLoadingBar();
+        }
+      } catch (err) {
+        console.error('Fehler beim Laden von muscles:', err);
+        hideLoadingBar();
+      }
+    });
   }
 
   // Klick auf "Zur Sammlung hinzufügen"

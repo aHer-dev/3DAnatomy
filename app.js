@@ -39,49 +39,46 @@ function setupStaticAssets() {
 // 🚀 Hauptstart der Anwendung
 // =========================
 async function startApp() {
-  setupStaticAssets(); // Setzt Bilder und Icons für Ladeanzeigen
-
-  // 🟪 Ladebildschirm anzeigen
+  setupStaticAssets();
   const initialScreen = document.getElementById('initial-loading-screen');
   initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
   initialScreen.style.display = 'flex';
 
-  // 🛠️ Three.js Grundstruktur vorbereiten (Szene, Kamera, Licht, Renderer)
   initThree();
-
-  // 💡 Benutzeroberfläche und Events vorbereiten
   setupUI();
   setupInteractions();
-
-  // 🧠 Gruppenstruktur aus Metadaten initialisieren (für state.availableGroups)
   await initializeGroupsFromMeta();
-  //state.availableGroups = ['test']; // 🚨 Nur Gruppe "test" aktivieren
+  console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
-  // 📊 Metadaten laden
-  const meta = await utils.getMeta();
-  console.log('✅ Metadaten geladen:', meta.length);
+  // Nur 'bones' zunächst laden
+  const group = 'bones';
+  const entries = state.groupedMeta[group] || [];
+  if (entries.length) {
+    console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
+    await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+  }
 
-
-// 📦 Modelle gruppenweise laden (Testweise nur bones + muscles)
-const groupsToLoad = ['bones', 'muscles'];
-
-for (const group of groupsToLoad) {
-  const entries = meta.filter(entry => entry.classification?.group === group);
-  if (entries.length === 0) continue;
-
-  console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-  await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
-}
-  
-
-  // 🧼 Ladebildschirm ausblenden
   initialScreen.style.opacity = '0';
   setTimeout(() => initialScreen.style.display = 'none', 500);
 
-  // 🎬 Splashscreen anzeigen
   const splashScreen = document.getElementById('splash-screen');
   splashScreen.style.display = 'flex';
   splashScreen.classList.add('visible');
+
+  // Event-Listener für weitere Gruppen
+  document.getElementById('load-muscles-btn')?.addEventListener('click', async () => {
+    try {
+      const muscleEntries = state.groupedMeta['muscles'] || [];
+      if (muscleEntries.length) {
+        showLoadingBar();
+        await loadModels(muscleEntries, 'muscles', true, scene, loader, camera, controls, renderer);
+        hideLoadingBar(); // Sicherstellen, dass Ladebalken ausgeblendet wird
+      }
+    } catch (err) {
+      console.error('Fehler beim Laden von muscles:', err);
+      hideLoadingBar();
+    }
+  });
 }
 
 //

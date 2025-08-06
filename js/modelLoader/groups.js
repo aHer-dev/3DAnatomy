@@ -1,7 +1,7 @@
 // modelLoader-groups.js
 
 import { getMeta } from '../utils.js';
-import { loadModels } from './core.js';
+import { loadModels } from './modelLoader-core.js';
 import { removeModelsByGroupOrSubgroup } from './cleanup.js'; // Wichtig für unloadGroup()
 import { state } from '../state.js';
 import { scene, loader } from '../init.js';

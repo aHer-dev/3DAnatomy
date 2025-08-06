@@ -1,7 +1,7 @@
 // modelLoader-core.js
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
-import { getModelPath } from './utils.js';
-import { state } from './state.js';
+import { getModelPath } from '../utils.js';
+import { state } from '../state.js';
 import { showLoadingBar, updateLoadingBar, hideLoadingBar } from './modelLoader-progress.js';
 
 

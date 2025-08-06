@@ -54,24 +54,16 @@ export async function getMeta() {
 //    - state.clickCounts
 //    - state.colors (und defaultSettings.colors)
 //
+// In utils.js
 export async function initializeGroupsFromMeta() {
   const meta = await getMeta();
-
-  const allGroups = [...new Set(
-    meta.map(entry => entry.classification?.group).filter(Boolean)
-  )];
-
-  state.availableGroups = allGroups.sort(); // oder deine eigene Reihenfolge
-
-  allGroups.forEach(group => {
-    state.groups[group] = [];
-    state.groupStates[group] = {};
-    state.subgroupStates[group] = {};
-    state.clickCounts[group] = 0;
-    state.colors[group] = 0xB31919;
-    state.defaultSettings.colors[group] = 0xB31919;
-  });
-
-  console.log("✅ initializeGroupsFromMeta: Gruppen initialisiert:", allGroups);
+  state.groupedMeta = meta.reduce((map, entry) => {
+    const group = entry.classification?.group || 'other';
+    map[group] = map[group] || [];
+    map[group].push(entry);
+    return map;
+  }, {});
+  state.availableGroups = Object.keys(state.groupedMeta);
+  console.log('✅ initializeGroupsFromMeta: Gruppen initialisiert:', state.availableGroups);
 }
 

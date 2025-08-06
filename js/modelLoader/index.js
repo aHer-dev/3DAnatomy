@@ -1,5 +1,5 @@
 // js/modelLoader/index.js
-export * from './core.js';
+export * from './modelLoader-core.js';
 export * from './progress.js';
 export * from './cleanup.js';
 export * from './groups.js';
