@@ -2,7 +2,7 @@
  * @file modelLoader-core.js
  * @description Lädt GLTF-Modelle in Gruppen, zeigt Ladefortschritt an und zentriert optional die Kamera.
  */
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js';
+import { THREE, scene, camera, renderer, loader, controls } from '../init.js';
 import { state } from '../state.js';
 import { showLoadingBar, updateLoadingBar, hideLoadingBar } from './progress.js';
 import { fitCameraToScene } from '../cameraUtils.js';

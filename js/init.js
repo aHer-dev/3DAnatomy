@@ -70,4 +70,4 @@ controls.maxPolarAngle = Math.PI; // Volle 180° – von unten erlauben
 }
 
 // ✅ Alle benötigten Exporte in einer Zeile
-export { initThree, scene, camera, renderer, loader, controls };
+export { THREE, initThree, scene, camera, renderer, loader, controls };

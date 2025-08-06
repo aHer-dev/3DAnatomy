@@ -19,14 +19,13 @@ console.log('📦 app.js geladen, basePath:', utils.basePath);
 // =========================
 function setupStaticAssets() {
   const basePath = utils.basePath || '';
-
   ['loading-sticker', 'go-sticker', 'live-loading-sticker'].forEach(id => {
     const img = document.getElementById(id);
     if (img) img.src = `${basePath}/images/${id}.png`;
     else console.warn(`❌ Image-Element ${id} nicht gefunden`);
   });
 
-  const faviconLink = document.getElementById('favicon-link');
+  const faviconLink = document.querySelector('link[rel="icon"]');
   if (faviconLink) {
     faviconLink.href = `${basePath}/favicon.ico`;
   } else {
@@ -65,7 +64,6 @@ if (isDevMode) {
       }
     }
   } else {
-    // Normaler Modus: Nur bones initial
     const group = 'bones';
     const entries = state.groupedMeta[group] || [];
     if (entries.length) {
@@ -127,6 +125,8 @@ function setupSplashScreenExit() {
 }
 
 // Initialisierung starten
+document.addEventListener('DOMContentLoaded', () => {
 setupSplashScreenExit();
 console.log('▶️ Starte App')
 startApp();
+});

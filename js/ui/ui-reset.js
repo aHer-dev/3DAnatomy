@@ -3,9 +3,9 @@
 
 import { state } from '../state.js'; // 🔁 Globale Zustandsverwaltung
 import { setCameraToDefault } from '../cameraUtils.js'; // 📷 Funktion zum Zurücksetzen der Kamera
-import { scene, camera, controls } from '../init.js'; // 🌐 Zentrale 3D-Komponenten
+import { THREE, scene, camera, controls } from '../init.js'; // 🌐 Zentrale 3D-Komponenten inkl. THREE
 import { updateModelColors, updateGroupVisibility } from '../modelLoader/index.js'; // 🎨 Sichtbarkeit & Farbe updaten
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js'; // THREE.js für Farbe
+
 
 /**
  * Initialisiert den Reset-Button und definiert, wie der Zustand der App vollständig zurückgesetzt wird.
