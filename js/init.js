@@ -1,5 +1,6 @@
 // In js/init.js
-import * as THREE from './three.module.js';
+// In ui.js oder modelLoader.js
+import * as THREE from 'https://unpkg.com/three@0.179.0/build/three.module.js';
 import { OrbitControls } from './OrbitControls.js';
 import { GLTFLoader } from './GLTFLoader.js';
 import { DRACOLoader } from './DRACOLoader.js'; // nur, falls du Draco nutzt

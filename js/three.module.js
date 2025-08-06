@@ -8474,7 +8474,7 @@ function WebGLShadowMap( renderer, objects, capabilities ) {
 		// Set GL state for depth map.
 		_state.setBlending( NoBlending );
 
-		if ( _state.buffers.depth.getReversed() === true ) {
+		if ( _state.buffers.depth.getReversed() ) {
 
 			_state.buffers.color.setClear( 0, 0, 0, 0 );
 
@@ -18160,6 +18160,15 @@ class WebGLRenderer {
 			}
 
 			state.unbindTexture();
+
+		};
+
+		this.copyTextureToTexture3D = function ( srcTexture, dstTexture, srcRegion = null, dstPosition = null, level = 0 ) {
+
+			// @deprecated, r170
+			warnOnce( 'WebGLRenderer: copyTextureToTexture3D function has been deprecated. Use "copyTextureToTexture" instead.' );
+
+			return this.copyTextureToTexture( srcTexture, dstTexture, srcRegion, dstPosition, level );
 
 		};
 
