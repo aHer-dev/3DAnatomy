@@ -74,7 +74,7 @@
          return;
        }
 
-       console.log('📦 Lade Modell:', { id: entry.id, filename, group, path, url });
+      // console.log('📦 Lade Modell:', { id: entry.id, filename, group, path, url });
 
        loader.load(
          url,
@@ -118,7 +118,7 @@
              const box = new THREE.Box3().setFromObject(model);
              const size = box.getSize(new THREE.Vector3());
              const center = box.getCenter(new THREE.Vector3());
-             console.log("📐 Modell:", entry.id || filename, "– Größe:", size, "Zentrum:", center);
+             //console.log("📐 Modell:", entry.id || filename, "– Größe:", size, "Zentrum:", center);
            }
 
            resolve();

@@ -1,0 +1,233 @@
+/* --- Mobile Optimierung --- */
+@media (max-width: 600px) {
+
+    /* Steuerungspanel: Am unteren Rand, vollbreit, nicht resizable */
+    #controls {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 40%;
+        /* Neu: Volle Breite für Mobile, statt 40% – besser für Usability */
+        max-height: 75vh;
+        overflow-y: auto;
+        border-radius: 10px 10px 0 0;
+        resize: none;
+        overflow-y: auto;
+        display: block;
+    }
+
+    /* Sidebar: Als Overlay, vollbreit */
+    #search-bar {
+        width: 100%;
+        /* Volle Breite im Panel */
+        margin: 10px 0;
+        /* Abstand oben/unten */
+        position: relative;
+    }
+
+    #search-bar {
+        width: 90%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #222222;
+        color: white;
+        font-size: 14px;
+    }
+
+    #search-results {
+        position: absolute;
+        /* Bleibt absolut zur Bar */
+        top: calc(100% + 5px);
+        /* Unter Bar mit Abstand */
+        left: 0;
+        /* Links align */
+        width: 100%;
+        /* Volle Breite der Bar/Panel */
+        max-height: 150px;
+        /* Kürzer, um Buttons nicht zu blocken */
+        overflow-y: auto;
+        z-index: 1002;
+        /* Über Buttons */
+        pointer-events: auto;
+        /* Klicks ermöglichen */
+    }
+
+
+
+    /* Footer: Kleinere Schrift, weniger Padding */
+    #footer {
+        bottom: 5px;
+        right: 5px;
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+
+    /* Lizenz-Dropdown: Anpassung für kleinere Bildschirme */
+    #license-dropdown {
+        width: 70vw;
+        bottom: 35px;
+        right: 5px;
+    }
+
+    /* Sub-Dropdowns: Weniger Einrückung */
+    #bones-sub-dropdown,
+    #muscles-sub-dropdown,
+    #tendons-sub-dropdown,
+    #other-sub-dropdown {
+        margin-left: 10px;
+    }
+
+    /* Subgruppen-Labels: Kleinere Schrift */
+    #bones-subgroups label,
+    #muscles-subgroups label,
+    #tendons-subgroups label,
+    #other-subgroups label {
+        font-size: 12px;
+    }
+
+    /* Einzelne Items: Kleinere Schrift, weniger Einrückung */
+    #bones-subgroups .item-checkbox,
+    #muscles-subgroups .item-checkbox,
+    #tendons-subgroups .item-checkbox,
+    #other-subgroups .item-checkbox {
+        font-size: 10px;
+        margin-left: 15px;
+    }
+
+    /* Nested Dropdown-Button: Kleinere Schrift */
+    .item-dropdown-button {
+        font-size: 10px;
+    }
+
+    /* Tooltip: Kleinere Schrift für Mobilgeräte */
+    #tooltip {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
+
+/* --- Desktop-Optimierung --- */
+@media (min-width: 601px) {
+
+    /* Steuerungspanel: Initial ausgeblendet, per Hamburger-Menü toggelbar */
+    #menu-icon {
+        display: block;
+    }
+}
+
+
+@media (max-width: 600px) {
+    #search-bar {
+        width: 90%;
+        /* Dein bestehender Wert */
+        margin: 0 auto;
+        /* Zentriert die Bar selbst */
+        position: relative;
+        /* Sicherstellen: Referenz für Results */
+    }
+
+    #search-results {
+        position: absolute;
+        /* Bleibt absolute */
+        top: calc(100% + 5px);
+        /* Direkt unter Bar, mit Abstand */
+        left: 0;
+        /* Links an Bar ausrichten, keine Zentrierung */
+        width: 100%;
+        /* Volle Breite der Bar, vermeidet Überlappungen */
+        max-height: 150px;
+        /* Kürzer, um Buttons nicht zu überlagern */
+        overflow-y: auto;
+        border-radius: 5px;
+        z-index: 1002;
+        /* Höher als Buttons im Panel */
+    }
+
+    .search-item {
+        padding: 6px 8px;
+        /* Kompakter für Mobile */
+        font-size: 12px;
+    }
+
+    #info-panel {
+        position: fixed;
+        max-width: 100px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 14px;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        z-index: 1000;
+        top: 10px;
+        right: 10px;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+}
+
+/* Mobile-Optimierung */
+@media (max-width: 600px) {
+    #loading-sticker {
+        width: 200px;
+        /* Kleiner auf Mobile */
+    }
+
+    #live-loading-sticker {
+        position: fixed;
+        bottom: 5%;
+        right: 0%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: auto;
+        z-index: 1500;
+        display: none;
+        animation: blink 0.5s ease-in-out;
+        background: transparent;
+        opacity: 1;
+    }
+
+    #go-sticker {
+        width: 150px;
+    }
+}
+
+
+@media (max-width: 600px) {
+    #search-bar {
+        width: 90%;
+        /* Schmaler für Zentrierung */
+        margin: 0 auto;
+        /* Zentriert die Bar selbst */
+    }
+
+    #search-results {
+        position: absolute !important;
+        /* Absolute zur Bar */
+        top: calc(100% + 5px) !important;
+        /* Direkt unter Bar, mit Abstand */
+        left: 50% !important;
+        /* Mittig zentrieren */
+        transform: translateX(-50%) !important;
+        /* Horizontal zentrieren */
+        width: 80vw !important;
+        /* Schmaler, passend zu Menü */
+        max-height: 150px !important;
+        /* Kürzer, um Knöpfe nicht zu überlagern */
+        overflow-y: auto !important;
+        border-radius: 5px;
+        z-index: 1002 !important;
+        /* Höher als Knöpfe/Menü */
+    }
+
+    .search-item {
+        padding: 6px 8px !important;
+        /* Kompakter */
+        font-size: 12px !important;
+    }
+}

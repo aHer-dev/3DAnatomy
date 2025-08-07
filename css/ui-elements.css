@@ -1,0 +1,109 @@
+/* ==================================================
+   UI-ELEMENTS.CSS — Komponenten-Styling für Buttons,
+   Icons, Labels, Panels und interaktive Elemente
+   ================================================== */
+
+/* === 🔘 „Mehr...“-Button für Dropdowns etc. === */
+.more-button {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    background-color: var(--color-btn-transparent);
+    border: 1px solid var(--color-border-light);
+    padding: 2px 6px;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.more-button:hover {
+    background-color: var(--color-btn-transparent-hover);
+    color: var(--color-white);
+}
+
+
+/* === 🏷️ Labels für UI-Steuerelemente === */
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Label als klickbarer Datei-Upload-Button */
+label[for="load-file"] {
+    display: block;
+    background-color: var(--color-btn-default);
+    color: var(--color-white);
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 5px;
+    transition: background-color 0.3s ease;
+}
+
+label[for="load-file"]:hover {
+    background-color: var(--color-btn-hover);
+}
+
+
+/* === 🎛️ Input-Elemente (Farbauswahl, Range etc.) === */
+input[type="color"],
+input[type="range"] {
+    accent-color: #3419cf;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type="color"] {
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+
+/* === 🖼️ UI-Komponenten: z.B. Close-Icon oder Info === */
+.info-icon {
+    font-size: 1.4em;
+    cursor: pointer;
+    color: var(--color-white);
+    transition: color 0.2s ease;
+}
+
+.info-icon:hover {
+    color: #3419cf;
+}
+
+/* Schließen-Button für Infofenster */
+#info-close {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#info-close:hover {
+    color: #3419cf;
+}
+
+
+/* === ℹ️ Tooltip für Hover-Informationen === */
+#tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--color-white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    display: none;
+    z-index: 1500;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}

@@ -20,8 +20,8 @@ export function setCameraToDefault(camera, controls) {
   controls.update();
   camera.lookAt(defaultTarget);
   
-  console.log('📷 Kamera-Position gesetzt:', camera.position.toArray());
-  console.log('🎯 Controls.target gesetzt:', controls.target.toArray());
+  //console.log('📷 Kamera-Position gesetzt:', camera.position.toArray());
+ // console.log('🎯 Controls.target gesetzt:', controls.target.toArray());
 }
 
 /**
@@ -79,7 +79,7 @@ export function fitCameraToScene(camera, controls, renderer, scene, paddingFacto
   controls.update();
   camera.lookAt(center);
 
-  console.log('[fitCameraToScene] Kamera angepasst:', newPosition.toArray());
+  //console.log('[fitCameraToScene] Kamera angepasst:', newPosition.toArray());
 }
 
 /**

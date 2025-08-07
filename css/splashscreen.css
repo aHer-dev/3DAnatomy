@@ -1,0 +1,102 @@
+/* Initialer Loadingscreen: Vollbild, farbig, zentriert */
+#initial-loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #210B41;
+    /* Default-Farbe (aus deinem Code); mach wählbar via JS */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    /* Über allem */
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    /* Für Fade-Out */
+}
+
+/* Splash-Screen: Vollbild, zentriert, klickbar */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Semi-transparent, Modell durchscheinend */
+    display: none;
+    /* Initial unsichtbar */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#splash-screen.visible {
+    opacity: 1;
+}
+
+#go-sticker {
+    width: 500px;
+    /* Passe an */
+    height: auto;
+    cursor: pointer;
+    /* Zeigt Klickbarkeit */
+    transition: transform 0.2s;
+    /* Leichter Hover-Effekt */
+}
+
+#go-sticker:hover {
+    transform: scale(1.1);
+    /* Vergrößert bei Hover */
+}
+
+#footer-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* Nur noch Container bekommt Hintergrund – sauberer */
+#footer-container>* {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Pulsierender Sticker */
+#loading-sticker {
+    width: 150px;
+    /* Passe Größe an dein PNG an */
+    height: auto;
+    animation: pulse 1.5s infinite ease-in-out;
+    /* Pulsieren: Opacity-Wechsel */
+}
+
+/* Live-Laden Sticker: Zentriert, klein, blinkt */
+#live-loading-sticker {
+    position: fixed;
+    bottom: 5%;
+    right: 0%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: auto;
+    z-index: 900;
+    display: none;
+    animation: blink 0.5s ease-in-out;
+    background: transparent;
+    opacity: 1;
+}
+

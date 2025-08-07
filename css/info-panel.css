@@ -1,0 +1,87 @@
+/* Globale Regeln für Info-Panel (für beide Modi) */
+#info-panel {
+    position: fixed;
+    max-width: 250px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    top: 10px;
+    right: 10px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#info-panel.visible {
+    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#info-panel.hidden {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#info-panel * {
+    /* Alle Kinder */
+    pointer-events: auto;
+    /* Ermögliche Interaktion mit Buttons/Slider/Close */
+}
+
+#info-content {
+    pointer-events: auto;
+    /* Sicherstellen */
+}
+
+#info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#info-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: auto;
+    /* Rechts ausrichten */
+}
+
+#info-close:hover {
+    color: #3419cf;
+}
+
+#info-content p {
+    margin: 4px 0;
+}
+
+.info-icon {
+    font-size: 1.4em;
+}
+
+/* --- Tooltip für Modellnamen --- */
+#tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    display: none;
+    z-index: 1500;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+

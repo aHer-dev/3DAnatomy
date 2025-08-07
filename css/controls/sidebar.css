@@ -1,0 +1,82 @@
+
+
+/* --- Sidebar für Modell-Details --- */
+#sidebar {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    /* Rechts positioniert */
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 250px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    font-family: Arial, sans-serif;
+    display: none;
+    /* Initial ausgeblendet */
+}
+
+#sidebar h2 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+#sidebar p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+
+.item-checkbox {
+    margin-right: 5px;
+}
+
+#details-content {
+    display: none;
+    padding: 8px;
+    background-color: #222222;
+    /* Dunkler Hintergrund, passend zu Stil */
+    border-radius: 5px;
+    margin-bottom: 10px;
+    max-height: 150px;
+    /* Scrollbar bei zu vielen Details */
+    overflow-y: auto;
+    /* Scroll-Menü */
+    color: white;
+    /* Weißer Text */
+    font-size: 12px;
+}
+
+#details-content p {
+    margin: 4px 0;
+}
+
+#details-content::-webkit-scrollbar {
+    width: 8px;
+    /* Scrollbar-Stil passend zu App */
+}
+
+#details-content::-webkit-scrollbar-thumb {
+    background-color: #555555;
+    /* Dunkelgrau */
+    border-radius: 4px;
+}
+
+#details-content::-webkit-scrollbar-track {
+    background-color: #333333;
+    /* Passend zum Hintergrund */
+}
+
+
+.more-muscles-list {
+    display: none;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.more-muscles-list.visible {
+    display: block !important;
+}

@@ -1,0 +1,102 @@
+#container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+
+/* --- Steuerungspanel (#controls) --- */
+/* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
+#controls {
+    position: absolute;
+    /* ✅ Statt relative */
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 10px;
+    color: white;
+    max-width: 250px;
+    max-height: 80vh;
+    overflow-y: auto;
+    pointer-events: auto;
+}
+
+#controls::-webkit-scrollbar {
+    width: 8px;
+    /* Chrome/Safari: Dünne Scrollbar */
+}
+
+#controls::-webkit-scrollbar-thumb {
+    background-color: #555555;
+    /* Dunkelgrau, wie in Infobox */
+    border-radius: 4px;
+}
+
+#controls::-webkit-scrollbar-track {
+    background-color: #333333;
+    /* Passend zum Hintergrund */
+}
+
+#controls .sub-dropdown {
+    transition: height 0.3s ease;
+}
+
+#controls .sub-dropdown.minimized {
+    height: 0;
+    overflow: hidden;
+}
+
+#controls.minimized {
+    max-height: 100px;
+    /* Nur Hauptgruppen sichtbar */
+    overflow: hidden;
+    /* Submenüs abschneiden */
+}
+
+/* Überschriften im Steuerungspanel */
+#controls h2 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+/* Sicherstellen, dass UI-Elemente nicht überlagern */
+#controls, #info-panel {
+    position: absolute;
+    z-index: 10;
+}
+
+/* Hamburger-Menü bei geöffnetem Zustand */
+#menu-icon {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#menu-icon div {
+    background-color: #ffffff;
+    height: 4px;
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: transform 0.4s, opacity 0.4s;
+}
+
+#menu-icon.open div:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+#menu-icon.open div:nth-child(2) {
+    opacity: 0;
+}
+
+#menu-icon.open div:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+

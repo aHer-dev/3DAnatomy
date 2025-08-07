@@ -1,0 +1,9 @@
+/* Neue Sliders: Transparenz, Beleuchtung, Hintergrund */
+#transparency-slider,
+#lighting-slider,
+#background-slider {
+    width: 100%;
+    margin: 10px 0;
+    accent-color: #3419cf;
+    /* Grün für Konsistenz mit UI */
+}
