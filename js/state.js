@@ -8,6 +8,7 @@ export const state = {
   currentlySelected: null,
   availableGroups: [],
   groupedMeta: {},
+  collection: [],
 
   defaultSettings: {
     modelVariant: 'draco',

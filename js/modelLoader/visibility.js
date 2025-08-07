@@ -3,10 +3,13 @@
 import { state } from '../state.js';
 import { scene } from '../scene.js';
 
+
+
 /**
- * Setzt Sichtbarkeit für alle Modelle einer Gruppe
- * @param {string} group – z. B. 'muscles'
- * @param {boolean} visible – true = anzeigen, false = verstecken
+/**
+ * Setzt Sichtbarkeit eines einzelnen Modells
+ * @param {THREE.Object3D} model
+ * @param {boolean} visible
  */
 export function setGroupVisibility(group, visible) {
     state.modelObjects.forEach((model, label) => {
@@ -19,15 +22,17 @@ export function setGroupVisibility(group, visible) {
 }
 
 /**
-/**
- * Setzt Sichtbarkeit eines einzelnen Modells
+ * Setzt Sichtbarkeit eines einzelnen Modells (Root + rekursiv Meshes für Konsistenz)
  * @param {THREE.Object3D} model
  * @param {boolean} visible
  */
 export function setModelVisibility(model, visible) {
     if (!model) return;
+    model.visible = visible;  // Setze Root (propagiert automatisch zu Children in Three.js)
     model.traverse(child => {
-        if (child.isMesh) child.visible = visible;
+        if (child.isMesh) {
+            child.visible = visible;  // Explizit für Meshes (sichert Sync bei manuellen Änderungen)
+        }
     });
 }
 
@@ -37,13 +42,14 @@ export function setModelVisibility(model, visible) {
  */
 export function toggleModelVisibility(model) {
     if (!model) return;
-    const currentVisibility = model.visible;
+    const currentVisibility = isModelVisible(model);
+    console.log('Toggle: Current visibility?', currentVisibility);  // Debugging-Log (entferne später)
     setModelVisibility(model, !currentVisibility);
 }
-// /**Prüft, ob ein Modell sichtbar ist
 
+// /**Prüft, ob ein Modell sichtbar ist
 export function isModelVisible(model) {
-    return !!model?.visible;
+    return !!model?.visible;  // Vereinfacht: Nutze Root-Status
 }
 
 /**

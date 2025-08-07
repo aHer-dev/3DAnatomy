@@ -21,6 +21,7 @@
 @import url('./components/animations.css');
 @import url('./components/info-panel.css');
 @import url('./components/ui-elements.css');
+@import url('./components/set-list.css');
 
 /* === 🎛️ Steuerung (Controls) === */
 @import url('./controls/controls-panel.css');

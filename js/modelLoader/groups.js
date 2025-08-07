@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { dracoLoader } from './dracoLoader.js'; // Zentraler Draco-Loader
+import { controls } from '../controls.js'; // <<< NEU: controls werden unten an loadModels übergeben
 import { scene } from '../scene.js';
 import { camera } from '../camera.js';
 import { renderer } from '../renderer.js';
@@ -95,6 +96,6 @@ export function restoreGroupState(groupName) {
  * @param {boolean} visible
  */
 export function updateGroupVisibility(group, visible) {
-  const models = state.loadedModels[group] || [];
+  const models = state.groups[group] || [];
   models.forEach(model => setModelVisibility(model, visible));
 }
