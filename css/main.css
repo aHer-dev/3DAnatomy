@@ -1,0 +1,34 @@
+/* ==================================================
+   MAIN.CSS — zentrale Bündelung aller Stylesheets
+   ================================================== */
+
+/* === 🧱 Basis (Fundament & Variablen) === */
+@import url('./base/variables.css');
+@import url('./base/base.css');
+@import url('./base/typography.css');
+
+/* === 🧰 Utilities === */
+@import url('./utilities/utilities.css');
+
+/* === 🎨 Layout & Seitenstruktur === */
+@import url('./layout/layout.css');
+@import url('./layout/canvas.css');
+@import url('./layout/footer.css');
+@import url('./layout/responsive.css');
+@import url('./layout/splashscreen.css');
+
+/* === 🧩 Komponenten === */
+@import url('./components/animations.css');
+@import url('./components/info-panel.css');
+@import url('./components/ui-elements.css');
+
+/* === 🎛️ Steuerung (Controls) === */
+@import url('./controls/controls-panel.css');
+@import url('./controls/dropdowns.css');
+@import url('./controls/buttons.css');
+@import url('./controls/inputs.css');
+@import url('./controls/sliders.css');
+@import url('./controls/edit-controls.css');
+@import url('./controls/set-list.css');
+@import url('./controls/search.css');
+@import url('./controls/sidebar.css');

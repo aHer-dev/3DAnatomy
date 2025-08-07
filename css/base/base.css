@@ -1,0 +1,13 @@
+/* ==================================================
+   BASE.CSS — Globale Farbvariablen & Grundlayout
+   (keine UI-Komponenten, keine Utilities)
+   ================================================== */
+
+
+
+/* === 📦 Standardboxmodell: border-box === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
