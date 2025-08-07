@@ -1,16 +1,22 @@
-// js/modelLoader/index.js
-export * from './modelLoader-core.js';
-export * from './progress.js';
-export * from './cleanup.js';
-export * from './groups.js';
+// modelLoader-core
+export { loadModels, loadSingleModel } from './modelLoader-core.js';
+
+// progress
+export { showLoadingBar, hideLoadingBar } from './progress.js';
+
+// cleanup
 export { removeModelsByGroupOrSubgroup, removeModelByFilename } from './cleanup.js';
-export { restoreGroupState } from './groups.js';
 
-// export * from './appearance.js';  ← Entfernen oder gezielt exportieren
-// export * from './color.js';       ← Entfernen oder gezielt exportieren
+// groups
+export {
+    loadGroup,
+    unloadGroup,
+    updateGroupVisibility,
+    restoreGroupState
+} from './groups.js';
 
-// 🔧 gezielter Export bei Namenskonflikt:
-export { updateModelColors, updateGroupVisibility } from './appearance.js';
-// Falls du aus color.js etwas brauchst, z. B.:
+// appearance
+export { setModelColor, setModelOpacity, setModelVisibility } from './appearance.js';
+
+// Optional: color.js, falls du dort eine UI-spezifische Funktion hast
 export { updateModelColors as updateModelColorsFromColorUI } from './color.js';
-

@@ -1,47 +1,59 @@
-// modelLoader-appearance.js
-import { state } from '../state.js';
-import { setModelVisibility } from './visibility.js';
+// appearance.js – Farbe, Transparenz & Materialien zentral steuern
+
+import * as THREE from 'three';
+
 
 /**
- * Aktualisiert die Farbe aller Modelle einer bestimmten Gruppe.
- * @param {string} group - z. B. "muscles"
+ * Setzt die Farbe eines Modells (rekursiv)
+ * @param {THREE.Object3D} model
+ * @param {string | THREE.Color} color – z. B. "#ff0000" oder THREE.Color
  */
-export function updateModelColors(group) {
-  const models = state.groups[group];
-  const newColor = state.colors[group] || 0xff0000;
+export function setModelColor(model, color) {
+  if (!model) return;
+  const c = (typeof color === 'string') ? new THREE.Color(color) : color;
 
-  if (!models || models.length === 0) {
-    console.warn(`⚠️ Keine Modelle in Gruppe "${group}" für Farbänderung.`);
-    return;
-  }
-
-  models.forEach(model => {
-    model.traverse(child => {
-      if (child.isMesh && child.material) {
-        child.material.color.setHex(newColor);
-      }
-    });
+  model.traverse(child => {
+    if (child.isMesh && child.material) {
+      child.material.color.set(c);
+      child.material.needsUpdate = true;
+    }
   });
-
-  console.log(`🎨 Farbe für Gruppe "${group}" aktualisiert:`, newColor.toString(16));
 }
 
 /**
- * Setzt die Sichtbarkeit aller Modelle einer Gruppe auf Basis von state.groupStates.
- * @param {string} group
+ * Setzt die Transparenz eines Modells (rekursiv)
+ * @param {THREE.Object3D} model
+ * @param {number} opacity – z. B. 0.5
  */
-export function updateGroupVisibility(group) {
-  const models = state.groups[group];
+export function setModelOpacity(model, opacity) {
+  if (!model) return;
 
-  if (!models || models.length === 0) {
-    console.warn(`⚠️ Keine Modelle in Gruppe "${group}" zur Sichtbarkeitskontrolle.`);
-    return;
-  }
+  model.traverse(child => {
+    if (child.isMesh && child.material) {
+      const currentColor = child.material.color?.clone() || new THREE.Color(0xffffff);
+      const material = new THREE.MeshStandardMaterial({
+        color: currentColor,
+        transparent: opacity < 1,
+        opacity: opacity,
+        side: THREE.DoubleSide,
+        depthWrite: opacity >= 1
+      });
 
-  models.forEach(model => {
-    const visible = state.groupStates[group][model.name] !== false;
-    setModelVisibility(model, visible);
+      child.material = material;
+      child.material.needsUpdate = true;
+    }
   });
+}
 
-  console.log(`👁 Sichtbarkeit für Gruppe "${group}" aktualisiert.`);
+/**
+ * Setzt die Sichtbarkeit eines Modells (oder Mesh-Gruppen)
+ * @param {THREE.Object3D} model – Das Modell oder Mesh
+ * @param {boolean} visible – Sichtbarkeit true/false
+ */
+export function setModelVisibility(model, visible) {
+  model.traverse(child => {
+    if (child.isMesh) {
+      child.visible = visible;
+    }
+  });
 }

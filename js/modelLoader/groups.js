@@ -16,8 +16,6 @@ import { setModelVisibility } from './visibility.js';
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader); // Nutze zentralen Draco-Loader
-
-
 /**
  * 📦 Lädt eine gesamte Gruppe (z. B. "muscles") mit optionaler Subgruppe.
  *
@@ -41,8 +39,6 @@ export async function loadGroup(groupName, subgroup = null, centerCamera = false
 
   await loadModels(filteredEntries, groupName, centerCamera, scene, loader, camera, controls, renderer);
 }
-
-
 /**
  * 🗑 Entfernt eine Gruppe oder Subgruppe aus der Szene.
  *
@@ -52,8 +48,6 @@ export async function loadGroup(groupName, subgroup = null, centerCamera = false
 export async function unloadGroup(groupName, subgroup = null) {
   await removeModelsByGroupOrSubgroup(groupName, subgroup);
 }
-
-
 /**
  * 🔍 Prüft, ob eine Gruppe aktuell geladen ist.
  *
@@ -63,8 +57,6 @@ export async function unloadGroup(groupName, subgroup = null) {
 export function isGroupLoaded(groupName) {
   return !!(state.groups[groupName]?.length > 0);
 }
-
-
 /**
  * 📋 Gibt zurück, welche Gruppen aktuell geladen sind.
  *
@@ -75,8 +67,6 @@ export function getLoadedGroups() {
     state.groups[group]?.length > 0
   );
 }
-
-
 /**
  * ♻️ Stellt die Sichtbarkeit der Modelle in einer Gruppe wieder her.
  *
@@ -97,4 +87,14 @@ export function restoreGroupState(groupName) {
   });
 
   console.log(`♻️ Sichtbarkeit von Gruppe "${groupName}" wiederhergestellt.`);
+}
+
+/**
+ * Sichtbarkeit aller Modelle einer anatomischen Gruppe setzen
+ * @param {string} group
+ * @param {boolean} visible
+ */
+export function updateGroupVisibility(group, visible) {
+  const models = state.loadedModels[group] || [];
+  models.forEach(model => setModelVisibility(model, visible));
 }

@@ -3,7 +3,8 @@
 import * as THREE from 'three'; // 🌐 Zentrale 3D-Komponenten inkl. THREE
 import { state } from '../state.js'; // 🔁 Globale Zustandsverwaltung
 import { setCameraToDefault } from '../cameraUtils.js'; // 📷 Funktion zum Zurücksetzen der Kamera
-import { updateModelColors, updateGroupVisibility } from '../modelLoader/index.js'; // 🎨 Sichtbarkeit & Farbe updaten
+import { updateGroupVisibility } from '../modelLoader/groups.js'; 
+import {updateModelColors} from '../modelLoader/color.js';
 import { camera } from '../camera.js';
 import { controls } from '../controls.js';
 import { hideInfoPanel } from '../interaction/infoPanel.js';

@@ -6,7 +6,7 @@ import { scene } from '../scene.js';
 import { highlightModel } from './highlightModel.js';
 import { buildEditPanel } from './editPanel.js';
 import { toggleModelVisibility, isModelVisible } from '../modelLoader/visibility.js';
-
+import { setModelColor } from '../modelLoader/appearance.js';
 
 export function showInfoPanel(meta, selectedModel) {
     const infoContent = document.getElementById('info-content');
@@ -79,22 +79,14 @@ export function showInfoPanel(meta, selectedModel) {
         const color = new THREE.Color(e.target.value);
         selectedModel.traverse(child => {
             if (child.isMesh && child.material) {
-                child.material.color.set(color);
-                child.material.needsUpdate = true;
+                setModelColor(selectedModel, newColor);
             }
         });
     });
 
-    opacitySlider.addEventListener('input', e => {
+    opacitySlider.addEventListener('input', (e) => {
         const opacity = parseFloat(e.target.value);
-        selectedModel.traverse(child => {
-            if (child.isMesh && child.material) {
-                child.material.transparent = opacity < 1;
-                child.material.opacity = opacity;
-                child.material.depthWrite = opacity >= 1;
-                child.material.needsUpdate = true;
-            }
-        });
+        setModelOpacity(selectedModel, opacity);
         renderer.render(scene, camera);
     });
 

@@ -33,8 +33,7 @@ export function buildEditPanel(container, selectedModel) {
         const newColor = new THREE.Color(e.target.value);
         selectedModel.traverse(child => {
             if (child.isMesh && child.material) {
-                child.material.color.set(newColor);
-                child.material.needsUpdate = true;
+                setModelColor(selectedModel, newColor);
             }
         });
     });
