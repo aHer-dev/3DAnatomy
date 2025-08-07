@@ -32,9 +32,6 @@ function setupStaticAssets() {
 
 // 🚀 Hauptstart der Anwendung – Asynchron für Laden-Warten
 async function startApp() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const isDevMode = urlParams.get('dev') === '1';
-
   setupStaticAssets();
 
   const initialScreen = document.getElementById('initial-loading-screen');
@@ -47,7 +44,7 @@ async function startApp() {
 
   setupUI();
   setupInteractions();
-  setupGroupLoadEvents(); 
+  setupGroupLoadEvents();
   await initializeGroupsFromMeta();
 
   console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
@@ -57,34 +54,19 @@ async function startApp() {
   loader.setDRACOLoader(dracoLoader);
 
   try {
-    if (isDevMode) {
-      console.log('🔧 Developer-Modus: Lade alle Gruppen...');
-      for (const group of state.availableGroups) {
-        const entries = state.groupedMeta[group] || [];
-        if (entries.length) {
-          showLoadingBar();
-          console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-          await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
-          hideLoadingBar();
-        }
-      }
-    } else {
-      const group = 'bones';
-      const entries = state.groupedMeta[group] || [];
-      if (entries.length) {
-        showLoadingBar();
-        console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-        await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
-        hideLoadingBar();
-      }
+    // Nur "bones" laden (Dev-Modus entfernt)
+    const group = 'bones';
+    const entries = state.groupedMeta[group] || [];
+    if (entries.length) {
+      showLoadingBar();
+      console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
+      await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
+      hideLoadingBar();
     }
   } catch (err) {
     console.error('❌ Fehler beim Modell-Laden:', err);
     hideLoadingBar();
   }
-
-
-
 
   // Verstecke Initial-Screen mit Fade-Out (UX: Sanft)
   initialScreen.style.opacity = '0';
@@ -93,9 +75,9 @@ async function startApp() {
   // UX: Zentrierte Startansicht
   setCameraToDefault(camera, controls);
 
-  // Lichtquellen initialisieren
+  // Lichtquellen initialisieren (falls nötig, prüfe imports)
   window.addEventListener('resize', () => {
-    const container = document.getElementById('container');
+    const container = document.getElementById('canvas-container'); // Korrigiere ID
     if (!container) return;
 
     const width = container.clientWidth;
@@ -105,6 +87,7 @@ async function startApp() {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
   });
+
   // Starte Render-Loop
   animate();
 }

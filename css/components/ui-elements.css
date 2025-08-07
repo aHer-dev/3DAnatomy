@@ -107,3 +107,20 @@ input[type="range"] {
     white-space: nowrap;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+
+
+#btn-toggle-license {
+    background: transparent;
+    border: none;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    transition: var(--transition-fast);
+}
+
+#btn-toggle-license:hover {
+    color: var(--color-white);
+    text-decoration: underline;
+}

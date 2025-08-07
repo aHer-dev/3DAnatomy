@@ -12,6 +12,10 @@
     max-height: 80vh;
     overflow-y: auto;
     pointer-events: auto;
+    /*display: block !important;  DEBUG IMPORTANT */
+    /* opacity: 1 !important;  DEBUG IMPORTANT */
+    /* background: red !important; Test: Sollte rot erscheinen */
+
 }
 
 #controls::-webkit-scrollbar {

@@ -288,7 +288,19 @@ function highlightObject(object) {
 export { highlightObject, showInfoPanel };
 
 window.toggleLicense = function () {
-  const dropdown = document.getElementById('license-dropdown');
-  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  const button = document.getElementById('btn-toggle-license');
+  const info = document.getElementById('license-info');
 
+  if (!info || !button) {
+    console.error('❌ Lizenz-Elemente nicht gefunden');
+    return;
+  }
+
+  info.classList.toggle('active');
+
+  const isActive = info.classList.contains('active');
+  button.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+  info.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+
+  console.log('Lizenz-Toggle:', isActive ? 'sichtbar' : 'versteckt');
 };

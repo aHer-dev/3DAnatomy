@@ -24,7 +24,7 @@ export function setupControlsUI() {
   menuIcon.addEventListener('click', () => {
     // ➕ Prüfe, ob das Panel aktuell offen ist
     const isOpen = controlsPanel.style.display === 'block';
-
+    console.log('Controls Display:', controlsPanel.style.display);
     // 🔁 Toggle Sichtbarkeit und Icon-Zustand
     controlsPanel.style.display = isOpen ? 'none' : 'block';
     menuIcon.classList.toggle('open');

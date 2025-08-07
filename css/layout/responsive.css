@@ -65,7 +65,7 @@
     }
 
     /* Lizenz-Dropdown: Anpassung für kleinere Bildschirme */
-    #license-dropdown {
+    #license-info {
         width: 70vw;
         bottom: 35px;
         right: 5px;

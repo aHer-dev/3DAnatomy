@@ -24,6 +24,11 @@
   <canvas id="canvas" aria-label="3D Anatomie-Ansicht"></canvas>
 </div>
 
+    <div id="submenu-container" class="dropdown-menu" aria-label="Submenü"></div>
+    <div id="room-dropdown-content" class="dropdown-menu" aria-label="Raumoptionen"></div>
+    <button id="menu-icon" aria-label="Menü öffnen">☰</button>
+
+
   <!-- Ladeanzeige -->
   <div id="initial-loading-screen" aria-hidden="true">
     <img id="loading-sticker" src="images/loading-sticker.png" alt="Ladeanimation">
@@ -164,15 +169,10 @@
   <div id="tooltip" role="tooltip" aria-hidden="true"></div>
 
   <!-- Footer & Lizenz -->
-  <footer id="footer" role="contentinfo">
-    <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">© CC BY-SA</button>
-    <div id="license-info" class="hidden" aria-hidden="true">
-      <p>BodyParts3D, © The Database Center for Life Science, lizenziert unter
-        <a href="https://creativecommons.org/licenses/by-sa/2.1/jp/" target="_blank" rel="noopener noreferrer">
-          CC BY-SA 2.1 Japan</a>.</p>
-      <p>Modelle basieren auf Anatomography / BodyParts3D. Abgeleitete Werke müssen unter derselben Lizenz geteilt werden.</p>
-    </div>
-  </footer>
+<footer id="footer" role="contentinfo">
+  <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">© CC BY-SA</button>
+  <div id="license-info" class="hidden" aria-hidden="true"></div>
+</footer>
 
   <!-- Script -->
   <script type="module" src="app.js"></script>

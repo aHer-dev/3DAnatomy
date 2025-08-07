@@ -41,16 +41,6 @@
     color: #3419cf;
 }
 
-#volume-slider {
-    width: 80px;
-    margin-left: 10px;
-    vertical-align: middle;
-    accent-color: #3419cf;
-}
-
-#volume-container {
-    margin-left: 10px;
-}
 
 .license-link,
 .license-icon {
@@ -63,9 +53,10 @@
     vertical-align: middle;
 }
 
-#license-dropdown {
+#license-info {
     display: none;
-    position: fixed;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;  /* POSITIONFIXED = BAD ?!?!?!?*/
     bottom: 40px;
     right: 10px;
     background-color: rgba(0, 0, 0, 0.7);
@@ -75,19 +66,27 @@
     width: 250px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.3s ease-in-out;
-    z-index: 1100;
+    z-index: 3000;
 }
 
-#license-dropdown.active {
+#license-info.active {
     display: block;
+    opacity: 1;
 }
 
-#license-dropdown a {
+#license-info.hidden {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+    opacity: 0;
+}
+
+
+#license-info a {
     color: #3419cf;
     /* Grün für Links */
     text-decoration: none;
 }
 
-#license-dropdown a:hover {
+#license-info a:hover {
     text-decoration: underline;
 }
