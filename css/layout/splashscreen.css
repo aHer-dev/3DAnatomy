@@ -39,20 +39,7 @@
     opacity: 1;
 }
 
-#go-sticker {
-    width: 500px;
-    /* Passe an */
-    height: auto;
-    cursor: pointer;
-    /* Zeigt Klickbarkeit */
-    transition: transform 0.2s;
-    /* Leichter Hover-Effekt */
-}
 
-#go-sticker:hover {
-    transform: scale(1.1);
-    /* Vergrößert bei Hover */
-}
 
 #footer-container {
     position: fixed;
@@ -99,4 +86,3 @@
     background: transparent;
     opacity: 1;
 }
-

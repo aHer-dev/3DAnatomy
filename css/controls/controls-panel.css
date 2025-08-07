@@ -1,0 +1,60 @@
+/* --- Steuerungspanel (#controls) --- */
+/* Steuerungspanel: Positionierung, Transparenz, Scrollbar, resizable */
+#controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 10px;
+    color: white;
+    max-width: 250px;
+    max-height: 80vh;
+    overflow-y: auto;
+    pointer-events: auto;
+}
+
+#controls::-webkit-scrollbar {
+    width: 8px;
+    /* Chrome/Safari: Dünne Scrollbar */
+}
+
+#controls::-webkit-scrollbar-thumb {
+    background-color: #555555;
+    /* Dunkelgrau, wie in Infobox */
+    border-radius: 4px;
+}
+
+#controls::-webkit-scrollbar-track {
+    background-color: #333333;
+    /* Passend zum Hintergrund */
+}
+
+#controls .sub-dropdown {
+    transition: height 0.3s ease;
+}
+
+#controls .sub-dropdown.minimized {
+    height: 0;
+    overflow: hidden;
+}
+
+#controls.minimized {
+    max-height: 100px;
+    /* Nur Hauptgruppen sichtbar */
+    overflow: hidden;
+    /* Submenüs abschneiden */
+}
+
+/* Überschriften im Steuerungspanel */
+#controls h2 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+/* Sicherstellen, dass UI-Elemente nicht überlagern */
+#controls,
+#info-panel {
+    position: absolute;
+    z-index: 10;
+}

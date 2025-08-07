@@ -20,7 +20,7 @@ console.log('📦 app.js geladen, basePath:', utils.basePath);
 // 📁 Statische Assets (Sticker, Favicon) – Für UX-Loading-Bilder
 function setupStaticAssets() {
   const basePath = utils.basePath || '';
-  ['loading-sticker', 'go-sticker', 'live-loading-sticker'].forEach(id => {
+  ['loading-sticker', 'live-loading-sticker'].forEach(id => {
     const img = document.getElementById(id);
     if (img) img.src = `${basePath}/images/${id}.png`;
   });
@@ -85,14 +85,7 @@ async function startApp() {
   initialScreen.style.opacity = '0';
   setTimeout(() => initialScreen.style.display = 'none', 500);
 
-  // Zeige Splash-Screen
-  const splashScreen = document.getElementById('splash-screen');
-  if (!splashScreen) {
-    console.error('❌ Splash-Screen nicht gefunden');
-    return;
-  }
-  splashScreen.style.display = 'flex';
-  splashScreen.classList.add('visible');
+
 
   // UX: Zentrierte Startansicht
   setCameraToDefault(camera, controls);
@@ -103,22 +96,14 @@ async function startApp() {
 
 // 🎯 Splashscreen beenden – UX: Klick zum Start
 function setupSplashScreenExit() {
-  const goSticker = document.getElementById('go-sticker');
+
   const splashScreen = document.getElementById('splash-screen');
   const liveSticker = document.getElementById('live-loading-sticker');
 
-  if (!goSticker || !splashScreen) {
-    console.error('❌ Go-Sticker oder Splash-Screen nicht gefunden');
+  if (!splashScreen) {
+    console.error('❌ Splash-Screen nicht gefunden');
     return;
   }
-
-  goSticker.addEventListener('click', () => {
-    splashScreen.style.opacity = '0';
-    setTimeout(() => {
-      splashScreen.style.display = 'none';
-      if (liveSticker) liveSticker.style.display = 'none';
-    }, 500);
-  });
 }
 
 // 📦 Manuelles Nachladen weiterer Gruppen (z. B. Muskeln) – Skalierbar

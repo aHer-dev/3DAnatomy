@@ -15,12 +15,6 @@ export function setupInteractions() {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
-  // Initial closed (Panel nicht sichtbar)
-  const controls = document.getElementById('controls');
-  if (controls) {
-    controls.style.display = 'none';
-    console.log('Panel initial closed gesetzt');
-  }
 
   // Click-Event auf Canvas für Model-Selection
   renderer.domElement.addEventListener('click', onClick, false);
