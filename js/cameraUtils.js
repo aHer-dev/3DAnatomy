@@ -12,7 +12,7 @@ export function isMobile() {
  * Setzt Kamera und Controls auf eine definierte Standardposition.
  */
 export function setCameraToDefault(camera, controls) {
-  const defaultPosition = new THREE.Vector3(0, 1.6, 3.0); // Nah ran für Anatomie-Übersicht
+  const defaultPosition = new THREE.Vector3( -0.5, 0.9, 0.8); // Nah ran für Anatomie-Übersicht
   const defaultTarget = new THREE.Vector3(0, 1.0, 0);
 
   camera.position.copy(defaultPosition);

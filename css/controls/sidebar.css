@@ -16,6 +16,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     font-family: Arial, sans-serif;
     display: none;
+    z-index: 250;
     /* Initial ausgeblendet */
 }
 
@@ -48,6 +49,7 @@
     color: white;
     /* Weißer Text */
     font-size: 12px;
+    z-index: 250;
 }
 
 #details-content p {

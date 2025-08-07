@@ -4,7 +4,10 @@ import * as THREE from 'three'; // 🌐 Zentrale 3D-Komponenten inkl. THREE
 import { state } from '../state.js'; // 🔁 Globale Zustandsverwaltung
 import { setCameraToDefault } from '../cameraUtils.js'; // 📷 Funktion zum Zurücksetzen der Kamera
 import { updateModelColors, updateGroupVisibility } from '../modelLoader/index.js'; // 🎨 Sichtbarkeit & Farbe updaten
-
+import { camera } from '../camera.js';
+import { controls } from '../controls.js';
+import { hideInfoPanel } from '../interaction/infoPanel.js';
+import { scene } from '../scene.js';
 
 /**
  * Initialisiert den Reset-Button und definiert, wie der Zustand der App vollständig zurückgesetzt wird.
@@ -27,7 +30,7 @@ export function setupResetUI() {
 
     // 2️⃣ Farben aller Gruppen auf Standard zurücksetzen und neu anwenden
     state.availableGroups.forEach(group => {
-      const defaultColor = state.defaultSettings.colors[group];
+      const defaultColor = state.defaultSettings.colors?.[group] ?? 0xcccccc; // Standardfarbe (grau) verwenden, falls nicht definiert
       if (defaultColor !== undefined) {
         state.colors[group] = defaultColor;        // 🧠 Zustand updaten
         updateModelColors(group);                  // 🎨 Farben anwenden

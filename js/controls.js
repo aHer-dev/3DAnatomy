@@ -1,8 +1,12 @@
+//js/controls.js
+// controls.js – Steuert die Kamera-Interaktion in der 3D-Szene
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { camera } from './camera.js';
 import { renderer } from './renderer.js';
-import { hideInfoPanel } from './interaction.js'; // Für Panel-Interaktion
+import { hideInfoPanel } from './interaction/infoPanel.js';
+
+
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.minDistance = 1;

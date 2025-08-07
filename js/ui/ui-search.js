@@ -8,8 +8,10 @@ import { controls } from '../controls.js'; // Falls für Interaktionen nötig
 
 // ... Rest des Code
 import { state } from '../state.js';                        // 🔁 Globaler App-Zustand              
-import { getMeta } from '../utils.js';                     // 📄 Lädt Metadaten der Modelle
-import { highlightObject, showInfoPanel } from '../interaction.js'; // ✨ Interaktion (Highlight & Info-Fenster)
+import { getMeta } from '../utils/index.js';                     // 📄 Lädt Metadaten der Modelle
+import { highlightModel } from '../interaction/highlightModel.js';
+import { showInfoPanel } from '../interaction/infoPanel.js';
+
 import { loadModels } from '../modelLoader/index.js';      // 🔄 Funktion zum Laden einzelner Modelle
 
 /**

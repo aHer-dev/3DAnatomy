@@ -2,7 +2,7 @@ import { setupSearchUI } from './ui-search.js';
 import { setupColorUI } from './ui-color.js';
 import { setupSetUI } from './ui-set.js';
 import { setupResetUI } from './ui-reset.js';
-import { setupSubmenuUI } from './ui-submenu.js';
+import { setupSubmenuUI } from './submenu/index.js';
 import { setupExportUI } from './ui-export.js';
 import { setupControlsUI } from './ui-controls.js';
 import { setupRoomUI } from './ui-room.js';

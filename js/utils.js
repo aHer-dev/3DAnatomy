@@ -1,5 +1,5 @@
 // utils.js – Hilfsfunktionen für Pfade, Metadaten und Gruppenaufbau
-
+import * as THREE from 'three';
 import { state } from './state.js';
 
 //
@@ -67,3 +67,22 @@ export async function initializeGroupsFromMeta() {
   console.log('✅ initializeGroupsFromMeta: Gruppen initialisiert:', state.availableGroups);
 }
 
+/**
+ * Normalisiert Maus- oder Touch-Koordinaten für Raycasting
+ * @param {MouseEvent | TouchEvent} event
+ * @returns {THREE.Vector2} – normierte Koordinaten für Raycaster
+ */
+export function getNormalizedMouse(event) {
+  const mouse = new THREE.Vector2();
+
+  if (event.touches && event.touches.length > 0) {
+    const touch = event.touches[0];
+    mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+  } else {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  }
+
+  return mouse;
+}

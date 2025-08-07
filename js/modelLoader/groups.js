@@ -7,7 +7,7 @@ import { dracoLoader } from './dracoLoader.js'; // Zentraler Draco-Loader
 import { scene } from '../scene.js';
 import { camera } from '../camera.js';
 import { renderer } from '../renderer.js';
-import { getMeta } from '../utils.js';
+import { getMeta } from '../utils/index.js';
 import { loadModels } from './modelLoader-core.js';
 import { removeModelsByGroupOrSubgroup } from './cleanup.js';
 import { state } from '../state.js';
