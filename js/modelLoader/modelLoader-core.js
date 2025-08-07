@@ -108,7 +108,16 @@
            model.userData = { meta: entry };
            state.groups[group] = state.groups[group] || [];
            state.groups[group].push(model);
-           state.modelNames.set(model, entry.labels?.en || filename);
+
+           
+
+           model.traverse(child => {
+             if (child.isMesh || child.type === 'Group') {
+               state.modelNames.set(child, entry.labels?.en || filename);
+             }
+           });
+
+
            state.groupStates[group] = state.groupStates[group] || {};
            state.groupStates[group][filename] = true;
 

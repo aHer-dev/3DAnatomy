@@ -1,14 +1,20 @@
+// js/interaction/raycastOnClick.js
 import * as THREE from 'three';
 import { camera } from '../camera.js';
 import { scene } from '../scene.js';
 import { getMeta } from '../utils/index.js';
 import { state } from '../state.js';
 
+/**
+ * Setzt Raycasting bei Klick auf das 3D-Modell auf.
+ * Führt Callback aus mit { meta, model, intersects, event }
+ */
 export function setupRaycastOnClick(domElement, callback) {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     function onClick(event) {
+        console.log("🖱️ Klick erkannt");
         event.preventDefault();
         event.stopPropagation();
 
@@ -20,22 +26,23 @@ export function setupRaycastOnClick(domElement, callback) {
         const intersects = raycaster.intersectObjects(scene.children, true);
 
         if (intersects.length > 0) {
-            let model = intersects[0].object;
-            while (model && !state.modelNames.has(model)) {
-                model = model.parent;
+            let object = intersects[0].object;
+            console.log('🔍 Getroffenes Objekt:', object.name || object.type);
+
+            // Elternkette nach userData.meta durchsuchen
+            while (object && !object.userData?.meta) {
+                object = object.parent;
             }
 
-            if (model && state.modelNames.has(model)) {
-                const label = state.modelNames.get(model);
-                getMeta().then(metaArray => {
-                    const meta = metaArray.find(entry => entry.label === label);
-                    if (meta) callback({ meta, model, intersects, event });
-                });
+            if (object && object.userData?.meta) {
+                const meta = object.userData.meta;
+                console.log('✅ Callback wird aufgerufen mit:', meta.labels?.en || meta.id);
+                callback({ meta, model: object, intersects, event });
+            } else {
+                console.warn('⚠️ Kein zugehöriges Modell mit Metadaten gefunden.');
             }
         }
     }
 
     domElement.addEventListener('pointerdown', onClick);
-    domElement.addEventListener('mousedown', onClick);
-    domElement.addEventListener('touchstart', onClick);
 }

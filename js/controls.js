@@ -18,13 +18,24 @@ controls.enableRotate = true;
 controls.minPolarAngle = 0;
 controls.maxPolarAngle = Math.PI;
 
+
+// QUICKFIX ? INFO PANEL WURDE VERSTECKT ONKLICK ORBIT CONTROL SCHLIE?T NACH KLICK
+let previousPosition = camera.position.clone();
+
 controls.addEventListener('change', () => {
-  if (document.getElementById('info-panel').classList.contains('visible')) {
-    hideInfoPanel(); // Minimieren bei Rotate/Zoom/Pan
-    console.log('Panel minimiert bei 3D-Interaktion');
+  const distanceMoved = camera.position.distanceTo(previousPosition);
+
+  // Nur wenn die Kamera wirklich bewegt wurde → Panel schließen
+  if (distanceMoved > 0.01) {
+    const panel = document.getElementById('info-panel');
+    if (panel?.classList.contains('visible')) {
+      hideInfoPanel();
+      console.log('Panel minimiert bei 3D-Interaktion');
+    }
+    previousPosition.copy(camera.position);
   }
 });
 
-controls.update();
+
 
 export { controls };
