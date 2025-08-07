@@ -11,10 +11,9 @@
 
 /* Canvas soll nur Hintergrund sein – kein z-index nötig */
 canvas {
-    position: absolute; /* Wenn weg dann grau */
+    position: absolute; /* Wenn weg dann grau BEHALTEN IST ESSENTIELL KONFLIKT MIT OVERLAY*/
     width: 100%;
     height: 100%;
     display: block;
-    pointer-events: none;
-        /* 👈 Das macht den Canvas "durchklickbar" */
+
 }

@@ -1,33 +1,64 @@
 /* --- Dropdown-Styling (Gruppen, Farben, Tools) --- */
 .dropdown {
     margin-bottom: 10px;
+        position: relative;
+    }
+
+
+/* Inhalt zunächst ausblenden */
+.dropdown-content {
+    display: none;
+    padding: 10px;
+    background-color: #222222;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/* Sichtbar bei .active */
+.dropdown.active>.dropdown-content {
+    display: block;
 }
 
 
-/* --- Sub-Dropdowns (für Subgruppen wie Arm-Schulter) --- */
-#bones-sub-dropdown,
-#muscles-sub-dropdown,
-#tendons-sub-dropdown,
-#other-sub-dropdown {
-    margin-left: 20px;
-    /* Einrückung für Hierarchie */
+/* Color-Picker optimieren */
+.dropdown-content input[type="color"] {
+    width: 50px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle;
 }
 
-/* Einzelne Items in Sub-Dropdowns */
-#bones-subgroups .item-checkbox,
-#muscles-subgroups .item-checkbox,
-#tendons-subgroups .item-checkbox,
-#other-subgroups .item-checkbox {
+/* --- Sub-Dropdowns für Untergruppen (z. B. Arm-Schulter) --- */
+.sub-dropdown {
+    display: none;
+    margin-left: 10px;
+}
+
+/* Sichtbar bei .active */
+.sub-dropdown.active {
+    display: block;
+}
+
+/* --- Modell-Checkboxen innerhalb Subgroups --- */
+.subgroup-list label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: white;
     margin-left: 20px;
-    /* Einrückung für Modelle */
-    font-size: 12px;
+}
+
+
+/* --- Einrückung für Submenüs --- */
+.group-block {
+    margin-left: 20px;
 }
 
 /* Nested Dropdown für Einzel-Elemente */
 .item-dropdown {
     margin-left: 20px;
 }
-
 
 .item-dropdown-content {
     display: none;
@@ -37,57 +68,18 @@
     margin-top: 5px;
 }
 
-
+.dropdown:hover>.dropdown-content {
+    display: block;
+}
 
 .item-dropdown.active .item-dropdown-content {
     display: block;
 }
 
-.dropdown-content {
-    display: none !important;
-    ;
-    padding: 10px;
-    background-color: #222222;
-    border-radius: 5px;
-    margin-top: 5px;
-}
-
-.dropdown.active .dropdown-content {
-    display: block !important;
-    /* Erzwinge Sichtbarkeit */
-}
-
-/* Farben-Dropdown: Vertikale Anordnung */
-.dropdown-content label {
-    display: block;
-    /* Jede Label untereinander */
-    margin-bottom: 10px;
-    /* Abstand zwischen Inputs */
-    font-size: 14px;
-    color: white;
-}
-
-.dropdown-content input[type="color"] {
-    width: 50px;
-    /* Kleine Breite für Color-Picker */
-    height: 20px;
-    border: none;
-    cursor: pointer;
-    vertical-align: middle;
-    /* Zentriert im Label */
-}
-
-.sub-dropdown {
+.dropdown-menu {
     display: none;
-    margin-left: 10px;
 }
 
-#bones-subgroups label,
-#muscles-subgroups label,
-#tendons-subgroups label,
-#other-subgroups label {
-    font-size: 14px;
+.dropdown.active .dropdown-menu {
     display: block;
-    margin-bottom: 5px;
-    color: white;
 }

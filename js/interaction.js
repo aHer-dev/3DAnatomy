@@ -17,10 +17,14 @@ export function setupInteractions() {
 
 
   // Click-Event auf Canvas für Model-Selection
-  renderer.domElement.addEventListener('click', onClick, false);
+  renderer.domElement.addEventListener('pointerdown', onClick, false); // besser für Touch & Stylus
+  renderer.domElement.addEventListener('touchstart', onClick, false); // optional
+  renderer.domElement.addEventListener('mousedown', onClick, false);  // optional fallback
 
   async function onClick(event) {
     event.preventDefault();
+    event.stopPropagation(); // ⛔️ Verhindert Konflikte mit UI-Elementen
+    
     console.log('Klick erkannt – Starte Raycaster...');
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;

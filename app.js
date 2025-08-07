@@ -85,11 +85,21 @@ async function startApp() {
   initialScreen.style.opacity = '0';
   setTimeout(() => initialScreen.style.display = 'none', 500);
 
-
-
   // UX: Zentrierte Startansicht
   setCameraToDefault(camera, controls);
 
+  // Lichtquellen initialisieren
+  window.addEventListener('resize', () => {
+    const container = document.getElementById('container');
+    if (!container) return;
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  });
   // Starte Render-Loop
   animate();
 }
