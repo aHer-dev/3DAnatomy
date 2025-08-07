@@ -1,3 +1,6 @@
+//group.js
+// 📦 Laden und Verwalten von Gruppen in der 3D-Anatomie-An
+
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { dracoLoader } from './dracoLoader.js'; // Zentraler Draco-Loader
@@ -23,17 +26,18 @@ loader.setDRACOLoader(dracoLoader); // Nutze zentralen Draco-Loader
 export async function loadGroup(groupName, subgroup = null, centerCamera = false) {
   const meta = await getMeta();
 
-const results = meta.filter(entry =>
-  entry.labels?.en?.toLowerCase().includes(searchTerm) ||
-  entry.id?.toLowerCase().includes(searchTerm)
-);
+  const filteredEntries = meta.filter(entry => {
+    if (entry.group !== groupName) return false;
+    if (subgroup && entry.subgroup !== subgroup) return false;
+    return true;
+  });
 
   if (!state.groups[groupName]) {
     state.groups[groupName] = [];
     state.groupStates[groupName] = {};
   }
 
-  await loadModels(filteredEntries, groupName, centerCamera, scene, loader);
+  await loadModels(filteredEntries, groupName, centerCamera, scene, loader, camera, controls, renderer);
 }
 
 

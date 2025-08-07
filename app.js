@@ -14,6 +14,7 @@ import { showLoadingBar, hideLoadingBar } from './js/modelLoader/progress.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { dracoLoader } from './js/modelLoader/dracoLoader.js'; // Neu: Zentraler Draco-Loader
 import { lightFront, lightBack, lightTop, ambientLight } from './js/lights.js';
+import { setupGroupLoadEvents } from './js/ui/ui-setupGroupLoadEvents.js';
 
 console.log('📦 app.js geladen, basePath:', utils.basePath);
 
@@ -46,6 +47,7 @@ async function startApp() {
 
   setupUI();
   setupInteractions();
+  setupGroupLoadEvents(); 
   await initializeGroupsFromMeta();
 
   console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
@@ -80,6 +82,9 @@ async function startApp() {
     console.error('❌ Fehler beim Modell-Laden:', err);
     hideLoadingBar();
   }
+
+
+
 
   // Verstecke Initial-Screen mit Fade-Out (UX: Sanft)
   initialScreen.style.opacity = '0';

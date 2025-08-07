@@ -73,7 +73,7 @@ const submenuContainer = document.getElementById('submenu-container');
       });
 
       groupDiv.appendChild(moreBtn);
-      container.appendChild(groupDiv);
+      submenuContainer.appendChild(groupDiv);
     });
   });
 }
