@@ -11,6 +11,8 @@ import { getMeta } from '../utils/index.js';
 import { loadModels } from './modelLoader-core.js';
 import { removeModelsByGroupOrSubgroup } from './cleanup.js';
 import { state } from '../state.js';
+import { setModelVisibility } from './visibility.js';
+
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader); // Nutze zentralen Draco-Loader
@@ -91,7 +93,7 @@ export function restoreGroupState(groupName) {
 
   models.forEach(model => {
     const isVisible = visibilityMap[model.name] !== false; // Default: true
-    model.visible = isVisible;
+    setModelVisibility(model, isVisible);
   });
 
   console.log(`♻️ Sichtbarkeit von Gruppe "${groupName}" wiederhergestellt.`);

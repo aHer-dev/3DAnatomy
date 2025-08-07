@@ -1,0 +1,58 @@
+// visibility.js – Sichtbarkeit von Gruppen und Einzelmodellen zentral steuern
+
+import { state } from '../state.js';
+import { scene } from '../scene.js';
+
+/**
+ * Setzt Sichtbarkeit für alle Modelle einer Gruppe
+ * @param {string} group – z. B. 'muscles'
+ * @param {boolean} visible – true = anzeigen, false = verstecken
+ */
+export function setGroupVisibility(group, visible) {
+    state.modelObjects.forEach((model, label) => {
+        const meta = state.metaByLabel[label];
+        if (meta?.group === group) {
+            model.visible = visible;
+        }
+    });
+    state.groupStates[group] = visible;
+}
+
+/**
+/**
+ * Setzt Sichtbarkeit eines einzelnen Modells
+ * @param {THREE.Object3D} model
+ * @param {boolean} visible
+ */
+export function setModelVisibility(model, visible) {
+    if (!model) return;
+    model.traverse(child => {
+        if (child.isMesh) child.visible = visible;
+    });
+}
+
+/**
+ * Wechselt Sichtbarkeit eines einzelnen Modells
+ * @param {THREE.Object3D} model
+ */
+export function toggleModelVisibility(model) {
+    if (!model) return;
+    const currentVisibility = model.visible;
+    setModelVisibility(model, !currentVisibility);
+}
+// /**Prüft, ob ein Modell sichtbar ist
+
+export function isModelVisible(model) {
+    return !!model?.visible;
+}
+
+/**
+ * Versteckt alle Modelle im Scene-Graph (optional global)
+ */
+export function hideAllModels() {
+    scene.traverse(obj => {
+        if (obj.isMesh) {
+            obj.visible = false;
+        }
+    });
+}

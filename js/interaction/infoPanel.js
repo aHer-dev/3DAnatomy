@@ -5,6 +5,8 @@ import { renderer } from '../renderer.js';
 import { scene } from '../scene.js';
 import { highlightModel } from './highlightModel.js';
 import { buildEditPanel } from './editPanel.js';
+import { toggleModelVisibility, isModelVisible } from '../modelLoader/visibility.js';
+
 
 export function showInfoPanel(meta, selectedModel) {
     const infoContent = document.getElementById('info-content');
@@ -97,8 +99,8 @@ export function showInfoPanel(meta, selectedModel) {
     });
 
     toggleButton.addEventListener('click', () => {
-        selectedModel.visible = !selectedModel.visible;
-        toggleButton.textContent = selectedModel.visible ? 'Verstecken' : 'Anzeigen';
+        toggleModelVisibility(selectedModel);
+        toggleButton.textContent = isModelVisible(selectedModel) ? 'Verstecken' : 'Anzeigen';
     });
 }
 

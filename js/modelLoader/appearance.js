@@ -1,5 +1,6 @@
 // modelLoader-appearance.js
 import { state } from '../state.js';
+import { setModelVisibility } from './visibility.js';
 
 /**
  * Aktualisiert die Farbe aller Modelle einer bestimmten Gruppe.
@@ -39,7 +40,7 @@ export function updateGroupVisibility(group) {
 
   models.forEach(model => {
     const visible = state.groupStates[group][model.name] !== false;
-    model.visible = visible;
+    setModelVisibility(model, visible);
   });
 
   console.log(`👁 Sichtbarkeit für Gruppe "${group}" aktualisiert.`);
