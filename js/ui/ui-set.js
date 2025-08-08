@@ -6,7 +6,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { dracoLoader } from '../modelLoader/dracoLoader.js';
-import { hideAllModels, setModelVisibility, isModelVisible } from '../modelLoader/visibility.js'; // Importiere Helper
+import { hideAllManagedModels } from '../modelLoader/visibility.js';
 import { setModelColor, setModelOpacity } from '../modelLoader/appearance.js'; // Importiere Appearance-Helper
 import { scene } from '../scene.js';
 import { camera } from '../camera.js';

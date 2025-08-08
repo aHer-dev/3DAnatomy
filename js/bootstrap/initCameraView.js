@@ -10,5 +10,6 @@ import { setCameraToDefault } from '../cameraUtils.js';
  */
 export function initCameraView() {
     setCameraToDefault(camera, controls);
+    controls.saveState(); // Startzustand für spätere Resets sichern
     console.log('📸 Kamera-Startposition gesetzt (Default View)');
 }

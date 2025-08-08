@@ -109,7 +109,8 @@ export async function resetApp() {
 
   hideAllModels(); // Alles weg
 
-  const startGroups = ['bones', 'teeth'];
+
+  const startGroups = ['bones', 'teeth']; // Standardgruppen, die beim Reset geladen werden
   for (const group of startGroups) {
     try {
       await loadGroup(group, null, false); // false = Kamera nicht jedes Mal fitten
