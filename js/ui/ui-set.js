@@ -99,8 +99,11 @@ export function setupSetUI() {
   console.log('📦 Sammlungssystem und Gruppen-Buttons aktiviert.');
 }
 
+/**
+ * Rendert die Liste der gespeicherten Modelle in der Sammlung (UI)
+ */
 export function updateCollectionUI() {
-  const collectionList = document.getElementById('set-list'); // Änderung: set-list statt collection-list
+  const collectionList = document.getElementById('set-list');
   if (!collectionList) {
     console.error('❌ Collection-List Container (#set-list) nicht gefunden');
     return;
@@ -128,18 +131,37 @@ export function showCollectionInScene() {
   console.log('🔄 Szene umschalten auf Sammlung...');
   hideAllModels(); // Verstecke alles
 
+  // Setze Layers für alle Modelle zurück
+  scene.traverse(obj => {
+    if (obj.isMesh || obj.isGroup) {
+      obj.layers.disable(0); // Alle deaktivieren
+    }
+  });
+
   state.collection.forEach(item => {
     const model = item.model;
     setModelColor(model, item.color);
     setModelOpacity(model, item.opacity);
-    setModelVisibility(model, item.visible); // Setze gespeicherte Visibility
+    setModelVisibility(model, true); // Immer sichtbar machen, unabhängig von gespeichertem visible
+    model.layers.enable(0); // Sicherstellen, dass Sammlungs-Modelle klickbar sind
   });
 
-  renderer.render(scene, camera); // Re-Render Szene
-  console.log('✅ Sammlung in Szene angezeigt.');
+  renderer.render(scene, camera);
+  console.log('✅ Sammlung in Szene angezeigt:', state.collection.length, 'Modelle');
 }
 
 
+/**
+/**
+ * Leert die Sammlung
+ */
+export function clearCollection() {
+  state.collection = [];
+  updateCollectionUI();
+  hideAllModels();
+  renderer.render(scene, camera);
+  console.log('🗑️ Sammlung geleert.');
+}
 
 
 
@@ -153,4 +175,12 @@ if (showCollectionBtn) {
   });
 } else {
   console.warn('⚠️ Button (#btn-show-set) nicht gefunden');
+}
+
+// Event-Listener für "Sammlung leeren"
+const clearCollectionBtn = document.querySelector('#btn-clear-set');
+if (clearCollectionBtn) {
+  clearCollectionBtn.addEventListener('click', clearCollection);
+} else {
+  console.warn('⚠️ Button (#btn-clear-set) nicht gefunden');
 }

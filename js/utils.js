@@ -36,12 +36,19 @@ export async function getMeta() {
       cachedMeta = await response.json();
       console.log("✅ meta.json geladen – Einträge:", cachedMeta.length);
     } catch (error) {
-      console.error("❌ Fehler beim Laden der Metadaten:", error);
-      alert("Fehler beim Laden der Metadaten. Bitte Dateistruktur prüfen.");
-      return [];
+      console.error('❌ Fehler beim Laden der Metadaten:', error);
+      cachedMeta = [];
     }
+  } else {
+    console.log('🔍 Nutze gecachte meta.json:', cachedMeta.length, 'Einträge');
   }
   return cachedMeta;
+}
+
+// Schutz vor Überschreiben
+export function resetMetaCache() {
+  console.warn('⚠️ Meta-Cache zurückgesetzt');
+  cachedMeta = null;
 }
 
 //
