@@ -1,7 +1,7 @@
 // js/interaction/highlightModel.js
 // — Selektions-Highlight: vorher altes Highlight entfernen, dann neues setzen —
 import * as THREE from 'three';       // <<< NEU: wir benötigen THREE.Color
-import { state } from '../state.js';  // globaler Zustand (merkt currentlySelected)
+import { state } from '../store/state.js';  // globaler Zustand (merkt currentlySelected)
 
 /**
  * Hebt ein Modell dezent hervor (emissive) und entfernt vorheriges Highlight.

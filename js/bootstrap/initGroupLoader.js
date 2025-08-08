@@ -1,22 +1,21 @@
 // js/bootstrap/initGroupLoader.js
 // 📦 Initialisiert das dynamische Laden anatomischer Gruppen (z. B. Muskeln) durch Buttons
 
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { dracoLoader } from '../modelLoader/dracoLoader.js';
+import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
 import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
-import { renderer } from '../renderer.js';
-import { controls } from '../controls.js';
-import { state } from '../state.js';
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { renderer } from '../core/renderer.js';
+import { controls } from '../core/controls.js';
+import { state } from '../store/state.js';
 
 /**
  * Fügt EventListener zu Gruppenbuttons hinzu (z. B. Muskeln).
  * Ladeprozess mit DRACO-Kompression und Fortschrittsanzeige.
  */
 export function initDynamicGroupLoading() {
-    const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
+    const loader = createGLTFLoader();
+    
 
     const buttonGroupMap = {
         'muscles': 'btn-load-muscles',

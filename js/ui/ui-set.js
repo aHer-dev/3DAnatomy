@@ -4,15 +4,15 @@
  * alle Muskeln auf einmal zu laden und Einträge aus dem Set wieder zu entfernen.
  */
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { dracoLoader } from '../modelLoader/dracoLoader.js';
-import { hideAllManagedModels } from '../modelLoader/visibility.js';
-import { setModelColor, setModelOpacity } from '../modelLoader/appearance.js'; // Importiere Appearance-Helper
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
-import { renderer } from '../renderer.js';
-import { controls } from '../controls.js';
-import { state } from '../state.js';
+import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
+import { modelPath } from '../core/path.js';
+import { hideAllManagedModels } from '../features/visibility.js';
+import { setModelColor, setModelOpacity } from '../features/appearance.js'; // Importiere Appearance-Helper
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { renderer } from '../core/renderer.js';
+import { controls } from '../core/controls.js';
+import { state } from '../store/state.js';
 import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
 
 /**
@@ -21,8 +21,8 @@ import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index
 export function setupSetUI() {
   console.log('setupSetUI aufgerufen');
 
-  const loader = new GLTFLoader();
-  loader.setDRACOLoader(dracoLoader);
+  const loader = createGLTFLoader();
+
 
   const setupGroupButton = (buttonId, groupName) => {
     const button = document.getElementById(buttonId);

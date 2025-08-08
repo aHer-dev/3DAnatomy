@@ -1,7 +1,7 @@
 // ui-loading.js
 // ⏳ Ermöglicht es dem Benutzer, die Hintergrundfarbe des Ladebildschirms über einen Farbwähler zu ändern.
 
-import { state } from '../state.js'; // 🔁 Zugriff auf globale Zustände, z. B. defaultSettings und loadingScreenColor
+import { state } from '../store/state.js'; // 🔁 Zugriff auf globale Zustände, z. B. defaultSettings und loadingScreenColor
 
 /**
  * Initialisiert die UI-Komponente zum Ändern der Ladebildschirmfarbe.

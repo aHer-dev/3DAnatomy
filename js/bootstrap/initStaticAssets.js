@@ -1,7 +1,7 @@
 // js/bootstrap/initStaticAssets.js
 // 🔧 Initialisiert Ladebilder (Sticker) und Favicon dynamisch je nach BasePath
 
-import { basePath } from '../utils/index.js';
+import { withBase } from '../core/path.js';
 
 /**
  * Setzt dynamisch Pfade für Lade-Sticker und Favicon.
@@ -11,13 +11,13 @@ export function initStaticAssets() {
     ['loading-sticker', 'live-loading-sticker'].forEach(id => {
         const img = document.getElementById(id);
         if (img) {
-            img.src = `${basePath}/images/${id}.png`.replace(/\/+/g, '/');
+            img.src = withBase(`images/${id}.png`);
         }
     });
 
     const faviconLink = document.querySelector('link[rel="icon"]');
     if (faviconLink) {
-        faviconLink.href = `${basePath}/favicon.ico`;
+        faviconLink.href = withBase('favicon.ico');
     }
 
     console.log('🧩 Statische Assets initialisiert.');

@@ -1,7 +1,7 @@
 // js/interaction/index.js
 // 📦 Initialisiert alle Interaktionen: Klick, Highlight, InfoPanel
 
-import { renderer } from '../renderer.js';
+import { renderer } from '../core/renderer.js';
 import { setupRaycastOnClick } from './raycastOnClick.js';
 import { showInfoPanel, hideInfoPanel } from './infoPanel.js';
 import { highlightModel } from './highlightModel.js';

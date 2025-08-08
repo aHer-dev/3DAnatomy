@@ -3,7 +3,7 @@
  * @description Initialisiert UI-Elemente für Raum-Einstellungen (Beleuchtung, Farbe, Helligkeit).
  */
 import * as THREE from 'three';
-import { scene } from '../scene.js';
+import { scene } from '../core/scene.js';
 import { lightFront, lightBack, lightTop, ambientLight } from '../lights.js';
 
 export function setupRoomUI() {

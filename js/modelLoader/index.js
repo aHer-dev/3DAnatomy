@@ -1,5 +1,5 @@
 // modelLoader-core
-export { loadModels, loadSingleModel } from './modelLoader-core.js';
+export { loadModels, loadSingleModel } from '../features/modelLoader-core.js';
 
 // progress
 export { showLoadingBar, hideLoadingBar } from './progress.js';
@@ -13,10 +13,10 @@ export {
     unloadGroup,
     updateGroupVisibility,
     restoreGroupState
-} from './groups.js';
+} from '../features/groups.js';
 
 // appearance
-export { setModelColor, setModelOpacity, setModelVisibility } from './appearance.js';
+export { setModelColor, setModelOpacity, setModelVisibility } from '../features/appearance.js';
 
 // Optional: color.js, falls du dort eine UI-spezifische Funktion hast
 export { updateModelColors as updateModelColorsFromColorUI } from './color.js';

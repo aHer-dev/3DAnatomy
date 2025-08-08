@@ -2,5 +2,8 @@
   "dependencies": {
     "p-limit": "^6.2.0",
     "three": "^0.179.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.179.0"
   }
 }

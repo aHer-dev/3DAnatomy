@@ -5,13 +5,13 @@
    import * as THREE from 'three';
    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
    import { dracoLoader } from './dracoLoader.js';
-   import { scene } from '../scene.js';
-   import { camera } from '../camera.js';
-   import { renderer } from '../renderer.js';
-   import { controls } from '../controls.js';
-   import { state } from '../state.js';
+   import { scene } from '../core/scene.js';
+   import { camera } from '../core/camera.js';
+   import { renderer } from '../core/renderer.js';
+   import { controls } from '../core/controls.js';
+   import { state } from '../store/state.js';
    import { showLoadingBar, hideLoadingBar, updateLoadingBar } from './progress.js';
-   import { fitCameraToScene } from '../cameraUtils.js';
+   import { fitCameraToScene } from '../core/cameraUtils.js';
 
    export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer) {
      if (!entries?.length) {

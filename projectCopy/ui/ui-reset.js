@@ -1,16 +1,16 @@
 // js/ui/ui-reset.js
 // 🔁 Stellt den Ursprungszustand der gesamten Webanwendung wieder her (Kamera, Farben, Sichtbarkeit, UI-Slider, Transparenz etc.)
 import * as THREE from 'three';
-import { state } from '../state.js';
+import { state } from '../store/state.js';
 import { hideAllManagedModels, setModelVisibility, } from '../modelLoader/visibility.js';
 import { loadGroup } from '../modelLoader/groups.js';
 import { resetGroupColor } from '../modelLoader/color.js';
 import { hideInfoPanel } from '../interaction/infoPanel.js';
-import { renderer } from '../renderer.js';
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
-import { controls } from '../controls.js';
-import { setCameraToDefault, fitCameraToScene } from '../cameraUtils.js';
+import { renderer } from '../core/renderer.js';
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { controls } from '../core/controls.js';
+import { setCameraToDefault, fitCameraToScene } from '../core/cameraUtils.js';
 import { updateModelColors } from '../modelLoader/color.js';
 import { updateGroupVisibility } from '../modelLoader/groups.js';
 

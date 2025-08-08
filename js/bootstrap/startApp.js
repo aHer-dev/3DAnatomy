@@ -8,14 +8,15 @@ import { setupUI } from '../ui/ui-init.js';
 import { initializeGroupsFromMeta } from '../utils/index.js';
 import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
 import { loadModels } from '../modelLoader/index.js';
-import { state } from '../state.js';
+import { state } from '../store/state.js';
 
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { dracoLoader } from '../modelLoader/dracoLoader.js';
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
-import { controls } from '../controls.js';
-import { renderer } from '../renderer.js';
+import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
+import { modelPath } from '../core/path.js';
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { controls } from '../core/controls.js';
+import { renderer } from '../core/renderer.js';
 import { setupInteractions } from '../interaction/index.js';
 
 
@@ -41,8 +42,7 @@ export async function startApp() {
     console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
     // Initiale Gruppe laden (z. B. Knochen)
-    const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
+    const loader = createGLTFLoader();
 
     try {
         const autoLoadGroups = ['bones', 'teeth'];

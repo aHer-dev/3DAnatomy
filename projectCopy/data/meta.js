@@ -1,6 +1,6 @@
 // js/utils/meta.js
 import { basePath } from './path.js';
-import { state } from '../state.js';
+import { state } from '../store/state.js';
 
 let cachedMeta = null;
 

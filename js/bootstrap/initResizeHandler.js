@@ -1,8 +1,8 @@
 // js/bootstrap/initResizeHandler.js
 // 📐 Initialisiert das Resize-Verhalten für Kamera & Renderer
 
-import { camera } from '../camera.js';
-import { renderer } from '../renderer.js';
+import { camera } from '../core/camera.js';
+import { renderer } from '../core/renderer.js';
 
 /**
  * Beobachtet Fenstergrößenänderungen und passt Kamera + Renderer an.

@@ -1,9 +1,9 @@
 // js/interaction/raycastOnClick.js
 import * as THREE from 'three';
-import { camera } from '../camera.js';
-import { scene } from '../scene.js';
+import { camera } from '../core/camera.js';
+import { scene } from '../core/scene.js';
 import { getMeta } from '../utils/index.js';
-import { state } from '../state.js';
+import { state } from '../store/state.js';
 
 /**
  * Setzt Raycasting bei Klick auf das 3D-Modell auf.

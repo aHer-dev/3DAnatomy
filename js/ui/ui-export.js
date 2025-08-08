@@ -1,7 +1,7 @@
 // ui-export.js
 // 📤📥 Zuständig für den Export und Import des aktuellen Zustands (Sets & Farben) über JSON-Dateien
 
-import { state } from '../state.js'; // 🔁 Zugriff auf globale Zustände (Sets, Farben, Gruppen)
+import { state } from '../store/state.js'; // 🔁 Zugriff auf globale Zustände (Sets, Farben, Gruppen)
 
 /**
  * Initialisiert die Export-/Import-Funktionen der Benutzeroberfläche.

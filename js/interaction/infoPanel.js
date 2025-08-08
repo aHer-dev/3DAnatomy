@@ -1,12 +1,11 @@
 // infoPanel.js
 import * as THREE from 'three';
-import { state } from '../state.js';
-import { renderer } from '../renderer.js';
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
+import { state } from '../store/state.js';
+import { renderer } from '../core/renderer.js';
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
 import { buildEditPanel } from './editPanel.js';
-import { toggleModelVisibility, isModelVisible } from '../modelLoader/visibility.js';
-import { setModelColor, setModelOpacity } from '../modelLoader/appearance.js';
+import { setModelColor, setModelOpacity } from '../features/appearance.js';
 
 export function showInfoPanel(meta, selectedModel) {
     const infoPanel = document.getElementById('info-panel');

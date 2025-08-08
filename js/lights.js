@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { scene } from './scene.js';
+import { scene } from './core/scene.js';
 
 const lightFront = new THREE.DirectionalLight(0xffffff, 0.8);
 lightFront.position.set(1, 1, 1);

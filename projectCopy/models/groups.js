@@ -4,18 +4,18 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { dracoLoader } from './dracoLoader.js'; // Zentraler Draco-Loader
-import { controls } from '../controls.js'; // <<< NEU: controls werden unten an loadModels übergeben
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
-import { renderer } from '../renderer.js';
+import { controls } from '../core/controls.js'; // <<< NEU: controls werden unten an loadModels übergeben
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { renderer } from '../core/renderer.js';
 import { getMeta } from '../utils/index.js';
-import { loadModels } from './modelLoader-core.js';
+import { loadModels } from './features/modelLoader-core.js';
 import { removeModelsByGroupOrSubgroup } from './cleanup.js';
-import { state } from '../state.js';
+import { state } from '../store/state.js';
 import { setModelVisibility } from './visibility.js';
 
 
-const loader = new GLTFLoader();
+const loader = createGLTFLoader();
 loader.setDRACOLoader(dracoLoader); // Nutze zentralen Draco-Loader
 /**
  * 📦 Lädt eine gesamte Gruppe (z. B. "muscles") mit optionaler Subgruppe.

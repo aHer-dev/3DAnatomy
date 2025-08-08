@@ -1,11 +1,11 @@
 // js/interaction/editPanel.js
 import * as THREE from 'three';
-import { renderer } from '../renderer.js';
-import { scene } from '../scene.js';
-import { camera } from '../camera.js';
-import { setModelColor, setModelOpacity } from '../modelLoader/appearance.js';
-import { toggleModelVisibility, isModelVisible } from '../modelLoader/visibility.js';
-import { state } from '../state.js';
+import { renderer } from '../core/renderer.js';
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { setModelColor, setModelOpacity } from '../features/appearance.js';
+import { toggleModelVisibility, isModelVisible } from '../features/visibility.js';
+import { state } from '../store/state.js';
 
 /**
  * Baut die UI-Controls (Farbe, Transparenz, Sichtbarkeit) für das gewählte Modell.

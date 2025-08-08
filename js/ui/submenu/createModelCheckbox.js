@@ -1,5 +1,5 @@
 // js/ui/submenu/createModelCheckbox.js
-import { scene } from '../../scene.js';
+import { scene } from '../../core/scene.js';
 import { loadModels, removeModelByFilename, updateGroupVisibility } from '../../modelLoader/index.js';
 
 /**

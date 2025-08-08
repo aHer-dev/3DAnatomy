@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BlueBody 3D</title>
 
-  <!-- Import-Map für Three.js r179 -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.179.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.179.0/examples/jsm/"
-      }
-    }
-  </script>
+  <!-- Import-Map für lokale Three JSM-Module -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./node_modules/three/build/three.module.js",
+    "three/addons/": "./js/three-addons/"
+  }
+}
+</script>
 
   <!-- Stylesheets -->
 <link rel="stylesheet" href="css/main.css">

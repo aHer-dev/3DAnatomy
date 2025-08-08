@@ -3,11 +3,11 @@
 
 // In js/ui/ui-search.js
 import * as THREE from 'three';
-import { scene } from '../scene.js'; // Ersetzt init.js
-import { controls } from '../controls.js'; // Falls für Interaktionen nötig
+import { scene } from '../core/scene.js'; // Ersetzt init.js
+import { controls } from '../core/controls.js'; // Falls für Interaktionen nötig
 
 // ... Rest des Code
-import { state } from '../state.js';                        // 🔁 Globaler App-Zustand              
+import { state } from '../store/state.js';                        // 🔁 Globaler App-Zustand              
 import { getMeta } from '../utils/index.js';                     // 📄 Lädt Metadaten der Modelle
 import { highlightModel } from '../interaction/highlightModel.js';
 import { showInfoPanel } from '../interaction/infoPanel.js';

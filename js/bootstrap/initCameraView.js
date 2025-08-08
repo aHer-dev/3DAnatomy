@@ -1,9 +1,9 @@
 // js/bootstrap/initCameraView.js
 // 🎥 Initialisiert die Standardansicht der Kamera beim App-Start
 
-import { camera } from '../camera.js';
-import { controls } from '../controls.js';
-import { setCameraToDefault } from '../cameraUtils.js';
+import { camera } from '../core/camera.js';
+import { controls } from '../core/controls.js';
+import { setCameraToDefault } from '../core/cameraUtils.js';
 
 /**
  * Setzt die Kamera in ihre Default-Startposition – zentriert auf Szene.
