@@ -1,0 +1,74 @@
+pepperboy8@HuaweiD14:~/projects/3DAnatomy/js$ tree
+.
+├── Tree.txt
+├── bootstrap
+│   ├── initCameraView.js
+│   ├── initGroupLoader.js
+│   ├── initResizeHandler.js
+│   ├── initSplashScreen.js
+│   ├── initStaticAssets.js
+│   └── startApp.js
+├── core
+│   ├── camera.js
+│   ├── cameraUtils.js
+│   ├── controls.js
+│   ├── path.js
+│   ├── renderer.js
+│   └── scene.js
+├── data
+│   └── meta.js
+├── features
+│   ├── appearance.js
+│   ├── groups.js
+│   ├── modelLoader-core.js
+│   └── visibility.js
+├── interaction
+│   ├── editPanel.js
+│   ├── highlightModel.js
+│   ├── index.js
+│   ├── infoPanel.js
+│   └── raycastOnClick.js
+├── lights.js
+├── loaders
+│   └── gltfLoaderFactory.js
+├── modelLoader
+│   ├── cleanup.js
+│   ├── color.js
+│   ├── index.js
+│   └── progress.js
+├── store
+│   └── state.js
+├── three-addons
+│   ├── controls
+│   │   └── OrbitControls.js
+│   ├── loaders
+│   │   ├── DRACOLoader.js
+│   │   └── GLTFLoader.js
+│   └── utils
+│       └── BufferGeometryUtils.js
+├── three.module.js
+├── ui
+│   ├── license.js
+│   ├── licenseContent.js
+│   ├── submenu
+│   │   ├── buildSubgroupList.js
+│   │   ├── createGroupBlock.js
+│   │   ├── createGroupCheckbox.js
+│   │   ├── createModelCheckbox.js
+│   │   ├── createToggleButton.js
+│   │   ├── groupMetaBySubgroup.js
+│   │   └── index.js
+│   ├── ui-color.js
+│   ├── ui-controls.js
+│   ├── ui-export.js
+│   ├── ui-init.js
+│   ├── ui-loading.js
+│   ├── ui-reset.js
+│   ├── ui-room.js
+│   ├── ui-search.js
+│   ├── ui-set.js
+│   └── ui-setupGroupLoadEvents.js
+└── utils
+    ├── index.js
+    ├── mouse.js
+    └── utils.js

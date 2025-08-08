@@ -141,3 +141,25 @@
        );
      });
    }
+
+   // --- Helper: komplette Gruppe per Namen laden -------------------------------
+// Lädt alle Einträge einer Gruppe aus state.groupedMeta via loadModels()
+// Optional: centerCamera = true, um danach zu zentrieren
+// Optional: loaderReuse: vorhandene GLTFLoader-Instanz wiederverwenden
+  export async function loadGroupByName(groupName, { centerCamera = false, loaderReuse = null } = {}) {
+  try {
+    const entries = state.groupedMeta?.[groupName] || [];
+    if (!entries.length) {
+      console.warn(`⚠️ loadGroupByName: Keine Einträge für Gruppe "${groupName}" gefunden.`);
+      return;
+    }
+
+    // Falls kein Loader gereicht wurde → frische Factory (Best Practice: 1 Loader pro Ladevorgang ok)
+    const loader = loaderReuse ?? createGLTFLoader();
+
+    await loadModels(entries, groupName, centerCamera, scene, loader, camera, controls, renderer);
+    console.log(`✅ loadGroupByName: Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
+  } catch (err) {
+    console.error(`❌ loadGroupByName: Fehler beim Laden von "${groupName}":`, err);
+  }
+  }

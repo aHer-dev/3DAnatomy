@@ -1,23 +1,40 @@
 // js/bootstrap/startApp.js
 // 🚀 Orchestriert den vollständigen Start der Anwendung
 
-import { initStaticAssets } from './initStaticAssets.js';
-import { initResizeHandler } from './initResizeHandler.js';
-import { initCameraView } from './initCameraView.js';
-import { setupUI } from '../ui/ui-init.js';
-import { initializeGroupsFromMeta } from '../utils/index.js';
-import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
-import { loadModels } from '../modelLoader/index.js';
-import { state } from '../store/state.js';
-
+// --- Externe Abhängigkeiten ---
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
-import { modelPath } from '../core/path.js';
+
+// --- Core-System ---
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
 import { renderer } from '../core/renderer.js';
+import { modelPath } from '../core/path.js';
+
+// --- State & Daten ---
+import { state } from '../store/state.js';
+import { initializeGroupsFromMeta } from '../data/meta.js';
+
+// --- Loader ---
+import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
+import { loadModels } from '../modelLoader/index.js';
+import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
+import { loadGroupByName } from '../features/modelLoader-core.js';
+
+// --- Features ---
 import { setupInteractions } from '../interaction/index.js';
+
+// --- Bootstrap ---
+import { initStaticAssets } from './initStaticAssets.js';
+import { initResizeHandler } from './initResizeHandler.js';
+import { initCameraView } from './initCameraView.js';
+
+// --- UI ---
+import { setupUI } from '../ui/ui-init.js';
+
+// --- Utils ---
+import { initializeGroupsFromMeta as initializeGroupsFromUtils } from '../utils/index.js';
+
 
 
 /**
@@ -35,6 +52,15 @@ export async function startApp() {
     initialScreen.style.display = 'flex';
 
     setupUI();
+
+    await initializeGroupsFromMeta();             // setzt state.groupedMeta, state.availableGroups
+
+    await loadGroupByName('bones', { centerCamera: true });  // initial sichtbar
+    state.groupStates['bones'] = true;
+
+    await loadGroupByName('teeth');               // initial sichtbar
+    state.groupStates['teeth'] = true;
+
     setupInteractions();
     initResizeHandler();
 
