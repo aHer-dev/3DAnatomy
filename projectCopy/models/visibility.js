@@ -67,14 +67,22 @@ export function isModelVisible(model) {
 }
 
 /**
- * Versteckt alle Modelle im Scene-Graph (optional global)
+ * Versteckt nur Modelle, die von unserem Loader/State verwaltet werden.
+ * Das vermeidet Nebenwirkungen auf fremde Scene-Nodes.
  */
-export function hideAllModels() {
-    scene.traverse(obj => {
-        if (obj.isMesh || obj.isGroup) {
-            obj.visible = false;
-            obj.layers.disable(0); // Deaktiviere Layer 0 für Raycasting
-        }
+export function hideAllManagedModels() {
+    Object.keys(state.groups).forEach(group => {
+        const models = state.groups[group] || [];
+        models.forEach(model => {
+            model.visible = false;
+            model.traverse(child => {
+                if (child.isMesh) {
+                    child.visible = false;
+                    child.layers.disable(0);
+                }
+            });
+            model.layers.disable(0);
+        });
     });
-    console.log('✅ Alle Modelle versteckt');
+    console.log('✅ Alle verwalteten Modelle versteckt');
 }

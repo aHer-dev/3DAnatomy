@@ -6,12 +6,15 @@ export const state = {
   groupStates: {},
   subgroupStates: {},
   currentlySelected: null,
-  availableGroups: [],
   groupedMeta: {},
   collection: [],
 
 
-  availableGroups: [],
+  availableGroups: [
+    'bones', 'teeth', 'eyes', 'nerves', 'ligaments', 'brain',
+    'arteries', 'muscles', 'glands', 'veins', 'organs',
+    'lungs', 'heart', 'cartilage', 'skin_hair', 'ear'
+  ],
 
   defaultSettings: {
     modelVariant: 'draco',
@@ -51,10 +54,3 @@ export const state = {
     muscles: 0xff0000,
   }
 };
-
-
-state.availableGroups = [
-  'bones', 'teeth', 'eyes', 'nerves', 'ligaments', 'brain',
-  'arteries', 'muscles', 'glands', 'veins', 'organs',
-  'lungs', 'heart', 'cartilage', 'skin_hair', 'ear'
-];

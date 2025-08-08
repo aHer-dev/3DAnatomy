@@ -38,8 +38,6 @@ export async function resetApp() {
     setCameraToDefault(camera, controls);
   }
 
-  // 2) Nur verwaltete Modelle verstecken (statt komplette Scene)
-  hideAllManagedModels();
 
   // 3) Start-Sicht (Standard): bones + teeth laden und sichtbar schalten
   const startGroups = ['bones', 'teeth']; // bei Bedarf anpassen
@@ -83,10 +81,10 @@ export async function resetApp() {
   }
 
   // UI-Inputs korrekt beschreiben
-  const bgInput = document.getElementById('room-color');
+  const bgInput = document.getElementById('color-room');  
   if (bgInput) bgInput.value = '#' + Number(bgColor).toString(16).padStart(6, '0');
 
-  const lightInput = document.getElementById('room-brightness');
+  const lightInput = document.getElementById('slider-room-brightness');
   if (lightInput) lightInput.value = String(lighting);
 
   // 6) Info-Panel schließen

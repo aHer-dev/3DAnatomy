@@ -27,16 +27,21 @@ loader.setDRACOLoader(dracoLoader); // Nutze zentralen Draco-Loader
 export async function loadGroup(groupName, subgroup = null, centerCamera = false) {
   const meta = await getMeta();
 
+  // einmalig debuggen, welche Gruppen es wirklich gibt
+  if (!meta._debugDumped) {
+    const groupsInMeta = [...new Set(meta.map(e => e?.classification?.group ?? e?.group).filter(Boolean))];
+    console.debug('[meta] vorhandene Gruppen:', groupsInMeta);
+    meta._debugDumped = true;
+  }
+
+  // ✨ NEU: classification.* mit Fallback auf alte Felder
   const filteredEntries = meta.filter(entry => {
-    if (entry.group !== groupName) return false;
-    if (subgroup && entry.subgroup !== subgroup) return false;
+    const g = entry?.classification?.group ?? entry?.group;
+    const sg = entry?.classification?.subgroup ?? entry?.subgroup ?? null;
+    if (g !== groupName) return false;
+    if (subgroup && sg !== subgroup) return false;
     return true;
   });
-
-  if (!state.groups[groupName]) {
-    state.groups[groupName] = [];
-    state.groupStates[groupName] = {};
-  }
 
   await loadModels(filteredEntries, groupName, centerCamera, scene, loader, camera, controls, renderer);
 }
