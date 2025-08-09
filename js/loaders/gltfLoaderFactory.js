@@ -13,24 +13,14 @@ import { dracoPath } from '../core/path.js';        // zentrale Pfadquelle
  * @param {'wasm'|'js'} [options.decoderType='wasm'] - DRACO-Decoder bevorzugt als WASM
  * @returns {GLTFLoader} konfigurierter Loader; zugehöriger DRACO-Loader hängt als loader._draco
  */
-export function createGLTFLoader(options = {}) {
-  const { manager, decoderType = 'wasm' } = options;
 
-  // 1) ECHTEN GLTFLoader instanzieren (keine Rekursion!)
-  const gltfLoader = new GLTFLoader(manager);
-
-  // 2) DRACO konfigurieren
-  const draco = new DRACOLoader(manager);
-  draco.setDecoderPath(dracoPath());              // z. B. '/draco/' oder '/<BASE>/draco/'
-  draco.setDecoderConfig({ type: decoderType });  // 'wasm' bevorzugt
-
-  // 3) DRACO an GLTF hängen
-  gltfLoader.setDRACOLoader(draco);
-
-  // 4) Referenz merken (für späteres dispose)
-  gltfLoader._draco = draco;
-
-  return gltfLoader;
+export function createGLTFLoader() {
+  const loader = new GLTFLoader();
+  const draco = new DRACOLoader();
+  draco.setDecoderPath(dracoPath());        // z. B. "./draco/"
+  draco.setDecoderConfig({ type: 'wasm' }); // schneller; Browser fällt zur Not auf JS zurück
+  loader.setDRACOLoader(draco);
+  return loader;
 }
 
 /**

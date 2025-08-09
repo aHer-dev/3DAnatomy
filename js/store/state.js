@@ -18,6 +18,8 @@ export const state = {
   groupStates: {},     // { groupName: boolean | {modelName: boolean} }
   subgroupStates: {},
   collection: [],
+  groupVisible: {}, 
+  pickableMeshes: new Set(),  
 
   // --- Standard-Einstellungen ---
   defaultSettings: {

@@ -7,16 +7,15 @@
 
 import * as THREE from 'three';
 import { state } from '../store/state.js';
+import { setPickable } from './selection.js';
 
 // === PRIVATE HELPER FUNCTIONS ===
 function _asArray(mat) {
     return Array.isArray(mat) ? mat : [mat];
 }
-
 function _setMeshMaterials(mesh, mats) {
     mesh.material = Array.isArray(mesh.material) ? mats : mats[0];
 }
-
 // === OPACITY MANAGEMENT ===
 /**
  * Setzt die Opazität (0..1) für EIN Root-Objekt (alle Mesh-Kinder)
@@ -63,7 +62,6 @@ export function setObjectOpacity(root, opacity = 1) {
         });
     });
 }
-
 /**
  * Setzt die Opazität für eine komplette Gruppe
  */
@@ -71,7 +69,6 @@ export function setGroupOpacity(group, opacity = 1) {
     const roots = state.groups?.[group] || [];
     roots.forEach(root => setObjectOpacity(root, opacity));
 }
-
 // === VISIBILITY MANAGEMENT ===
 /**
  * Hauptfunktion für Model-Sichtbarkeit
@@ -106,18 +103,8 @@ export function setModelVisibility(model, visible) {
     }
 }
 
-/**
- * Setzt Sichtbarkeit für alle Modelle einer Gruppe
- */
-export function setGroupVisibility(group, visible) {
-    const models = state.groups[group] || [];
-    models.forEach(model => setModelVisibility(model, visible));
-    state.groupStates[group] = visible;
-}
-
 // Alias für Abwärtskompatibilität (falls irgendwo noch verwendet)
 export const setGroupVisible = setGroupVisibility;
-
 /**
  * Wechselt Sichtbarkeit eines einzelnen Modells
  */
@@ -125,14 +112,12 @@ export function toggleModelVisibility(model) {
     if (!model) return;
     setModelVisibility(model, !model.visible);
 }
-
 /**
  * Prüft ob ein Modell sichtbar ist
  */
 export function isModelVisible(model) {
     return !!model?.visible;
 }
-
 // === CONVENIENCE FUNCTIONS ===
 /**
  * Objekt vollständig ausblenden
@@ -140,14 +125,12 @@ export function isModelVisible(model) {
 export function hideObject(obj) {
     setModelVisibility(obj, false);
 }
-
 /**
  * Objekt vollständig anzeigen
  */
 export function showObject(obj) {
     setModelVisibility(obj, true);
 }
-
 /**
  * Versteckt alle verwalteten Modelle
  */
@@ -157,10 +140,8 @@ export function hideAllManagedModels() {
     });
     console.log('✅ Alle verwalteten Modelle versteckt');
 }
-
 // Alias für Abwärtskompatibilität
 export const hideAllModels = hideAllManagedModels;
-
 /**
  * Zeigt alle verwalteten Modelle
  */
@@ -170,7 +151,6 @@ export function showAllManagedModels() {
     });
     console.log('✅ Alle verwalteten Modelle sichtbar');
 }
-
 // === GHOST MODE ===
 /**
  * Objekt als "Ghost" anzeigen: sichtbar & transparent, aber NICHT pickbar
@@ -205,7 +185,6 @@ export function setObjectGhost(obj, opacity = 0.15) {
         ch.visible = true;
     });
 }
-
 /**
  * Ghost-Zustand zurücksetzen
  */
@@ -235,7 +214,6 @@ export function clearObjectGhost(obj) {
         ch.visible = true;
     });
 }
-
 /**
  * Setzt Ghost-Modus für eine ganze Gruppe
  */
@@ -243,7 +221,6 @@ export function setGroupGhost(group, opacity = 0.15) {
     const models = state.groups[group] || [];
     models.forEach(model => setObjectGhost(model, opacity));
 }
-
 /**
  * Entfernt Ghost-Modus von einer Gruppe
  */
@@ -251,7 +228,6 @@ export function clearGroupGhost(group) {
     const models = state.groups[group] || [];
     models.forEach(model => clearObjectGhost(model));
 }
-
 // === GROUP STATE RESTORATION ===
 /**
  * Stellt den gespeicherten Sichtbarkeitszustand einer Gruppe wieder her
@@ -282,7 +258,6 @@ export function restoreGroupVisibility(groupName) {
     // Default: alles sichtbar
     setGroupVisibility(groupName, true);
 }
-
 // === UTILITY FUNCTIONS ===
 /**
  * Zählt sichtbare Modelle in einer Gruppe
@@ -291,7 +266,6 @@ export function countVisibleInGroup(group) {
     const models = state.groups[group] || [];
     return models.filter(model => isModelVisible(model)).length;
 }
-
 /**
  * Gibt alle sichtbaren Gruppen zurück
  */
@@ -301,7 +275,6 @@ export function getVisibleGroups() {
         return models.some(model => isModelVisible(model));
     });
 }
-
 /**
  * Setzt Sichtbarkeit basierend auf Meta-Daten
  */
@@ -310,3 +283,65 @@ export function applyDefaultVisibility(model) {
     const defaultVisible = meta?.model?.visible_by_default ?? true;
     setModelVisibility(model, defaultVisible);
 }
+
+// Material-Originale merken, damit ghost reversibel ist
+function rememberOriginalMaterial(mesh) {
+    if (!mesh.userData._origMats) {
+        const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        mesh.userData._origMats = list;
+    }
+  }
+
+function restoreOriginalMaterial(mesh) {
+    if (!mesh.userData?._origMats) return;
+    const list = mesh.userData._origMats;
+    mesh.material = Array.isArray(mesh.material) ? list : list[0];
+    delete mesh.userData._origMats;
+  }
+
+// Ghost-Material anwenden (depthWrite=false → Klick „geht durch“)
+function applyGhostMaterial(mesh, alpha = 0.15) {
+    if (!mesh.material) return;
+    rememberOriginalMaterial(mesh);
+    const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    mesh.material = list.map(m => {
+        const c = m.clone();
+        c.transparent = true;
+        c.opacity = alpha;
+        c.depthWrite = false;
+        return c;
+    });
+  }
+
+export function showModel(root) {
+    root.traverse(n => {
+        if (!n.isMesh) return;
+        n.visible = true;
+        restoreOriginalMaterial(n);
+        setPickable(n, true);   // ⬅️ Layer 1 + Pick-Set
+    });
+}
+
+export function hideModel(root) {
+    root.traverse(n => {
+        if (!n.isMesh) return;
+        n.visible = false;
+        setPickable(n, false);  // ⬅️ aus Pick-Set + Layer 1 aus
+    });
+}
+
+export function ghostModel(root, alpha = 0.15) {
+    root.traverse(n => {
+        if (!n.isMesh) return;
+        n.visible = true;
+        applyGhostMaterial(n, alpha);
+        setPickable(n, false);  // ⬅️ ghost ist NICHT klickbar
+    });
+}
+
+export function setGroupVisibility(group, visible) {
+    const arr = state.groups[group] || [];
+    for (const root of arr) (visible ? showModel : hideModel)(root);
+    state.groupVisible[group] = !!visible;
+  }
+

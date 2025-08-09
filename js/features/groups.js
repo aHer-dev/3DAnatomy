@@ -1,33 +1,18 @@
 //group.js
 // 📦 Laden und Verwalten von Gruppen in der 3D-Anatomie-An
 
-import * as THREE from 'three';
-import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-import { controls } from '../core/controls.js';
 import { scene } from '../core/scene.js';
-import { camera } from '../core/camera.js';
-import { renderer } from '../core/renderer.js';
 import { getMeta } from '../data/meta.js';
-import { loadModels } from './modelLoader-core.js';
-import { removeModelsByGroupOrSubgroup } from '../modelLoader/cleanup.js';
 import { state } from '../store/state.js';
 import { setModelVisibility, setGroupVisibility } from '../features/visibility.js';
+import { loadEntry, disposeObject3D } from '../modelLoader/index.js';
+import { registerPickables, unregisterPickables } from './selection.js';
 
 
-const loader = createGLTFLoader();
-
-
-/**
- * 📦 Lädt eine gesamte Gruppe (z. B. "muscles") mit optionaler Subgruppe.
- *
- * @param {string} groupName - z. B. "muscles"
- * @param {string|null} subgroup - z. B. "arm-schulter" oder null für alles
- * @param {boolean} centerCamera - Kamera auf erstes Modell zentrieren
- */
+// Public: Laden per Gruppenname/Subgruppe
 export async function loadGroup(groupName, subgroup = null, centerCamera = false) {
   const meta = await getMeta();
-
-  const filteredEntries = meta.filter(entry => {
+  const entries = meta.filter(entry => {
     const g = entry?.classification?.group ?? entry?.group;
     const sg = entry?.classification?.subgroup ?? entry?.subgroup ?? null;
     if (g !== groupName) return false;
@@ -35,47 +20,62 @@ export async function loadGroup(groupName, subgroup = null, centerCamera = false
     return true;
   });
 
-  await loadModels(filteredEntries, groupName, centerCamera, scene, loader, camera, controls, renderer);
+  await loadGroupFromEntries(entries, groupName);
+
+  // Optional Kamera-Fit hier (auskommentiert lassen, bis gebraucht)
+  // if (centerCamera && state.groups[groupName]?.[0]) { ... }
+}
+
+// Intern: aus Einträgen laden
+export async function loadGroupFromEntries(entries, groupName) {
+  if (!entries?.length) return;
+  for (const entry of entries) {
+    const root = await loadEntry(entry);
+    root.userData.isModelRoot = true;
+    root.userData.entry = entry;
+    scene.add(root);
+    (state.groups[groupName] ||= []).push(root);
+    registerPickables(root);
+  }
+  state.groupVisible[groupName] = true;
 }
 
 
-/**
- * 🗑 Entfernt eine Gruppe oder Subgruppe aus der Szene.
- *
- * @param {string} groupName - z. B. "muscles"
- * @param {string|null} subgroup - z. B. "arm-schulter" oder null
- */
-export async function unloadGroup(groupName, subgroup = null) {
-  await removeModelsByGroupOrSubgroup(groupName, subgroup);
-}
-
+// Utilities
 export function isGroupLoaded(groupName) {
   return !!(state.groups[groupName]?.length > 0);
 }
 
 export function getLoadedGroups() {
-  return Object.keys(state.groups).filter(group =>
-    state.groups[group]?.length > 0
-  );
+  return Object.keys(state.groups).filter(g => state.groups[g]?.length > 0);
 }
 
-// EINZELNE restoreGroupState Funktion
-export function restoreGroupState(groupName) {
-  if (!groupName || typeof groupName !== 'string') return;
-  if (!(groupName in state.groups)) return;
 
+// Intern: komplette Gruppe hart entladen
+export function unloadWholeGroup(groupName) {
+  const arr = state.groups[groupName] || [];
+  for (const root of arr) {
+    unregisterPickables(root);
+    scene.remove(root);
+    disposeObject3D(root);
+  }
+  state.groups[groupName] = [];
+  state.groupVisible[groupName] = false;
+}
+
+// Gruppen-Zustand restaurieren (sichtbar/unsichtbar je Modell)
+export function restoreGroupState(groupName) {
+  if (!groupName || !(groupName in state.groups)) return;
   const models = state.groups[groupName];
-  const saved = state.groupStates[groupName];
+  const saved = state.groupStates?.[groupName];
 
   if (!models) return;
 
-  // Boolean: gesamte Gruppe
   if (typeof saved === 'boolean') {
     setGroupVisibility(groupName, saved);
     return;
   }
 
-  // Object: einzelne Modelle
   if (saved && typeof saved === 'object') {
     models.forEach(model => {
       const isVisible = saved[model.name] !== false;
@@ -84,23 +84,26 @@ export function restoreGroupState(groupName) {
     return;
   }
 
-  // Default: alles sichtbar
   setGroupVisibility(groupName, true);
 }
 
 export function restoreAllGroupStates() {
-  const loadedGroups = Object.keys(state.groups || {});
-  if (!loadedGroups.length) return;
-
-  for (const g of loadedGroups) {
-    try {
-      restoreGroupState(g);
-    } catch (e) {
-      console.warn(`restoreAllGroupStates: Fehler bei "${g}":`, e);
-    }
+  const loaded = Object.keys(state.groups || {});
+  for (const g of loaded) {
+    try { restoreGroupState(g); }
+    catch (e) { console.warn(`restoreAllGroupStates: Fehler bei "${g}":`, e); }
   }
 }
 
-export function updateGroupVisibility(group, visible) {
-  setGroupVisibility(group, visible);
+export function updateGroupVisibility(groupName, visible) {
+  setGroupVisibility(groupName, visible);
+}
+
+// Public: Entladen per Gruppenname/Subgruppe (nutzt dein Cleanup)
+export async function unloadGroup(groupName, subgroup = null) {
+  await removeModelsByGroupOrSubgroup(groupName, subgroup);
+  if (!subgroup) {
+    state.groups[groupName] = [];
+    state.groupVisible[groupName] = false;
+  }
 }
