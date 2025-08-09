@@ -26,22 +26,73 @@ export async function getMeta() {
 export async function initializeGroupsFromMeta() {
     const meta = await getMeta();
 
-    state.groupedMeta = meta.reduce((map, entry) => {
-        const group = entry.classification?.group || 'other';
-        map[group] = map[group] || [];
-        map[group].push(entry);
-        return map;
+
+    // 1) gruppieren
+    state.groupedMeta = meta.reduce((acc, entry) => {
+        const g = entry?.classification?.group || 'other';
+        (acc[g] ||= []).push(entry);
+        return acc;
     }, {});
 
+    // 2) Liste aller Gruppen
     state.availableGroups = Object.keys(state.groupedMeta);
 
-    // Jede Gruppe im State initialisieren
-    state.availableGroups.forEach(group => {
-        state.groups[group] = [];
-        state.groupStates[group] = false;
-        state.colors[group] = state.defaultSettings.colors[group] ?? state.defaultSettings.defaultColor;
-    });
+
+    // 3) Default-Keys sicher anlegen → keine "Gruppe ... nicht im state vorhanden"-Warnungen mehr
+    for (const g of state.availableGroups) {
+        state.groups[g] ||= []; // Array für geladene Object3D-Roots
+        if (typeof state.groupStates[g] !== 'boolean') state.groupStates[g] = false;
+        if (!(g in state.colors)) {
+            state.colors[g] = state.defaultSettings.colors[g] ?? state.defaultSettings.defaultColor;
+        }
+    }
 
     console.log('✅ Gruppen initialisiert:', state.availableGroups);
+
+
+    // 🔎 Indexe für schnellen Lookup beim Klick:
+    state.metaById = Object.create(null);
+    state.metaByFile = Object.create(null);
+
+    // Hilfsfunktionen
+    const basename = (s) => {
+        try { return s.split('/').pop(); } catch { return s; }
+    };
+    const stripExt = (s) => s.replace(/\.[^/.]+$/, '');
+
+    // Alle Einträge indexieren
+    for (const entries of Object.values(state.groupedMeta)) {
+        for (const entry of entries) {
+            // id-Index
+            const id = (entry?.id ?? entry?.fma ?? '').toString().trim();
+            if (id) state.metaById[id] = entry;
+
+            // filename-Index (über variants[current] oder fallback-Felder)
+            const current = entry?.model?.current;
+            const variant = current ? entry?.model?.variants?.[current] : null;
+            const candidates = [
+                variant?.filename,
+                entry?.filename,
+                variant?.file,
+                entry?.file,
+                variant?.url,
+                entry?.url,
+                variant?.src,
+                entry?.src,
+            ].filter(v => typeof v === 'string' && v.length > 0);
+
+            if (candidates.length) {
+                const file = basename(candidates[0]);       // z.B. FJ3262001.glb
+                const base = stripExt(file);                // z.B. FJ3262001
+                state.metaByFile[file] = entry;
+                state.metaByFile[base] = entry;
+            }
+        }
+    }
+
+    console.log('🧭 Meta-Index erstellt:',
+        Object.keys(state.metaById).length, 'IDs,',
+        Object.keys(state.metaByFile).length, 'Dateinamen');
+
 }
 

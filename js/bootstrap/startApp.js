@@ -13,9 +13,11 @@ import { modelPath } from '../core/path.js';
 // --- State & Daten ---
 import { state } from '../store/state.js';
 import { initializeGroupsFromMeta } from '../data/meta.js';
+import { restoreAllGroupStates } from '../features/groups.js';
+
 
 // --- Loader ---
-import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
+
 import { loadModels } from '../modelLoader/index.js';
 import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
@@ -42,6 +44,7 @@ import { initializeGroupsFromMeta as initializeGroupsFromUtils } from '../utils/
 export async function startApp() {
     initStaticAssets();
 
+    // Splash anzeigen
     const initialScreen = document.getElementById('initial-loading-screen');
     if (!initialScreen) {
         console.error('❌ Initial-Loading-Screen nicht gefunden');
@@ -50,24 +53,33 @@ export async function startApp() {
     initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
     initialScreen.style.display = 'flex';
 
-    setupUI();
+    // 1) Meta zuerst (erstellt state.availableGroups, groupedMeta, groups, groupStates, colors)
+    await initializeGroupsFromMeta();
 
-    await initializeGroupsFromMeta();             // setzt state.groupedMeta, state.availableGroups
+    // 2) Dann UI & ggf. gespeicherte Sichtbarkeiten wiederherstellen
+    setupUI?.();
+    restoreAllGroupStates(); // kein await nötig; stellt jede bekannte Gruppe wieder her
 
-    await loadGroupByName('bones', { centerCamera: true });  // initial sichtbar
-    state.groupStates['bones'] = true;
+    // 3) Startgruppen laden (nur bones + teeth), alles andere bleibt lazy
+    await loadGroupByName('bones', { centerCamera: true });
+    state.groupStates.bones = true;
 
-    await loadGroupByName('teeth');               // initial sichtbar
-    state.groupStates['teeth'] = true;
+    await loadGroupByName('teeth');
+    state.groupStates.teeth = true;
 
+    // 4) Interaktionen & Resize
     setupInteractions();
     initResizeHandler();
+
+    console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
+
+    // 5) Splash ausblenden
+    initialScreen.style.display = 'none';
+  
 
     await initializeGroupsFromMeta();
     console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
-    // Initiale Gruppe laden (z. B. Knochen)
-    const loader = createGLTFLoader();
 
     try {
         const autoLoadGroups = ['bones', 'teeth'];
@@ -76,8 +88,7 @@ export async function startApp() {
             if (entries.length) {
                 showLoadingBar();
                 console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-                await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
-                hideLoadingBar();
+                await loadGroupByName(group, { centerCamera: true }); // kein "loader" mehr nötig                hideLoadingBar();
             }
         } // ✅ ← schließende Klammer für for()
     } catch (err) {

@@ -1,17 +1,29 @@
 /**
-    * @file modelLoader-core.js
-    * @description Lädt GLTF-Modelle in Gruppen, zeigt Ladefortschritt an und zentriert optional die Kamera.
-    */
-   import * as THREE from 'three';
-   import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
-  import { modelPath, withBase } from '../core/path.js';  // Pfad-Helper
-   import { scene } from '../core/scene.js';
-   import { camera } from '../core/camera.js';
-   import { renderer } from '../core/renderer.js';
-   import { controls } from '../core/controls.js';
-   import { state } from '../store/state.js';
-   import { showLoadingBar, hideLoadingBar, updateLoadingBar } from '../modelLoader/progress.js';
-   import { fitCameraToScene } from '../core/cameraUtils.js';
+ * @file modelLoader-core.js
+ * @description Lädt GLTF-Modelle in Gruppen, zeigt Ladefortschritt an und zentriert optional die Kamera.
+ */
+import * as THREE from 'three';
+
+// --- Core ---
+import { scene } from '../core/scene.js';
+import { camera } from '../core/camera.js';
+import { renderer } from '../core/renderer.js';
+import { controls } from '../core/controls.js';
+import { fitCameraToScene } from '../core/cameraUtils.js';
+import { modelPath, withBase } from '../core/path.js';
+
+// --- State ---
+import { state } from '../store/state.js';
+
+// --- Loader ---
+import { createGLTFLoader /* , disposeGLTFLoader */ } from '../loaders/gltfLoaderFactory.js';
+
+// --- Features (Sichtbarkeit) ---
+import { setGroupVisible, showObject, hideObject } from '../features/visibility.js';
+
+// --- Progress UI ---
+import { showLoadingBar, hideLoadingBar, updateLoadingBar } from '../modelLoader/progress.js';
+
 
    export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer) {
      if (!entries?.length) {
@@ -120,6 +132,16 @@ export function loadSingleModel(entry, group, scene, loader /* , camera, control
             return;
           }
 
+          // ➕ Meta & stabiler Name am Root (macht Klick→Info trivial)
+          const baseName = filename.replace(/\.[^/.]+$/, ''); // 'FJ3368001.glb' -> 'FJ3368001'
+          model.name = entry?.id || baseName;
+          model.userData.meta = entry;
+
+          // ➕ in state.groups registrieren (wichtig für restoreGroupState & UI)
+          (state.groups[group] ||= []).push(model);
+
+
+
           // 7) Standard-Layer aktivieren: Render (0) + Pick (1)
           model.traverse((ch) => {
             if (!ch.isObject3D) return;
@@ -152,20 +174,54 @@ export function loadSingleModel(entry, group, scene, loader /* , camera, control
 // Lädt alle Einträge einer Gruppe aus state.groupedMeta via loadModels()
 // Optional: centerCamera = true, um danach zu zentrieren
 // Optional: loaderReuse: vorhandene GLTFLoader-Instanz wiederverwenden
-  export async function loadGroupByName(groupName, { centerCamera = false, loaderReuse = null } = {}) {
+export async function loadGroupByName(
+  groupName,
+  { centerCamera = false, loaderReuse = null } = {}
+) {
   try {
     const entries = state.groupedMeta?.[groupName] || [];
+    console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${groupName}"...`);
     if (!entries.length) {
       console.warn(`⚠️ loadGroupByName: Keine Einträge für Gruppe "${groupName}" gefunden.`);
       return;
     }
 
-    // Falls kein Loader gereicht wurde → frische Factory (Best Practice: 1 Loader pro Ladevorgang ok)
+    // Eine Loader-Instanz für diesen Ladevorgang
     const loader = loaderReuse ?? createGLTFLoader();
 
+    // Delegieren: eigentliche Arbeit macht loadModels()
     await loadModels(entries, groupName, centerCamera, scene, loader, camera, controls, renderer);
+
     console.log(`✅ loadGroupByName: Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
   } catch (err) {
     console.error(`❌ loadGroupByName: Fehler beim Laden von "${groupName}":`, err);
   }
+}
+
+export function restoreGroupState(groupName) {
+  // Ungültiger Name → no-op
+  if (!groupName || typeof groupName !== 'string') return;
+
+  // Falls die Gruppe noch nicht initialisiert ist → no-op (keine Warnung)
+  const models = state.groups?.[groupName];
+  const saved = state.groupStates?.[groupName];
+  if (!Array.isArray(models)) return;
+
+  // Fall A: kompletter Gruppen-Flag (boolean)
+  if (typeof saved === 'boolean') {
+    setGroupVisible(groupName, saved);
+    return;
   }
+
+  // Fall B: Map je Modellname (object) – default pro Modell: sichtbar
+  if (saved && typeof saved === 'object') {
+    for (const model of models) {
+      const on = saved[model?.name] !== false; // default: true
+      if (on) showObject(model); else hideObject(model);
+    }
+    return;
+  }
+
+  // Fallback: kein gespeicherter Zustand → alles anzeigen
+  for (const model of models) showObject(model);
+}

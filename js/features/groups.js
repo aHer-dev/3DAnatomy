@@ -7,7 +7,7 @@ import { controls } from '../core/controls.js'; // <<< NEU: controls werden unte
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
-import { getMeta } from '../utils/index.js';
+import { getMeta } from '../data/meta.js';
 import { loadModels } from './modelLoader-core.js';
 import { removeModelsByGroupOrSubgroup } from '../modelLoader/cleanup.js';
 import { state } from '../store/state.js';
@@ -82,6 +82,10 @@ export function restoreGroupState(groupName) {
   const models = state.groups[groupName];
   const visibilityMap = state.groupStates[groupName];
 
+  if (!groupName || typeof groupName !== 'string') return;
+
+  if (!(groupName in state.groups)) return;
+
   if (!models || !visibilityMap) {
     console.warn(`⚠️ restoreGroupState: Gruppe "${groupName}" nicht im state vorhanden.`);
     return;
@@ -94,6 +98,21 @@ export function restoreGroupState(groupName) {
 
   console.log(`♻️ Sichtbarkeit von Gruppe "${groupName}" wiederhergestellt.`);
 }
+
+export function restoreAllGroupStates() {
+  // ⚠️ WICHTIG: nur geladene Gruppen (state.groups-Keys), nicht alle verfügbaren
+  const loadedGroups = Object.keys(state.groups || {});
+  if (!loadedGroups.length) return; // noch nichts geladen → no-op
+
+  for (const g of loadedGroups) {
+    try {
+      restoreGroupState(g); // macht selbst no-op, wenn noch kein Zustand existiert
+    } catch (e) {
+      console.warn(`restoreAllGroupStates: Wiederherstellung für "${g}" übersprungen:`, e);
+    }
+  }
+}
+
 
 /**
  * Sichtbarkeit aller Modelle einer anatomischen Gruppe setzen

@@ -2,7 +2,7 @@
 // 🔧 Steuert das Ein- und Ausblenden des Seitenpanels mit UI-Kontrolle und stellt den Zustand anatomischer Gruppen wieder her
 
 import { state } from '../store/state.js'; // Globale Zustandsverwaltung
-import { restoreGroupState } from '../modelLoader/index.js'; // Funktion zur Wiederherstellung der Sichtbarkeitszustände
+import { restoreGroupState } from '../features/groups.js'; // Funktion zur Wiederherstellung der Sichtbarkeitszustände
 
 /**
  * Initialisiert die Benutzeroberflächen-Steuerung (Burger-Menü und Panel).
@@ -22,19 +22,17 @@ export function setupControlsUI() {
 
   // 📌 Event Listener: Beim Klick auf das Menü-Icon
   menuIcon.addEventListener('click', () => {
-    // ➕ Prüfe, ob das Panel aktuell offen ist
     const isOpen = controlsPanel.style.display === 'block';
-    console.log('Controls Display:', controlsPanel.style.display);
-    // 🔁 Toggle Sichtbarkeit und Icon-Zustand
+
+    // Toggle Sichtbarkeit + Icon
     controlsPanel.style.display = isOpen ? 'none' : 'block';
     menuIcon.classList.toggle('open');
 
     if (!isOpen) {
-      // 📦 Wenn Panel geöffnet wird, stelle Sichtbarkeitszustände für Gruppen wieder her
-      ['muscles', 'bones', 'tendons', 'other'].forEach(group => {
-        restoreGroupState(group);
-      });
-      console.log('🔄 Panel geöffnet – Zustände restauriert');
+      // 🌟 Nur gültige Gruppen restoren
+      const groups = state.availableGroups || [];
+      groups.forEach(g => restoreGroupState(g));
+      console.log('🔄 Panel geöffnet – Zustände restauriert:', groups);
     } else {
       console.log('📦 Panel geschlossen');
     }
