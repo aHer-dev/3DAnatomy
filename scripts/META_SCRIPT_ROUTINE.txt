@@ -1,0 +1,104 @@
+kurz & klar: **Ja — deine meta.json ist jetzt konsistent und bereit für die Web-App.** 🎯
+(„Fix-Kandidaten: 0 / Auto-Fixes: 0“, vollständige `entry_uid`s, gültige `model.asset.url`s, Phrasen-Regel für Bandscheiben sitzt.)
+
+Hier ist eine **Checkliste**, mit der du die Meta künftig stabil pflegst und die Skripte sicher einsetzt.
+
+# 1) Was ist „fertig“ (Baseline)
+
+* `data/meta.json`:
+
+  * 2234 Einträge, alle mit `entry_uid` und `model.asset.url`.
+  * Gruppen korrigiert (u. a. Intervertebral Disks → `cartilage`).
+* Skripte:
+
+  * Builder/Heuristik angepasst (Phrasenregel `intervertebral (disc|disk)` → `cartilage` vorrangig vor `vertebra`).
+* Reports:
+
+  * `group_predictions.csv` erzeugt, **keine** offenen Kandidaten.
+
+# 2) Release-/Tagesroutine (immer gleich)
+
+1. **Validieren & sichern**
+
+   * `python3 scripts/meta_add_uid_and_validate.py`
+     (stellt `entry_uid` sicher, prüft Pflichtfelder)
+   * Git-Commit + Tag (z. B. `meta-baseline-YYYY-MM-DD`).
+
+2. **Vor Deploy: Guardrail**
+
+   * `python3 scripts/rebuild_group_predictions_from_meta.py`
+   * `python3 scripts/build_fixes_from_report.py --in reports/group_predictions.csv`
+   * Erwartung: **Fix-Kandidaten: 0**.
+     Wenn >0 → Abschnitt 4 „Korrekturschleife“.
+
+# 3) Neue Modelle hinzufügen (kleiner Leitfaden)
+
+* Pro Eintrag pflegen:
+
+  * `id` (FMA), `labels.en`, `classification.group` (nur erlaubte Gruppen),
+  * `model.variants.*` **und** `model.asset` (mit `path`, `file`, `url`),
+  * `entry_uid` im Format `fmaID__Dateiname.glb`.
+* Danach Abschnitt 2 (Guardrail) laufen lassen.
+* **Lizenz/Attribution** prüfen: `meta.license`, `meta.sources`, `meta.attribution` gefüllt.
+
+# 4) Korrekturschleife (wenn Kandidaten auftauchen)
+
+A) **Automatisch (sichere Fälle)**
+
+* Kandidaten erzeugen/sichten:
+
+  * `reports/group_fix_candidates.csv` (alle Vorschläge)
+  * `reports/group_fix_auto.csv` (nur sichere Auto-Fixes)
+* Anwenden:
+
+  * `python3 scripts/apply_group_fixes.py --fixes reports/group_fix_auto.csv --write --null-subgroup`
+* Neu prüfen:
+
+  * `rebuild_group_predictions_from_meta.py` → `build_fixes_from_report.py --in …`
+  * Ziel: wieder **0 Kandidaten**.
+
+B) **Manuell (unsichere Fälle)**
+
+* In Excel/VS Code prüfen → `entry_uid,new_group` als CSV speichern
+  (z. B. `reports/group_fix_manual_from_uids.csv`).
+* Anwenden wie oben mit `--fixes …`.
+* Guardrail erneut laufen lassen (Ziel: 0).
+
+# 5) Regeln pflegen (einmalig, nachhaltig)
+
+* **Phrasenmap** erweitern, wenn Muster wiederkehren (z. B. „pulmonary valve“ → `heart`).
+* **Reihenfolge** beachten: spezifische Regeln (Disks) **vor** generischen (vertebra/bone).
+* Nach Regeländerung **immer**: rebuild → build\_fixes → prüfen, bis 0.
+
+# 6) Dateien & ihre Rollen (Mini-Spickzettel)
+
+* `data/meta.json` — **Quelle der Wahrheit**.
+* `reports/group_predictions.csv` — aktueller Heuristik-Scan.
+* `reports/group_fix_candidates.csv` — alles Verdächtige.
+* `reports/group_fix_auto.csv` — sichere Auto-Änderungen.
+* `scripts/apply_group_fixes.py` — schreibt Änderungen in `meta.json` (mit Backup).
+* `scripts/rebuild_group_predictions_from_meta.py` — baut Predictions aus **Meta**.
+* `scripts/build_fixes_from_report.py` — findet Kandidaten, erstellt Auto-Fixes & Confusion.
+
+# 7) Troubleshooting (häufige Stolpersteine)
+
+* **404 beim Laden** → check `model.asset.url` (Pfad, Groß-/Kleinschreibung).
+* **leeres Label im Info-Panel** → `labels.en` fehlt; setze `labels.en` (und gern `labels.de`).
+* **Duplikate** → `meta_add_uid_and_validate.py` meldet doppelte `id`s → prüfen/vereinheitlichen.
+* **CSV wird „eine Spalte“** → Trennzeichen: immer **UTF-8, Komma**; im Zweifel das Auto-Laden im Script nutzt Fallback auf `;`.
+
+# 8) Abnahme-Kriterien (grün = gut)
+
+* `build_fixes_from_report.py` meldet: **Fix-Kandidaten 0 / Auto-Fixes 0**.
+* `reports/group_confusion.csv` hat (nahezu) nur Werte auf der Diagonale.
+* Stichproben: 10 zufällige Einträge passen semantisch (Label ↔ Gruppe ↔ Pfad).
+
+---
+
+Wenn du magst, gehen wir jetzt zurück zur **App** und setzen die drei Baustellen um:
+
+1. **Startzustand**: nur `bones` + `teeth` laden (sichtbar), Rest lazy.
+2. **Picking**: Pick-Pool nur mit **sichtbaren** Meshes füttern (damit „drunter“ klickbar ist).
+3. **Reset**: Szene + Visibility + Pick-Pool + Info-Panel sauber auf Initialzustand.
+
+Sag einfach „go App“, dann führe ich dich Schritt-für-Schritt durch – mit kleinen, gezielten Änderungen an genau den Dateien, die du schon hast.

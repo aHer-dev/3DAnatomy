@@ -1,0 +1,185 @@
+{
+    "group_priority": {
+        "nerves": 1,
+        "muscles": 2,
+        "ligaments": 3,
+        "bones": 4,
+        "organs": 5,
+        "arteries": 6,
+        "veins": 7,
+        "brain": 8,
+        "eyes": 9,
+        "lungs": 10,
+        "teeth": 11,
+        "cartilage": 12,
+        "glands": 13,
+        "ear": 14,
+        "heart": 15,
+        "skin_hair": 16
+    },
+    "groups": {
+        "teeth": [
+            "tooth",
+            "teeth",
+            "incisor",
+            "canine",
+            "molar",
+            "premolar",
+            "gingiva"
+        ],
+        "bones": [
+            "bone",
+            "phalanx",
+            "metacarpal",
+            "vertebra",
+            "rib",
+            "femur",
+            "ulna",
+            "radius",
+            "skull",
+            "mandible",
+            "maxilla"
+        ],
+        "muscles": [
+            "muscle",
+            "musculus",
+            "biceps",
+            "triceps",
+            "deltoid",
+            "gluteus"
+        ],
+        "ligaments": [
+            "ligament",
+            "ligamentum",
+            "tendon",
+            "intervertebral disk"
+        ],
+        "arteries": [
+            "artery",
+            "arteria",
+            "radial artery",
+            "cerebral artery",
+            "aorta",
+            "arch"
+        ],
+        "veins": [
+            "vein",
+            "vena",
+            "jugular",
+            "venous arch"
+        ],
+        "nerves": [
+            "nerve",
+            "nervus",
+            "plexus",
+            "branch",
+            "root",
+            "trunk"
+        ],
+        "brain": [
+            "cerebellum",
+            "thalamus",
+            "hippocampus",
+            "corpus callosum",
+            "lateral ventricle",
+            "third ventricle",
+            "fourth ventricle",
+            "cerebral aqueduct"
+        ],
+        "eyes": [
+            "eyeball",
+            "cornea",
+            "iris",
+            "lens",
+            "retina",
+            "sclera",
+            "lacrimal sac",
+            "lacrimal duct",
+            "canaliculus",
+            "tarsal plate",
+            "palpebral"
+        ],
+        "ear": [
+            "auricle",
+            "cochlea",
+            "malleus",
+            "incus",
+            "stapes",
+            "ossicle",
+            "tympanic membrane",
+            "semicircular canal",
+            "vestibule",
+            "auditory tube"
+        ],
+        "organs": [
+            "liver",
+            "kidney",
+            "spleen",
+            "stomach",
+            "pancreas",
+            "bladder",
+            "prostate",
+            "uterus",
+            "tongue",
+            "epiglottis"
+        ],
+        "lungs": [
+            "lung",
+            "bronchus",
+            "bronchial",
+            "trachea"
+        ],
+        "glands": [
+            "gland",
+            "adrenal",
+            "pituitary",
+            "thyroid",
+            "parathyroid",
+            "salivary",
+            "lacrimal gland"
+        ],
+        "cartilage": [
+            "cartilage",
+            "epiglottic",
+            "conus elasticus",
+            "thyrohyoid membrane"
+        ],
+        "heart": [
+            "atrium",
+            "right ventricle",
+            "left ventricle",
+            "mitral",
+            "tricuspid",
+            "aortic valve",
+            "pulmonary valve"
+        ],
+        "skin_hair": [
+            "skin",
+            "hair",
+            "eyebrow",
+            "eyelash",
+            "lip"
+        ]
+    },
+    "conflicting_terms": {
+        "arteries": [
+            "nerve",
+            "muscle"
+        ],
+        "veins": [
+            "nerve",
+            "muscle",
+            "artery"
+        ],
+        "nerves": [
+            "artery",
+            "vein",
+            "muscle"
+        ],
+        "muscles": [
+            "artery",
+            "vein",
+            "nerve"
+        ]
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "groups": [
+        "bones",
+        "teeth",
+        "eyes",
+        "muscles",
+        "ligaments",
+        "arteries",
+        "veins",
+        "nerves",
+        "organs",
+        "lungs",
+        "heart",
+        "brain",
+        "cartilage",
+        "glands",
+        "skin_hair",
+        "ear"
+    ],
+    "subgroups": {
+        "muscles": [
+            "arm-shoulder",
+            "head-neck",
+            "torso",
+            "leg"
+        ],
+        "bones": [
+            "skull",
+            "spine",
+            "upper-limb",
+            "lower-limb"
+        ]
+    }
+}

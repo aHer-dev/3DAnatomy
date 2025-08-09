@@ -1,0 +1,6 @@
+python3 - << 'PY'
+import json;from pathlib import Path
+m=json.loads(Path('data/meta.json').read_text())
+ok=sum(1 for e in m if e.get('entry_uid') and e.get('model',{}).get('asset',{}).get('url'))
+print(f"ok entries: {ok}/{len(m)}")
+PY

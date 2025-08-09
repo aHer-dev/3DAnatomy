@@ -1,0 +1,44 @@
+entry_uid,current_group,predicted_group,prob,margin,second_group,second_prob,label_en,file,path,reasons,Mismatch,prob_num,margin_num,auto_fix,phrase_group
+fma7247__FJ2417.glb,lungs,lungs,10.4,1.0,heart,9.4,Left anterior cusp of pulmonary valve,FJ2417.glb,lungs,+path(lungs),False,10.4,1.0,True,heart
+fma7250__FJ2427.glb,lungs,lungs,10.4,1.0,heart,9.4,Posterior cusp of pulmonary valve,FJ2427.glb,lungs,+path(lungs),False,10.4,1.0,True,heart
+fma7249__FJ2434.glb,lungs,lungs,10.4,1.0,heart,9.4,Right anterior cusp of pulmonary valve,FJ2434.glb,lungs,+path(lungs),False,10.4,1.0,True,heart
+fma8612__FJ2966.glb,lungs,lungs,10.6,2.8,nerves,7.9,Pulmonary trunk,FJ2966.glb,lungs,+path(lungs),False,10.6,2.8,True,heart
+fma52734__FJ3200.glb,brain,brain,10.6,2.8,bones,7.9,Frontal bone,FJ3200.glb,brain,+path(brain),False,10.6,2.8,True,bones
+fma24508__FJ3241.glb,eyes,eyes,10.6,2.8,bones,7.9,Left first metatarsal bone,FJ3241.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24510__FJ3244.glb,eyes,eyes,10.6,2.8,bones,7.9,Left second metatarsal bone,FJ3244.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24512__FJ3247.glb,eyes,eyes,10.6,2.8,bones,7.9,Left third metatarsal bone,FJ3247.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24514__FJ3250.glb,eyes,eyes,10.6,2.8,bones,7.9,Left fourth metatarsal bone,FJ3250.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24516__FJ3253.glb,eyes,eyes,10.6,2.8,bones,7.9,Left fifth metatarsal bone,FJ3253.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma53646__FJ3265.glb,eyes,eyes,10.6,2.8,bones,7.9,Left lacrimal bone,FJ3265.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma52789__FJ3274.glb,brain,brain,10.6,2.8,bones,7.9,Left parietal bone,FJ3274.glb,brain,+path(brain),False,10.6,2.8,True,bones
+fma52739__FJ3281.glb,brain,brain,10.6,2.8,bones,7.9,Left temporal bone,FJ3281.glb,brain,+path(brain),False,10.6,2.8,True,bones
+fma52735__FJ3309.glb,brain,brain,10.6,2.8,bones,7.9,Occipital bone,FJ3309.glb,brain,+path(brain),False,10.6,2.8,True,bones
+fma24507__FJ3351.glb,eyes,eyes,10.6,2.8,bones,7.9,Right first metatarsal bone,FJ3351.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24509__FJ3353.glb,eyes,eyes,10.6,2.8,bones,7.9,Right second metatarsal bone,FJ3353.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24511__FJ3355.glb,eyes,eyes,10.6,2.8,bones,7.9,Right third metatarsal bone,FJ3355.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24513__FJ3357.glb,eyes,eyes,10.6,2.8,bones,7.9,Right fourth metatarsal bone,FJ3357.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma24515__FJ3359.glb,eyes,eyes,10.6,2.8,bones,7.9,Right fifth metatarsal bone,FJ3359.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma53645__FJ3371.glb,eyes,eyes,10.6,2.8,bones,7.9,Right lacrimal bone,FJ3371.glb,eyes,+path(eyes),False,10.6,2.8,True,bones
+fma52788__FJ3380.glb,brain,brain,10.6,2.8,bones,7.9,Right parietal bone,FJ3380.glb,brain,+path(brain),False,10.6,2.8,True,bones
+fma52738__FJ3386.glb,brain,brain,10.6,2.8,bones,7.9,Right temporal bone,FJ3386.glb,brain,+path(brain),False,10.6,2.8,True,bones
+fma13501__FJ3203.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of fourth thoracic vertebra,FJ3203.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13502__FJ3204.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of fifth thoracic vertebra,FJ3204.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13503__FJ3205.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of sixth thoracic vertebra,FJ3205.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13504__FJ3206.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of seventh thoracic vertebra,FJ3206.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13505__FJ3207.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of eighth thoracic vertebra,FJ3207.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13506__FJ3208.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of ninth thoracic vertebra,FJ3208.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13507__FJ3209.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of tenth thoracic vertebra,FJ3209.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13508__FJ3210.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of eleventh thoracic vertebra,FJ3210.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma16033__FJ3212.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of first lumbar vertebra,FJ3212.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13896__FJ3213.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of third cervical vertebra,FJ3213.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma16034__FJ3214.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of second lumbar vertebra,FJ3214.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma16035__FJ3215.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of third lumbar vertebra,FJ3215.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma16036__FJ3216.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of fourth lumbar vertebra,FJ3216.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma16037__FJ3217.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of fifth lumbar vertebra,FJ3217.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13897__FJ3218.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of fourth cervical vertebra,FJ3218.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13898__FJ3219.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of fifth cervical vertebra,FJ3219.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13899__FJ3220.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of sixth cervical vertebra,FJ3220.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13900__FJ3221.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of seventh cervical vertebra,FJ3221.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma10458__FJ3222.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of first thoracic vertebra,FJ3222.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13495__FJ3223.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of second thoracic vertebra,FJ3223.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
+fma13500__FJ3224.glb,ligaments,ligaments,16.4,9.0,bones,7.4,Intervertebral disk of third thoracic vertebra,FJ3224.glb,ligaments,+path(ligaments);+phrase(intervertebral disk),False,16.4,9.0,True,bones
