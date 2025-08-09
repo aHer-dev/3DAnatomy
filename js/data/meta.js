@@ -1,33 +1,48 @@
-// js/date/meta.js
-import { dataPath } from '../core/path.js';  // zentrale Pfadfunktion für /data
+// ============================================
+// meta.js - Bereinigte Version
+// ============================================
+import { dataPath } from '../core/path.js';
 import { state } from '../store/state.js';
 
 let cachedMeta = null;
 
-// Lädt meta.json nur einmal
+/**
+ * Lädt meta.json nur einmal und cached das Ergebnis
+ */
 export async function getMeta() {
     if (!cachedMeta) {
         try {
-            const url = dataPath('meta.json');           // robust, nutzt BASE nur an einer Stelle
-            const res = await fetch(url);
+            // WICHTIG: dataPath() als Funktion aufrufen!
+            const url = dataPath('meta.json');
+            console.log('📂 Lade Meta von:', url);
 
-            if (!res.ok) throw new Error(`Fehler beim Laden von meta.json: ${res.status}`);
-            cachedMeta = await res.json();
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            cachedMeta = await response.json();
             console.log(`✅ meta.json geladen – ${cachedMeta.length} Einträge`);
-        } catch (err) {
-            console.error("❌ Fehler beim Laden der Metadaten:", err);
+        } catch (error) {
+            console.error("❌ Fehler beim Laden der Metadaten:", error);
             cachedMeta = [];
         }
     }
     return cachedMeta;
 }
 
-// Erstellt alle Gruppen im state + Standardfarben
+/**
+ * Initialisiert Gruppen aus Meta-Daten
+ */
 export async function initializeGroupsFromMeta() {
     const meta = await getMeta();
 
+    if (!meta || !meta.length) {
+        console.warn('⚠️ Keine Meta-Daten vorhanden');
+        return;
+    }
 
-    // 1) gruppieren
+    // 1) Gruppieren nach classification.group
     state.groupedMeta = meta.reduce((acc, entry) => {
         const g = entry?.classification?.group || 'other';
         (acc[g] ||= []).push(entry);
@@ -37,62 +52,106 @@ export async function initializeGroupsFromMeta() {
     // 2) Liste aller Gruppen
     state.availableGroups = Object.keys(state.groupedMeta);
 
+    // 3) State initialisieren - WICHTIG: state.colors muss existieren!
+    if (!state.colors) {
+        state.colors = {};
+    }
 
-    // 3) Default-Keys sicher anlegen → keine "Gruppe ... nicht im state vorhanden"-Warnungen mehr
     for (const g of state.availableGroups) {
-        state.groups[g] ||= []; // Array für geladene Object3D-Roots
-        if (typeof state.groupStates[g] !== 'boolean') state.groupStates[g] = false;
+        // Leere Arrays für geladene Modelle
+        state.groups[g] ||= [];
+
+        // Sichtbarkeitszustände
+        if (typeof state.groupStates[g] !== 'boolean' && typeof state.groupStates[g] !== 'object') {
+            state.groupStates[g] = false;
+        }
+
+        // Farben von defaultSettings kopieren
         if (!(g in state.colors)) {
             state.colors[g] = state.defaultSettings.colors[g] ?? state.defaultSettings.defaultColor;
         }
     }
 
-    console.log('✅ Gruppen initialisiert:', state.availableGroups);
-
-
-    // 🔎 Indexe für schnellen Lookup beim Klick:
+    // 4) Lookup-Indizes erstellen
     state.metaById = Object.create(null);
     state.metaByFile = Object.create(null);
 
-    // Hilfsfunktionen
     const basename = (s) => {
         try { return s.split('/').pop(); } catch { return s; }
     };
     const stripExt = (s) => s.replace(/\.[^/.]+$/, '');
 
-    // Alle Einträge indexieren
     for (const entries of Object.values(state.groupedMeta)) {
         for (const entry of entries) {
-            // id-Index
-            const id = (entry?.id ?? entry?.fma ?? '').toString().trim();
-            if (id) state.metaById[id] = entry;
+            // ID-Index
+            const id = (entry?.id || entry?.fma || '').toString().trim();
+            if (id) {
+                state.metaById[id] = entry;
 
-            // filename-Index (über variants[current] oder fallback-Felder)
-            const current = entry?.model?.current;
-            const variant = current ? entry?.model?.variants?.[current] : null;
+                // FMA-ID auch indexieren falls anders
+                const fmaId = (entry?.info?.links?.fma || '').toString().trim();
+                if (fmaId && fmaId !== id) {
+                    state.metaById[fmaId] = entry;
+                }
+            }
+
+            // Filename-Index
+            const current = entry?.model?.current || 'draco';
+            const variant = entry?.model?.variants?.[current];
+
             const candidates = [
                 variant?.filename,
                 entry?.filename,
-                variant?.file,
-                entry?.file,
-                variant?.url,
-                entry?.url,
-                variant?.src,
-                entry?.src,
             ].filter(v => typeof v === 'string' && v.length > 0);
 
             if (candidates.length) {
-                const file = basename(candidates[0]);       // z.B. FJ3262001.glb
-                const base = stripExt(file);                // z.B. FJ3262001
+                const file = basename(candidates[0]);
+                const base = stripExt(file);
                 state.metaByFile[file] = entry;
                 state.metaByFile[base] = entry;
             }
         }
     }
 
-    console.log('🧭 Meta-Index erstellt:',
+    console.log('✅ Gruppen initialisiert:', state.availableGroups);
+    console.log('🧭 Meta-Index:',
         Object.keys(state.metaById).length, 'IDs,',
-        Object.keys(state.metaByFile).length, 'Dateinamen');
-
+        Object.keys(state.metaByFile).length, 'Dateinamen'
+    );
 }
 
+/**
+ * Helper-Funktionen für Meta-Zugriff
+ */
+export function getMetaById(id) {
+    if (!id) return null;
+    return state.metaById?.[id] || null;
+}
+
+export function getMetaByFile(filename) {
+    if (!filename) return null;
+
+    const basename = (s) => s.split('/').pop();
+    const stripExt = (s) => s.replace(/\.[^/.]+$/, '');
+
+    const file = basename(filename);
+    const base = stripExt(file);
+
+    return state.metaByFile?.[file] || state.metaByFile?.[base] || null;
+}
+
+export function getMetaByGroup(group) {
+    return state.groupedMeta?.[group] || [];
+}
+
+export function getSubgroupsForGroup(group) {
+    const entries = getMetaByGroup(group);
+    const subgroups = new Set();
+
+    entries.forEach(entry => {
+        const subgroup = entry?.classification?.subgroup;
+        if (subgroup) subgroups.add(subgroup);
+    });
+
+    return Array.from(subgroups).sort();
+}

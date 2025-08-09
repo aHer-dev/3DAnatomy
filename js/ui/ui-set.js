@@ -4,10 +4,13 @@
  * alle Muskeln auf einmal zu laden und Einträge aus dem Set wieder zu entfernen.
  */
 import * as THREE from 'three';
-import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
+import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
 import { modelPath } from '../core/path.js';
-import { hideAllManagedModels } from '../features/visibility.js';
-import { setModelColor, setModelOpacity } from '../features/appearance.js'; // Importiere Appearance-Helper
+import {
+  hideAllManagedModels,
+  setModelVisibility
+} from '../features/visibility.js';  // WICHTIG: hideAllManagedModels importieren!
+import { setModelColor, setModelOpacity } from '../features/appearance.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
@@ -22,7 +25,6 @@ export function setupSetUI() {
   console.log('setupSetUI aufgerufen');
 
   const loader = createGLTFLoader();
-
 
   const setupGroupButton = (buttonId, groupName) => {
     const button = document.getElementById(buttonId);
@@ -51,11 +53,17 @@ export function setupSetUI() {
   };
 
   // Alle Gruppen aus meta.json
-  const groups = ['bones', 'muscles', 'tendons', 'arteries', 'brain', 'cartilage', 'ear', 'eyes', 'glands', 'heart', 'ligaments', 'lungs', 'nerves', 'organs', 'skin_hair', 'teeth', 'veins'];
+  const groups = [
+    'bones', 'muscles', 'tendons', 'arteries', 'brain', 'cartilage',
+    'ear', 'eyes', 'glands', 'heart', 'ligaments', 'lungs',
+    'nerves', 'organs', 'skin_hair', 'teeth', 'veins'
+  ];
+
   groups.forEach(group => setupGroupButton(`btn-load-${group}`, group));
 
   const addButton = document.getElementById('btn-add-to-set');
   const setList = document.getElementById('set-list');
+
   if (!addButton || !setList) {
     console.warn('⚠️ Set-UI: btn-add-to-set oder set-list nicht gefunden.');
     return;
@@ -67,33 +75,51 @@ export function setupSetUI() {
       alert("Bitte zuerst eine Struktur auswählen.");
       return;
     }
-    const label = state.modelNames.get(selected);
-    const alreadyInSet = state.setStructures.find(s => s.label === label);
+
+    // Prüfe ob bereits in der Sammlung
+    const alreadyInSet = state.collection.find(item => item.model === selected);
     if (alreadyInSet) {
       alert("Diese Struktur ist bereits in deiner Sammlung.");
       return;
     }
+
     const meta = selected.userData?.meta;
     if (!meta) {
       alert("Fehler: Struktur enthält keine Metadaten.");
       return;
     }
-    state.setStructures.push(meta);
+
+    // Füge zur Sammlung hinzu mit aktuellen Eigenschaften
+    state.collection.push({
+      model: selected,
+      meta: meta,
+      color: selected.material?.color?.getHex() || 0xcccccc,
+      opacity: selected.material?.opacity || 1,
+      visible: selected.visible
+    });
+
     refreshSetList();
+    console.log('✅ Zur Sammlung hinzugefügt:', meta.id || meta.labels?.en);
   });
 
   function refreshSetList() {
     setList.innerHTML = '';
-    state.setStructures.forEach((entry, index) => {
-      const item = document.createElement('div');
-      item.className = 'set-entry';
-      item.textContent = entry.label || entry.id;
-      item.addEventListener('dblclick', () => {
-        state.setStructures.splice(index, 1);
+    state.collection.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'set-entry';
+      div.textContent = item.meta?.labels?.en || item.meta?.id || 'Unbekannt';
+
+      // Doppelklick zum Entfernen
+      div.addEventListener('dblclick', () => {
+        state.collection.splice(index, 1);
         refreshSetList();
+        console.log('🗑️ Aus Sammlung entfernt:', item.meta?.id);
       });
-      setList.appendChild(item);
+
+      setList.appendChild(div);
     });
+
+    updateCollectionUI();
   }
 
   console.log('📦 Sammlungssystem und Gruppen-Buttons aktiviert.');
@@ -109,69 +135,71 @@ export function updateCollectionUI() {
     return;
   }
 
-  collectionList.innerHTML = '';
   if (state.collection.length === 0) {
-    collectionList.innerHTML = '<p>Keine Modelle in der Sammlung.</p>';
+    collectionList.innerHTML = '<p style="color: #888; font-style: italic;">Keine Modelle in der Sammlung.</p>';
     return;
   }
 
-  state.collection.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item.meta.labels?.en || item.model.name || 'Unbekannt';
-    collectionList.appendChild(li);
-  });
   console.log('✅ Sammlung gerendert:', state.collection.length, 'Modelle');
 }
-
 
 /**
  * Schaltet die Szene um: Zeigt nur Sammlungs-Modelle mit gespeicherten Zuständen
  */
 export function showCollectionInScene() {
   console.log('🔄 Szene umschalten auf Sammlung...');
-  hideAllModels(); // Verstecke alles
 
-  // Setze Layers für alle Modelle zurück
-  scene.traverse(obj => {
-    if (obj.isMesh || obj.isGroup) {
-      obj.layers.disable(0); // Alle deaktivieren
-    }
-  });
+  // Verstecke alle anderen Modelle
+  hideAllManagedModels();
 
+  // Zeige nur Sammlungs-Modelle
   state.collection.forEach(item => {
     const model = item.model;
-    setModelColor(model, item.color);
-    setModelOpacity(model, item.opacity);
-    setModelVisibility(model, true); // Immer sichtbar machen, unabhängig von gespeichertem visible
-    model.layers.enable(0); // Sicherstellen, dass Sammlungs-Modelle klickbar sind
+
+    // Wende gespeicherte Eigenschaften an
+    if (item.color !== undefined) {
+      setModelColor(model, item.color);
+    }
+    if (item.opacity !== undefined) {
+      setModelOpacity(model, item.opacity);
+    }
+
+    // Mache sichtbar und klickbar
+    setModelVisibility(model, true);
+
+    // Stelle sicher dass Layer gesetzt sind
+    model.traverse(obj => {
+      if (obj.isMesh || obj.isGroup) {
+        obj.layers.enable(0); // Render Layer
+        obj.layers.enable(1); // Pick Layer
+      }
+    });
   });
 
   renderer.render(scene, camera);
   console.log('✅ Sammlung in Szene angezeigt:', state.collection.length, 'Modelle');
 }
 
-
-/**
 /**
  * Leert die Sammlung
  */
 export function clearCollection() {
   state.collection = [];
   updateCollectionUI();
-  hideAllModels();
+  hideAllManagedModels();
   renderer.render(scene, camera);
   console.log('🗑️ Sammlung geleert.');
 }
 
-
+// === EVENT LISTENERS ===
 
 // Event-Listener für "Sammlung anzeigen"
 const showCollectionBtn = document.querySelector('#btn-show-set');
 if (showCollectionBtn) {
   showCollectionBtn.addEventListener('click', () => {
     console.log('🖱️ Sammlung anzeigen geklickt');
-    updateCollectionUI(); // UI-Liste aktualisieren
-    showCollectionInScene(); // Szene umschalten
+    updateCollectionUI();
+    showCollectionInScene();
   });
 } else {
   console.warn('⚠️ Button (#btn-show-set) nicht gefunden');
@@ -183,4 +211,61 @@ if (clearCollectionBtn) {
   clearCollectionBtn.addEventListener('click', clearCollection);
 } else {
   console.warn('⚠️ Button (#btn-clear-set) nicht gefunden');
+}
+
+// Event-Listener für "Sammlung exportieren"
+const exportBtn = document.querySelector('#btn-export-set');
+if (exportBtn) {
+  exportBtn.addEventListener('click', () => {
+    if (state.collection.length === 0) {
+      alert('Die Sammlung ist leer.');
+      return;
+    }
+
+    // Erstelle Export-Daten
+    const exportData = {
+      version: '1.0',
+      date: new Date().toISOString(),
+      collection: state.collection.map(item => ({
+        id: item.meta?.id,
+        labels: item.meta?.labels,
+        color: item.color,
+        opacity: item.opacity,
+        visible: item.visible
+      }))
+    };
+
+    // Download als JSON
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `anatomie-sammlung-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    console.log('📥 Sammlung exportiert:', state.collection.length, 'Modelle');
+  });
+}
+
+// Event-Listener für "Screenshot"
+const screenshotBtn = document.querySelector('#btn-screenshot');
+if (screenshotBtn) {
+  screenshotBtn.addEventListener('click', () => {
+    // Rendere einmal für Screenshot
+    renderer.render(scene, camera);
+
+    // Canvas zu Bild konvertieren
+    const canvas = renderer.domElement;
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `anatomie-screenshot-${Date.now()}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    console.log('📸 Screenshot erstellt');
+  });
 }

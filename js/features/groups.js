@@ -3,7 +3,7 @@
 
 import * as THREE from 'three';
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-import { controls } from '../core/controls.js'; // <<< NEU: controls werden unten an loadModels übergeben
+import { controls } from '../core/controls.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
@@ -11,7 +11,7 @@ import { getMeta } from '../data/meta.js';
 import { loadModels } from './modelLoader-core.js';
 import { removeModelsByGroupOrSubgroup } from '../modelLoader/cleanup.js';
 import { state } from '../store/state.js';
-import { setModelVisibility } from './visibility.js';
+import { setModelVisibility, setGroupVisibility } from '../features/visibility.js';
 
 
 const loader = createGLTFLoader();
@@ -27,14 +27,6 @@ const loader = createGLTFLoader();
 export async function loadGroup(groupName, subgroup = null, centerCamera = false) {
   const meta = await getMeta();
 
-  // einmalig debuggen, welche Gruppen es wirklich gibt
-  if (!meta._debugDumped) {
-    const groupsInMeta = [...new Set(meta.map(e => e?.classification?.group ?? e?.group).filter(Boolean))];
-    console.debug('[meta] vorhandene Gruppen:', groupsInMeta);
-    meta._debugDumped = true;
-  }
-
-  // ✨ NEU: classification.* mit Fallback auf alte Felder
   const filteredEntries = meta.filter(entry => {
     const g = entry?.classification?.group ?? entry?.group;
     const sg = entry?.classification?.subgroup ?? entry?.subgroup ?? null;
@@ -45,6 +37,8 @@ export async function loadGroup(groupName, subgroup = null, centerCamera = false
 
   await loadModels(filteredEntries, groupName, centerCamera, scene, loader, camera, controls, renderer);
 }
+
+
 /**
  * 🗑 Entfernt eine Gruppe oder Subgruppe aus der Szene.
  *
@@ -54,72 +48,59 @@ export async function loadGroup(groupName, subgroup = null, centerCamera = false
 export async function unloadGroup(groupName, subgroup = null) {
   await removeModelsByGroupOrSubgroup(groupName, subgroup);
 }
-/**
- * 🔍 Prüft, ob eine Gruppe aktuell geladen ist.
- *
- * @param {string} groupName
- * @returns {boolean}
- */
+
 export function isGroupLoaded(groupName) {
   return !!(state.groups[groupName]?.length > 0);
 }
-/**
- * 📋 Gibt zurück, welche Gruppen aktuell geladen sind.
- *
- * @returns {Array<string>}
- */
+
 export function getLoadedGroups() {
   return Object.keys(state.groups).filter(group =>
     state.groups[group]?.length > 0
   );
 }
-/**
- * ♻️ Stellt die Sichtbarkeit der Modelle in einer Gruppe wieder her.
- *
- * @param {string} groupName
- */
+
+// EINZELNE restoreGroupState Funktion
 export function restoreGroupState(groupName) {
-  const models = state.groups[groupName];
-  const visibilityMap = state.groupStates[groupName];
-
   if (!groupName || typeof groupName !== 'string') return;
-
   if (!(groupName in state.groups)) return;
 
-  if (!models || !visibilityMap) {
-    console.warn(`⚠️ restoreGroupState: Gruppe "${groupName}" nicht im state vorhanden.`);
+  const models = state.groups[groupName];
+  const saved = state.groupStates[groupName];
+
+  if (!models) return;
+
+  // Boolean: gesamte Gruppe
+  if (typeof saved === 'boolean') {
+    setGroupVisibility(groupName, saved);
     return;
   }
 
-  models.forEach(model => {
-    const isVisible = visibilityMap[model.name] !== false; // Default: true
-    setModelVisibility(model, isVisible);
-  });
+  // Object: einzelne Modelle
+  if (saved && typeof saved === 'object') {
+    models.forEach(model => {
+      const isVisible = saved[model.name] !== false;
+      setModelVisibility(model, isVisible);
+    });
+    return;
+  }
 
-  console.log(`♻️ Sichtbarkeit von Gruppe "${groupName}" wiederhergestellt.`);
+  // Default: alles sichtbar
+  setGroupVisibility(groupName, true);
 }
 
 export function restoreAllGroupStates() {
-  // ⚠️ WICHTIG: nur geladene Gruppen (state.groups-Keys), nicht alle verfügbaren
   const loadedGroups = Object.keys(state.groups || {});
-  if (!loadedGroups.length) return; // noch nichts geladen → no-op
+  if (!loadedGroups.length) return;
 
   for (const g of loadedGroups) {
     try {
-      restoreGroupState(g); // macht selbst no-op, wenn noch kein Zustand existiert
+      restoreGroupState(g);
     } catch (e) {
-      console.warn(`restoreAllGroupStates: Wiederherstellung für "${g}" übersprungen:`, e);
+      console.warn(`restoreAllGroupStates: Fehler bei "${g}":`, e);
     }
   }
 }
 
-
-/**
- * Sichtbarkeit aller Modelle einer anatomischen Gruppe setzen
- * @param {string} group
- * @param {boolean} visible
- */
 export function updateGroupVisibility(group, visible) {
-  const models = state.groups[group] || [];
-  models.forEach(model => setModelVisibility(model, visible));
+  setGroupVisibility(group, visible);
 }

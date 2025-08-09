@@ -1,39 +1,39 @@
-// js/features/visibility.js
-// Zentrale Sichtbarkeits-API. Wichtig: Layer-Management für zuverlässiges Durchklicken.
-// Regel:
-//  - Layer 0 = Render (sichtbar machen/ausblenden)
-//  - Layer 1 = Pick (anklickbar). Hide/Ghost deaktivieren Layer 1, Show/Un-Ghost aktivieren Layer 1.
+// ============================================
+// visibility.js - VOLLSTÄNDIGE VERSION
+// ============================================
+// Zentrale Sichtbarkeits-API mit Layer-Management
+// Layer 0 = Render (sichtbar machen/ausblenden)
+// Layer 1 = Pick (anklickbar)
 
 import * as THREE from 'three';
 import { state } from '../store/state.js';
-import { scene } from '../core/scene.js';
 
-
-/** interner Helper: Material-Array normalisieren */
+// === PRIVATE HELPER FUNCTIONS ===
 function _asArray(mat) {
     return Array.isArray(mat) ? mat : [mat];
 }
-/** interner Helper: Mat-Array zurück in Mesh schreiben */
+
 function _setMeshMaterials(mesh, mats) {
     mesh.material = Array.isArray(mesh.material) ? mats : mats[0];
 }
 
-/** Setzt die Opazität (0..1) für EIN Root-Objekt (alle Mesh-Kinder) */
+// === OPACITY MANAGEMENT ===
+/**
+ * Setzt die Opazität (0..1) für EIN Root-Objekt (alle Mesh-Kinder)
+ */
 export function setObjectOpacity(root, opacity = 1) {
     if (!root) return;
 
     root.traverse((ch) => {
         if (!ch.isMesh) return;
 
-        // 1) Falls wir auf volle Deckkraft zurück wollen
+        // Volle Deckkraft wiederherstellen
         if (opacity >= 1) {
-            // Wenn wir jemals geklont haben, Originale wiederherstellen
             if (ch.userData.__origMats) {
                 _setMeshMaterials(ch, ch.userData.__origMats);
                 delete ch.userData.__origMats;
                 delete ch.userData.__ownMats;
             } else {
-                // Sonst: vorhandene Materialien „entgeistern“
                 const mats = _asArray(ch.material);
                 mats.forEach(m => {
                     if (!m) return;
@@ -45,157 +45,139 @@ export function setObjectOpacity(root, opacity = 1) {
             return;
         }
 
-        // 2) opacity < 1 → halbtransparent darstellen
-        //    Einmalig klonen, um geteilte Materialinstanzen nicht global zu beeinflussen.
+        // Transparenz setzen (Material klonen wenn nötig)
         if (!ch.userData.__ownMats) {
             const src = _asArray(ch.material);
-
-            // Originale sichern (für spätere Wiederherstellung)
-            ch.userData.__origMats = src.map(m => (m && m.clone ? m.clone() : m));
-
-            // Klone erzeugen und zuweisen
-            const clones = src.map(m => {
-                if (!m) return m;
-                const c = m.clone ? m.clone() : m;
-                return c;
-            });
+            ch.userData.__origMats = src.map(m => m?.clone?.() || m);
+            const clones = src.map(m => m?.clone?.() || m);
             ch.userData.__ownMats = clones;
             _setMeshMaterials(ch, clones);
         }
 
-        // 3) aktive (geklonte) Materialien updaten
         const mats = _asArray(ch.material);
         mats.forEach(m => {
             if (!m) return;
             m.transparent = true;
             m.opacity = opacity;
-            // depthWrite aus bei echter Transparenz, vermeidet „Durchschreib“-Artefakte
             m.depthWrite = false;
         });
     });
 }
 
-/** Setzt die Opazität (0..1) für eine komplette Gruppe (alle bereits geladenen Roots) */
+/**
+ * Setzt die Opazität für eine komplette Gruppe
+ */
 export function setGroupOpacity(group, opacity = 1) {
-    const roots = (state.groups?.[group]) || [];
+    const roots = state.groups?.[group] || [];
     roots.forEach(root => setObjectOpacity(root, opacity));
 }
 
-
+// === VISIBILITY MANAGEMENT ===
 /**
-/**
-/**
- * Setzt Sichtbarkeit für alle Modelle einer Gruppe
- * @param {string} group – z. B. 'muscles'
- * @param {boolean} visible – true = anzeigen, false = verstecken
+ * Hauptfunktion für Model-Sichtbarkeit
+ * Setzt Sichtbarkeit eines einzelnen Modells inkl. Layer
  */
-
-export function setGroupVisibility(group, visible) {
-    state.modelObjects.forEach((model, label) => {
-        const meta = state.metaByLabel[label];
-        if (meta?.group === group) {
-            model.visible = visible;
-        }
-    });
-
-    state.groupStates[group] = visible;
-}
-
-/**
- * Setzt Sichtbarkeit eines einzelnen Modells (Root + rekursiv Meshes für Konsistenz + Layers für Raycasting)
- * @param {THREE.Object3D} model
- * @param {boolean} visible
- */
-
 export function setModelVisibility(model, visible) {
     if (!model) return;
-    model.visible = visible;  // Setze Root (propagiert automatisch zu Children in Three.js)
+
+    model.visible = visible;
+
     model.traverse(child => {
-        if (child.isMesh) {
-            child.visible = visible;  // Explizit für Meshes (sichert Sync bei manuellen Änderungen)
+        if (child.isMesh || child.isObject3D) {
+            child.visible = visible;
+
             if (visible) {
-                child.layers.enable(0);  // Aktiviere Layer 0 für Raycasting
+                child.layers.enable(0);  // Render layer
+                child.layers.enable(1);  // Pick layer
             } else {
-                child.layers.disable(0);  // Deaktiviere Layer 0, damit Raycaster ignoriert
+                child.layers.disable(0);
+                child.layers.disable(1);
             }
         }
     });
-    // Auch Root-Layer setzen (für Gruppen ohne Meshes)
+
+    // Root-Layer setzen
     if (visible) {
         model.layers.enable(0);
+        model.layers.enable(1);
     } else {
         model.layers.disable(0);
+        model.layers.disable(1);
     }
 }
 
 /**
+ * Setzt Sichtbarkeit für alle Modelle einer Gruppe
+ */
+export function setGroupVisibility(group, visible) {
+    const models = state.groups[group] || [];
+    models.forEach(model => setModelVisibility(model, visible));
+    state.groupStates[group] = visible;
+}
+
+// Alias für Abwärtskompatibilität (falls irgendwo noch verwendet)
+export const setGroupVisible = setGroupVisibility;
+
+/**
  * Wechselt Sichtbarkeit eines einzelnen Modells
- * @param {THREE.Object3D} model
  */
 export function toggleModelVisibility(model) {
     if (!model) return;
-    const currentVisibility = isModelVisible(model);
-    console.log('Toggle: Current visibility?', currentVisibility);  // Debugging-Log (entferne später)
-    setModelVisibility(model, !currentVisibility);
-}
-
-// /**Prüft, ob ein Modell sichtbar ist
-export function isModelVisible(model) {
-    return !!model?.visible;  // Vereinfacht: Nutze Root-Status
+    setModelVisibility(model, !model.visible);
 }
 
 /**
- * Versteckt nur Modelle, die von unserem Loader/State verwaltet werden.
- * Das vermeidet Nebenwirkungen auf fremde Scene-Nodes.
+ * Prüft ob ein Modell sichtbar ist
+ */
+export function isModelVisible(model) {
+    return !!model?.visible;
+}
+
+// === CONVENIENCE FUNCTIONS ===
+/**
+ * Objekt vollständig ausblenden
+ */
+export function hideObject(obj) {
+    setModelVisibility(obj, false);
+}
+
+/**
+ * Objekt vollständig anzeigen
+ */
+export function showObject(obj) {
+    setModelVisibility(obj, true);
+}
+
+/**
+ * Versteckt alle verwalteten Modelle
  */
 export function hideAllManagedModels() {
     Object.keys(state.groups).forEach(group => {
-        const models = state.groups[group] || [];
-        models.forEach(model => {
-            model.visible = false;
-            model.traverse(child => {
-                if (child.isMesh) {
-                    child.visible = false;
-                    child.layers.disable(0);
-                }
-            });
-            model.layers.disable(0);
-        });
+        setGroupVisibility(group, false);
     });
     console.log('✅ Alle verwalteten Modelle versteckt');
 }
 
-/**
- * Objekt vollständig ausblenden (nicht rendern, nicht pickbar).
- */
-export function hideObject(obj) {
-    if (!obj) return;
-    obj.traverse((ch) => {
-        if (!ch.isObject3D) return;
-        ch.visible = false;        // Render off
-        ch.layers.disable(1);      // Pick off
-    });
-}
+// Alias für Abwärtskompatibilität
+export const hideAllModels = hideAllManagedModels;
 
 /**
- * Objekt vollständig anzeigen (rendern & pickbar).
- * Achtung: Falls das Objekt "geghostet" war, bitte clearObjectGhost() verwenden.
+ * Zeigt alle verwalteten Modelle
  */
-export function showObject(obj) {
-    if (!obj) return;
-    obj.traverse((ch) => {
-        if (!ch.isObject3D) return;
-        ch.visible = true;         // Render on
-        ch.layers.enable(1);       // Pick on
+export function showAllManagedModels() {
+    Object.keys(state.groups).forEach(group => {
+        setGroupVisibility(group, true);
     });
+    console.log('✅ Alle verwalteten Modelle sichtbar');
 }
 
+// === GHOST MODE ===
 /**
- * Objekt als "Ghost" anzeigen: sichtbar & transparent, aber NICHT pickbar.
- * Material wird pro Mesh geklont, Original gespeichert für Wiederherstellung.
+ * Objekt als "Ghost" anzeigen: sichtbar & transparent, aber NICHT pickbar
  */
 export function setObjectGhost(obj, opacity = 0.15) {
     if (!obj) return;
+
     obj.traverse((ch) => {
         if (!ch.isMesh) return;
 
@@ -204,44 +186,43 @@ export function setObjectGhost(obj, opacity = 0.15) {
 
         // Originale sichern (einmalig)
         if (!ch.userData.__ghostBackup) {
-            const mats = Array.isArray(ch.material) ? ch.material : [ch.material];
-            ch.userData.__ghostBackup = mats.map((m) => (m && m.clone ? m.clone() : m));
+            const mats = _asArray(ch.material);
+            ch.userData.__ghostBackup = mats.map(m => m?.clone?.() || m);
         }
 
         // Transparente Klone setzen
-        const mats = Array.isArray(ch.material) ? ch.material : [ch.material];
-        const ghostMats = mats.map((m) => {
+        const mats = _asArray(ch.material);
+        const ghostMats = mats.map(m => {
             if (!m) return m;
-            const cloned = m.clone ? m.clone() : m;
+            const cloned = m?.clone?.() || m;
             cloned.transparent = true;
             cloned.opacity = opacity;
-            cloned.depthWrite = false; // bessere Durchsicht
+            cloned.depthWrite = false;
             return cloned;
         });
-        ch.material = Array.isArray(ch.material) ? ghostMats : ghostMats[0];
 
-        // Sichtbar lassen (Render on), nur eben „ghosted“
+        _setMeshMaterials(ch, ghostMats);
         ch.visible = true;
     });
 }
 
 /**
- * Ghost-Zustand zurücksetzen: Originalmaterialien wiederherstellen + pickbar machen.
+ * Ghost-Zustand zurücksetzen
  */
 export function clearObjectGhost(obj) {
     if (!obj) return;
+
     obj.traverse((ch) => {
         if (!ch.isMesh) return;
 
         const backup = ch.userData.__ghostBackup;
         if (backup) {
-            // Originalmateriale zurück
-            ch.material = Array.isArray(ch.material) ? backup : backup[0];
+            _setMeshMaterials(ch, backup);
             delete ch.userData.__ghostBackup;
         } else {
-            // Fallback: zumindest Transparenz ausschalten
-            const mats = Array.isArray(ch.material) ? ch.material : [ch.material];
-            mats.forEach((m) => {
+            // Fallback: Transparenz ausschalten
+            const mats = _asArray(ch.material);
+            mats.forEach(m => {
                 if (!m) return;
                 m.transparent = false;
                 m.opacity = 1.0;
@@ -256,13 +237,76 @@ export function clearObjectGhost(obj) {
 }
 
 /**
- * Gruppensichtbarkeit (booleans in state.groupStates) – nutzt obige Objektfunktionen.
+ * Setzt Ghost-Modus für eine ganze Gruppe
  */
-export function setGroupVisible(group, visible) {
-    const arr = state.groups[group] || [];
-    arr.forEach((root) => {
-        if (visible) showObject(root);
-        else hideObject(root);
+export function setGroupGhost(group, opacity = 0.15) {
+    const models = state.groups[group] || [];
+    models.forEach(model => setObjectGhost(model, opacity));
+}
+
+/**
+ * Entfernt Ghost-Modus von einer Gruppe
+ */
+export function clearGroupGhost(group) {
+    const models = state.groups[group] || [];
+    models.forEach(model => clearObjectGhost(model));
+}
+
+// === GROUP STATE RESTORATION ===
+/**
+ * Stellt den gespeicherten Sichtbarkeitszustand einer Gruppe wieder her
+ */
+export function restoreGroupVisibility(groupName) {
+    if (!groupName || typeof groupName !== 'string') return;
+
+    const models = state.groups?.[groupName];
+    const saved = state.groupStates?.[groupName];
+
+    if (!models) return;
+
+    // Boolean: gesamte Gruppe
+    if (typeof saved === 'boolean') {
+        setGroupVisibility(groupName, saved);
+        return;
+    }
+
+    // Object: einzelne Modelle
+    if (saved && typeof saved === 'object') {
+        models.forEach(model => {
+            const isVisible = saved[model.name] !== false;
+            setModelVisibility(model, isVisible);
+        });
+        return;
+    }
+
+    // Default: alles sichtbar
+    setGroupVisibility(groupName, true);
+}
+
+// === UTILITY FUNCTIONS ===
+/**
+ * Zählt sichtbare Modelle in einer Gruppe
+ */
+export function countVisibleInGroup(group) {
+    const models = state.groups[group] || [];
+    return models.filter(model => isModelVisible(model)).length;
+}
+
+/**
+ * Gibt alle sichtbaren Gruppen zurück
+ */
+export function getVisibleGroups() {
+    return Object.keys(state.groups).filter(group => {
+        const models = state.groups[group] || [];
+        return models.some(model => isModelVisible(model));
     });
-    state.groupStates[group] = !!visible;
+}
+
+/**
+ * Setzt Sichtbarkeit basierend auf Meta-Daten
+ */
+export function applyDefaultVisibility(model) {
+    const meta = model?.userData?.meta;
+    const defaultVisible = meta?.model?.visible_by_default ?? true;
+    setModelVisibility(model, defaultVisible);
 }
