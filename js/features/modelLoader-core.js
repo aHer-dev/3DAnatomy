@@ -4,7 +4,7 @@
     */
    import * as THREE from 'three';
    import { createGLTFLoader /*, disposeGLTFLoader*/ } from '../loaders/gltfLoaderFactory.js';
-   import { modelPath } from '../core/path.js';
+  import { modelPath, withBase } from '../core/path.js';  // Pfad-Helper
    import { scene } from '../core/scene.js';
    import { camera } from '../core/camera.js';
    import { renderer } from '../core/renderer.js';
@@ -22,7 +22,7 @@
      showLoadingBar();
      const errors = [];
      let loaded = 0;
-     const batchSize = navigator.hardwareConcurrency ? Math.min(navigator.hardwareConcurrency * 2, 20) : 10;
+     const batchSize = 2;  // GELADENE MODELLE PRO ZYKLUS WENIGER SCHONT VRAM ETC
 
      console.time(`loadGroup-${group}`);
      for (let i = 0; i < entries.length; i += batchSize) {
@@ -55,91 +55,97 @@
      }
    }
 
-   export async function loadSingleModel(entry, group, scene, loader, camera, controls) {
-     return new Promise((resolve, reject) => {
-       const variant = entry?.model?.variants?.[entry?.model?.current];
-       if (!variant || !variant.filename || !variant.path) {
-         console.warn("⛔ Modell ohne gültige Variantenstruktur übersprungen:", entry?.id || entry);
-         resolve();
-         return;
-       }
+/**
+ * Lädt genau EIN Modell (ein Eintrag aus meta.json) und fügt es der Szene hinzu.
+ * - Robust gegen fehlende/abweichende Dateifelder
+ * - Nutzt variants[current].path, wenn vorhanden (z. B. 'teeth', 'muscles/arm')
+ * - Setzt Layer 0 (Render) + 1 (Pick) standardmäßig aktiv
+ * - ⚠️ Überspringt Einträge ohne Dateiangabe (Warnung), statt die Gruppe zu crashen
+ *
+ * @param {object} entry   - Meta-Eintrag (mind. id, classification?, model?)
+ * @param {string} group   - Gruppenname (Fallback, falls kein variants.path)
+ * @param {THREE.Scene} scene
+ * @param {GLTFLoader} loader
+ * @returns {Promise<THREE.Object3D|null>} - Das geladene Root-Objekt oder null (bei Skip/Fehler)
+ */
+export function loadSingleModel(entry, group, scene, loader /* , camera, controls */) {
+  return new Promise((resolve) => {
+    try {
+      // 1) Aktuelle Variante aus der Meta ermitteln (kann fehlen -> null)
+      const current = entry?.model?.current;
+      const variant = current ? entry?.model?.variants?.[current] : null;
 
-       const filename = variant.filename;
-       const path = variant.path;
-       const url = `models/${path}/${filename}`.replace(/\/+/g, '/');
+      // 2) Mögliche Dateifeldernamen (erste gültige nehmen)
+      const candidates = [
+        variant?.filename,
+        entry?.filename,
+        variant?.file,
+        entry?.file,
+        variant?.url,
+        entry?.url,
+        variant?.src,
+        entry?.src,
+      ].filter(v => typeof v === 'string' && v.length > 0);
 
-       if (state.groups[group]?.some(m => m.name === filename)) {
-         console.warn(`⚠️ Modell ${filename} bereits geladen – übersprungen.`);
-         resolve();
-         return;
-       }
+      // 3) Basename extrahieren, falls URL enthalten ist (…/foo/bar.glb -> bar.glb)
+      const pickBasename = (s) => {
+        try { return s.split('/').pop(); } catch { return s; }
+      };
+      const filename = candidates.length ? pickBasename(candidates[0]) : null;
 
-      // console.log('📦 Lade Modell:', { id: entry.id, filename, group, path, url });
+      // 4) Falls KEIN Dateiname -> nur warnen und überspringen (kein Reject, kein Crash)
+      if (!filename) {
+        console.warn(`⚠️ loadSingleModel: Eintrag "${entry?.id ?? 'unbekannt'}" ohne filename/url – wird übersprungen.`);
+        resolve(null);
+        return;
+      }
 
-       loader.load(
-         url,
-         gltf => {
-           const model = gltf.scene;
-           if (!model) {
-             reject(new Error(`Kein scene-Objekt in GLTF: ${filename}`));
-             return;
-           }
+      // 5) URL bauen:
+      //    - Wenn variant.path existiert, nutzen wir das (z. B. 'teeth', 'muscles/arm')
+      //    - Sonst dein Standard: models/<group>/<filename>
+      const variantPath = (variant?.path ?? '').toString().replace(/^\/+|\/+$/g, '');
+      const effectiveGroup = (group ?? entry?.classification?.group ?? 'other').toString();
+      const url = variantPath
+        ? withBase(`models/${variantPath}/${filename}`)  // z. B. models/teeth/FJ123.glb
+        : modelPath(filename, effectiveGroup);          // z. B. models/bones/FJ123.glb
 
-           model.traverse(child => {
-             if (child.isMesh) {
-               child.material = new THREE.MeshStandardMaterial({
-                 color: state.colors[group] || entry.model.default_color || state.defaultSettings.defaultColor,
-                 transparent: true,
-                 opacity: state.transparency ?? 1,
-               });
-             }
-           });
+      // 6) Laden
+      loader.load(
+        url,
+        (gltf) => {
+          const model = gltf?.scene;
+          if (!model) {
+            console.warn(`⚠️ loadSingleModel: Kein scene-Objekt in GLTF: ${filename} – skip`);
+            resolve(null);
+            return;
+          }
 
-           if (Array.isArray(entry.model.rotation)) {
-             model.rotation.set(...entry.model.rotation);
-           }
-           if (Array.isArray(entry.model.scale)) {
-             model.scale.set(...entry.model.scale);
-           } else {
-             model.scale.set(1, 1, 1);
-           }
+          // 7) Standard-Layer aktivieren: Render (0) + Pick (1)
+          model.traverse((ch) => {
+            if (!ch.isObject3D) return;
+            ch.layers.enable(0); // Render
+            ch.layers.enable(1); // Pick
+          });
 
-           model.name = filename;
-           model.userData = { meta: entry };
-           state.groups[group] = state.groups[group] || [];
-           state.groups[group].push(model);
+          // 8) Optionale Benennung (hilft beim Debuggen/Info-Panel)
+          model.name = entry?.id || filename;
 
-           
+          // 9) Zur Szene hinzufügen
+          scene.add(model);
 
-           model.traverse(child => {
-             if (child.isMesh || child.type === 'Group') {
-               state.modelNames.set(child, entry.labels?.en || filename);
-             }
-           });
-
-
-           state.groupStates[group] = state.groupStates[group] || {};
-           state.groupStates[group][filename] = true;
-
-           scene.add(model);
-
-           if (!window.process || !window.process.env || window.process.env.NODE_ENV !== 'production') {
-             const box = new THREE.Box3().setFromObject(model);
-             const size = box.getSize(new THREE.Vector3());
-             const center = box.getCenter(new THREE.Vector3());
-             //console.log("📐 Modell:", entry.id || filename, "– Größe:", size, "Zentrum:", center);
-           }
-
-           resolve();
-         },
-         undefined,
-         error => {
-           console.warn(`❌ Fehler beim Laden von ${url}:`, error);
-           reject(error);
-         },
-         { signal: AbortSignal.timeout(10000) }
-       );
-     });
+          resolve(model); // ✅ erfolgreich geladen
+        },
+        undefined, // onProgress (optional)
+        (err) => {
+          console.warn(`⚠️ loadSingleModel: Ladefehler bei "${entry?.id ?? filename}" → wird übersprungen:`, err);
+          resolve(null); // ⚠️ Fehler beim Einzelmodell: nicht crashen, sondern skip
+        }
+      );
+    } catch (e) {
+      console.warn(`⚠️ loadSingleModel: Unerwarteter Fehler bei "${entry?.id ?? 'unbekannt'}" – skip:`, e);
+      resolve(null);
+    }
+  });
    }
 
    // --- Helper: komplette Gruppe per Namen laden -------------------------------

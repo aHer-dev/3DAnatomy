@@ -1,8 +1,7 @@
 // js/bootstrap/startApp.js
 // 🚀 Orchestriert den vollständigen Start der Anwendung
 
-// --- Externe Abhängigkeiten ---
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
 
 // --- Core-System ---
 import { scene } from '../core/scene.js';

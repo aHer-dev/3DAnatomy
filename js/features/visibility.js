@@ -20,6 +20,7 @@ export function setGroupVisibility(group, visible) {
             model.visible = visible;
         }
     });
+
     state.groupStates[group] = visible;
 }
 
