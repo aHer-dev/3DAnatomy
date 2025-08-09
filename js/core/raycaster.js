@@ -4,6 +4,9 @@
 
 import * as THREE from 'three';
 
+
+
+
 export const raycaster = new THREE.Raycaster();
 // Wir picken ausschließlich auf Layer 1 (Layer 0 = Render).
 raycaster.layers.set(1);
