@@ -54,11 +54,9 @@ export function texturePath(filename) {
  * @returns {string}
  */
 export function dracoPath(file = '') {
-  if (file) {
-    return withBase(`draco/${file}`);
-  }
+  const base = withBase('draco');
   // DRACOLoader erwartet einen Pfad mit trailing slash
-  return withBase('draco') + '/';
+  return file ? `${base}/${file}` : `${base}/`;
 }
 
 /**
