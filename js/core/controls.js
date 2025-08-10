@@ -9,8 +9,9 @@ import { hideInfoPanel } from '../interaction/infoPanel.js';
 
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.minDistance = 1;
-controls.maxDistance = 2000;
+controls.minDistance = 0.001;
+controls.maxDistance = 3;
+controls.zoomToCursor = true; // wirkt natürlicher
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.screenSpacePanning = true;
