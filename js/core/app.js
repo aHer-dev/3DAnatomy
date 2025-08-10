@@ -1,32 +1,30 @@
 // ============================================
-// 1. CORE APP CONTROLLER - core/app.js
+// FIXED: app.js - Mit korrektem Model Loading
 // ============================================
 import * as THREE from 'three';
 import { scene } from './scene.js';
 import { camera } from './camera.js';
 import { renderer } from './renderer.js';
-import { controls } from './controls.js';
+import { initControls, controls } from './controls.js';
 import { StateManager } from '../store/stateManager.js';
 import { VisibilityManager } from '../features/visibilityManager.js';
 import { ModelLoader } from '../modelLoader/modelLoaderManager.js';
 import { InteractionManager } from '../interaction/interactionManager.js';
 import { ErrorManager } from './errorManager.js';
 import { debug } from './debug.js';
-import { setAppInstance } from '../features/groups.js'; 
+import { setAppInstance } from '../features/groups.js';
 
 class App {
     constructor() {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
-        this.controls = controls;
+        this.controls = null; // Wird in init() gesetzt
 
         // Manager mit korrekten Dependencies
         this.managers = {};
         this.managers.state = new StateManager();
         this.managers.error = new ErrorManager();
-
-        // ✅ Mit Dependencies injizieren:
         this.managers.visibility = new VisibilityManager(this.managers.state);
         this.managers.loader = new ModelLoader(this.managers.state, this.managers.visibility);
         this.managers.interaction = new InteractionManager(
@@ -42,43 +40,117 @@ class App {
         try {
             debug.log('app', '🚀 Initialisiere App...');
 
-            // Meta-Daten laden und State initialisieren
+            // 1) State vorbereiten
             await this.managers.state.initialize();
 
-            // App-Instanz setzen
+            // 2) App-Instanz registrieren
             setAppInstance(this);
 
-            // Initiale Gruppen laden (bones + teeth)
+            // WICHTIG: App global verfügbar machen für Debug
+            if (typeof window !== 'undefined') {
+                window.__app = this;
+                console.log('🐛 App-Instanz verfügbar unter window.__app');
+            }
+
+            // 3) Controls erzeugen
+            initControls();
+            this.controls = controls;
+            this.controls.target.set(0, 1.0, 0);
+            this.controls.update();
+
+            // 4) Initiale Gruppen laden
             await this.loadInitialGroups();
 
-            // Event-Handler einrichten
+            // 5) Event Handler
             this.setupEventHandlers();
 
-            // UI initialisieren - ✅ Manager übergeben!
+            // 6) UI initialisieren
             await this.initializeUI();
 
-            // Animation starten
+            // 7) Animation starten
             this.animate();
 
+            // 8) Einmal rendern für initialen Frame
+            this.renderer.render(this.scene, this.camera);
+
             this.isInitialized = true;
+
+            // Debug: Zeige was in der Szene ist
+            let meshCount = 0;
+            this.scene.traverse(obj => {
+                if (obj.isMesh) meshCount++;
+            });
+            console.log(`🏠 Initiale Gruppen geladen. Meshes in Szene: ${meshCount}`);
+
             debug.log('app', '✅ App erfolgreich initialisiert');
 
         } catch (error) {
             this.managers.error.handleCritical('App-Initialisierung fehlgeschlagen', error);
+            this.isInitialized = false;
+            throw error;
         }
     }
 
     async loadInitialGroups() {
         const initialGroups = ['bones', 'teeth'];
+        console.log('📦 Lade initiale Gruppen:', initialGroups);
 
         for (const group of initialGroups) {
             try {
-                await this.managers.loader.loadGroup(group);
-                this.managers.visibility.setGroupState(group, 'visible');
-                this.managers.state.setGroupLoaded(group, true);
+                console.log(`  → Lade Gruppe "${group}"...`);
+
+                // Modelle laden
+                const models = await this.managers.loader.loadGroup(group);
+
+                if (models && models.length > 0) {
+                    console.log(`  ✓ ${models.length} Modelle aus "${group}" geladen`);
+
+                    // Gruppe als sichtbar markieren
+                    this.managers.visibility.setGroupState(group, 'visible');
+                    this.managers.state.setGroupLoaded(group, true);
+                } else {
+                    console.warn(`  ⚠ Keine Modelle in Gruppe "${group}" gefunden`);
+                }
+
             } catch (error) {
+                console.error(`  ✗ Fehler beim Laden von "${group}":`, error);
                 this.managers.error.handleError(`Fehler beim Laden von Gruppe "${group}"`, error);
             }
+        }
+
+        // Kamera auf geladene Modelle ausrichten
+        this.fitCameraToContent();
+    }
+
+    fitCameraToContent() {
+        const box = new THREE.Box3();
+        let hasContent = false;
+
+        this.scene.traverse(obj => {
+            if (obj.isMesh && obj.visible) {
+                box.expandByObject(obj);
+                hasContent = true;
+            }
+        });
+
+        if (hasContent && !box.isEmpty()) {
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+
+            // Kamera positionieren
+            const distance = maxDim * 2;
+            this.camera.position.set(
+                center.x,
+                center.y + maxDim * 0.5,
+                center.z + distance
+            );
+
+            // Controls-Ziel setzen
+            this.controls.target.copy(center);
+            this.controls.update();
+
+            console.log('📷 Kamera auf Inhalt ausgerichtet');
         }
     }
 
@@ -122,19 +194,55 @@ class App {
 
             switch (e.key.toLowerCase()) {
                 case 'g':
-                    this.managers.visibility.toggleGhost(selected);
+                    this.managers.visibility.toggleGhost(selected.root);
                     break;
                 case 'h':
-                    this.managers.visibility.setState(selected, 'hidden');
+                    this.managers.visibility.setState(selected.root, 'hidden');
                     break;
                 case 's':
-                    this.managers.visibility.setState(selected, 'visible');
+                    this.managers.visibility.setState(selected.root, 'visible');
+                    break;
+                case 'd':
+                    // Debug: Zeige Szenen-Info
+                    if (e.shiftKey) {
+                        this.debugSceneInfo();
+                    }
                     break;
             }
         };
 
         window.addEventListener('keydown', hotkeyHandler);
         this.cleanupFunctions.push(() => window.removeEventListener('keydown', hotkeyHandler));
+    }
+
+    debugSceneInfo() {
+        console.group('🔍 Scene Debug Info');
+
+        let meshCount = 0;
+        let visibleCount = 0;
+        const groups = {};
+
+        this.scene.traverse(obj => {
+            if (obj.isMesh) {
+                meshCount++;
+                if (obj.visible) visibleCount++;
+
+                const entry = obj.parent?.userData?.entry;
+                if (entry) {
+                    const group = entry.classification?.group || 'unknown';
+                    groups[group] = (groups[group] || 0) + 1;
+                }
+            }
+        });
+
+        console.log('Total Meshes:', meshCount);
+        console.log('Visible Meshes:', visibleCount);
+        console.log('Pickable Meshes:', this.managers.state._state.pickableMeshes.size);
+        console.log('Groups:', groups);
+        console.log('Camera Position:', this.camera.position.toArray());
+        console.log('Controls Target:', this.controls.target.toArray());
+
+        console.groupEnd();
     }
 
     isTypingTarget(element) {
@@ -147,7 +255,7 @@ class App {
 
     async initializeUI() {
         const { setupUI } = await import('../ui/ui-init.js');
-        setupUI(this.managers);  // ✅ Manager übergeben!
+        setupUI(this.managers);
     }
 
     animate() {
@@ -155,7 +263,13 @@ class App {
             if (!this.isInitialized) return;
 
             requestAnimationFrame(animateFrame);
-            this.controls.update();
+
+            // Update controls
+            if (this.controls) {
+                this.controls.update();
+            }
+
+            // Render scene
             this.renderer.render(this.scene, this.camera);
         };
 
@@ -171,14 +285,13 @@ class App {
 
             // State zurücksetzen
             this.managers.state.reset();
+            await this.managers.state.initialize();
 
             // Initiale Gruppen neu laden
             await this.loadInitialGroups();
 
             // Kamera zurücksetzen
-            if (this.controls.reset) {
-                this.controls.reset();
-            }
+            this.fitCameraToContent();
 
             debug.log('app', '✅ Reset abgeschlossen');
 
@@ -207,6 +320,11 @@ class App {
                 manager.dispose();
             }
         });
+
+        // Global reference entfernen
+        if (window.__app === this) {
+            delete window.__app;
+        }
 
         debug.log('app', '✅ Cleanup abgeschlossen');
     }

@@ -1,4 +1,4 @@
-/ 6. ERROR MANAGER - core/errorManager.js
+//6. ERROR MANAGER - core/errorManager.js
 // ============================================
 class ErrorManager {
     constructor() {

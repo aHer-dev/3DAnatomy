@@ -6,14 +6,17 @@
     width: 100vw;
     height: 100vh;
     z-index: 0;
-    overflow: hidden;
+    /* Ganz hinten */
+    background: #020a1d;
+    /* Fallback-Hintergrund */
 }
 
-/* Canvas soll nur Hintergrund sein – kein z-index nötig */
-canvas {
-    position: absolute; /* Wenn weg dann grau BEHALTEN IST ESSENTIELL KONFLIKT MIT OVERLAY*/
+/* Three.js Canvas */
+#canvas-container canvas {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
-
+    position: absolute;
+    top: 0;
+    left: 0;
 }

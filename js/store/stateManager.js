@@ -1,5 +1,5 @@
 // ============================================
-// 2. STATE MANAGER - store/stateManager.js
+// FIXED: StateManager - store/stateManager.js
 // ============================================
 import { dataPath } from '../core/path.js';
 import { debug } from '../core/debug.js';
@@ -12,7 +12,7 @@ class StateManager {
   reset() {
     this._state = {
       // Meta-Daten
-      meta: null,
+      meta: [],  // WICHTIG: Als Array initialisieren, nicht null
       groupedMeta: Object.create(null),
       metaById: new Map(),
       metaByFile: new Map(),
@@ -33,7 +33,7 @@ class StateManager {
       // Default-Einstellungen
       defaultSettings: {
         modelVariant: 'draco',
-        background: 0x111111,
+        background: 0x020a1d,  // Schwarzer Hintergrund wie in scene.js
         transparency: 1,
         lighting: 1,
         loadingScreenColor: '#110facff',
@@ -72,18 +72,34 @@ class StateManager {
 
     try {
       const url = dataPath('meta.json');
+      console.log('🔍 Lade Meta von URL:', url);
+
       const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      this._state.meta = await response.json();
+      const data = await response.json();
+
+      // Validierung
+      if (!Array.isArray(data)) {
+        throw new Error('Meta-Daten sind kein Array');
+      }
+
+      this._state.meta = data;
+      console.log(`✅ ${this._state.meta.length} Meta-Einträge geladen`);
+
+      // WICHTIG: Indices aufbauen
       this.buildIndices();
 
-      debug.log('state', `✅ ${this._state.meta.length} Meta-Einträge geladen`);
+      debug.log('state', `✅ ${this._state.meta.length} Meta-Einträge geladen und indexiert`);
 
     } catch (error) {
+      console.error('❌ Meta-Laden fehlgeschlagen:', error);
+      // Fallback auf leere Daten
+      this._state.meta = [];
+      this.buildIndices();
       throw new Error(`Meta-Daten konnten nicht geladen werden: ${error.message}`);
     }
   }
@@ -91,24 +107,34 @@ class StateManager {
   buildIndices() {
     const meta = this._state.meta;
 
-    // Gruppen-Index
-    this._state.groupedMeta = meta.reduce((acc, entry) => {
-      const group = entry?.classification?.group || 'other';
-      (acc[group] ||= []).push(entry);
-      return acc;
-    }, {});
+    if (!meta || !meta.length) {
+      console.warn('⚠️ Keine Meta-Daten zum Indexieren');
+      return;
+    }
 
-    // ID-Index
+    // Gruppen-Index aufbauen
+    this._state.groupedMeta = {};
+
+    meta.forEach(entry => {
+      const group = entry?.classification?.group || 'other';
+
+      if (!this._state.groupedMeta[group]) {
+        this._state.groupedMeta[group] = [];
+      }
+      this._state.groupedMeta[group].push(entry);
+    });
+
+    // ID-Index aufbauen
     this._state.metaById.clear();
     this._state.metaByFile.clear();
     this._state.metaByEntryUid.clear();
 
-    const basename = (s) => s.split('/').pop();
-    const stripExt = (s) => s.replace(/\.[^/.]+$/, '');
+    const basename = (s) => s ? s.split('/').pop() : '';
+    const stripExt = (s) => s ? s.replace(/\.[^/.]+$/, '') : '';
 
     meta.forEach(entry => {
       // ID-Index
-      if (entry.id) {
+      if (entry?.id) {
         this._state.metaById.set(entry.id, entry);
       }
 
@@ -119,7 +145,7 @@ class StateManager {
       }
 
       // Entry-UID
-      if (entry.entry_uid) {
+      if (entry?.entry_uid) {
         this._state.metaByEntryUid.set(entry.entry_uid, entry);
       }
 
@@ -131,22 +157,48 @@ class StateManager {
         const file = basename(variant.filename);
         const base = stripExt(file);
         this._state.metaByFile.set(file, entry);
-        this._state.metaByFile.set(base, entry);
+        if (base !== file) {
+          this._state.metaByFile.set(base, entry);
+        }
+      }
+
+      // Auch model.asset.file indexieren falls vorhanden
+      if (entry?.model?.asset?.file) {
+        const file = basename(entry.model.asset.file);
+        const base = stripExt(file);
+        this._state.metaByFile.set(file, entry);
+        if (base !== file) {
+          this._state.metaByFile.set(base, entry);
+        }
       }
     });
 
     // Gruppen initialisieren
-    Object.keys(this._state.groupedMeta).forEach(group => {
-      this._state.groups[group] ||= [];
-      this._state.groupStates[group] ||= false;
+    const groups = Object.keys(this._state.groupedMeta);
 
+    groups.forEach(group => {
+      // Leere Arrays für Modelle
+      this._state.groups[group] = this._state.groups[group] || [];
+
+      // Sichtbarkeitszustände
+      if (this._state.groupStates[group] === undefined) {
+        this._state.groupStates[group] = false;
+      }
+
+      // Farben
       if (!this._state.colors[group]) {
         this._state.colors[group] = this._state.defaultSettings.colors[group] ||
           this._state.defaultSettings.defaultColor;
       }
     });
 
-    debug.log('state', `📊 Indizes erstellt: ${this._state.metaById.size} IDs, ${this._state.metaByFile.size} Dateien`);
+    console.log('📊 Indices erstellt:');
+    console.log('  - Gruppen:', groups);
+    console.log('  - IDs:', this._state.metaById.size);
+    console.log('  - Files:', this._state.metaByFile.size);
+    console.log('  - UIDs:', this._state.metaByEntryUid.size);
+
+    debug.log('state', `📊 Indizes erstellt: ${groups.length} Gruppen, ${this._state.metaById.size} IDs`);
   }
 
   // Sichere Accessor-Methoden
@@ -155,20 +207,26 @@ class StateManager {
   }
 
   getMetaById(id) {
+    if (!id) return null;
     return this._state.metaById.get(id) || null;
   }
 
   getMetaByFile(filename) {
+    if (!filename) return null;
+
     const basename = (s) => s.split('/').pop();
     const stripExt = (s) => s.replace(/\.[^/.]+$/, '');
 
     const file = basename(filename);
     const base = stripExt(file);
 
-    return this._state.metaByFile.get(file) || this._state.metaByFile.get(base) || null;
+    return this._state.metaByFile.get(file) ||
+      this._state.metaByFile.get(base) ||
+      null;
   }
 
   getMetaByEntryUid(uid) {
+    if (!uid) return null;
     return this._state.metaByEntryUid.get(uid) || null;
   }
 
@@ -187,7 +245,7 @@ class StateManager {
   addModelToGroup(model, group) {
     if (!model) return false;
 
-    this._state.groups[group] ||= [];
+    this._state.groups[group] = this._state.groups[group] || [];
 
     if (!this._state.groups[group].includes(model)) {
       this._state.groups[group].push(model);
@@ -287,22 +345,58 @@ class StateManager {
   }
 }
 
-// store/stateManager.js - Am Ende hinzufügen:
+// Singleton-Instanz
 export const stateManager = new StateManager();
 
-// Für Backward Compatibility (temporär):
+// Für Backward Compatibility - erweiterte Proxy-Objekte
 export const state = {
+  // Direkte Properties
+  get meta() { return stateManager._state.meta; },
+  set meta(val) { stateManager._state.meta = val; },
+
   get groups() { return stateManager._state.groups; },
+  set groups(val) { stateManager._state.groups = val; },
+
   get groupedMeta() { return stateManager._state.groupedMeta; },
+  set groupedMeta(val) { stateManager._state.groupedMeta = val; },
+
+  get groupStates() { return stateManager._state.groupStates; },
+  set groupStates(val) { stateManager._state.groupStates = val; },
+
   get pickableMeshes() { return stateManager._state.pickableMeshes; },
+  set pickableMeshes(val) { stateManager._state.pickableMeshes = val; },
+
   get selected() { return stateManager._state.selected; },
   set selected(val) { stateManager.setSelected(val); },
+
+  get currentlySelected() { return stateManager._state.currentlySelected; },
+  set currentlySelected(val) { stateManager._state.currentlySelected = val; },
+
   get collection() { return stateManager._state.collection; },
   set collection(val) { stateManager._state.collection = val; },
+
   get colors() { return stateManager._state.colors; },
+  set colors(val) { stateManager._state.colors = val; },
+
   get defaultSettings() { return stateManager._state.defaultSettings; },
+  set defaultSettings(val) { stateManager._state.defaultSettings = val; },
+
   get availableGroups() { return stateManager.getAvailableGroups(); },
-  // ... weitere Proxies nach Bedarf
+
+  // Index-Maps
+  get metaById() { return stateManager._state.metaById; },
+  get metaByFile() { return stateManager._state.metaByFile; },
+  get metaByEntryUid() { return stateManager._state.metaByEntryUid; },
+
+  // Zusätzliche Properties für UI
+  get groupVisible() { return stateManager._state.groupStates; },
+  set groupVisible(val) { stateManager._state.groupStates = val; },
+
+  get setStructures() { return stateManager._state.collection; },
+  set setStructures(val) { stateManager._state.collection = val; },
+
+  get loadingScreenColor() { return stateManager._state.defaultSettings.loadingScreenColor; },
+  set loadingScreenColor(val) { stateManager._state.defaultSettings.loadingScreenColor = val; }
 };
 
 export { StateManager };

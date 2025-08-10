@@ -1,6 +1,7 @@
 // js/ui/submenu/createModelCheckbox.js
 import { scene } from '../../core/scene.js';
-import { loadModels, removeModelByFilename, updateGroupVisibility } from '../../modelLoader/index.js';
+import { setGroupVisibility } from '../../modelLoader/index.js';
+import { getApp } from '../../bootstrap/startApp.js';
 
 /**
  * Erstellt eine Checkbox für ein einzelnes anatomisches Modell.
@@ -21,12 +22,27 @@ export function createModelCheckbox(entry, group) {
 
     cb.addEventListener('change', async () => {
         try {
+            const app = getApp();
+            if (!app) throw new Error('App ist noch nicht initialisiert');
+
             if (cb.checked) {
-                await loadModels([entry], group, false, scene); // nur dieses Modell laden
+                // Einzelnes Modell laden und im State registrieren
+                const model = await app.managers.loader.loadEntry(entry);
+                app.managers.state.addModelToGroup(model, group);
+                app.managers.visibility.setState(model, 'visible');
             } else {
-                removeModelByFilename(entry.filename, group);   // nur dieses Modell entfernen
+                // Einzelnes Modell wieder entfernen
+                const models = app.managers.state.getGroupModels(group);
+                const nameA = entry?.id || entry?.model?.root_name || entry?.model?.asset?.file;
+                const toRemove = models.find(m => m.name === nameA);
+                if (toRemove) {
+                    app.managers.loader.disposeModel(toRemove);
+                    app.managers.state.removeModelFromGroup(toRemove, group);
+                    scene.remove(toRemove);
+                }
             }
-            updateGroupVisibility(group); // Sichtbarkeit neu berechnen
+
+            setGroupVisibility(group); // Sichtbarkeit neu berechnen
         } catch (err) {
             console.error(`❌ Fehler bei "${entry.label}":`, err);
         }

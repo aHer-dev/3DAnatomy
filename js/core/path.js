@@ -16,6 +16,7 @@ export function withBase(path) {
   return BASE ? `${BASE}/${cleanPath}` : cleanPath;
 }
 
+
 /**
  * Erstellt Pfad zu einer Datei im data-Verzeichnis
  * @param {string} file
@@ -23,6 +24,12 @@ export function withBase(path) {
  */
 export function dataPath(file) {
   return withBase(`data/${file}`);
+}
+
+
+export function withTrailingSlash(p) {
+  if (!p) return './';
+  return p.endsWith('/') ? p : p + '/';
 }
 
 /**

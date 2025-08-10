@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,26 +8,26 @@
 
   <!-- Import-Map für lokale Three JSM-Module -->
   <script type="importmap">
-      {
-        "imports": {
-          "three": "./node_modules/three/build/three.module.js",
-          "three/addons/": "./node_modules/three/examples/jsm/"
-        }
-      }
-      </script>
+  {
+    "imports": {
+      "three": "./node_modules/three/build/three.module.js"
+    }
+  }
+  </script>
 
   <!-- Stylesheets -->
-<link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
   <!-- Container für Renderer -->
   <div id="canvas-container">
-  <canvas id="canvas" aria-label="3D Anatomie-Ansicht"></canvas>
-</div>
+    <canvas id="canvas" aria-label="3D Anatomie-Ansicht"></canvas>
+  </div>
 
-    <div id="submenu-container" class="dropdown-menu" aria-label="Submenü"></div>
-    <div id="room-dropdown-content" class="dropdown-menu" aria-label="Raumoptionen"></div>
-    <button id="menu-icon" aria-label="Menü öffnen">☰</button>
+  <div id="submenu-container" class="dropdown-menu" aria-label="Submenü"></div>
+  <div id="room-dropdown-content" class="dropdown-menu" aria-label="Raumoptionen"></div>
+  <button id="menu-icon" aria-label="Menü öffnen">☰</button>
 
 
   <!-- Ladeanzeige -->
@@ -155,12 +156,7 @@
     <!-- Reset-Knopf -->
     <button id="btn-reset" aria-label="Ansicht zurücksetzen">Reset</button>
 
-    <!-- Submenü und Dropdown-Content -->
-    <div id="submenu-container" class="dropdown-menu" aria-label="Submenü"></div>
-    <div id="room-dropdown-content" class="dropdown-menu" aria-label="Raumoptionen"></div>
-    <button id="menu-icon" aria-label="Menü öffnen">☰</button>
-  </div>
-
+    
   <!-- Info-Panel und Tooltip -->
   <div id="info-panel" class="hidden" role="dialog" aria-labelledby="info-header">
     <header id="info-header"></header>
@@ -169,12 +165,36 @@
   <div id="tooltip" role="tooltip" aria-hidden="true"></div>
 
   <!-- Footer & Lizenz -->
-<footer id="footer" role="contentinfo">
-  <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">© CC BY-SA</button>
-  <div id="license-info" class="hidden" aria-hidden="true"></div>
-</footer>
+  <footer id="footer" role="contentinfo">
+    <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">© CC BY-SA</button>
+    <div id="license-info" class="hidden" aria-hidden="true"></div>
+  </footer>
 
-  <!-- Script -->
-  <script type="module" src="app.js"></script>
+  <!-- ✅ Neues Bootstrap-Script anstatt app.js -->
+  <script type="module">
+    import { startApp } from './js/bootstrap/startApp.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await startApp();
+        console.log('✅ App gestartet');
+      } catch (error) {
+        console.error('❌ Startup fehlgeschlagen:', error);
+
+        // Optional: Benutzer informieren
+        const loadingScreen = document.getElementById('initial-loading-screen');
+        if (loadingScreen) {
+          loadingScreen.innerHTML = `
+                    <div style="color: red; text-align: center; padding: 20px;">
+                        <h2>Fehler beim Laden</h2>
+                        <p>Die Anwendung konnte nicht gestartet werden.</p>
+                        <p>Bitte laden Sie die Seite neu.</p>
+                    </div>
+                `;
+        }
+      }
+    });
+  </script>
 </body>
+
 </html>

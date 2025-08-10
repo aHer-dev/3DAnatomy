@@ -1,81 +1,67 @@
-// ui-search.js
-// 🔍 Sucht anatomische Strukturen anhand ihrer Labels oder FMA-ID und lädt sie in die Szene.
+// js/ui/ui-search.js (an neue App-Struktur angepasst)
+export function setupSearchUI(managers) {
+  const searchBar = document.getElementById('search-bar');
+  const searchResults = document.getElementById('search-results');
+  if (!managers || !searchBar || !searchResults) return;
 
-// In js/ui/ui-search.js
-import * as THREE from 'three';
-import { scene } from '../core/scene.js'; // Ersetzt init.js
-import { controls } from '../core/controls.js'; // Falls für Interaktionen nötig
+  // getMeta kann sync oder async sein – beides unterstützen
+  const getAllMeta = async () => {
+    try {
+      const res = managers.state?.getMeta?.();
+      return (res && typeof res.then === 'function') ? await res : (res || []);
+    } catch {
+      return [];
+    }
+  };
 
-// ... Rest des Code
-import { state, stateManager } from '../store/stateManager.js';                  // 🔁 Globaler App-Zustand              
-import { getMeta } from '../utils/index.js';                     // 📄 Lädt Metadaten der Modelle
-import { showInfoPanel } from '../interaction/infoPanel.js';
+  searchBar.addEventListener('input', async () => {
+    const q = (searchBar.value || '').trim().toLowerCase();
+    searchResults.innerHTML = '';
+    searchResults.style.display = 'none';
+    if (!q) return;
 
-import { loadModels } from '../modelLoader/index.js';      // 🔄 Funktion zum Laden einzelner Modelle
+    const meta = await getAllMeta();
 
-/**
- * Initialisiert die Suchleiste und verbindet sie mit einem Ergebnis-Popup.
- * Bei Auswahl wird das Modell geladen, hervorgehoben und das Info-Panel geöffnet.
- */
-
-export const stateManager = new StateManager();
-export const state = stateManager._state;  // Backward compatibility
-
-export function setupSearchUI() {
-  const searchBar = document.getElementById('search-bar');           // 🔍 Texteingabe für Suche
-  const searchResults = document.getElementById('search-results');   // 📋 Ergebnisliste unter der Suche
-
-  // ⌨️ Reaktion auf Eingabe in der Suchleiste
-  searchBar?.addEventListener('input', async () => {
-    const searchTerm = searchBar.value.toLowerCase().trim();         // Benutzereingabe, kleingeschrieben + getrimmt
-    searchResults.innerHTML = '';                                    // Ergebnisliste leeren
-    searchResults.style.display = 'none';                            // Ergebnisliste zunächst ausblenden
-
-    if (searchTerm === '') return;                                   // 🛑 Kein Suchbegriff = keine Suche
-
-    const meta = await getMeta();                                    // 🔍 Alle verfügbaren Metadaten laden
-
-    // 📎 Filtere alle passenden Einträge nach Label oder FMA-ID
-    const results = meta.filter(entry =>
-      entry.label.toLowerCase().includes(searchTerm) ||
-      entry.fma.toLowerCase().includes(searchTerm)
-    );
-
-    // 📦 Für jeden Treffer ein visuelles Listenelement erzeugen
-    results.forEach(result => {
-      const item = document.createElement('div');
-      item.className = 'search-item';
-      item.textContent = `${result.label} (${result.group})`;      // z. B. „Biceps brachii (muscles)“
-      item.dataset.entry = JSON.stringify(result);                 // Speichere vollständigen Eintrag für später
-
-      // 📌 Klick auf ein Suchergebnis: lade, zeige und fokussiere Modell
-      item.addEventListener('click', async () => {
-        const entry = JSON.parse(item.dataset.entry);
-
-        // 🧲 Modell in Szene laden
-        await loadModels([entry], entry.group, true, scene, loader);
-
-        // 🟢 Modellobjekt im geladenen Zustand finden
-        const model = state.groups[entry.group]?.find(
-          m => state.modelNames.get(m) === entry.label
-        );
-
-        if (model) {
-          highlightObject(model);             // ✨ Modell hervorheben
-          showInfoPanel(entry, model);        // 🧾 Info-Fenster öffnen
-        }
-
-        // 🧹 UI zurücksetzen
-        searchResults.style.display = 'none';
-        searchBar.value = '';
-      });
-
-      // 📋 Ergebnis zur Liste hinzufügen
-      searchResults.appendChild(item);
+    // Suche über neues Schema: labels.en + info.links.fma
+    const results = meta.filter(e => {
+      const label = (e?.labels?.en || '').toLowerCase();
+      const fma = (e?.info?.links?.fma || '').toLowerCase();
+      return label.includes(q) || fma.includes(q);
     });
 
-    // 📤 Ergebnisliste nur anzeigen, wenn es Treffer gibt
-    if (results.length > 0) {
+    for (const entry of results) {
+      const item = document.createElement('div');
+      item.className = 'search-item';
+      const group = entry?.classification?.group || 'other';
+      item.textContent = `${entry?.labels?.en || entry.id || 'Unknown'} (${group})`;
+
+      item.addEventListener('click', async () => {
+        try {
+          // Einzelnes Modell gezielt laden (kein Gruppenvoll-Load)
+          const model = await managers.loader?.loadEntry(entry);
+
+          if (model && managers.visibility?.setState) {
+            managers.visibility.setState(model, 'visible');
+          }
+          if (model && managers.state?.setSelected) {
+            managers.state.setSelected(model, entry);
+          }
+          if (managers.interaction?.showInfoPanel) {
+            managers.interaction.showInfoPanel(entry, model);
+          }
+
+          // UI zurücksetzen
+          searchResults.style.display = 'none';
+          searchBar.value = '';
+        } catch (err) {
+          console.error('Suche: Laden/Anzeige fehlgeschlagen', err);
+        }
+      });
+
+      searchResults.appendChild(item);
+    }
+
+    if (results.length) {
       searchResults.style.display = 'block';
     }
   });

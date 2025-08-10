@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
+    z-index: 9999;
     /* Über allem */
     opacity: 1;
     transition: opacity 0.5s ease;

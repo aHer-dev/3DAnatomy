@@ -1,4 +1,4 @@
-/ 4. RAYCASTING - interaction/raycastOnClick.js
+// 4. RAYCASTING - interaction/raycastOnClick.js
 // ============================================
 import { pickAt } from '../core/raycaster.js';
 import { events } from '../core/events.js';

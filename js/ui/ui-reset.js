@@ -4,20 +4,18 @@
 // Bones + Teeth sauber neu laden, Sichtbarkeit & Farben syncen, Info-Panel schließen,
 // Kamera auf Inhalt fitten.
 
-import * as THREE from 'three'                 // konsistent zu deinem Projekt
+import * as THREE from 'three';
 import { state } from '../store/stateManager.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
 import { renderer } from '../core/renderer.js';
-
 import { unloadWholeGroup, loadGroup as loadGroupByName } from '../features/groups.js';
-import { setGroupVisibility } from '../features/visibilityManager.js';
-
-import { resetGroupColor, updateModelColors } from '../modelLoader/color.js';   // Farben-API bei dir
-import { hideInfoPanel } from '../interaction/infoPanel.js';                    // Info-Panel schließen
-import { clearHighlight } from '../interaction/raycastOnClick.js';             // optionales Highlight entfernen
-import { fitCameraToScene } from '../core/cameraUtils.js';                      // Kamera-Fit
+import { setGroupVisibility } from '../features/groups.js';
+import { resetGroupColor, updateModelColors } from '../modelLoader/color.js';
+import { hideInfoPanel } from '../interaction/infoPanel.js';
+import { clearHighlight } from '../interaction/raycastOnClick.js';
+import { fitCameraToScene } from '../core/cameraUtils.js';
 
 export async function resetApp() {
   console.log('🔄 Reset gestartet...');
@@ -106,4 +104,41 @@ export async function resetApp() {
   renderer.render(scene, camera);
 
   console.log('✅ Reset abgeschlossen');
+}
+
+// ✅ FEHLENDER EXPORT: setupResetUI Funktion hinzufügen
+export function setupResetUI(managers) {
+  const resetButton = document.getElementById('btn-reset');
+  if (!resetButton) {
+    console.warn('⚠️ Reset-Button nicht gefunden');
+    return;
+  }
+
+  resetButton.addEventListener('click', async () => {
+    try {
+      resetButton.disabled = true;
+      resetButton.textContent = 'Wird zurückgesetzt...';
+
+      // Verwende die App-Instanz für Reset, falls verfügbar
+      if (managers?.app && typeof managers.app.reset === 'function') {
+        await managers.app.reset();
+      } else {
+        // Fallback zur direkten resetApp Funktion
+        await resetApp();
+      }
+
+      resetButton.textContent = 'App zurücksetzen';
+    } catch (error) {
+      console.error('❌ Reset fehlgeschlagen:', error);
+      resetButton.textContent = 'Reset fehlgeschlagen';
+    } finally {
+      resetButton.disabled = false;
+      // Nach 2 Sekunden Text zurücksetzen
+      setTimeout(() => {
+        resetButton.textContent = 'App zurücksetzen';
+      }, 2000);
+    }
+  });
+
+  console.log('🔄 Reset-UI initialisiert');
 }

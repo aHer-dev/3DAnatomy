@@ -1,5 +1,5 @@
 // js/ui/submenu/createGroupCheckbox.js
-import { loadGroup, unloadGroup, updateGroupVisibility } from '../../modelLoader/index.js';
+import { loadGroup, unloadGroup, setGroupVisibility } from '../../modelLoader/index.js';
 
 /**
  * Erstellt eine Checkbox für eine anatomische Hauptgruppe (z. B. muscles).
@@ -18,7 +18,7 @@ export function createGroupCheckbox(group) {
             } else {
                 await unloadGroup(group);
             }
-            updateGroupVisibility(group);
+            setGroupVisibility(group);
         } catch (err) {
             console.error(`❌ Fehler beim Umschalten der Gruppe "${group}":`, err);
         }

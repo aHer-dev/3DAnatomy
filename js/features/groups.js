@@ -1,6 +1,6 @@
-/ 3. GROUPS WRAPPER - features/groups.js
+//3. GROUPS WRAPPER - features/groups.js
 // ============================================
-// Wrapper für Backward Compatibility mit altem Code
+// Wrapper für Backward Compatidddddlity mit altem Code
 
 let appInstance = null;
 

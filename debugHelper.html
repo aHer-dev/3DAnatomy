@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <title>3D Anatomie Debug Helper</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #0f0;
+    }
+
+    pre {
+      background: #000;
+      padding: 10px;
+      border: 1px solid #0f0;
+      overflow-x: auto;
+    }
+
+    button {
+      background: #0f0;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      font-family: monospace;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0a0;
+    }
+
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #333;
+    }
+
+    h2 {
+      color: #0f0;
+      border-bottom: 1px solid #0f0;
+      padding-bottom: 5px;
+    }
+
+    .status {
+      padding: 5px;
+      margin: 5px 0;
+    }
+
+    .ok {
+      color: #0f0;
+    }
+
+    .warn {
+      color: #ff0;
+    }
+
+    .error {
+      color: #f00;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🔧 3D Anatomie Debug Helper</h1>
+
+  <div class="section">
+    <h2>App Status Check</h2>
+    <button onclick="checkAppStatus()">Check App Status</button>
+    <pre id="app-status"></pre>
+  </div>
+
+  <div class="section">
+    <h2>Scene Debug</h2>
+    <button onclick="debugScene()">Debug Scene</button>
+    <button onclick="highlightMeshes()">Highlight All Meshes</button>
+    <button onclick="showBoundingBoxes()">Show Bounding Boxes</button>
+    <pre id="scene-info"></pre>
+  </div>
+
+  <div class="section">
+    <h2>Model Loading Tests</h2>
+    <button onclick="testLoadGroup('muscles')">Load Muscles</button>
+    <button onclick="testLoadGroup('organs')">Load Organs</button>
+    <button onclick="testLoadGroup('nerves')">Load Nerves</button>
+    <button onclick="unloadAll()">Unload All</button>
+    <pre id="loading-info"></pre>
+  </div>
+
+  <div class="section">
+    <h2>Camera Controls</h2>
+    <button onclick="resetCamera()">Reset Camera</button>
+    <button onclick="rotateCamera()">Rotate Camera</button>
+    <button onclick="zoomToFit()">Zoom to Fit</button>
+    <pre id="camera-info"></pre>
+  </div>
+
+  <div class="section">
+    <h2>Quick Fixes</h2>
+    <button onclick="fixCanvas()">Fix Canvas Rendering</button>
+    <button onclick="fixLighting()">Fix Lighting</button>
+    <button onclick="reloadMeta()">Reload Meta Data</button>
+  </div>
+
+  <script>
+    // Füge dieses Script in deine index.html ein oder lade es als separate Datei
+
+    function checkAppStatus() {
+      const output = document.getElementById('app-status');
+      const checks = [];
+
+      // Check window.__app
+      if (window.__app) {
+        checks.push('<span class="ok">✓ App instance exists</span>');
+        checks.push(`  - Initialized: ${window.__app.isInitialized}`);
+        checks.push(`  - Scene: ${window.__app.scene ? 'OK' : 'Missing'}`);
+        checks.push(`  - Camera: ${window.__app.camera ? 'OK' : 'Missing'}`);
+        checks.push(`  - Renderer: ${window.__app.renderer ? 'OK' : 'Missing'}`);
+        checks.push(`  - Controls: ${window.__app.controls ? 'OK' : 'Missing'}`);
+
+        // Check managers
+        if (window.__app.managers) {
+          checks.push('<span class="ok">✓ Managers exist</span>');
+          const managers = window.__app.managers;
+          checks.push(`  - State: ${managers.state ? 'OK' : 'Missing'}`);
+          checks.push(`  - Loader: ${managers.loader ? 'OK' : 'Missing'}`);
+          checks.push(`  - Visibility: ${managers.visibility ? 'OK' : 'Missing'}`);
+          checks.push(`  - Interaction: ${managers.interaction ? 'OK' : 'Missing'}`);
+
+          // Check meta data
+          if (managers.state) {
+            const meta = managers.state.getMeta();
+            checks.push(`  - Meta entries: ${meta.length}`);
+            const groups = managers.state.getAvailableGroups();
+            checks.push(`  - Available groups: ${groups.join(', ')}`);
+          }
+        } else {
+          checks.push('<span class="error">✗ Managers missing</span>');
+        }
+      } else {
+        checks.push('<span class="error">✗ App not initialized (window.__app is undefined)</span>');
+        checks.push('<span class="warn">Try: Wait for page to fully load or check console for errors</span>');
+      }
+
+      output.innerHTML = checks.join('\n');
+    }
+
+    function debugScene() {
+      if (!window.__app) {
+        alert('App not initialized!');
+        return;
+      }
+
+      const output = document.getElementById('scene-info');
+      const info = [];
+
+      let totalObjects = 0;
+      let meshes = 0;
+      let visibleMeshes = 0;
+      let groups = {};
+
+      window.__app.scene.traverse(obj => {
+        totalObjects++;
+        if (obj.isMesh) {
+          meshes++;
+          if (obj.visible) visibleMeshes++;
+
+          // Check group
+          const entry = obj.parent?.userData?.entry;
+          if (entry) {
+            const group = entry.classification?.group || 'unknown';
+            groups[group] = (groups[group] || 0) + 1;
+          }
+        }
+      });
+
+      info.push(`Total Objects: ${totalObjects}`);
+      info.push(`Total Meshes: ${meshes}`);
+      info.push(`Visible Meshes: ${visibleMeshes}`);
+      info.push(`Pickable Meshes: ${window.__app.managers.state._state.pickableMeshes.size}`);
+      info.push('\nGroups in Scene:');
+      Object.entries(groups).forEach(([name, count]) => {
+        info.push(`  ${name}: ${count} meshes`);
+      });
+
+      output.innerHTML = info.join('\n');
+    }
+
+    function highlightMeshes() {
+      if (!window.__app) return;
+
+      const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff];
+      let colorIndex = 0;
+
+      window.__app.scene.traverse(obj => {
+        if (obj.isMesh && obj.material) {
+          const color = new THREE.Color(colors[colorIndex % colors.length]);
+          if (obj.material.emissive) {
+            obj.material.emissive = color;
+            obj.material.emissiveIntensity = 0.3;
+          } else {
+            obj.material.color = color;
+          }
+          colorIndex++;
+        }
+      });
+
+      window.__app.renderer.render(window.__app.scene, window.__app.camera);
+      console.log('Meshes highlighted with rainbow colors');
+    }
+
+    function showBoundingBoxes() {
+      if (!window.__app) return;
+
+      const helpers = [];
+      window.__app.scene.traverse(obj => {
+        if (obj.isMesh) {
+          const box = new THREE.BoxHelper(obj, 0x00ff00);
+          window.__app.scene.add(box);
+          helpers.push(box);
+        }
+      });
+
+      // Remove after 3 seconds
+      setTimeout(() => {
+        helpers.forEach(helper => window.__app.scene.remove(helper));
+      }, 3000);
+
+      console.log(`Added ${helpers.length} bounding boxes (will remove in 3s)`);
+    }
+
+    async function testLoadGroup(groupName) {
+      if (!window.__app) return;
+
+      const output = document.getElementById('loading-info');
+      output.innerHTML = `Loading ${groupName}...`;
+
+      try {
+        const startTime = performance.now();
+        const models = await window.__app.managers.loader.loadGroup(groupName);
+        const endTime = performance.now();
+
+        output.innerHTML = `Loaded ${groupName}:\n` +
+          `  - Models: ${models.length}\n` +
+          `  - Time: ${(endTime - startTime).toFixed(2)}ms`;
+
+        window.__app.managers.visibility.setGroupState(groupName, 'visible');
+        window.__app.fitCameraToContent();
+
+      } catch (error) {
+        output.innerHTML = `<span class="error">Error loading ${groupName}: ${error.message}</span>`;
+      }
+    }
+
+    async function unloadAll() {
+      if (!window.__app) return;
+
+      await window.__app.managers.loader.unloadAllGroups();
+      document.getElementById('loading-info').innerHTML = 'All groups unloaded';
+    }
+
+    function resetCamera() {
+      if (!window.__app) return;
+
+      window.__app.camera.position.set(0, 2, 5);
+      window.__app.controls.target.set(0, 1, 0);
+      window.__app.controls.update();
+
+      updateCameraInfo();
+    }
+
+    function rotateCamera() {
+      if (!window.__app) return;
+
+      const angle = Date.now() * 0.001;
+      const radius = 5;
+      window.__app.camera.position.x = Math.cos(angle) * radius;
+      window.__app.camera.position.z = Math.sin(angle) * radius;
+      window.__app.camera.lookAt(0, 1, 0);
+
+      updateCameraInfo();
+    }
+
+    function zoomToFit() {
+      if (!window.__app) return;
+      window.__app.fitCameraToContent();
+      updateCameraInfo();
+    }
+
+    function updateCameraInfo() {
+      if (!window.__app) return;
+
+      const output = document.getElementById('camera-info');
+      const pos = window.__app.camera.position;
+      const target = window.__app.controls.target;
+
+      output.innerHTML =
+        `Camera Position: [${pos.x.toFixed(2)}, ${pos.y.toFixed(2)}, ${pos.z.toFixed(2)}]\n` +
+        `Target: [${target.x.toFixed(2)}, ${target.y.toFixed(2)}, ${target.z.toFixed(2)}]`;
+    }
+
+    function fixCanvas() {
+      if (!window.__app) return;
+
+      // Set clear color explicitly
+      window.__app.renderer.setClearColor(0x020a1d, 1);
+
+      // Force render
+      window.__app.renderer.render(window.__app.scene, window.__app.camera);
+
+      // Check canvas size
+      const canvas = window.__app.renderer.domElement;
+      console.log('Canvas size:', canvas.width, 'x', canvas.height);
+      console.log('Canvas parent:', canvas.parentElement?.id);
+
+      // Fix z-index if needed
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.zIndex = '0';
+
+      alert('Canvas fix applied - check console for details');
+    }
+
+    function fixLighting() {
+      if (!window.__app) return;
+
+      // Add or update lights
+      const lights = [];
+      window.__app.scene.traverse(obj => {
+        if (obj.isLight) lights.push(obj);
+      });
+
+      if (lights.length === 0) {
+        // Add basic lighting
+        const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+        const directional = new THREE.DirectionalLight(0xffffff, 1);
+        directional.position.set(5, 10, 5);
+
+        window.__app.scene.add(ambient);
+        window.__app.scene.add(directional);
+
+        console.log('Added missing lights');
+      } else {
+        // Boost existing lights
+        lights.forEach(light => {
+          if (light.intensity !== undefined) {
+            light.intensity = Math.min(light.intensity * 1.5, 2);
+          }
+        });
+        console.log(`Boosted ${lights.length} existing lights`);
+      }
+    }
+
+    async function reloadMeta() {
+      if (!window.__app) return;
+
+      try {
+        await window.__app.managers.state.initialize();
+        alert('Meta data reloaded successfully');
+      } catch (error) {
+        alert('Error reloading meta: ' + error.message);
+      }
+    }
+
+    // Auto-check on load
+    window.addEventListener('load', () => {
+      setTimeout(checkAppStatus, 1000);
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey) {
+        switch (e.key) {
+          case 'D':
+            e.preventDefault();
+            checkAppStatus();
+            debugScene();
+            break;
+          case 'R':
+            e.preventDefault();
+            resetCamera();
+            break;
+          case 'F':
+            e.preventDefault();
+            fixCanvas();
+            break;
+        }
+      }
+    });
+
+    console.log(`
+╔════════════════════════════════════════╗
+║     3D ANATOMIE DEBUG HELPER LOADED    ║
+╠════════════════════════════════════════╣
+║ Shortcuts:                             ║
+║ • Ctrl+Shift+D: Debug info             ║
+║ • Ctrl+Shift+R: Reset camera           ║
+║ • Ctrl+Shift+F: Fix canvas             ║
+║                                        ║
+║ Console Commands:                      ║
+║ • window.__app                         ║
+║ • checkAppStatus()                     ║
+║ • debugScene()                         ║
+╚════════════════════════════════════════╝
+`);
+  </script>
+
+</body>
+
+</html>

@@ -1,99 +1,108 @@
-  {
-    "id": "fma10951",
-    "labels": {
-      "en": "Inferior vena cava",
-      "de": "",
-      "la": ""
+{
+  "id": "fma25058",
+  "labels": {
+    "en": "Intervertebral disk of axis",
+    "de": "",
+    "la": ""
+  },
+  "synonyms": {
+    "en": [],
+    "de": []
+  },
+  "classification": {
+    "group": "cartilage",
+    "subgroup": null,
+    "side": "",
+    "system": "",
+    "region": ""
+  },
+  "relations": {
+    "is_a": [],
+    "part_of": [],
+    "has_parts": [],
+    "adjacent_to": [],
+    "cross_references": {}
+  },
+  "model": {
+    "current": "draco",
+    "variants": {
+      "draco": {
+        "path": "ligaments",
+        "filename": "FJ3202.glb",
+        "format": "glb"
+      },
+      "hifi": {
+        "path": "hifi/ligaments",
+        "filename": "FJ3202.glb",
+        "format": "glb"
+      },
+      "lofi": {
+        "path": "lofi/ligaments",
+        "filename": "FJ3202.glb",
+        "format": "glb"
+      }
     },
-    "synonyms": {
+    "default_color": "#cccccc",
+    "visible_by_default": true,
+    "highlight_color": "",
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "bounding_box": [
+      [],
+      []
+    ],
+    "checksum": "",
+    "root_name": "FJ3202",
+    "asset": {
+      "path": "ligaments",
+      "file": "FJ3202.glb",
+      "url": "ligaments/FJ3202.glb",
+      "fileKey": "FJ3202.glb"
+    }
+  },
+  "info": {
+    "description": {
+      "en": "",
+      "de": ""
+    },
+    "keywords": {
       "en": [],
       "de": []
     },
-    "classification": {
-      "group": "veins",
-      "subgroup": "",
-      "side": "",
-      "system": "",
-      "region": ""
+    "links": {
+      "wikipedia_en": "",
+      "fma": "fma25058",
+      "wikipedia_de": "",
+      "uberon": ""
     },
-    "relations": {
-      "is_a": [],
-      "part_of": [],
-      "has_parts": [],
-      "adjacent_to": [],
-      "cross_references": {}
-    },
-    "model": {
-      "current": "draco",
-      "variants": {
-        "draco": {
-          "path": "veins",
-          "filename": "FJ3659.glb",
-          "format": "glb"
-        },
-        "hifi": {
-          "path": "hifi/veins",
-          "filename": "FJ3659.glb",
-          "format": "glb"
-        },
-        "lofi": {
-          "path": "lofi/veins",
-          "filename": "FJ3659.glb",
-          "format": "glb"
-        }
-      },
-      "default_color": "#cccccc",
-      "visible_by_default": true,
-      "highlight_color": "",
-      "rotation": [
-        0,
-        0,
-        0
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "bounding_box": [
-        [],
-        []
-      ],
-      "checksum": ""
-    },
-    "info": {
-      "description": {
-        "en": "",
-        "de": ""
-      },
-      "keywords": {
-        "en": [],
-        "de": []
-      },
-      "links": {
-        "wikipedia_en": "",
-        "fma": "fma10951",
-        "wikipedia_de": "",
-        "uberon": ""
-      },
-      "images": []
-    },
-    "meta": {
-      "sources": [
-        "BodyParts3D"
-      ],
-      "license": "CC BY-SA 2.1 JP",
-      "attribution": "Copyright © 2008 DBCLS",
-      "version": "1.0.0",
-      "last_updated": "2025-08-04",
-      "reliability_score": null,
-      "notes": "",
-      "validation_status": "",
-      "purpose": "",
-      "creator": "",
-      "contributor": [],
-      "ontology_version": "",
-      "language": ""
-    },
-    "type": "structure"
-  }
+    "images": []
+  },
+  "meta": {
+    "sources": [
+      "BodyParts3D"
+    ],
+    "license": "CC BY-SA 2.1 JP",
+    "attribution": "Copyright © 2008 DBCLS",
+    "version": "1.0.0",
+    "last_updated": "2025-08-04",
+    "reliability_score": null,
+    "notes": "",
+    "validation_status": "",
+    "purpose": "",
+    "creator": "",
+    "contributor": [],
+    "ontology_version": "",
+    "language": ""
+  },
+  "type": "structure",
+  "meta_schema": "1.1",
+  "entry_uid": "fma25058__FJ3202.glb"
+}

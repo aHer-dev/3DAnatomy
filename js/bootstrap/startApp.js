@@ -21,7 +21,7 @@ export async function startApp() {
         debug.log('bootstrap', '🚀 Starte Anwendung...');
 
         appInstance = new App();
-        await appInstance.init();
+        await appInstance.init(); // wirft jetzt bei Fehler
 
         // Für Debugging verfügbar machen
         if (debug.enabled) {
@@ -30,27 +30,23 @@ export async function startApp() {
         }
 
         debug.log('bootstrap', '✅ Anwendung erfolgreich gestartet');
-
+        return appInstance;
     } catch (error) {
         console.error('❌ App-Start fehlgeschlagen:', error);
-
-        if (appInstance) {
+        if (appInstance && typeof appInstance.dispose === 'function') {
             appInstance.dispose();
-            appInstance = null;
         }
-
-        throw error;
-
+        appInstance = null;
+        throw error; // <<< wichtig: an index.html zurück
     } finally {
-        if (initialScreen) {
+        // Ladescreen fade-out nur, wenn init erfolgreich war (optional):
+        if (initialScreen && appInstance) {
             initialScreen.style.opacity = '0';
             setTimeout(() => {
                 initialScreen.style.display = 'none';
             }, 500);
         }
     }
-
-    return appInstance;
 }
 
 export function getApp() {

@@ -11,7 +11,8 @@
     color: white;
     font-size: 14px;
     position: relative;
-    /* Referenz für absolute Results */
+    /* Referenz für absolute Results *
+    z-index: 110;/
 }
 
 #search-results {

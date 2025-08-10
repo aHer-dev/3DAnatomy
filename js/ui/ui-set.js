@@ -1,30 +1,55 @@
+// js/ui/ui-set.js
 /**
  * @file ui-set.js
  * @description Ermöglicht dem Nutzer, anatomische Strukturen zu einer persönlichen Sammlung (Set) hinzuzufügen,
  * alle Muskeln auf einmal zu laden und Einträge aus dem Set wieder zu entfernen.
  */
 import * as THREE from 'three';
-import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-import { modelPath } from '../core/path.js';
-import {
-  hideAllManagedModels,
-  setModelVisibility
-} from '../features/visibilityManager.js';  // WICHTIG: hideAllManagedModels importieren!
-import { setModelColor, setModelOpacity } from '../features/appearance.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
-import { controls } from '../core/controls.js';
 import { state } from '../store/stateManager.js';
-import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
+import { setGroupVisibility } from '../features/groups.js';
+import { getApp } from '../bootstrap/startApp.js';
+import { showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
+
+// Alle Gruppen verbergen (ersetzt: hideAllManagedModels)
+function hideAllManagedModels() {
+  const app = getApp();
+  if (!app) return;
+  const groups = state.availableGroups || [];
+  for (const g of groups) {
+    setGroupVisibility(g, false); // nutzt den VisibilityManager intern
+  }
+}
+
+// Einzelnes Modell sichtbar machen (ersetzt: setModelVisibility(model, true))
+function showModel(model) {
+  const app = getApp();
+  if (!app || !model) return;
+  app.managers.visibility.setState(model, 'visible'); // sichtbar + pickable
+}
+
+// Farbe setzen (zahl -> THREE.Color, string -> direkt)
+function setModelColor(model, color) {
+  const app = getApp();
+  if (!app || !model) return;
+  const c = typeof color === 'number' ? new THREE.Color(color) : color;
+  app.managers.visibility.setColor(model, c);
+}
+
+// Transparenz setzen
+function setModelOpacity(model, opacity) {
+  const app = getApp();
+  if (!app || !model) return;
+  app.managers.visibility.setOpacity(model, opacity);
+}
 
 /**
  * Initialisiert das UI-System zur Verwaltung von Sets (Sammlungen).
  */
 export function setupSetUI() {
   console.log('setupSetUI aufgerufen');
-
-  const loader = createGLTFLoader();
 
   const setupGroupButton = (buttonId, groupName) => {
     const button = document.getElementById(buttonId);
@@ -36,17 +61,17 @@ export function setupSetUI() {
     button.addEventListener('click', async () => {
       try {
         button.disabled = true;
-        const entries = state.groupedMeta[groupName] || [];
-        if (entries.length) {
-          console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${groupName}"...`);
-          showLoadingBar();
-          await loadModels(entries, groupName, true, scene, loader, camera, controls, renderer);
-          hideLoadingBar();
-        }
+        const app = getApp();
+        if (!app) throw new Error('App ist noch nicht initialisiert');
+        showLoadingBar?.();
+        await app.managers.loader.loadGroup(groupName, {
+          centerCamera: true,
+          onProgress: () => { }
+        });
       } catch (err) {
         console.error(`❌ Fehler beim Laden von ${groupName}:`, err);
-        hideLoadingBar();
       } finally {
+        hideLoadingBar?.();
         button.disabled = false;
       }
     });
@@ -72,20 +97,20 @@ export function setupSetUI() {
   addButton.addEventListener('click', () => {
     const selected = state.currentlySelected;
     if (!selected) {
-      alert("Bitte zuerst eine Struktur auswählen.");
+      alert('Bitte zuerst eine Struktur auswählen.');
       return;
     }
 
     // Prüfe ob bereits in der Sammlung
     const alreadyInSet = state.collection.find(item => item.model === selected);
     if (alreadyInSet) {
-      alert("Diese Struktur ist bereits in deiner Sammlung.");
+      alert('Diese Struktur ist bereits in deiner Sammlung.');
       return;
     }
 
     const meta = selected.userData?.meta;
     if (!meta) {
-      alert("Fehler: Struktur enthält keine Metadaten.");
+      alert('Fehler: Struktur enthält keine Metadaten.');
       return;
     }
 
@@ -165,7 +190,7 @@ export function showCollectionInScene() {
     }
 
     // Mache sichtbar und klickbar
-    setModelVisibility(model, true);
+    showModel(model);
 
     // Stelle sicher dass Layer gesetzt sind
     model.traverse(obj => {

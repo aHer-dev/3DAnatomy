@@ -1,7 +1,7 @@
-import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
+import { createGLTFLoader } from '../modelLoader/gltfLoaderFactory.js';
 import { modelPath } from '../core/path.js';
 
-const gltf = createGLTFLoader();
+const loader = createGLTFLoader();
 
 
 
@@ -62,8 +62,6 @@ export function disposeObject3D(obj) {
     });
 }
 
-// modelLoader-core
-export { loadModels, loadSingleModel } from '../features/modelLoader-core.js';
 
 // progress
 export { showLoadingBar, hideLoadingBar } from './progress.js';
@@ -75,12 +73,11 @@ export { removeModelsByGroupOrSubgroup, removeModelByFilename } from './cleanup.
 export {
     loadGroup,
     unloadGroup,
-    updateGroupVisibility,
+    setGroupVisibility,
     restoreGroupState
 } from '../features/groups.js';
 
 // appearance
-export { setModelColor, setModelOpacity, setModelVisibility } from '../features/appearance.js';
 
 // Optional: color.js, falls du dort eine UI-spezifische Funktion hast
 export { updateModelColors as updateModelColorsFromColorUI } from './color.js';

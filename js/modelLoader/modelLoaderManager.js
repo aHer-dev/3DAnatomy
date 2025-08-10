@@ -1,9 +1,9 @@
-
 // ============================================
 // 4. MODEL LOADER MANAGER - modelLoader/modelLoaderManager.js
 // ============================================
-import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-import { withBase } from '../core/path.js';
+
+import { createGLTFLoader } from '../modelLoader/gltfLoaderFactory.js';
+import { modelPath, withBase } from '../core/path.js'; // path-API nutzen
 import { scene } from '../core/scene.js';
 import { debug } from '../core/debug.js';
 
@@ -94,8 +94,15 @@ class ModelLoader {
             throw new Error(`Keine Datei für Eintrag ${entry?.id} gefunden`);
         }
 
-        // Pfad konstruieren
-        const url = withBase(`models/${entry.classification?.group}/${variant.filename}`);
+        // 1) Pfadquelle: bevorzugt variant.path (z.B. "teeth", "ligaments"), sonst group
+        const vPath = (variant?.path || entry?.classification?.group || '').trim();
+
+        // 2) Sicher den finalen URL bauen:
+        // - Falls meta schon "models/..." liefert, direkt via withBase
+        // - Sonst sauber via modelPath(prefix "models/")
+        const url = vPath.startsWith('models/')
+            ? withBase(`${vPath}/${variant.filename}`)
+            : modelPath(variant.filename, vPath);
 
         // Model laden
         const gltf = await this.loader.loadAsync(url);

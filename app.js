@@ -1,13 +1,16 @@
-// app.js – Einstiegspunkt
-import { initSplashScreenExit } from './js/bootstrap/initSplashScreen.js';
-import { initDynamicGroupLoading } from './js/bootstrap/initGroupLoader.js';
+// app.js
 import { startApp } from './js/bootstrap/startApp.js';
+import { debug } from './js/core/debug.js';
 
-console.log('📦 app.js geladen');
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('▶️ DOM vollständig geladen – Starte App');
-  initSplashScreenExit();
-  initDynamicGroupLoading();
-  startApp();
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await startApp();
+  } catch (error) {
+    console.error('App-Start fehlgeschlagen:', error);
+  }
 });
+
+// Debug-Konsole (für Entwicklung)
+if (window.location.search.includes('debug')) {
+  debug.enable();
+}
