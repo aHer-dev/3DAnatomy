@@ -32,7 +32,7 @@ export const state = {
     // Zentrale Farbdefinitionen
     colors: {
       bones: 0xcccccc,
-      teeth: 0xffffff,
+      teeth: 0xcccccc,
       muscles: 0xff0000,
       tendons: 0xffffff,
       arteries: 0xaa0000,

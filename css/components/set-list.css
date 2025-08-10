@@ -10,9 +10,18 @@
     list-style: none;
     padding: 5px;
     cursor: pointer;
+    color: white;
+    /* Added text color for better visibility */
+}
+
+#set-list li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Optional: add hover effect */
 }
 
 #set-list p {
-    color: #666;
+    color: #ccc;
+    /* Slightly lighter color for paragraphs */
     font-style: italic;
-}
+    margin: 0;
+    /* Remove default paragraph margins */

@@ -15,43 +15,56 @@ import { state } from '../store/state.js';
  */
 export function initDynamicGroupLoading() {
     const loader = createGLTFLoader();
-    
 
-    const buttonGroupMap = {
-        'muscles': 'btn-load-muscles',
-        'ligaments': 'btn-load-ligaments',
-        'tendons': 'btn-load-tendons',
-        // weitere Gruppen bei Bedarf ergänzen...
-    };
+    // optional: Aliasse für alte Button-IDs
+    const alias = { tendons: 'ligaments' };
 
-    Object.entries(buttonGroupMap).forEach(([group, buttonId]) => {
-        const button = document.getElementById(buttonId);
-        if (!button) {
-            console.warn(`⚠️ Button für Gruppe "${group}" (${buttonId}) nicht gefunden.`);
-            return;
-        }
+    // Binde an alles, was die Meta hergibt
+    const groups = state.availableGroups || [];
+    let bound = 0;
 
-        button.addEventListener('click', async () => {
-            const entries = state.groupedMeta[group] || [];
-            if (!entries.length) {
-                console.warn(`⚠️ Keine Modelle für Gruppe "${group}" in groupedMeta gefunden.`);
-                return;
-            }
-
+    // 1) Buttons mit id="btn-load-<group>" binden
+    for (const g of groups) {
+        const btn = document.getElementById(`btn-load-${g}`);
+        if (!btn) continue;
+        btn.addEventListener('click', async () => {
+            const entries = state.groupedMeta[g] || [];
+            if (!entries.length) return;
             try {
-                button.disabled = true;
+                btn.disabled = true;
                 showLoadingBar();
-                console.log(`🔍 Lade ${entries.length} Modelle aus Gruppe "${group}"...`);
-                await loadModels(entries, group, true, scene, loader, camera, controls, renderer);
-                hideLoadingBar();
-            } catch (err) {
-                console.error(`❌ Fehler beim Laden der Gruppe "${group}":`, err);
-                hideLoadingBar();
+                await loadModels(entries, g, true, scene, loader, camera, controls, renderer);
+            } catch (e) {
+                console.error(`Fehler beim Laden von "${g}"`, e);
             } finally {
-                button.disabled = false;
+                hideLoadingBar();
+                btn.disabled = false;
             }
         });
-    });
+        bound++;
+    }
 
-    console.log('📦 Dynamisches Gruppenladen initialisiert.');
+    // 2) Legacy-Buttons (z.B. #btn-load-tendons) auf Aliasse mappen
+    for (const legacy in alias) {
+        const target = alias[legacy];
+        const btn = document.getElementById(`btn-load-${legacy}`);
+        if (!btn || !groups.includes(target)) continue;
+        btn.addEventListener('click', async () => {
+            const entries = state.groupedMeta[target] || [];
+            if (!entries.length) return;
+            try {
+                btn.disabled = true;
+                showLoadingBar();
+                await loadModels(entries, target, true, scene, loader, camera, controls, renderer);
+            } catch (e) {
+                console.error(`Fehler beim Laden von "${target}"`, e);
+            } finally {
+                hideLoadingBar();
+                btn.disabled = false;
+            }
+        });
+        bound++;
+    }
+
+    console.log(`📦 Dynamisches Gruppenladen initialisiert (gebundene Buttons: ${bound}).`);
 }
