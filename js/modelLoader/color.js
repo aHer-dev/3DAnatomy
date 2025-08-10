@@ -1,4 +1,4 @@
-import { state } from '../store/state.js';
+import { state } from '../store/stateManager.js';
 
 /**
  * Setzt die Farbe aller Modelle einer Gruppe neu.

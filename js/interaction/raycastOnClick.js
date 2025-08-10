@@ -1,27 +1,63 @@
-// js/interaction/raycastOnClick.js
-// Einheitlicher Canvas-Klickpfad über den zentralen Raycaster (core/raycaster).
-// Keine eigene Raycaster-Instanz, kein Raycast gegen scene.children.
-// API bleibt: setupRaycastOnClick(domElement, callback)
-
+/ 4. RAYCASTING - interaction/raycastOnClick.js
+// ============================================
 import { pickAt } from '../core/raycaster.js';
+import { events } from '../core/events.js';
 
-/**
- * Registriert einen Pointer-Listener auf dem übergebenen DOM-Element (typisch: renderer.domElement).
- * Ruft bei Treffer dein Callback mit { meta, model, event, selection } auf.
- *
- * @param {HTMLElement} domElement - z. B. renderer.domElement
- * @param {(args:{meta:any, model:THREE.Object3D, event:PointerEvent, selection:any}) => void} callback
- * @returns {() => void} cleanup-Funktion zum Entfernen des Listeners
- */
-export function setupRaycastOnClick(domElement, callback) {
-    function onPointerDown(e) {
-        const sel = pickAt(e.clientX, e.clientY);          // zentraler Raycaster
-        if (!sel?.root) return;
+let highlightedModel = null;
 
-        const entry = sel.root.userData?.entry || sel.root.userData?.meta || null;
-        callback?.({ meta: entry, model: sel.root, event: e, selection: sel });
-    }
+export function setupRaycastOnClick(domElement) {
+    const handleClick = (event) => {
+        event.preventDefault();
 
-    domElement.addEventListener('pointerdown', onPointerDown, { passive: true });
-    return () => domElement.removeEventListener('pointerdown', onPointerDown);
+        const result = pickAt(event.clientX, event.clientY);
+
+        if (result) {
+            events.emit('model-selected', {
+                model: result.root,
+                mesh: result.mesh,
+                point: result.point,
+                entry: result.root.userData?.entry
+            });
+
+            applyHighlight(result.root);
+        } else {
+            events.emit('selection-cleared');
+            clearHighlight();
+        }
+    };
+
+    domElement.addEventListener('pointerdown', handleClick, { passive: false });
+
+    return () => {
+        domElement.removeEventListener('pointerdown', handleClick);
+    };
+}
+
+export function applyHighlight(model) {
+    clearHighlight();
+
+    highlightedModel = model;
+    model.traverse(node => {
+        if (node.isMesh && node.material) {
+            if (!node.userData.originalEmissive) {
+                node.userData.originalEmissive = node.material.emissive?.clone() || new THREE.Color(0x000000);
+            }
+            if (node.material.emissive) {
+                node.material.emissive.setHex(0x444444);
+            }
+        }
+    });
+}
+
+export function clearHighlight() {
+    if (!highlightedModel) return;
+
+    highlightedModel.traverse(node => {
+        if (node.isMesh && node.material?.emissive && node.userData.originalEmissive) {
+            node.material.emissive.copy(node.userData.originalEmissive);
+            delete node.userData.originalEmissive;
+        }
+    });
+
+    highlightedModel = null;
 }

@@ -9,13 +9,13 @@ import { modelPath } from '../core/path.js';
 import {
   hideAllManagedModels,
   setModelVisibility
-} from '../features/visibility.js';  // WICHTIG: hideAllManagedModels importieren!
+} from '../features/visibilityManager.js';  // WICHTIG: hideAllManagedModels importieren!
 import { setModelColor, setModelOpacity } from '../features/appearance.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
 import { controls } from '../core/controls.js';
-import { state } from '../store/state.js';
+import { state } from '../store/stateManager.js';
 import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
 
 /**

@@ -3,7 +3,7 @@ import { getMeta } from '../../utils/index.js';
 import { createGroupBlock } from './createGroupBlock.js';
 
 
-import { state } from '../../store/state.js';
+import { state } from '../../store/stateManager.js';
 
 /**
  * Initialisiert das dynamische Submenü (nur optionale Gruppen)

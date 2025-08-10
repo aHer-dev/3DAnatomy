@@ -1,72 +1,82 @@
 // js/ui/ui-reset.js
-// 🔁 Stellt den Ursprungszustand der gesamten Webanwendung wieder her (Kamera, Farben, Sichtbarkeit, UI-Slider, Transparenz etc.)
-import * as THREE from 'three';
-import { state } from '../store/state.js';
-import { hideAllManagedModels, setModelVisibility, } from '../features/visibility.js';
-import { loadGroup } from '../features/groups.js';
-import { resetGroupColor } from '../modelLoader/color.js';
-import { hideInfoPanel } from '../interaction/infoPanel.js';
-import { renderer } from '../core/renderer.js';
+// Setzt die App in den Startzustand zurück, ohne die App komplett neu zu booten.
+// Kernpunkte: Pick-Pool leeren, alle geladenen Modelle entladen/disposen,
+// Bones + Teeth sauber neu laden, Sichtbarkeit & Farben syncen, Info-Panel schließen,
+// Kamera auf Inhalt fitten.
+
+import * as THREE from 'three'                 // konsistent zu deinem Projekt
+import { state } from '../store/stateManager.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
-import { setCameraToDefault, fitCameraToScene } from '../core/cameraUtils.js';
-import { updateModelColors } from '../modelLoader/color.js';
-import { updateGroupVisibility } from '../features/groups.js';
+import { renderer } from '../core/renderer.js';
 
+import { unloadWholeGroup, loadGroup as loadGroupByName } from '../features/groups.js';
+import { setGroupVisibility } from '../features/visibilityManager.js';
 
-/**
- * Initialisiert den Reset-Button und definiert, wie der Zustand der App vollständig zurückgesetzt wird.
- */
-export function setupResetUI() {
-  const resetBtn = document.getElementById('btn-reset');
-  if (!resetBtn) {
-    console.warn('⚠️ Reset-Button (#btn-reset) nicht gefunden');
-    return;
-  }
-  // Genau EIN Click-Handler:
-  resetBtn.addEventListener('click', () => resetApp().catch(console.error));
-}
+import { resetGroupColor, updateModelColors } from '../modelLoader/color.js';   // Farben-API bei dir
+import { hideInfoPanel } from '../interaction/infoPanel.js';                    // Info-Panel schließen
+import { clearHighlight } from '../interaction/raycastOnClick.js';             // optionales Highlight entfernen
+import { fitCameraToScene } from '../core/cameraUtils.js';                      // Kamera-Fit
 
 export async function resetApp() {
   console.log('🔄 Reset gestartet...');
 
-  // 1) Kamera/Controls zurück – saveState() bitte beim Init einmalig aufrufen
+  // 0) UI & Auswahl: Info-Panel & Highlight schließen/entfernen
+  try { hideInfoPanel?.(); } catch { }
+  try { clearHighlight?.(); } catch { }
+  state.selected = null;
+
+  // 1) Kamera/Controls zurücksetzen (dein init hat saveState/Defaults gesetzt)
   if (typeof controls?.reset === 'function') {
-    controls.reset();
+    controls.reset();                 // OrbitControls-Reset
   } else {
-    setCameraToDefault(camera, controls);
+    // Fallback: falls du eine eigene Default-Funktion hast
+    // setCameraToDefault(camera, controls);
   }
 
+  // 2) ALLE aktuell geladenen Gruppen hart entladen (Pickables abmelden + dispose)
+  const loadedGroups = Object.keys(state.groups || {});
+  for (const g of loadedGroups) {
+    try { unloadWholeGroup(g); } catch (e) { console.warn(`unloadWholeGroup(${g})`, e); }
+  }
 
-  // 3) Start-Sicht (Standard): bones + teeth laden und sichtbar schalten
-  const startGroups = ['bones', 'teeth']; // bei Bedarf anpassen
+  // 3) State-Container sauber leeren
+  state.groups = Object.create(null);   // groupName -> [roots]
+  state.groupVisible = Object.create(null);   // groupName -> bool
+  state.groupStates = Object.create(null);   // gespeicherte Sichtbarkeiten
+  state.pickableMeshes?.clear?.();            // 🔑 zentraler Pick-Pool leeren
+  state.selected = null;
+
+  // 4) Start-Sicht: bones + teeth neu laden (registriert intern Pickables)
+  const startGroups = ['bones', 'teeth'];
   for (const group of startGroups) {
     try {
-      await loadGroup(group, null, false); // false: Kamera noch nicht fitten
-      (state.groups[group] || []).forEach(model => {
-        model.visible = true;
-        model.layers.enable(0);
-      });
-      resetGroupColor(group);
+      await loadGroupByName(group, null, false);  // false: Kamera noch nicht fitten
+      setGroupVisibility(group, true);            // Sichtbar & klickbar (setzt Pickables!)
+      resetGroupColor?.(group);                   // optional: für jede Gruppe Startfarbe zurück
     } catch (err) {
       console.error(`❌ Fehler beim Laden von "${group}":`, err);
     }
   }
 
-  // 4) Farben ALLER Gruppen auf ihre Defaults syncen (State + 3D + UI)
-  Object.keys(state.defaultSettings.colors).forEach(group => {
-    const defaultColor =
-      state.defaultSettings.colors[group] ?? state.defaultSettings.defaultColor ?? 0xcccccc;
+  // 5) Farben ALLER Gruppen auf Defaults syncen (State + 3D + UI)
+  const defaultColorFallback = state.defaultSettings.defaultColor ?? 0xcccccc;
+  Object.keys(state.defaultSettings.colors || {}).forEach(group => {
+    const defaultColor = state.defaultSettings.colors[group] ?? defaultColorFallback;
 
-    state.colors[group] = defaultColor;      // UI/State
-    updateModelColors(group, defaultColor);  // 3D-Material
+    // UI/State
+    state.colors[group] = defaultColor;
 
+    // 3D (Material an bereits geladenen Modellen)
+    try { updateModelColors(group, defaultColor); } catch { }
+
+    // UI Color-Picker syncen (falls vorhanden)
     const input = document.getElementById(`${group}-color`);
     if (input) input.value = '#' + defaultColor.toString(16).padStart(6, '0');
   });
 
-  // 5) Raum-Defaults (Hintergrund & Licht) robust setzen
+  // 6) Raum-Defaults (Hintergrund & Licht) robust setzen
   const bgColor = state.defaultSettings.background;
   const lighting = state.defaultSettings.lighting ?? 1.0;
 
@@ -81,17 +91,18 @@ export async function resetApp() {
   }
 
   // UI-Inputs korrekt beschreiben
-  const bgInput = document.getElementById('color-room');  
+  const bgInput = document.getElementById('color-room');
   if (bgInput) bgInput.value = '#' + Number(bgColor).toString(16).padStart(6, '0');
 
   const lightInput = document.getElementById('slider-room-brightness');
   if (lightInput) lightInput.value = String(lighting);
 
-  // 6) Info-Panel schließen
-  hideInfoPanel?.();
-
-  // 7) Kamera auf Inhalt fitten & einmal rendern
-  await fitCameraToScene(camera, controls, renderer, scene);
+  // 7) Kamera auf aktuellen Inhalt fitten & einmal rendern
+  try {
+    await fitCameraToScene(camera, controls, renderer, scene);
+  } catch (e) {
+    console.warn('fitCameraToScene fehlgeschlagen (fallback: render-only)', e);
+  }
   renderer.render(scene, camera);
 
   console.log('✅ Reset abgeschlossen');

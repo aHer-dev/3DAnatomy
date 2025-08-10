@@ -12,21 +12,23 @@ import { licenseHTML } from './licenseContent.js';
 
 // import { loadModels } from '../modelLoader/index.js'; // Nicht nötig hier – in app.js
 
-export function setupUI() {
+export function setupUI(managers) {
   try {
-    setupSearchUI();
-    setupColorUI();
-    setupSetUI();
-    setupResetUI();
-    setupSubmenuUI();
-    setupExportUI();
-    setupControlsUI();
-    setupRoomUI();
-    setupLoadingUI();
+    // Keine setAppInstance-Initialisierung mehr hier – das passiert jetzt zentral in core/app.js
+
+    setupSearchUI(managers);
+    setupColorUI(managers);
+    setupSetUI(managers);
+    setupResetUI(managers);
+    setupSubmenuUI(managers);
+    setupExportUI(managers);
+    setupControlsUI(managers);
+    setupRoomUI(managers);
+    setupLoadingUI(managers);
 
     const toggleButton = document.getElementById('btn-toggle-license');
     const licenseInfo = document.getElementById('license-info');
-    
+
     if (licenseInfo) {
       licenseInfo.innerHTML = licenseHTML || '<p>⚠️ Lizenztext fehlt</p>';
     }

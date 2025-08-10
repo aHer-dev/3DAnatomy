@@ -1,7 +1,7 @@
 // ui-color.js
 // 🎨 Erstellt für jede anatomische Gruppe ein Farbwahl-Element, mit dem der Benutzer die Farbe aller zugehörigen Modelle ändern kann.
 
-import { state } from '../store/state.js';
+import { state } from '../store/stateManager.js';
 import { updateModelColors } from '../modelLoader/color.js';
 
 export function setupColorUI() {

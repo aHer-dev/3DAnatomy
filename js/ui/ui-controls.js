@@ -1,7 +1,7 @@
 // ui-controls.js
 // 🔧 Steuert das Ein- und Ausblenden des Seitenpanels mit UI-Kontrolle und stellt den Zustand anatomischer Gruppen wieder her
 
-import { state } from '../store/state.js'; // Globale Zustandsverwaltung
+import { state } from '../store/stateManager.js'; // Globale Zustandsverwaltung
 import { restoreGroupState } from '../features/groups.js'; // Funktion zur Wiederherstellung der Sichtbarkeitszustände
 
 /**

@@ -7,9 +7,8 @@ import { scene } from '../core/scene.js'; // Ersetzt init.js
 import { controls } from '../core/controls.js'; // Falls für Interaktionen nötig
 
 // ... Rest des Code
-import { state } from '../store/state.js';                        // 🔁 Globaler App-Zustand              
+import { state, stateManager } from '../store/stateManager.js';                  // 🔁 Globaler App-Zustand              
 import { getMeta } from '../utils/index.js';                     // 📄 Lädt Metadaten der Modelle
-import { highlightModel } from '../interaction/highlightModel.js';
 import { showInfoPanel } from '../interaction/infoPanel.js';
 
 import { loadModels } from '../modelLoader/index.js';      // 🔄 Funktion zum Laden einzelner Modelle
@@ -18,6 +17,10 @@ import { loadModels } from '../modelLoader/index.js';      // 🔄 Funktion zum 
  * Initialisiert die Suchleiste und verbindet sie mit einem Ergebnis-Popup.
  * Bei Auswahl wird das Modell geladen, hervorgehoben und das Info-Panel geöffnet.
  */
+
+export const stateManager = new StateManager();
+export const state = stateManager._state;  // Backward compatibility
+
 export function setupSearchUI() {
   const searchBar = document.getElementById('search-bar');           // 🔍 Texteingabe für Suche
   const searchResults = document.getElementById('search-results');   // 📋 Ergebnisliste unter der Suche

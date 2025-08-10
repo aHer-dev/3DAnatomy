@@ -2,7 +2,7 @@
 // meta.js - Bereinigte Version
 // ============================================
 import { dataPath } from '../core/path.js';
-import { state } from '../store/state.js';
+import { state } from '../store/stateManager.js';
 
 let cachedMeta = null;
 
