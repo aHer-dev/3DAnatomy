@@ -7,7 +7,7 @@ import { config } from './config.js';
 /**
  * 📊 Performance Monitor (optional aktivierbar)
  * Überwacht FPS, Memory und andere Performance-Metriken
- * WICHTIG: Nur laden wenn DEBUG aktiviert ist!
+ * WICHTIG: Nur laden, wenn DEBUG aktiviert ist!
  */
 export class PerformanceMonitor {
     constructor() {
@@ -17,13 +17,18 @@ export class PerformanceMonitor {
         this.frameTime = [];
         this.warningThresholds = {
             lowFPS: 30,
-            highMemory: 0.8, // 80%
-            highFrameTime: 33 // >33ms = <30fps
+            highMemory: 0.8,   // 80%
+            highFrameTime: 33  // >33ms = <30fps
         };
 
         this.frameCounter = 0;
         this.lastFPSCheck = performance.now();
         this.currentFPS = 60;
+        this.lastFrameTime = undefined;
+
+        this.memoryInterval = null;
+        this.warningInterval = null;
+        this.handleVisibility = null;
 
         console.log('📊 PerformanceMonitor initialisiert (deaktiviert)');
     }
@@ -34,29 +39,45 @@ export class PerformanceMonitor {
     async enable() {
         if (this.enabled) return;
 
+        // Debug-Gate: nur aktivieren, wenn konfiguriert
+        const allow =
+            (typeof config?.get === 'function' && (config.get('debug.enablePerformanceMonitor') || config.get('debug.performanceMonitor')))
+            || false;
+        if (!allow) {
+            console.log('📊 PerformanceMonitor nicht aktiviert (DEBUG aus).');
+            return;
+        }
+
         try {
-            // Stats.js nur laden wenn wirklich benötigt
-            const { default: Stats } = await import('three/examples/jsm/libs/stats.module.js');
+            // WICHTIG: Pfad muss zur Import-Map passen.
+            // In deiner HTML-Importmap steht:
+            //   "three/addons/": "./node_modules/three/examples/jsm/"
+            // Deshalb hier:
+            const { default: Stats } = await import('three/addons/libs/stats.module.js');
 
             this.stats = new Stats();
             this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb
-
-            // Stats-Panel styling
             this.stats.dom.style.position = 'fixed';
             this.stats.dom.style.top = '10px';
             this.stats.dom.style.left = '10px';
             this.stats.dom.style.zIndex = '10000';
-
             document.body.appendChild(this.stats.dom);
 
             this.enabled = true;
             this.startMonitoring();
 
-            console.log('📊 PerformanceMonitor aktiviert');
+            // Optional: bei Tab-Wechsel pausieren/fortsetzen
+            this.handleVisibility = () => {
+                if (!this.enabled) return;
+                if (document.hidden) this.stopMonitoring();
+                else this.startMonitoring();
+            };
+            document.addEventListener('visibilitychange', this.handleVisibility, { passive: true });
 
+            console.log('📊 PerformanceMonitor aktiviert');
         } catch (error) {
             console.warn('⚠️ Stats.js konnte nicht geladen werden:', error);
-            console.log('📊 Fallback: Einfaches Performance-Monitoring');
+            console.log('📊 Fallback: Einfaches Performance-Monitoring ohne Panel');
             this.enabled = true;
             this.startMonitoring();
         }
@@ -68,13 +89,18 @@ export class PerformanceMonitor {
     disable() {
         if (!this.enabled) return;
 
-        if (this.stats && this.stats.dom && this.stats.dom.parentNode) {
+        if (this.stats?.dom?.parentNode) {
             this.stats.dom.parentNode.removeChild(this.stats.dom);
         }
 
         this.stopMonitoring();
         this.enabled = false;
         this.stats = null;
+
+        if (this.handleVisibility) {
+            document.removeEventListener('visibilitychange', this.handleVisibility);
+            this.handleVisibility = null;
+        }
 
         console.log('📊 PerformanceMonitor deaktiviert');
     }
@@ -84,16 +110,18 @@ export class PerformanceMonitor {
      */
     startMonitoring() {
         // Memory-Monitoring (falls verfügbar)
-        if (performance.memory) {
+        if (performance?.memory && !this.memoryInterval) {
             this.memoryInterval = setInterval(() => {
                 this.recordMemoryUsage();
             }, 1000);
         }
 
         // Performance-Warnings
-        this.warningInterval = setInterval(() => {
-            this.checkPerformanceWarnings();
-        }, 5000);
+        if (!this.warningInterval) {
+            this.warningInterval = setInterval(() => {
+                this.checkPerformanceWarnings();
+            }, 5000);
+        }
     }
 
     /**
@@ -112,20 +140,13 @@ export class PerformanceMonitor {
     }
 
     /**
-     * 🔄 Update-Funktion (wird vom Render-Loop aufgerufen)
+     * 🔄 Update-Funktion (im Render-Loop aufrufen)
      */
     update() {
         if (!this.enabled) return;
 
-        // Stats.js Update
-        if (this.stats) {
-            this.stats.update();
-        }
-
-        // Eigene FPS-Messung
+        if (this.stats) this.stats.update();
         this.updateFPS();
-
-        // Frame-Time messen
         this.recordFrameTime();
     }
 
@@ -137,7 +158,7 @@ export class PerformanceMonitor {
         const now = performance.now();
 
         if (now - this.lastFPSCheck > 1000) {
-            this.currentFPS = Math.round(this.frameCounter * 1000 / (now - this.lastFPSCheck));
+            this.currentFPS = Math.round((this.frameCounter * 1000) / (now - this.lastFPSCheck));
             this.frameCounter = 0;
             this.lastFPSCheck = now;
         }
@@ -148,17 +169,10 @@ export class PerformanceMonitor {
      */
     recordFrameTime() {
         const now = performance.now();
-        if (this.lastFrameTime) {
+        if (this.lastFrameTime !== undefined) {
             const frameTime = now - this.lastFrameTime;
-            this.frameTime.push({
-                time: now,
-                duration: frameTime
-            });
-
-            // Nur letzte 60 Frames behalten
-            if (this.frameTime.length > 60) {
-                this.frameTime.shift();
-            }
+            this.frameTime.push({ time: now, duration: frameTime });
+            if (this.frameTime.length > 60) this.frameTime.shift(); // nur letzte 60 Frames
         }
         this.lastFrameTime = now;
     }
@@ -167,7 +181,7 @@ export class PerformanceMonitor {
      * 💾 Memory-Usage aufzeichnen
      */
     recordMemoryUsage() {
-        if (!performance.memory) return;
+        if (!performance?.memory) return;
 
         const usage = {
             time: Date.now(),
@@ -177,18 +191,15 @@ export class PerformanceMonitor {
         };
 
         this.memoryUsage.push(usage);
-
-        // Nur letzte 1000 Einträge behalten
-        if (this.memoryUsage.length > 1000) {
-            this.memoryUsage.shift();
-        }
+        if (this.memoryUsage.length > 1000) this.memoryUsage.shift(); // nur letzte 1000 Einträge
     }
 
     /**
      * ⚠️ Performance-Warnungen prüfen
      */
     checkPerformanceWarnings() {
-        if (!config.get('debug.logPerformance')) return;
+        const logPerf = typeof config?.get === 'function' ? config.get('debug.logPerformance') : false;
+        if (!logPerf) return;
 
         // Low FPS Warning
         if (this.currentFPS < this.warningThresholds.lowFPS) {
@@ -196,7 +207,7 @@ export class PerformanceMonitor {
         }
 
         // Memory Warning
-        if (performance.memory) {
+        if (performance?.memory) {
             const usage = performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit;
             if (usage > this.warningThresholds.highMemory) {
                 console.warn(`⚠️ Hoher Speicherverbrauch: ${(usage * 100).toFixed(1)}% (> ${this.warningThresholds.highMemory * 100}%)`);
@@ -205,7 +216,7 @@ export class PerformanceMonitor {
 
         // High Frame-Time Warning
         if (this.frameTime.length > 0) {
-            const avgFrameTime = this.frameTime.reduce((sum, frame) => sum + frame.duration, 0) / this.frameTime.length;
+            const avgFrameTime = this.frameTime.reduce((sum, f) => sum + f.duration, 0) / this.frameTime.length;
             if (avgFrameTime > this.warningThresholds.highFrameTime) {
                 console.warn(`⚠️ Hohe Frame-Zeit: ${avgFrameTime.toFixed(1)}ms (> ${this.warningThresholds.highFrameTime}ms)`);
             }
@@ -222,31 +233,36 @@ export class PerformanceMonitor {
             frameCount: this.frameCounter
         };
 
-        // Memory-Infos (falls verfügbar)
-        if (performance.memory) {
-            const memory = performance.memory;
+        if (performance?.memory) {
+            const m = performance.memory;
             stats.memory = {
-                used: memory.usedJSHeapSize,
-                total: memory.totalJSHeapSize,
-                limit: memory.jsHeapSizeLimit,
-                usagePercent: Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100)
+                used: m.usedJSHeapSize,
+                total: m.totalJSHeapSize,
+                limit: m.jsHeapSizeLimit,
+                usagePercent: Math.round((m.usedJSHeapSize / m.jsHeapSizeLimit) * 100)
             };
         }
 
-        // Frame-Time-Statistiken
         if (this.frameTime.length > 0) {
-            const frameTimes = this.frameTime.map(f => f.duration);
+            const arr = this.frameTime.map(f => f.duration);
             stats.frameTime = {
-                avg: frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length,
-                min: Math.min(...frameTimes),
-                max: Math.max(...frameTimes),
-                samples: frameTimes.length
+                avg: arr.reduce((a, b) => a + b, 0) / arr.length,
+                min: Math.min(...arr),
+                max: Math.max(...arr),
+                samples: arr.length
             };
         }
 
         return stats;
     }
 
+    /**
+     * 🔎 Verlauf des Speichers (Kopie)
+     */
     getMemoryHistory() {
-        return this.memoryUsage.slice(); // Kopie zurückgeben
+        return this.memoryUsage.slice();
     }
+}
+
+// Singleton-Instanz exportieren
+export const performanceMonitor = new PerformanceMonitor();
