@@ -1,14 +1,59 @@
 // cleanup.js
-import { scene } from '../core/scene.js'; // Oder './scene.js' je nach Pfad
-import { camera } from '../core/camera.js';
-import { renderer } from '../core/renderer.js';
-import { controls } from '../core/controls.js'; // Falls benötigt
+import { scene } from '../core/scene.js';
+import { state } from '../store/state.js';
 
 /**
- * 🔄 Entfernt alle Modelle einer Gruppe oder einer Subgruppe aus der Szene.
+ * Vollständige Entsorgung von Three.js Objekten und Ressourcen
+ * @param {THREE.Object3D} root - Wurzelobjekt zum Entsorgen
+ */
+export function disposeObject3D(root) {
+  if (!root) return;
+
+  root.traverse(child => {
+    if (child.isMesh) {
+      // Geometrie entsorgen
+      if (child.geometry) {
+        child.geometry.dispose();
+        child.geometry = null;
+      }
+
+      // Material und Texturen entsorgen
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      materials.forEach(mat => {
+        if (!mat) return;
+
+        // Alle Texturen entsorgen
+        Object.keys(mat).forEach(key => {
+          const prop = mat[key];
+          if (prop?.isTexture) {
+            prop.dispose();
+            mat[key] = null;
+          }
+        });
+
+        // Material entsorgen
+        mat.dispose();
+      });
+
+      // Material auf null setzen
+      child.material = null;
+    }
+  });
+
+  // Von Elternobjekt entfernen
+  if (root.parent) {
+    root.parent.remove(root);
+  }
+}
+
+/**
+ * Entfernt alle Modelle einer Gruppe oder einer Subgruppe aus der Szene.
  *
- * @param {string} groupName - z. B. "muscles"
- * @param {string|null} subgroupName - z. B. "arm-schulter", oder null für ganze Gruppe
+ * @param {string} groupName - z. B. "muscles"
+ * @param {string|null} subgroupName - z. B. "arm-schulter", oder null für ganze Gruppe
  */
 export async function removeModelsByGroupOrSubgroup(groupName, subgroupName = null) {
   const models = state.groups[groupName];
@@ -19,25 +64,16 @@ export async function removeModelsByGroupOrSubgroup(groupName, subgroupName = nu
     const meta = model.userData.meta;
     const subgroup = meta?.subgroup || null;
 
-    // ✅ Bedingung: gesamter Group- oder nur passender Subgroup-Eintrag
+    // Bedingung: gesamter Group- oder nur passender Subgroup-Eintrag
     if (subgroupName === null || subgroup === subgroupName) {
-      // Speicher freigeben (Three.js Best Practice)
-      model.traverse(child => {
-        if (child.isMesh) {
-          child.geometry?.dispose();
-          if (Array.isArray(child.material)) {
-            child.material.forEach(m => m?.dispose());
-          } else {
-            child.material?.dispose();
-          }
-        }
-      });
+      // Speicher vollständig freigeben
+      disposeObject3D(model);
 
       // Modell aus Szene & Speicher entfernen
       scene.remove(model);
       models.splice(i, 1);
 
-      // Optional: Gruppenzustand aktualisieren
+      // Gruppenzustand aktualisieren
       if (state.groupStates[groupName]) {
         delete state.groupStates[groupName][model.name];
       }
@@ -48,10 +84,10 @@ export async function removeModelsByGroupOrSubgroup(groupName, subgroupName = nu
 }
 
 /**
- * ❌ Entfernt ein einzelnes Modell anhand seines Dateinamens.
+ * Entfernt ein einzelnes Modell anhand seines Dateinamens.
  *
- * @param {string} filename - z. B. "fj7285_bp2121_fma7234_draco.glb"
- * @param {string} groupName - z. B. "muscles"
+ * @param {string} filename - z. B. "fj7285_bp2121_fma7234_draco.glb"
+ * @param {string} groupName - z. B. "muscles"
  */
 export function removeModelByFilename(filename, groupName) {
   const models = state.groups[groupName];
@@ -60,7 +96,7 @@ export function removeModelByFilename(filename, groupName) {
     return;
   }
 
-  // 🔎 Suche nach Modell anhand des .name (Dateiname)
+  // Suche nach Modell anhand des .name (Dateiname)
   const index = models.findIndex(m => m.name === filename);
   if (index === -1) {
     console.warn(`⚠️ Modell "${filename}" nicht in Gruppe "${groupName}" gefunden.`);
@@ -69,17 +105,8 @@ export function removeModelByFilename(filename, groupName) {
 
   const model = models[index];
 
-  // Speicher korrekt freigeben
-  model.traverse(child => {
-    if (child.isMesh) {
-      child.geometry?.dispose();
-      if (Array.isArray(child.material)) {
-        child.material.forEach(m => m?.dispose());
-      } else {
-        child.material?.dispose();
-      }
-    }
-  });
+  // Speicher vollständig freigeben
+  disposeObject3D(model);
 
   // Aus Szene und Speicher entfernen
   scene.remove(model);

@@ -1,32 +1,54 @@
 // ============================================
-// visibility.js - VOLLSTÄNDIGE VERSION
+// visibility.js - BROWSER-KOMPATIBLE VERSION
 // ============================================
-// Zentrale Sichtbarkeits-API mit Layer-Management
-// Layer 0 = Render (sichtbar machen/ausblenden)
-// Layer 1 = Pick (anklickbar)
 
 import * as THREE from 'three';
-import { state } from '../store/state.js';
-import { setPickable } from './selection.js';
+
+// WICHTIG: Lazy imports für zirkuläre Referenzen (BROWSER-KOMPATIBEL)
+let _state = null;
+let _setPickable = null;
+
+// Lazy Getter für State (async import statt require)
+function getState() {
+    if (!_state) {
+        // Asynchroner Import für Browser
+        import('../store/state.js').then(module => {
+            _state = module.state;
+        }).catch(err => {
+            console.warn('State import failed:', err);
+        });
+    }
+    return _state;
+}
+
+// Lazy Getter für setPickable
+function getSetPickable() {
+    if (!_setPickable) {
+        import('./selection.js').then(module => {
+            _setPickable = module.setPickable;
+        }).catch(err => {
+            console.warn('setPickable import failed:', err);
+        });
+    }
+    return _setPickable;
+}
 
 // === PRIVATE HELPER FUNCTIONS ===
 function _asArray(mat) {
     return Array.isArray(mat) ? mat : [mat];
 }
+
 function _setMeshMaterials(mesh, mats) {
     mesh.material = Array.isArray(mesh.material) ? mats : mats[0];
 }
+
 // === OPACITY MANAGEMENT ===
-/**
- * Setzt die Opazität (0..1) für EIN Root-Objekt (alle Mesh-Kinder)
- */
 export function setObjectOpacity(root, opacity = 1) {
     if (!root) return;
 
     root.traverse((ch) => {
         if (!ch.isMesh) return;
 
-        // Volle Deckkraft wiederherstellen
         if (opacity >= 1) {
             if (ch.userData.__origMats) {
                 _setMeshMaterials(ch, ch.userData.__origMats);
@@ -44,7 +66,6 @@ export function setObjectOpacity(root, opacity = 1) {
             return;
         }
 
-        // Transparenz setzen (Material klonen wenn nötig)
         if (!ch.userData.__ownMats) {
             const src = _asArray(ch.material);
             ch.userData.__origMats = src.map(m => m?.clone?.() || m);
@@ -62,21 +83,102 @@ export function setObjectOpacity(root, opacity = 1) {
         });
     });
 }
-/**
- * Setzt die Opazität für eine komplette Gruppe
- */
+
 export function setGroupOpacity(group, opacity = 1) {
+    const state = getState();
+    if (!state) return;
     const roots = state.groups?.[group] || [];
     roots.forEach(root => setObjectOpacity(root, opacity));
 }
-// === VISIBILITY MANAGEMENT ===
-/**
- * Hauptfunktion für Model-Sichtbarkeit
- * Setzt Sichtbarkeit eines einzelnen Modells inkl. Layer
- */
+
+// === CORE VISIBILITY FUNCTIONS ===
+export function showModel(root) {
+    if (!root) return;
+
+    const setPickable = getSetPickable();
+    const state = getState();
+
+    root.traverse(n => {
+        if (!n.isMesh) return;
+        n.visible = true;
+        restoreOriginalMaterial(n);
+
+        // Nur setPickable aufrufen wenn verfügbar
+        if (setPickable && state?.pickableMeshes) {
+            setPickable(n, true, state.pickableMeshes);
+        } else {
+            // Fallback: Nur Layer setzen
+            n.layers.enable(1);
+            state?.pickableMeshes?.add(n);
+        }
+    });
+}
+
+export function hideModel(root) {
+    if (!root) return;
+
+    const setPickable = getSetPickable();
+    const state = getState();
+
+    root.traverse(n => {
+        if (!n.isMesh) return;
+        n.visible = false;
+
+        // Nur setPickable aufrufen wenn verfügbar
+        if (setPickable && state?.pickableMeshes) {
+            setPickable(n, false, state.pickableMeshes);
+        } else {
+            // Fallback: Nur Layer setzen
+            n.layers.disable(1);
+            state?.pickableMeshes?.delete(n);
+        }
+    });
+}
+
+export function ghostModel(root, alpha = 0.15) {
+    if (!root) return;
+
+    const setPickable = getSetPickable();
+    const state = getState();
+
+    root.traverse(n => {
+        if (!n.isMesh) return;
+        n.visible = true;
+        applyGhostMaterial(n, alpha);
+
+        // Nur setPickable aufrufen wenn verfügbar
+        if (setPickable && state?.pickableMeshes) {
+            setPickable(n, false, state.pickableMeshes); // Ghost ist NICHT klickbar
+        } else {
+            // Fallback: Nur Layer setzen
+            n.layers.disable(1);
+            state?.pickableMeshes?.delete(n);
+        }
+    });
+}
+
+// === GROUP VISIBILITY ===
+export function setGroupVisibility(group, visible) {
+    const state = getState();
+    if (!state) {
+        console.warn('⚠️ setGroupVisibility: State nicht verfügbar');
+        return;
+    }
+
+    const arr = state.groups[group] || [];
+
+    for (const root of arr) {
+        (visible ? showModel : hideModel)(root);
+    }
+
+    state.groupVisible[group] = !!visible;
+}
+
+// === LEGACY/COMPATIBILITY FUNCTIONS ===
 export function setModelVisibility(model, visible) {
     if (!model) return;
 
+    // Direkte Implementation ohne externe Dependencies
     model.visible = visible;
 
     model.traverse(child => {
@@ -101,76 +203,104 @@ export function setModelVisibility(model, visible) {
         model.layers.disable(0);
         model.layers.disable(1);
     }
+
+    // State synchronisieren (safe)
+    const state = getState();
+    if (state?.pickableMeshes) {
+        if (visible) {
+            model.traverse(n => {
+                if (n.isMesh) state.pickableMeshes.add(n);
+            });
+        } else {
+            model.traverse(n => {
+                if (n.isMesh) state.pickableMeshes.delete(n);
+            });
+        }
+    }
 }
 
-// Alias für Abwärtskompatibilität (falls irgendwo noch verwendet)
-export const setGroupVisible = setGroupVisibility;
-/**
- * Wechselt Sichtbarkeit eines einzelnen Modells
- */
 export function toggleModelVisibility(model) {
     if (!model) return;
     setModelVisibility(model, !model.visible);
 }
-/**
- * Prüft ob ein Modell sichtbar ist
- */
+
 export function isModelVisible(model) {
     return !!model?.visible;
 }
+
 // === CONVENIENCE FUNCTIONS ===
-/**
- * Objekt vollständig ausblenden
- */
 export function hideObject(obj) {
     setModelVisibility(obj, false);
 }
-/**
- * Objekt vollständig anzeigen
- */
+
 export function showObject(obj) {
     setModelVisibility(obj, true);
 }
-/**
- * Versteckt alle verwalteten Modelle
- */
+
 export function hideAllManagedModels() {
+    const state = getState();
+    if (!state) return;
+
     Object.keys(state.groups).forEach(group => {
         setGroupVisibility(group, false);
     });
     console.log('✅ Alle verwalteten Modelle versteckt');
 }
-// Alias für Abwärtskompatibilität
+
 export const hideAllModels = hideAllManagedModels;
-/**
- * Zeigt alle verwalteten Modelle
- */
+
 export function showAllManagedModels() {
+    const state = getState();
+    if (!state) return;
+
     Object.keys(state.groups).forEach(group => {
         setGroupVisibility(group, true);
     });
     console.log('✅ Alle verwalteten Modelle sichtbar');
 }
-// === GHOST MODE ===
-/**
- * Objekt als "Ghost" anzeigen: sichtbar & transparent, aber NICHT pickbar
- */
+
+// === GHOST MODE HELPERS ===
+function rememberOriginalMaterial(mesh) {
+    if (!mesh.userData._origMats) {
+        const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        mesh.userData._origMats = list;
+    }
+}
+
+function restoreOriginalMaterial(mesh) {
+    if (!mesh.userData?._origMats) return;
+    const list = mesh.userData._origMats;
+    mesh.material = Array.isArray(mesh.material) ? list : list[0];
+    delete mesh.userData._origMats;
+}
+
+function applyGhostMaterial(mesh, alpha = 0.15) {
+    if (!mesh.material) return;
+    rememberOriginalMaterial(mesh);
+    const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    mesh.material = list.map(m => {
+        const c = m.clone();
+        c.transparent = true;
+        c.opacity = alpha;
+        c.depthWrite = false;
+        return c;
+    });
+}
+
+// === GHOST MODE PUBLIC API ===
 export function setObjectGhost(obj, opacity = 0.15) {
     if (!obj) return;
 
     obj.traverse((ch) => {
         if (!ch.isMesh) return;
 
-        // Pick deaktivieren (durchklicken ermöglichen)
-        ch.layers.disable(1);
+        ch.layers.disable(1); // Pick deaktivieren
 
-        // Originale sichern (einmalig)
         if (!ch.userData.__ghostBackup) {
             const mats = _asArray(ch.material);
             ch.userData.__ghostBackup = mats.map(m => m?.clone?.() || m);
         }
 
-        // Transparente Klone setzen
         const mats = _asArray(ch.material);
         const ghostMats = mats.map(m => {
             if (!m) return m;
@@ -185,9 +315,7 @@ export function setObjectGhost(obj, opacity = 0.15) {
         ch.visible = true;
     });
 }
-/**
- * Ghost-Zustand zurücksetzen
- */
+
 export function clearObjectGhost(obj) {
     if (!obj) return;
 
@@ -199,7 +327,6 @@ export function clearObjectGhost(obj) {
             _setMeshMaterials(ch, backup);
             delete ch.userData.__ghostBackup;
         } else {
-            // Fallback: Transparenz ausschalten
             const mats = _asArray(ch.material);
             mats.forEach(m => {
                 if (!m) return;
@@ -209,44 +336,42 @@ export function clearObjectGhost(obj) {
             });
         }
 
-        // Wieder pickbar machen
-        ch.layers.enable(1);
+        ch.layers.enable(1); // Wieder pickbar
         ch.visible = true;
     });
 }
-/**
- * Setzt Ghost-Modus für eine ganze Gruppe
- */
+
 export function setGroupGhost(group, opacity = 0.15) {
+    const state = getState();
+    if (!state) return;
     const models = state.groups[group] || [];
     models.forEach(model => setObjectGhost(model, opacity));
 }
-/**
- * Entfernt Ghost-Modus von einer Gruppe
- */
+
 export function clearGroupGhost(group) {
+    const state = getState();
+    if (!state) return;
     const models = state.groups[group] || [];
     models.forEach(model => clearObjectGhost(model));
 }
-// === GROUP STATE RESTORATION ===
-/**
- * Stellt den gespeicherten Sichtbarkeitszustand einer Gruppe wieder her
- */
+
+// === UTILITY FUNCTIONS ===
 export function restoreGroupVisibility(groupName) {
     if (!groupName || typeof groupName !== 'string') return;
+
+    const state = getState();
+    if (!state) return;
 
     const models = state.groups?.[groupName];
     const saved = state.groupStates?.[groupName];
 
     if (!models) return;
 
-    // Boolean: gesamte Gruppe
     if (typeof saved === 'boolean') {
         setGroupVisibility(groupName, saved);
         return;
     }
 
-    // Object: einzelne Modelle
     if (saved && typeof saved === 'object') {
         models.forEach(model => {
             const isVisible = saved[model.name] !== false;
@@ -255,93 +380,45 @@ export function restoreGroupVisibility(groupName) {
         return;
     }
 
-    // Default: alles sichtbar
     setGroupVisibility(groupName, true);
 }
-// === UTILITY FUNCTIONS ===
-/**
- * Zählt sichtbare Modelle in einer Gruppe
- */
+
 export function countVisibleInGroup(group) {
+    const state = getState();
+    if (!state) return 0;
     const models = state.groups[group] || [];
     return models.filter(model => isModelVisible(model)).length;
 }
-/**
- * Gibt alle sichtbaren Gruppen zurück
- */
+
 export function getVisibleGroups() {
+    const state = getState();
+    if (!state) return [];
     return Object.keys(state.groups).filter(group => {
         const models = state.groups[group] || [];
         return models.some(model => isModelVisible(model));
     });
 }
-/**
- * Setzt Sichtbarkeit basierend auf Meta-Daten
- */
+
 export function applyDefaultVisibility(model) {
     const meta = model?.userData?.meta;
     const defaultVisible = meta?.model?.visible_by_default ?? true;
     setModelVisibility(model, defaultVisible);
 }
 
-// Material-Originale merken, damit ghost reversibel ist
-function rememberOriginalMaterial(mesh) {
-    if (!mesh.userData._origMats) {
-        const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-        mesh.userData._origMats = list;
-    }
-  }
+// Legacy-Alias
+export const setGroupVisible = setGroupVisibility;
 
-function restoreOriginalMaterial(mesh) {
-    if (!mesh.userData?._origMats) return;
-    const list = mesh.userData._origMats;
-    mesh.material = Array.isArray(mesh.material) ? list : list[0];
-    delete mesh.userData._origMats;
-  }
-
-// Ghost-Material anwenden (depthWrite=false → Klick „geht durch“)
-function applyGhostMaterial(mesh, alpha = 0.15) {
-    if (!mesh.material) return;
-    rememberOriginalMaterial(mesh);
-    const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    mesh.material = list.map(m => {
-        const c = m.clone();
-        c.transparent = true;
-        c.opacity = alpha;
-        c.depthWrite = false;
-        return c;
-    });
-  }
-
-export function showModel(root) {
-    root.traverse(n => {
-        if (!n.isMesh) return;
-        n.visible = true;
-        restoreOriginalMaterial(n);
-        setPickable(n, true);   // ⬅️ Layer 1 + Pick-Set
+// State und Dependencies beim Laden initialisieren
+if (typeof window !== 'undefined') {
+    // Async loading für Browser
+    Promise.all([
+        import('../store/state.js'),
+        import('./selection.js')
+    ]).then(([stateModule, selectionModule]) => {
+        _state = stateModule.state;
+        _setPickable = selectionModule.setPickable;
+        console.log('✅ Visibility: Dependencies geladen');
+    }).catch(err => {
+        console.warn('⚠️ Visibility: Dependencies konnten nicht geladen werden:', err);
     });
 }
-
-export function hideModel(root) {
-    root.traverse(n => {
-        if (!n.isMesh) return;
-        n.visible = false;
-        setPickable(n, false);  // ⬅️ aus Pick-Set + Layer 1 aus
-    });
-}
-
-export function ghostModel(root, alpha = 0.15) {
-    root.traverse(n => {
-        if (!n.isMesh) return;
-        n.visible = true;
-        applyGhostMaterial(n, alpha);
-        setPickable(n, false);  // ⬅️ ghost ist NICHT klickbar
-    });
-}
-
-export function setGroupVisibility(group, visible) {
-    const arr = state.groups[group] || [];
-    for (const root of arr) (visible ? showModel : hideModel)(root);
-    state.groupVisible[group] = !!visible;
-  }
-

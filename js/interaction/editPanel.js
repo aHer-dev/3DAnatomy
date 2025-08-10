@@ -7,16 +7,37 @@ import { setModelColor, setModelOpacity } from '../features/appearance.js';
 import { toggleModelVisibility, isModelVisible } from '../features/visibility.js';
 import { state } from '../store/state.js';
 
+
+
+// WeakMap zur Speicherung von Event-Listenern
+const listeners = new WeakMap();
+
 /**
- * Baut die UI-Controls (Farbe, Transparenz, Sichtbarkeit) für das gewählte Modell.
- * @param {HTMLElement} container
- * @param {THREE.Object3D} selectedModel
+ * Entfernt alle vorhandenen Event-Listener für ein Element
+ * @param {HTMLElement} element 
+ */
+function removeElementListeners(element) {
+    const handler = listeners.get(element);
+    if (handler) {
+        element.removeEventListener('input', handler.input);
+        element.removeEventListener('click', handler.click);
+        listeners.delete(element);
+    }
+}
+
+/**
+ * Baut die UI-Controls für das ausgewählte Modell
+ * @param {HTMLElement} container 
+ * @param {THREE.Object3D} selectedModel 
  */
 export function buildEditPanel(container, selectedModel) {
     if (!selectedModel || !container) {
         console.warn('buildEditPanel: Kein Modell oder Container angegeben');
         return;
     }
+
+    // Vorherige Listener bereinigen
+    container.querySelectorAll('input, button').forEach(removeElementListeners);
 
     container.innerHTML = `
     <label>Farbe:
@@ -46,45 +67,42 @@ export function buildEditPanel(container, selectedModel) {
         }
     });
 
-    if (colorInput) colorInput.value = initialColor;
-    if (opacitySlider) opacitySlider.value = initialOpacity;
-    if (toggleButton) toggleButton.textContent = initialVisible ? 'Verstecken' : 'Anzeigen';
-
-    // Farbe ändern
     if (colorInput) {
-        colorInput.addEventListener('input', (e) => {
+        colorInput.value = initialColor;
+        const colorHandler = (e) => {
             const newColor = new THREE.Color(e.target.value);
             setModelColor(selectedModel, newColor);
             renderer.render(scene, camera);
-        });
+        };
+        colorInput.addEventListener('input', colorHandler);
+        listeners.set(colorInput, { input: colorHandler });
     }
 
-    // Transparenz ändern
     if (opacitySlider) {
-        opacitySlider.addEventListener('input', (e) => {
+        opacitySlider.value = initialOpacity;
+        const opacityHandler = (e) => {
             const opacity = parseFloat(e.target.value);
             setModelOpacity(selectedModel, opacity);
             renderer.render(scene, camera);
-        });
+        };
+        opacitySlider.addEventListener('input', opacityHandler);
+        listeners.set(opacitySlider, { input: opacityHandler });
     }
 
-    // Sichtbarkeit umschalten
     if (toggleButton) {
-        toggleButton.addEventListener('click', () => {
+        toggleButton.textContent = initialVisible ? 'Verstecken' : 'Anzeigen';
+        const toggleHandler = () => {
             toggleModelVisibility(selectedModel);
             const nowVisible = isModelVisible(selectedModel);
             toggleButton.textContent = nowVisible ? 'Verstecken' : 'Anzeigen';
             renderer.render(scene, camera);
-        });
+        };
+        toggleButton.addEventListener('click', toggleHandler);
+        listeners.set(toggleButton, { click: toggleHandler });
     }
 
-    // Zum Set hinzufügen (inkl. Zustände)
     if (addToSetButton) {
-        // vorherige Listener entfernen, falls Panel mehrfach aufgebaut wird
-        const freshBtn = addToSetButton.cloneNode(true);
-        addToSetButton.replaceWith(freshBtn);
-
-        freshBtn.addEventListener('click', () => {
+        const addToSetHandler = () => {
             if (state.collection.some(item => item.model === selectedModel)) {
                 console.warn('Modell bereits in der Sammlung.');
                 return;
@@ -110,10 +128,23 @@ export function buildEditPanel(container, selectedModel) {
             });
 
             console.log(`"${selectedModel.name}" zur Sammlung hinzugefügt.`);
-        });
+        };
+        addToSetButton.addEventListener('click', addToSetHandler);
+        listeners.set(addToSetButton, { click: addToSetHandler });
     }
 
     renderer.render(scene, camera);
+}
+
+/**
+ * Bereinigt alle Event-Listener im Edit-Panel
+ * @param {HTMLElement} container 
+ */
+export function cleanupEditPanel(container) {
+    if (!container) return;
+
+    container.querySelectorAll('input, button').forEach(removeElementListeners);
+    container.innerHTML = ''; // Optional: Container leeren
 }
 
 // WICHTIG: KEIN weiterer Code außerhalb der Funktion!

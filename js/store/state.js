@@ -55,10 +55,30 @@ export const state = {
   // --- Aktuelle Farben (kopiert von defaultSettings beim Init) ---
   colors: {}, // Wird in initializeGroupsFromMeta befüllt
 
-  // --- Auswahl & Interaktion ---
-  currentlySelected: null,
-  interactionMode: 'select',
-  selection: [],
+  // Konsistente Auswahl-Verwaltung
+//  selected: {
+ //   root: null,        // Gesamtes Modell-Root-Objekt
+//    mesh: null,        // Spezifisches Mesh
+//   point: null,       // 3D-Punkt des Klicks
+//    meta: null         // Zugehörige Metadaten
+//  },
+// currentlySelected: null, // Alias für selected.root, für Abwärtskompatibilität
+
+  // Konsistente Auswahl-Verwaltung --CLAUDE
+  selected: {
+    root: null,        // Gesamtes Modell-Root-Objekt
+    mesh: null,        // Spezifisches Mesh
+    point: null,       // 3D-Punkt des Klicks
+    meta: null         // Zugehörige Metadaten
+  },
+  currentlySelected: null, // Alias für selected.root, für Abwärtskompatibilität
+
+//CLAUDE
+  selection: {
+    single: null,      // Aktuell ausgewähltes Objekt
+    multiple: [],      // Für Mehrfachauswahl
+  },
+
 
   // --- Schutzfunktionen ---
   protection: {
@@ -66,4 +86,7 @@ export const state = {
     teeth: true
   },
   allowProtectedCut: false
+
+
+  
 };
