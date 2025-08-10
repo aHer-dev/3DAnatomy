@@ -18,7 +18,13 @@ export function setupRaycastOnClick(domElement, callback) {
         const sel = pickAt(e.clientX, e.clientY);          // zentraler Raycaster
         if (!sel?.root) return;
 
-        const entry = sel.root.userData?.entry || sel.root.userData?.meta || null;
+        // ✅ robust: entry über root.meta oder root.entry oder Mesh-Meta
+        const entry =
+            sel.root.userData?.entry ||
+            sel.root.userData?.meta ||
+            sel.mesh?.userData?.meta ||
+            null;
+
         callback?.({ meta: entry, model: sel.root, event: e, selection: sel });
     }
 

@@ -14,6 +14,7 @@ import { renderer } from '../core/renderer.js';
 import { controls } from '../core/controls.js';
 import { fitCameraToScene } from '../core/cameraUtils.js';
 import { modelPath, withBase } from '../core/path.js';
+import { registerPickables } from '../features/selection.js';  // (Dateikopf)
 
 // --- State ---
 import { state } from '../store/state.js';
@@ -143,6 +144,10 @@ export function loadSingleModel(entry, group, scene, loader) {
           model.userData.meta = entry;
           model.userData.group = effectiveGroup;
 
+          // ✅ NEU: als Model-Root markieren + Entry spiegeln
+          model.userData.isModelRoot = true;        // wichtig für getModelRoot()
+          model.userData.entry = entry;             // direkter Zugriff im Info-Panel
+
           // In state.groups registrieren
           if (!state.groups[effectiveGroup]) {
             state.groups[effectiveGroup] = [];
@@ -160,6 +165,9 @@ export function loadSingleModel(entry, group, scene, loader) {
             ch.layers.enable(0); // Render
             ch.layers.enable(1); // Pick
           });
+
+          // ✅ NEU: Pickables registrieren
+          registerPickables(model);
 
           // Zur Szene hinzufügen
           scene.add(model);

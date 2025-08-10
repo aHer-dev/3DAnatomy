@@ -8,6 +8,15 @@ import { buildEditPanel } from './editPanel.js';
 import { setModelColor, setModelOpacity } from '../features/appearance.js';
 
 export function showInfoPanel(meta, selectedModel) {
+    // ✅ Fallbacks + Guard
+    if (!meta && selectedModel?.userData?.meta) {
+        meta = selectedModel.userData.meta; // falls der Klickpfad meta nicht mitgebracht hat
+    }
+    if (!meta) {
+        console.warn('Info-Panel: Kein Meta für Auswahl – Panel wird nicht gezeigt.');
+        return;
+    }
+
     const infoPanel = document.getElementById('info-panel');
     const infoContent = document.getElementById('info-content');
 
