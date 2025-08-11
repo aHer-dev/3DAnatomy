@@ -3,7 +3,8 @@
 // ============================================
 
 // Basis-URL für alle Ressourcen (leer = relative Pfade)
-const BASE = '';
+const REPO = '/3DAnatomy';
+const BASE = location.pathname.startsWith(REPO + '/') ? REPO : '';
 
 /**
  * Fügt die Basis-URL zu einem Pfad hinzu
