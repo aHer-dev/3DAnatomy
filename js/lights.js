@@ -75,4 +75,4 @@ export function fitShadowFrustumToScene(light, scene, padding = 1.2) {
     cam.near = 0.1;
     cam.far = size.y * 3;
     cam.updateProjectionMatrix();
-}
+}  
