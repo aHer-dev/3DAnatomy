@@ -1,10 +1,7 @@
 // ============================================
-// modelLoader-core.js - KORRIGIERTE VERSION
+// modelLoader-core.js – stabile Version (Shadows + sRGB Fix)
 // ============================================
-/**
- * @file modelLoader-core.js
- * @description Lädt GLTF-Modelle in Gruppen, zeigt Ladefortschritt an und zentriert optional die Kamera.
- */
+
 import * as THREE from 'three';
 
 // --- Core ---
@@ -14,7 +11,7 @@ import { renderer } from '../core/renderer.js';
 import { controls } from '../core/controls.js';
 import { fitCameraToScene } from '../core/cameraUtils.js';
 import { modelPath, withBase } from '../core/path.js';
-import { registerPickables } from '../features/selection.js';  // (Dateikopf)
+import { registerPickables } from '../features/selection.js';
 
 // --- State ---
 import { state } from '../store/state.js';
@@ -22,9 +19,9 @@ import { state } from '../store/state.js';
 // --- Loader ---
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
 
-// --- Features (Sichtbarkeit) - KORRIGIERTE IMPORTS ---
+// --- Visibility ---
 import {
-  setGroupVisibility,  // nicht setGroupVisible!
+  setGroupVisibility,
   showObject,
   hideObject,
   setModelVisibility
@@ -33,8 +30,27 @@ import {
 // --- Progress UI ---
 import { showLoadingBar, hideLoadingBar, updateLoadingBar } from '../modelLoader/progress.js';
 
+// 🔆 Schatten + sRGB Fix für geladene Modelle
+function prepareForShadows(root) {
+  root.traverse((o) => {
+    if (!o.isMesh) return;
+
+    // Schatten
+    o.castShadow = true;
+    o.receiveShadow = true;
+
+    // sRGB nur für „farbige“ Texturen
+    const m = o.material;
+    if (!m) return;
+    if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
+    if (m.emissiveMap) m.emissiveMap.colorSpace = THREE.SRGBColorSpace;
+    // (Normal-/Roughness-/Metalness-/AO-Maps bleiben linear, daher kein colorSpace-Set)
+  });
+  return root;
+}
+
 /**
- * Lädt mehrere Modelle einer Gruppe
+ * Mehrere Modelle einer Gruppe laden (in Batches)
  */
 export async function loadModels(entries, group, centerCamera, scene, loader, camera, controls, renderer) {
   if (!entries?.length) {
@@ -54,30 +70,29 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
     await Promise.all(
       batch.map(async (entry) => {
         try {
-          await loadSingleModel(entry, group, scene, loader, camera, controls);
+          await loadSingleModel(entry, group, scene, loader);
           loaded++;
           updateLoadingBar(Math.round((loaded / entries.length) * 100));
         } catch (err) {
-          console.error(`❌ Fehler bei ${entry.id}:`, err);
-          errors.push({ id: entry.id, error: err });
+          console.error(`❌ Fehler bei ${entry?.id ?? 'unbekannt'}:`, err);
+          errors.push({ id: entry?.id, error: err });
         }
       })
     );
   }
 
   console.timeEnd(`loadGroup-${group}`);
-
   hideLoadingBar();
 
   if (errors.length) {
-    console.error(`⚠️ ${errors.length} Modelle fehlerhaft in Gruppe "${group}":`, errors);
+    console.warn(`⚠️ ${errors.length} Modelle fehlerhaft in Gruppe "${group}":`, errors);
   }
 
   console.log(`✅ Gruppe "${group}" vollständig geladen! (${loaded} Modelle)`);
 
   if (centerCamera) {
     try {
-      fitCameraToScene(camera, controls, renderer, scene);
+      await fitCameraToScene(camera, controls, renderer, scene);
     } catch (err) {
       console.error('❌ Fehler beim Zentrieren der Kamera:', err);
     }
@@ -85,41 +100,32 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
 }
 
 /**
- * Lädt genau EIN Modell und fügt es der Szene hinzu
+ * Genau EIN Modell laden und in Szene + State einhängen
  */
 export function loadSingleModel(entry, group, scene, loader) {
   return new Promise((resolve) => {
     try {
-      // 1) Aktuelle Variante ermitteln
+      // 1) Variante ermitteln
       const current = entry?.model?.current || 'draco';
       const variant = entry?.model?.variants?.[current];
 
-      // 2) Dateiname extrahieren (mit Fallbacks für alte Meta-Struktur)
+      // 2) Dateiname mit Fallbacks
       const candidates = [
-        variant?.filename,
-        entry?.filename,
-        variant?.file,
-        entry?.file,
-        variant?.url,
-        entry?.url,
-        variant?.src,
-        entry?.src,
+        variant?.filename, entry?.filename,
+        variant?.file, entry?.file,
+        variant?.url, entry?.url,
+        variant?.src, entry?.src,
       ].filter(v => typeof v === 'string' && v.length > 0);
 
-      const pickBasename = (s) => {
-        try { return s.split('/').pop(); } catch { return s; }
-      };
-
+      const pickBasename = (s) => { try { return s.split('/').pop(); } catch { return s; } };
       const filename = candidates.length ? pickBasename(candidates[0]) : null;
 
-      // 3) Ohne Dateiname → überspringen
       if (!filename) {
-        console.warn(`⚠️ loadSingleModel: Eintrag "${entry?.id ?? 'unbekannt'}" ohne filename – wird übersprungen.`);
-        resolve(null);
-        return;
+        console.warn(`⚠️ loadSingleModel: Eintrag "${entry?.id ?? 'unbekannt'}" ohne filename – übersprungen.`);
+        resolve(null); return;
       }
 
-      // 4) URL bauen mit variant.path (aus neuer Meta-Struktur)
+      // 3) URL bauen
       const variantPath = (variant?.path ?? '').toString().replace(/^\/+|\/+$/g, '');
       const effectiveGroup = group || entry?.classification?.group || 'other';
 
@@ -127,49 +133,43 @@ export function loadSingleModel(entry, group, scene, loader) {
         ? withBase(`models/${variantPath}/${filename}`)
         : modelPath(filename, effectiveGroup);
 
-      // 5) Laden
+      // 4) Laden
       loader.load(
         url,
         (gltf) => {
           const model = gltf?.scene;
           if (!model) {
             console.warn(`⚠️ loadSingleModel: Kein scene-Objekt in GLTF: ${filename}`);
-            resolve(null);
-            return;
+            resolve(null); return;
           }
 
-          // Meta-Daten am Model speichern
+          // 5) Meta anheften
           const baseName = filename.replace(/\.[^/.]+$/, '');
           model.name = entry?.id || baseName;
           model.userData.meta = entry;
           model.userData.group = effectiveGroup;
+          model.userData.isModelRoot = true; // wichtig für getModelRoot()
+          model.userData.entry = entry;      // direkter Zugriff im Info-Panel
 
-          // ✅ NEU: als Model-Root markieren + Entry spiegeln
-          model.userData.isModelRoot = true;        // wichtig für getModelRoot()
-          model.userData.entry = entry;             // direkter Zugriff im Info-Panel
+          // 6) Schatten & Farbraum vorbereiten (🔆)
+          prepareForShadows(model);
 
-          // In state.groups registrieren
-          if (!state.groups[effectiveGroup]) {
-            state.groups[effectiveGroup] = [];
-          }
-          state.groups[effectiveGroup].push(model);
-
-          // Model-Name-Mapping speichern
-          if (state.modelsByName) {
-            state.modelsByName.set(model, model.name);
-          }
-
-          // Layer aktivieren
+          // 7) Layers (0: Render, 1: Pick)
           model.traverse((ch) => {
             if (!ch.isObject3D) return;
-            ch.layers.enable(0); // Render
-            ch.layers.enable(1); // Pick
+            ch.layers.enable(0);
+            ch.layers.enable(1);
           });
 
-          // ✅ NEU: Pickables registrieren
+          // 8) Pickables registrieren
           registerPickables(model);
 
-          // Zur Szene hinzufügen
+          // 9) In State registrieren
+          if (!state.groups[effectiveGroup]) state.groups[effectiveGroup] = [];
+          state.groups[effectiveGroup].push(model);
+          state.modelsByName?.set?.(model, model.name);
+
+          // 10) In Szene einhängen
           scene.add(model);
 
           resolve(model);
@@ -188,7 +188,7 @@ export function loadSingleModel(entry, group, scene, loader) {
 }
 
 /**
- * Helper: Gruppe per Namen laden
+ * Gruppe per Namen laden (nutzt Meta/State)
  */
 export async function loadGroupByName(groupName, { centerCamera = false, loaderReuse = null } = {}) {
   try {
@@ -203,16 +203,14 @@ export async function loadGroupByName(groupName, { centerCamera = false, loaderR
     const loader = loaderReuse ?? createGLTFLoader();
     await loadModels(entries, groupName, centerCamera, scene, loader, camera, controls, renderer);
     console.log(`✅ loadGroupByName: Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
-
   } catch (err) {
     console.error(`❌ loadGroupByName: Fehler beim Laden von "${groupName}":`, err);
   }
 }
 
 /**
- * Stellt den Sichtbarkeitszustand einer Gruppe wieder her
- * HINWEIS: Diese Funktion sollte eigentlich aus groups.js kommen,
- * aber für Abwärtskompatibilität behalten wir sie hier
+ * Sichtbarkeitszustand einer Gruppe wiederherstellen
+ * (Kompatibilität – eigentlicher Ort: groups.js)
  */
 export function restoreGroupState(groupName) {
   if (!groupName || typeof groupName !== 'string') return;
@@ -220,7 +218,6 @@ export function restoreGroupState(groupName) {
 
   const models = state.groups?.[groupName];
   const saved = state.groupStates?.[groupName];
-
   if (!Array.isArray(models)) return;
 
   // Boolean: gesamte Gruppe
@@ -229,12 +226,11 @@ export function restoreGroupState(groupName) {
     return;
   }
 
-  // Object: einzelne Modelle
+  // Object: pro Modell
   if (saved && typeof saved === 'object') {
     for (const model of models) {
       const on = saved[model?.name] !== false;
-      if (on) showObject(model);
-      else hideObject(model);
+      if (on) showObject(model); else hideObject(model);
     }
     return;
   }

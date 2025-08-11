@@ -1,32 +1,37 @@
-//js/controls.js
-// controls.js – Steuert die Kamera-Interaktion in der 3D-Szene
-import * as THREE from 'three';
+// js/controls.js
+// Steuert die Kamera-Interaktion in der 3D-Szene
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { camera } from './camera.js';
 import { renderer } from './renderer.js';
 import { hideInfoPanel } from '../interaction/infoPanel.js';
 
-
-
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.minDistance = 0.001;
-controls.maxDistance = 3;
-controls.zoomToCursor = true; // wirkt natürlicher
+
+// Natürliches Navigationsgefühl
 controls.enableDamping = true;
-controls.dampingFactor = 0.25;
+controls.dampingFactor = 0.05;
+
+controls.zoomToCursor = true;
+controls.enablePan = true;
 controls.screenSpacePanning = true;
-controls.enableRotate = true;
+
+controls.rotateSpeed = 0.9;
+controls.panSpeed = 0.6;
+controls.zoomSpeed = 1.2;
+
+// „Nah ran“ erlauben, aber großzügigen Korridor lassen
+controls.minDistance = 0.01;
+controls.maxDistance = 3;
+
+// Deine vertikale Begrenzung beibehalten
 controls.minPolarAngle = 0;
 controls.maxPolarAngle = Math.PI;
+controls.enableRotate = true;
 
-
-// QUICKFIX ? INFO PANEL WURDE VERSTECKT ONKLICK ORBIT CONTROL SCHLIE?T NACH KLICK
+// Info-Panel nur bei echter Kamerabewegung schließen
 let previousPosition = camera.position.clone();
-
 controls.addEventListener('change', () => {
   const distanceMoved = camera.position.distanceTo(previousPosition);
-
-  // Nur wenn die Kamera wirklich bewegt wurde → Panel schließen
   if (distanceMoved > 0.01) {
     const panel = document.getElementById('info-panel');
     if (panel?.classList.contains('visible')) {
@@ -36,7 +41,5 @@ controls.addEventListener('change', () => {
     previousPosition.copy(camera.position);
   }
 });
-
-
 
 export { controls };

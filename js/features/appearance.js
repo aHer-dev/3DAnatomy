@@ -4,29 +4,102 @@
 
 import * as THREE from 'three';
 import { setModelVisibility } from '../features/visibility.js';
+import { state } from '../store/state.js';
+
+
+const fallback = {
+  exposure: 0.95,
+  envIntensity: 0.85,
+  groups: {
+    bones: { color: 0xE8E6DD, roughness: 0.85, metalness: 0.0 },
+    teeth: { color: 0xFFFFFF, roughness: 0.60, metalness: 0.0 },
+    default: { roughness: 0.75, metalness: 0.0 }
+  }
+};
+
+
 
 /**
  * Setzt die Farbe eines Modells (rekursiv)
  * @param {THREE.Object3D} model
  * @param {string | THREE.Color} color – z. B. "#ff0000" oder THREE.Color
  */
-export function setModelColor(model, color) {
+export function setModelColor(model, hex) {
   if (!model) return;
-  const c = (typeof color === 'string') ? new THREE.Color(color) : color;
-
-  model.traverse(child => {
-    if (child.isMesh && child.material) {
-      // Material-Array handling
-      const materials = Array.isArray(child.material) ? child.material : [child.material];
-      materials.forEach(mat => {
-        if (mat && mat.color) {
-          mat.color.set(c);
-          mat.needsUpdate = true;
-        }
-      });
-    }
+  model.traverse(o => {
+    if (!o.isMesh || !o.material || !o.material.color) return;
+    o.material.color.setHex(hex);
+    o.material.needsUpdate = true;
   });
 }
+
+
+export const appearance = {
+  exposure: 0.95,      // 0.85–1.05
+  envIntensity: 0.85,  // 0.6–1.0
+  groups: {
+    bones: { color: 0xE8E6DD, roughness: 0.85, metalness: 0.0 },
+    teeth: { color: 0xFFFFFF, roughness: 0.6, metalness: 0.0 },
+    default: { roughness: 0.75, metalness: 0.0 }
+  }
+};
+
+
+export const defaultAppearance = {
+  exposure: 0.95,
+  envIntensity: 0.85,
+  groups: {
+    bones: { color: 0xE8E6DD, roughness: 0.85, metalness: 0.0 },
+    teeth: { color: 0xFFFFFF, roughness: 0.60, metalness: 0.0 },
+    default: { roughness: 0.75, metalness: 0.0 }
+  }
+};
+
+
+function cfg() {
+  return state?.defaultSettings?.appearance ?? fallback;
+}
+
+export function applyEnvIntensity(scene, cfg = defaultAppearance) {
+  const v = cfg.envIntensity;
+  if (typeof v !== 'number') return;
+  scene.traverse(o => {
+    if (!o.isMesh) return;
+    const m = o.material;
+    if (m && 'envMapIntensity' in m) { m.envMapIntensity = v; m.needsUpdate = true; }
+  });
+}
+
+export function applyRendererAppearance(renderer, cfg = defaultAppearance) {
+  if (typeof cfg.exposure === 'number') renderer.toneMappingExposure = cfg.exposure;
+}
+
+// Gruppenweise Material-Defaults (für Modelle ohne Texturen sehr wichtig)
+export function applyGroupMaterialTweaks(groupName, c = cfg()) {
+  const rules = (c.groups && (c.groups[groupName] || c.groups.default)) || {};
+  const roots = state.groups?.[groupName] || [];
+  for (const root of roots) {
+    root.traverse(o => {
+      if (!o.isMesh || !o.material) return;
+      const m = o.material;
+
+      if (rules.color != null && m.color) m.color.setHex(rules.color);
+      if ('roughness' in m && typeof rules.roughness === 'number') m.roughness = rules.roughness;
+      if ('metalness' in m && typeof rules.metalness === 'number') m.metalness = rules.metalness;
+
+      // Farbkarten sRGB
+      if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
+      if (m.emissiveMap) m.emissiveMap.colorSpace = THREE.SRGBColorSpace;
+
+      // Schatten sicherstellen
+      o.castShadow = true;
+      o.receiveShadow = true;
+    });
+  }
+}
+
+
+
 
 /**
  * Setzt die Transparenz eines Modells (rekursiv)
@@ -35,34 +108,18 @@ export function setModelColor(model, color) {
  * @param {THREE.Object3D} model
  * @param {number} opacity – z. B. 0.5
  */
-export function setModelOpacity(model, opacity) {
+export function setModelOpacity(model, opacity = 1) {
   if (!model) return;
-
-  model.traverse(child => {
-    if (child.isMesh && child.material) {
-      // Speichere Original-Material wenn noch nicht geschehen
-      if (!child.userData.__originalMaterial) {
-        child.userData.__originalMaterial = child.material;
-      }
-
-      // Extrahiere aktuelle Farbe
-      const currentMat = child.material;
-      const currentColor = currentMat.color?.clone() || new THREE.Color(0xffffff);
-
-      // Erstelle neues Material mit gleicher Farbe aber neuer Opacity
-      const material = new THREE.MeshStandardMaterial({
-        color: currentColor,
-        transparent: opacity < 1,
-        opacity: opacity,
-        side: THREE.DoubleSide,
-        depthWrite: opacity >= 1,
-        metalness: currentMat.metalness || 0,
-        roughness: currentMat.roughness || 1
-      });
-
-      child.material = material;
-      child.material.needsUpdate = true;
-    }
+  model.traverse(o => {
+    if (!o.isMesh || !o.material) return;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    mats.forEach(m => {
+      if (!m) return;
+      m.transparent = opacity < 1;
+      m.opacity = opacity;
+      m.depthWrite = opacity >= 1;
+      m.needsUpdate = true;
+    });
   });
 }
 

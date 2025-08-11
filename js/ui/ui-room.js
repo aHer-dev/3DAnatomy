@@ -4,7 +4,7 @@
  */
 import * as THREE from 'three';
 import { scene } from '../core/scene.js';
-import { lightFront, lightBack, lightTop, ambientLight } from '../lights.js';
+import { getLightRig } from '../lights.js';
 
 export function setupRoomUI() {
   const lightingSlider = document.getElementById('slider-lighting');
@@ -12,7 +12,14 @@ export function setupRoomUI() {
   const brightnessSlider = document.getElementById('slider-room-brightness');
 
   if (!lightingSlider || !colorInput || !brightnessSlider) {
-    console.warn('⚠️ ui-room: Farb-/Helligkeitselemente fehlen.');
+    console.warn('ui-room: Farb-/Helligkeitselemente fehlen.');
+    return;
+  }
+
+
+  const rig = getLightRig();
+  if (!rig) {
+    console.warn('ui-room: Licht-Rig noch nicht initialisiert.');
     return;
   }
 
@@ -21,17 +28,12 @@ export function setupRoomUI() {
    * Kombiniert die gewählte Farbe mit der eingestellten Helligkeit via HSL-Korrektur.
    */
   function updateRoomColor() {
-    const baseColor = new THREE.Color(colorInput.value); // Fix: colorInput statt colorPicker
+    const baseColor = new THREE.Color(colorInput.value);
     const brightness = parseFloat(brightnessSlider.value);
-
-    // 🎨 Umrechnen in HSL, Helligkeit anpassen
     const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
     hsl.l = Math.max(0, Math.min(1, hsl.l + (brightness - 0.5)));
     baseColor.setHSL(hsl.h, hsl.s, hsl.l);
-
-    // 🌌 Szene-Hintergrundfarbe setzen
     scene.background = baseColor;
-    console.log(`🎨 Raumfarbe geändert: ${baseColor.getHexString()}`);
   }
 
   // 📌 Event-Listener
@@ -40,13 +42,11 @@ export function setupRoomUI() {
 
   lightingSlider.addEventListener('input', (e) => {
     const intensity = parseFloat(e.target.value);
-    lightFront.intensity = intensity;
-    lightBack.intensity = intensity * 0.75;
-    lightTop.intensity = intensity * 0.5;
-    ambientLight.intensity = intensity * 0.5;
-    console.log(`💡 Beleuchtungsintensität geändert: ${intensity}`);
+    rig.key.intensity = intensity;         // Hauptlicht
+    rig.rim.intensity = intensity * 0.6;   // Kantenlicht
+    rig.fill.intensity = intensity * 0.7;   // „Ambient“-Gefühl (Hemisphere)
   });
 
-  // 🟢 Erfolgsmeldung
-  console.log('🌌 ui-room initialisiert.');
+  updateRoomColor();
+  console.log('ui-room initialisiert.');
 }

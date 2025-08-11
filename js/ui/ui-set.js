@@ -151,6 +151,8 @@ export function showCollectionInScene() {
 
   // Verstecke alle anderen Modelle
   hideAllManagedModels();
+  state.modes = state.modes || {};
+  state.modes.collection = true;
 
   // Zeige nur Sammlungs-Modelle
   state.collection.forEach(item => {
@@ -187,6 +189,7 @@ export function clearCollection() {
   state.collection = [];
   updateCollectionUI();
   hideAllManagedModels();
+  if (state.modes) state.modes.collection = false;
   renderer.render(scene, camera);
   console.log('🗑️ Sammlung geleert.');
 }

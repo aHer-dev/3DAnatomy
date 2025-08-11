@@ -52,6 +52,8 @@ export const state = {
     defaultColor: 0xcccccc
   },
 
+
+  
   // --- Aktuelle Farben (kopiert von defaultSettings beim Init) ---
   colors: {}, // Wird in initializeGroupsFromMeta befüllt
 

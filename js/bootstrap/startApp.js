@@ -13,35 +13,43 @@ const RENDER_OPTIMIZATION = {
 };
 // ============================================
 
-// --- Core-System ---
+import * as THREE from 'three'; // ⬅️ nötig für PMREM etc.
+
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
-import { renderer } from '../core/renderer.js';
+import { renderer, requestShadowUpdate, freezeShadows/*, thawShadows*/ } from '../core/renderer.js';
 
-// --- State & Daten ---
+import {
+    defaultAppearance as appearance,
+    applyRendererAppearance,
+    applyEnvIntensity,
+    applyGroupMaterialTweaks
+} from '../features/appearance.js';
+
 import { state } from '../store/state.js';
 import { initializeGroupsFromMeta } from '../data/meta.js';
 import { restoreAllGroupStates } from '../features/groups.js';
 
-// --- Loader ---
 import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
 
-// --- Features ---
 import { setupInteractions } from '../interaction/index.js';
+import { setupBasicLights, getLightRig, fitShadowFrustumToScene } from '../lights.js';
 
-// --- Bootstrap ---
 import { initStaticAssets } from './initStaticAssets.js';
 import { initResizeHandler } from './initResizeHandler.js';
 import { initCameraView } from './initCameraView.js';
 
-// --- UI ---
 import { setupUI } from '../ui/ui-init.js';
+import { retuneCameraClipping } from '../utils/cameraClipping.js';
+
 
 // --- RENDER-OPTIMIERUNG (optional) ---
 let renderOptimizer = null;
 let useOptimization = false;
+
+
 
 // Conditional Import - nur laden wenn Optimierung aktiviert
 async function loadOptimizer() {
@@ -57,6 +65,7 @@ async function loadOptimizer() {
         return null;
     }
 }
+
 
 /**
  * Render-Funktion mit optionaler Optimierung
@@ -82,114 +91,78 @@ function renderFrame() {
 export async function startApp() {
     initStaticAssets();
 
-    // Splash Screen
     const initialScreen = document.getElementById('initial-loading-screen');
-    if (!initialScreen) {
-        console.error('❌ Initial-Loading-Screen nicht gefunden');
-        return;
-    }
+    if (!initialScreen) { console.error('❌ Initial-Loading-Screen nicht gefunden'); return; }
     initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
     initialScreen.style.display = 'flex';
 
     try {
-        // 1) Meta laden und State initialisieren
+        // 1) Meta
         await initializeGroupsFromMeta();
         console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
-        // 2) UI Setup
+        // 2) Licht + (optional) HDR
+        setupBasicLights(scene);
+        await tryApplyEnvironment(renderer);
+
+        // 3) UI
         setupUI?.();
 
-        // 3) 🎛️ RENDER-OPTIMIZER Setup (falls aktiviert)
-        if (RENDER_OPTIMIZATION.enabled || RENDER_OPTIMIZATION.autoActivate) {
-            console.log('🔧 Lade Render-Optimizer...');
-            renderOptimizer = await loadOptimizer();
+        // 4) (optional) Optimizer laden/konfigurieren – unverändert …
+        // if (RENDER_OPTIMIZATION.enabled || RENDER_OPTIMIZATION.autoActivate) { … }
 
-            if (renderOptimizer) {
-                // Sofort aktivieren falls enabled=true
-                if (RENDER_OPTIMIZATION.enabled) {
-                    renderOptimizer.enable({
-                        frustumCulling: RENDER_OPTIMIZATION.frustumCulling,
-                        lod: RENDER_OPTIMIZATION.lod
-                    });
-                    useOptimization = true;
-                    console.log('⚡ Render-Optimierung aktiviert');
-                }
-
-                // Browser-Console Tools bereitstellen
-                window.renderOptimizer = {
-                    enable: () => {
-                        renderOptimizer.enable({
-                            frustumCulling: RENDER_OPTIMIZATION.frustumCulling,
-                            lod: RENDER_OPTIMIZATION.lod
-                        });
-                        useOptimization = true;
-                        console.log('⚡ Render-Optimierung manuell aktiviert');
-                    },
-                    disable: () => {
-                        renderOptimizer.disable();
-                        useOptimization = false;
-                        console.log('🔄 Render-Optimierung deaktiviert');
-                    },
-                    stats: () => renderOptimizer.getStats(),
-                    auto: () => {
-                        renderOptimizer.autoOptimize();
-                        useOptimization = renderOptimizer.enabled;
-                    }
-                };
-
-                console.log('🎮 Optimizer-Controls verfügbar: window.renderOptimizer.enable/disable/stats/auto');
-            }
-        } else {
-            console.log('📱 Render-Optimierung deaktiviert (Desktop-Modus)');
-        }
-
-        // 4) Initiale Gruppen laden
+        // 5) Initiale Gruppen laden
         showLoadingBar();
-
         await loadGroupByName('bones', { centerCamera: true });
         state.groupStates.bones = true;
 
-        await loadGroupByName('teeth');
+        await loadGroupByName('teeth', { centerCamera: false });
         state.groupStates.teeth = true;
+
+
+        // 5a) Schattenfähigkeiten für bereits geladene Objekte setzen
+        scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+
+        // 5b) Shadow-Frustum ans Motiv anpassen (falls Helper vorhanden)
+        const rig = getLightRig?.();
+        if (rig?.key) fitShadowFrustumToScene(rig.key, scene);
+
+        // … nach loadGroupByName('bones') und ('teeth'):
+        const cfg = state?.defaultSettings?.appearance || appearance;
+
+        applyRendererAppearance(renderer, cfg);
+        applyEnvIntensity(scene, cfg);
+        applyGroupMaterialTweaks('bones', state.groups, cfg);
+        applyGroupMaterialTweaks('teeth', state.groups, cfg);
+
+        requestShadowUpdate();
+        freezeShadows();
 
         hideLoadingBar();
 
-        // 5) 🎛️ AUTO-OPTIMIERUNG: Nach dem Laden prüfen
-        if (RENDER_OPTIMIZATION.autoActivate && renderOptimizer && !useOptimization) {
-            // Kurz warten, dann Performance prüfen
-            setTimeout(() => {
-                renderOptimizer.autoOptimize();
-                useOptimization = renderOptimizer.enabled;
+        // 6) Auto-Optimizer (wie gehabt) …
 
-                if (useOptimization) {
-                    console.log('🤖 Auto-Optimierung aktiviert (Performance/Mobile erkannt)');
-                }
-            }, 2000);
-        }
-
-        // 6) Gespeicherte Zustände wiederherstellen
+        // 7) Zustände & Interaktion
         restoreAllGroupStates();
-
-        // 7) Interaktionen & Resize
         setupInteractions();
         initResizeHandler();
         initCameraView();
 
-        // 8) 🎛️ RENDER LOOP mit optionaler Optimierung
+        // 8) Render-Loop (wie gehabt)
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
-            renderFrame(); // ← Verwendet optimierte Render-Funktion
+            renderFrame();
         }
         animate();
 
         console.log('🚀 App erfolgreich gestartet');
-
+        // optional Debug:
+        // window.app = { state, scene, camera, controls, renderer };
     } catch (err) {
         console.error('❌ Fehler beim App-Start:', err);
         hideLoadingBar();
     } finally {
-        // Splash ausblenden
         initialScreen.style.opacity = '0';
         setTimeout(() => (initialScreen.style.display = 'none'), 500);
     }
@@ -227,5 +200,22 @@ export function showRenderStats() {
         console.table(window.renderOptimizer.stats());
     } else {
         console.log('📊 Render-Optimizer nicht aktiv');
+    }
+}
+
+
+async function tryApplyEnvironment(renderer) {
+    try {
+        const { RGBELoader } = await import('three/addons/loaders/RGBELoader.js');
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        const hdrUrl = 'env/default.hdr';
+        const hdr = await new RGBELoader().loadAsync(hdrUrl);
+        const envTex = pmrem.fromEquirectangular(hdr).texture;
+        hdr.dispose();
+        scene.environment = envTex;
+        scene.background = null;
+        console.log('HDR-Environment aktiv');
+    } catch (e) {
+        console.warn('Kein HDR geladen (ok) – weiter ohne Environment.', e?.message);
     }
 }

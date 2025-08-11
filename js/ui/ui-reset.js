@@ -1,97 +1,136 @@
 // js/ui/ui-reset.js
-// 🔁 Stellt den Ursprungszustand der gesamten Webanwendung wieder her (Kamera, Farben, Sichtbarkeit, UI-Slider, Transparenz etc.)
 import * as THREE from 'three';
 import { state } from '../store/state.js';
-import { hideAllManagedModels, setModelVisibility, } from '../features/visibility.js';
-import { loadGroup } from '../features/groups.js';
-import { resetGroupColor } from '../modelLoader/color.js';
 import { hideInfoPanel } from '../interaction/infoPanel.js';
 import { renderer } from '../core/renderer.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
-import { setCameraToDefault, fitCameraToScene } from '../core/cameraUtils.js';
+import { fitCameraToScene } from '../core/cameraUtils.js';
 import { updateModelColors } from '../modelLoader/color.js';
-import { updateGroupVisibility } from '../features/groups.js';
+import { retuneCameraClipping } from '../utils/cameraClipping.js';
+import { loadGroupByName } from '../features/modelLoader-core.js'; // nutzen wir gleich
+// (Kein visibility.js hier, um Race-Conditions mit Lazy-Imports zu vermeiden) :contentReference[oaicite:3]{index=3}
 
-
-/**
- * Initialisiert den Reset-Button und definiert, wie der Zustand der App vollständig zurückgesetzt wird.
- */
-export function setupResetUI() {
-  const resetBtn = document.getElementById('btn-reset');
-  if (!resetBtn) {
-    console.warn('⚠️ Reset-Button (#btn-reset) nicht gefunden');
-    return;
+function purgeAllManagedModels() {
+  // Alles entfernen, was in state.groups registriert ist
+  const roots = [];
+  Object.keys(state.groups || {}).forEach(g => {
+    (state.groups[g] || []).forEach(r => roots.push(r));
+  });
+  for (const r of roots) {
+    try { scene.remove(r); } catch { }
   }
-  // Genau EIN Click-Handler:
-  resetBtn.addEventListener('click', () => resetApp().catch(console.error));
+  // State leeren
+  Object.keys(state.groups || {}).forEach(g => state.groups[g] = []);
+  state.pickableMeshes?.clear?.();
 }
 
-export async function resetApp() {
-  console.log('🔄 Reset gestartet...');
 
-  // 1) Kamera/Controls zurück – saveState() bitte beim Init einmalig aufrufen
-  if (typeof controls?.reset === 'function') {
-    controls.reset();
-  } else {
-    setCameraToDefault(camera, controls);
+let _bound = false;
+
+export function setupResetUI() {
+  const btn = document.getElementById('btn-reset');
+  if (!btn) { console.warn('Reset-Button (#btn-reset) nicht gefunden'); return; }
+  if (_bound) return;
+  _bound = true;
+  btn.addEventListener('click', () => resetApp().catch(console.error));
+}
+
+
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+async function waitForGroupsPopulated(groupNames, timeoutMs = 1500) {
+  const t0 = performance.now();
+  while (performance.now() - t0 < timeoutMs) {
+    const ready = groupNames.every(g => (state.groups?.[g] || []).length > 0);
+    if (ready) return true;
+    await sleep(50);
   }
+  return false; // not fatal – wir loggen nur
+}
 
-
-  // 3) Start-Sicht (Standard): bones + teeth laden und sichtbar schalten
-  const startGroups = ['bones', 'teeth']; // bei Bedarf anpassen
-  for (const group of startGroups) {
-    try {
-      await loadGroup(group, null, false); // false: Kamera noch nicht fitten
-      (state.groups[group] || []).forEach(model => {
-        model.visible = true;
-        model.layers.enable(0);
-      });
-      resetGroupColor(group);
-    } catch (err) {
-      console.error(`❌ Fehler beim Laden von "${group}":`, err);
+function findModelInLoadedById(id) {
+  if (!id) return null;
+  for (const arr of Object.values(state.groups || {})) {
+    for (const model of arr || []) {
+      const m = model?.userData?.meta;
+      if (!m) continue;
+      if (m.id === id || m.fma === id || m.name === id || model.name === id) return model;
     }
   }
+  return null;
+}
 
-  // 4) Farben ALLER Gruppen auf ihre Defaults syncen (State + 3D + UI)
-  Object.keys(state.defaultSettings.colors).forEach(group => {
-    const defaultColor =
-      state.defaultSettings.colors[group] ?? state.defaultSettings.defaultColor ?? 0xcccccc;
+function rebindCollectionAfterReload() {
+  let rebound = 0;
+  (state.collection || []).forEach(item => {
+    const id = item?.meta?.id || item?.meta?.fma || item?.meta?.name || item?.id;
+    const newModel = findModelInLoadedById(id);
+    if (newModel) { item.model = newModel; rebound++; }
+    // else: bleibt in der Sammlung, wird nur (noch) nicht sichtbar – ok
+  });
+  console.log(`🔗 Collection re-bound: ${rebound} Elemente`);
+}
 
-    state.colors[group] = defaultColor;      // UI/State
-    updateModelColors(group, defaultColor);  // 3D-Material
 
-    const input = document.getElementById(`${group}-color`);
-    if (input) input.value = '#' + defaultColor.toString(16).padStart(6, '0');
+export async function resetApp() {
+  console.log('🔄 Reset (hard) gestartet…');
+
+  // 0) Set-/Selection-Zustände neutralisieren
+  state.selected = { root: null, mesh: null, point: null, meta: null };
+  state.currentlySelected = null;
+  if (Array.isArray(state.collection)) state.collection.length = 0;
+  if (state.modes) state.modes.collection = false;
+
+  // 1) Controls/Kamera zurück
+  if (typeof controls?.reset === 'function') controls.reset();
+
+  // 2) Alle gemanagten Modelle raus
+  purgeAllManagedModels();
+
+  // 3) Basisgruppen frisch laden
+  await loadGroupByName('bones', { centerCamera: false });
+  state.groupStates.bones = true;
+  await loadGroupByName('teeth', { centerCamera: false });
+  state.groupStates.teeth = true;
+
+  // 3b) Warten bis state.groups gefüllt ist (wichtig fürs Rebind)
+  await waitForGroupsPopulated(['bones', 'teeth'], 1500);
+
+  // 3c) Sammlung neu an die geladenen Modelle binden
+  rebindCollectionAfterReload();
+
+  // 4) alle anderen Gruppen-Flags auf false lassen (Sammlung bleibt erhalten)
+  Object.keys(state.groupStates || {}).forEach(g => {
+    if (g !== 'bones' && g !== 'teeth') state.groupStates[g] = false;
   });
 
-  // 5) Raum-Defaults (Hintergrund & Licht) robust setzen
-  const bgColor = state.defaultSettings.background;
-  const lighting = state.defaultSettings.lighting ?? 1.0;
+  // 5) Farben auf Defaults (optional, wie gehabt)
+  const defaults = state?.defaultSettings?.colors || {};
+  const fallback = state?.defaultSettings?.defaultColor ?? 0xcccccc;
+  Object.keys(defaults).forEach(groupName => {
+    const hex = defaults[groupName] ?? fallback;
+    state.colors[groupName] = hex;
+    updateModelColors(groupName, hex);
+    const input = document.getElementById(`${groupName}-color`);
+    if (input) input.value = '#' + hex.toString(16).padStart(6, '0');
+  });
 
+  // 6) Hintergrund zurück (keine neuen Lichter bauen)
+  const bgColor = state?.defaultSettings?.background ?? 0x111111;
   scene.background = new THREE.Color(bgColor);
 
-  if (!scene.userData.light) {
-    const amb = new THREE.AmbientLight(0xffffff, lighting);
-    scene.add(amb);
-    scene.userData.light = amb;
-  } else {
-    scene.userData.light.intensity = lighting;
-  }
-
-  // UI-Inputs korrekt beschreiben
-  const bgInput = document.getElementById('color-room');  
+  const bgInput = document.getElementById('color-room');
   if (bgInput) bgInput.value = '#' + Number(bgColor).toString(16).padStart(6, '0');
 
-  const lightInput = document.getElementById('slider-room-brightness');
-  if (lightInput) lightInput.value = String(lighting);
-
-  // 6) Info-Panel schließen
-  hideInfoPanel?.();
-
-  // 7) Kamera auf Inhalt fitten & einmal rendern
+  // 7) Kamera fitten & Clipping auf gesamten Inhalt
   await fitCameraToScene(camera, controls, renderer, scene);
+  scene.updateMatrixWorld(true);
+  retuneCameraClipping(camera, scene);
+
+  // 8) UI
+  hideInfoPanel?.();
   renderer.render(scene, camera);
 
   console.log('✅ Reset abgeschlossen');

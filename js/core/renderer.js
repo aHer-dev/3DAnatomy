@@ -1,46 +1,63 @@
-
 import * as THREE from 'three';
 import { createOptimizer, optimizeRender } from './renderOptimizer.js';
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.sortObjects = true;
+// Existierendes Canvas nutzen oder neu anlegen
+const canvas = document.getElementById('canvas') || (() => {
+  const c = document.createElement('canvas');
+  c.id = 'canvas';
+  document.body.appendChild(c);
+  return c;
+})();
 
-// Performance-Settings für große Szenen
+// Renderer mit Performance-Optionen
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: true,
+  alpha: false,
+  powerPreference: 'high-performance',
+  preserveDrawingBuffer: false
+});
+
+
+// Auflösung deckeln, um GPU-/VRAM-Last zu senken
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+// Startgröße setzen
+renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
+
+// Performance-/Darstellungs-Settings
+renderer.sortObjects = true;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
 
-const mount = document.getElementById('canvas-container') || document.body;
-mount.appendChild(renderer.domElement);
+//shadow?
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-// Optimizer (optional, wird später initialisiert)
+// Optionaler Optimizer
 let optimizer = null;
 
 /**
- * Initialisiert den Optimizer (nach dem Scene/Camera Setup)
+ * Initialisiert den Optimizer (nach Scene/Camera Setup)
  */
 export function initOptimizer(camera, scene) {
   optimizer = createOptimizer(camera, scene, renderer);
 
-  // Auto-Aktivierung für Mobile
+  // Auto-Aktivierung für Mobile Geräte
   if (optimizer.isMobileDevice()) {
-    console.log('📱 Mobile Gerät erkannt - Optimierung verfügbar');
-    // Erstmal deaktiviert, kann später aktiviert werden
+    console.log('📱 Mobile Gerät erkannt – Optimierung verfügbar');
+    // Noch nicht automatisch aktivieren, nur vorbereiten
   }
 }
 
 /**
- * Erweiterte Render-Funktion mit optionaler Optimierung
+ * Render-Funktion mit optionaler Optimierung
  */
 export function renderWithOptimization(scene, camera) {
-  // Optimierung durchführen (falls aktiviert)
   if (optimizer && optimizer.enabled) {
     optimizeRender();
   }
-
-  // Normal rendern
   renderer.render(scene, camera);
 }
 
@@ -51,10 +68,30 @@ export function render(scene, camera) {
   renderer.render(scene, camera);
 }
 
-// Window Resize
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+// Schatten-Helfer (exportieren)
+export function requestShadowUpdate() {
+  // 1 Frame lang Shadow-Map neu rendern
+  renderer.shadowMap.needsUpdate = true;
+}
+export function freezeShadows() {
+  // Schatten-Map nicht jedes Frame neu berechnen
+  renderer.shadowMap.autoUpdate = false;
+}
+export function thawShadows() {
+  // vor großen Umbauten kurz aktivieren
+  renderer.shadowMap.autoUpdate = true;
+}
+
+/**
+ * Responsives Resize
+ */
+function onResize() {
+  const w = canvas.clientWidth || window.innerWidth;
+  const h = canvas.clientHeight || window.innerHeight;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(w, h, false);
+}
+window.addEventListener('resize', onResize);
 
 // Optimizer-Controls für Debug/Testing
 if (typeof window !== 'undefined') {
