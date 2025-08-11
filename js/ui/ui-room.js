@@ -1,10 +1,9 @@
-/**
- * @file ui-room.js
- * @description Initialisiert UI-Elemente für Raum-Einstellungen (Beleuchtung, Farbe, Helligkeit).
- */
+// js/ui/ui-room.js - ROOM LIGHTING FIX
 import * as THREE from 'three';
 import { scene } from '../core/scene.js';
-import { getLightRig } from '../lights.js';
+import { getLightRig, setLightIntensity } from '../lights.js';
+import { renderer } from '../core/renderer.js';
+import { camera } from '../core/camera.js';
 
 export function setupRoomUI() {
   const lightingSlider = document.getElementById('slider-lighting');
@@ -12,41 +11,64 @@ export function setupRoomUI() {
   const brightnessSlider = document.getElementById('slider-room-brightness');
 
   if (!lightingSlider || !colorInput || !brightnessSlider) {
-    console.warn('ui-room: Farb-/Helligkeitselemente fehlen.');
+    console.warn('⚠️ Room-UI Elemente fehlen');
     return;
   }
 
+  // FIX: Beleuchtungsregler funktionsfähig machen
+  lightingSlider.addEventListener('input', (e) => {
+    const intensity = parseFloat(e.target.value);
 
-  const rig = getLightRig();
-  if (!rig) {
-    console.warn('ui-room: Licht-Rig noch nicht initialisiert.');
-    return;
-  }
+    // Lichter anpassen
+    setLightIntensity(intensity);
 
-  /**
-   * 🔄 Aktualisiert die Hintergrundfarbe der Szene.
-   * Kombiniert die gewählte Farbe mit der eingestellten Helligkeit via HSL-Korrektur.
-   */
+    // HDR-Environment-Intensität anpassen
+    if (scene.environment) {
+      scene.environmentIntensity = 0.3 * intensity; // Skaliert mit Slider
+    }
+
+    // Renderer-Exposure anpassen
+    renderer.toneMappingExposure = 0.5 * intensity;
+
+    // Neu rendern
+    renderer.render(scene, camera);
+
+    console.log(`🔆 Beleuchtung: ${(intensity * 100).toFixed(0)}%`);
+  });
+
+  // FIX: Raumfarbe funktionsfähig
   function updateRoomColor() {
     const baseColor = new THREE.Color(colorInput.value);
     const brightness = parseFloat(brightnessSlider.value);
-    const hsl = baseColor.getHSL({ h: 0, s: 0, l: 0 });
-    hsl.l = Math.max(0, Math.min(1, hsl.l + (brightness - 0.5)));
-    baseColor.setHSL(hsl.h, hsl.s, hsl.l);
-    scene.background = baseColor;
+
+    // HSL-Anpassung für Helligkeit
+    const hsl = { h: 0, s: 0, l: 0 };
+    baseColor.getHSL(hsl);
+
+    // Helligkeit anwenden
+    hsl.l = Math.max(0, Math.min(1, hsl.l * brightness));
+
+    const finalColor = new THREE.Color();
+    finalColor.setHSL(hsl.h, hsl.s, hsl.l);
+
+    // Hintergrund setzen
+    scene.background = finalColor;
+
+    // Neu rendern
+    renderer.render(scene, camera);
+
+    console.log(`🎨 Raumfarbe: ${finalColor.getHexString()}`);
   }
 
-  // 📌 Event-Listener
   colorInput.addEventListener('input', updateRoomColor);
   brightnessSlider.addEventListener('input', updateRoomColor);
 
-  lightingSlider.addEventListener('input', (e) => {
-    const intensity = parseFloat(e.target.value);
-    rig.key.intensity = intensity;         // Hauptlicht
-    rig.rim.intensity = intensity * 0.6;   // Kantenlicht
-    rig.fill.intensity = intensity * 0.7;   // „Ambient“-Gefühl (Hemisphere)
-  });
-
+  // Initial setzen
   updateRoomColor();
-  console.log('ui-room initialisiert.');
+
+  // Initial Beleuchtung auf 1.0
+  lightingSlider.value = 1.0;
+  setLightIntensity(1.0);
+
+  console.log('✅ Room-UI initialisiert');
 }

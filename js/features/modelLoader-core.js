@@ -12,6 +12,7 @@ import { controls } from '../core/controls.js';
 import { fitCameraToScene } from '../core/cameraUtils.js';
 import { modelPath, withBase } from '../core/path.js';
 import { registerPickables } from '../features/selection.js';
+import { updateModelColors } from '../modelLoader/color.js'; // setzt Farbe pro Gruppe
 
 // --- State ---
 import { state } from '../store/state.js';
@@ -48,6 +49,23 @@ function prepareForShadows(root) {
   });
   return root;
 }
+
+
+const materialCache = new Map();
+
+function getOrCreateMaterial(color, opacity = 1) {
+  const key = `${color}_${opacity}`;
+  if (!materialCache.has(key)) {
+    materialCache.set(key, new THREE.MeshLambertMaterial({
+      color: color,
+      opacity: opacity,
+      transparent: opacity < 1
+    }));
+  }
+  return materialCache.get(key);
+}
+
+
 
 /**
  * Mehrere Modelle einer Gruppe laden (in Batches)
@@ -98,6 +116,8 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
     }
   }
 }
+
+
 
 /**
  * Genau EIN Modell laden und in Szene + State einhängen
@@ -190,6 +210,28 @@ export function loadSingleModel(entry, group, scene, loader) {
 /**
  * Gruppe per Namen laden (nutzt Meta/State)
  */
+function applyGroupColor(mesh, groupName) {
+  const groupConfig = config.groups[groupName];
+  if (groupConfig && groupConfig.color) {
+    mesh.material = mesh.material.clone();          // kein Shared-Material
+    mesh.material.color.setHex(groupConfig.color);  // Farbe setzen
+    mesh.material.needsUpdate = false;              // für Farbwechsel nicht nötig
+  }
+}
+
+// Ensure proper lighting for muscles (nur einmal hinzufügen)
+let __lightsAdded = false;
+function ensureMuscleLighting(scene) {
+  if (__lightsAdded) return;
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  scene.add(ambientLight, directionalLight);
+  __lightsAdded = true;
+}
+
+/**
+ * Gruppe per Namen laden (nutzt Meta/State)
+ */
 export async function loadGroupByName(groupName, { centerCamera = false, loaderReuse = null } = {}) {
   try {
     const entries = state.groupedMeta?.[groupName] || [];
@@ -200,8 +242,20 @@ export async function loadGroupByName(groupName, { centerCamera = false, loaderR
       return;
     }
 
+    // Licht sicherstellen
+    ensureMuscleLighting(scene);
+
     const loader = loaderReuse ?? createGLTFLoader();
     await loadModels(entries, groupName, centerCamera, scene, loader, camera, controls, renderer);
+
+    // Farbe NACH dem Laden pro Mesh anwenden (Material klonen!)
+    // Erwartung: loadModels setzt userData.groupName auf den relevanten Objekten/Meshes
+    scene.traverse(obj => {
+      if (obj.isMesh && obj.userData?.groupName === groupName) {
+        applyGroupColor(obj, groupName);
+      }
+    });
+
     console.log(`✅ loadGroupByName: Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
   } catch (err) {
     console.error(`❌ loadGroupByName: Fehler beim Laden von "${groupName}":`, err);

@@ -16,55 +16,132 @@ import { state } from '../store/state.js';
 export function initDynamicGroupLoading() {
     const loader = createGLTFLoader();
 
-    // optional: Aliasse für alte Button-IDs
-    const alias = { tendons: 'ligaments' };
+    // Liste aller möglichen Gruppen aus den Buttons
+    const buttonGroups = [
+        'bones', 'muscles', 'tendons', 'ligaments',
+        'arteries', 'brain', 'cartilage', 'ear',
+        'eyes', 'glands', 'heart', 'lungs',
+        'nerves', 'organs', 'skin_hair', 'teeth', 'veins'
+    ];
 
-    // Binde an alles, was die Meta hergibt
-    const groups = state.availableGroups || [];
-    let bound = 0;
+    console.log('🔍 Suche Gruppen-Buttons...');
+    let boundCount = 0;
 
-    // 1) Buttons mit id="btn-load-<group>" binden
-    for (const g of groups) {
-        const btn = document.getElementById(`btn-load-${g}`);
-        if (!btn) continue;
+    // Für jede Gruppe einen Event-Listener binden
+    buttonGroups.forEach(groupName => {
+        const btnId = `btn-load-${groupName}`;
+        const btn = document.getElementById(btnId);
+
+        if (!btn) {
+            console.warn(`⚠️ Button nicht gefunden: ${btnId}`);
+            return;
+        }
+
+        // Event-Listener hinzufügen
         btn.addEventListener('click', async () => {
-            const entries = state.groupedMeta[g] || [];
-            if (!entries.length) return;
+            console.log(`🔄 Lade Gruppe: ${groupName}`);
+
+            // Metadaten für diese Gruppe holen
+            const entries = state.groupedMeta?.[groupName] || [];
+
+            if (!entries.length) {
+                console.warn(`⚠️ Keine Modelle für Gruppe "${groupName}" in Metadaten gefunden`);
+                alert(`Keine Modelle für "${groupName}" verfügbar.`);
+                return;
+            }
+
             try {
                 btn.disabled = true;
+                btn.textContent = `${groupName} lädt...`;
                 showLoadingBar();
-                await loadModels(entries, g, true, scene, loader, camera, controls, renderer);
-            } catch (e) {
-                console.error(`Fehler beim Laden von "${g}"`, e);
+
+                // Modelle laden
+                await loadModels(
+                    entries,
+                    groupName,
+                    false, // centerCamera
+                    scene,
+                    loader,
+                    camera,
+                    controls,
+                    renderer
+                );
+
+                // Status aktualisieren
+                state.groupStates[groupName] = true;
+
+                console.log(`✅ Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
+
+                // Button-Text aktualisieren
+                btn.textContent = `${groupName} ✓`;
+                btn.style.backgroundColor = '#2a5a2a'; // Grün wenn geladen
+
+            } catch (err) {
+                console.error(`❌ Fehler beim Laden von "${groupName}":`, err);
+                alert(`Fehler beim Laden von "${groupName}": ${err.message}`);
+                btn.textContent = `${groupName} ❌`;
             } finally {
                 hideLoadingBar();
                 btn.disabled = false;
             }
         });
-        bound++;
-    }
 
-    // 2) Legacy-Buttons (z.B. #btn-load-tendons) auf Aliasse mappen
-    for (const legacy in alias) {
-        const target = alias[legacy];
-        const btn = document.getElementById(`btn-load-${legacy}`);
-        if (!btn || !groups.includes(target)) continue;
-        btn.addEventListener('click', async () => {
-            const entries = state.groupedMeta[target] || [];
-            if (!entries.length) return;
+        boundCount++;
+        console.log(`✅ Button gebunden: ${btnId}`);
+    });
+
+    // Legacy-Support für "tendons" -> "ligaments"
+    const tendonsBtn = document.getElementById('btn-load-tendons');
+    if (tendonsBtn && state.groupedMeta?.ligaments) {
+        tendonsBtn.addEventListener('click', async () => {
+            console.log('🔄 Lade ligaments über tendons-Button (Legacy)');
+
+            const entries = state.groupedMeta.ligaments || [];
+            if (!entries.length) {
+                alert('Keine Bänder/Sehnen verfügbar.');
+                return;
+            }
+
             try {
-                btn.disabled = true;
+                tendonsBtn.disabled = true;
                 showLoadingBar();
-                await loadModels(entries, target, true, scene, loader, camera, controls, renderer);
-            } catch (e) {
-                console.error(`Fehler beim Laden von "${target}"`, e);
+
+                await loadModels(
+                    entries,
+                    'ligaments',
+                    false,
+                    scene,
+                    loader,
+                    camera,
+                    controls,
+                    renderer
+                );
+
+                state.groupStates.ligaments = true;
+                console.log('✅ Ligaments über tendons-Button geladen');
+
+            } catch (err) {
+                console.error('❌ Fehler:', err);
             } finally {
                 hideLoadingBar();
-                btn.disabled = false;
+                tendonsBtn.disabled = false;
             }
         });
-        bound++;
+        boundCount++;
     }
 
-    console.log(`📦 Dynamisches Gruppenladen initialisiert (gebundene Buttons: ${bound}).`);
+    console.log(`📦 Dynamisches Gruppenladen initialisiert (${boundCount} Buttons gebunden)`);
+
+    // Debug: Zeige verfügbare Gruppen in Metadaten
+    if (state.groupedMeta) {
+        const availableGroups = Object.keys(state.groupedMeta);
+        console.log('📊 Verfügbare Gruppen in Metadaten:', availableGroups);
+
+        availableGroups.forEach(group => {
+            const count = state.groupedMeta[group]?.length || 0;
+            console.log(`  - ${group}: ${count} Modelle`);
+        });
+    } else {
+        console.error('❌ state.groupedMeta ist nicht initialisiert!');
+    }
 }

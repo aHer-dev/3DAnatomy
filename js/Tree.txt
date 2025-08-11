@@ -1,6 +1,4 @@
-pepperboy8@HuaweiD14:~/projects/3DAnatomy/js$ tree
-.
-├── Tree.txt
+─ Tree.txt
 ├── bootstrap
 │   ├── initCameraView.js
 │   ├── initGroupLoader.js
@@ -8,19 +6,30 @@ pepperboy8@HuaweiD14:~/projects/3DAnatomy/js$ tree
 │   ├── initSplashScreen.js
 │   ├── initStaticAssets.js
 │   └── startApp.js
+├── config
+│   └── config.js
 ├── core
 │   ├── camera.js
 │   ├── cameraUtils.js
 │   ├── controls.js
+│   ├── debug
+│   ├── events.js
 │   ├── path.js
+│   ├── performanceMonitor.js
+│   ├── raycaster.js
+│   ├── renderOptimizer.js
 │   ├── renderer.js
+│   ├── resourceManager.js
 │   └── scene.js
 ├── data
 │   └── meta.js
+├── debug
+│   └── performanceMonitor.js
 ├── features
 │   ├── appearance.js
 │   ├── groups.js
 │   ├── modelLoader-core.js
+│   ├── selection.js
 │   └── visibility.js
 ├── interaction
 │   ├── editPanel.js
@@ -43,7 +52,12 @@ pepperboy8@HuaweiD14:~/projects/3DAnatomy/js$ tree
 │   │   └── OrbitControls.js
 │   ├── loaders
 │   │   ├── DRACOLoader.js
-│   │   └── GLTFLoader.js
+│   │   ├── GLTFLoader.js
+│   │   ├── HDRLoader.js
+│   │   └── RGBELoader.js
+│   ├── math
+│   │   ├── Capsule.js
+│   │   └── Octree.js
 │   └── utils
 │       └── BufferGeometryUtils.js
 ├── three.module.js
@@ -69,6 +83,17 @@ pepperboy8@HuaweiD14:~/projects/3DAnatomy/js$ tree
 │   ├── ui-set.js
 │   └── ui-setupGroupLoadEvents.js
 └── utils
+    ├── cameraClipping.js
     ├── index.js
+    ├── migration-helper.js
     ├── mouse.js
     └── utils.js
+
+20 directories, 71 files
+
+
+ls
+Copy.py  css   draco  favicon.ico  images      js                   models        ordnerstruktur.txt  package.json  venv
+app.js   data  env    favicon.png  index.html  loading-sticker.png  node_modules  package-lock.json   three.min.js
+
+

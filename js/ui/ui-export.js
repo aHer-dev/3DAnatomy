@@ -8,71 +8,137 @@ import { state } from '../store/state.js'; // 🔁 Zugriff auf globale Zustände
  * Ermöglicht das Herunterladen und Wiederherstellen des aktuellen Datenzustands.
  */
 export function setupExportUI() {
-  // 🧭 Referenzen zu UI-Elementen: Export-Button & Import-File-Input
   const exportBtn = document.getElementById('btn-export-set');
   const importInput = document.getElementById('input-import-set');
+
   if (!exportBtn || !importInput) {
     console.warn('⚠️ Export-UI: Button oder File-Input fehlt.');
     return;
   }
 
-  // 📤 EXPORT-VORGANG
+  // EXPORT (unverändert)
   exportBtn.addEventListener('click', () => {
-    // 🗃️ Datenstruktur, die exportiert werden soll
     const data = {
-      setStructures: state.setStructures,       // Strukturierte Sets
-      colors: state.colors,                     // Aktuelle Farbkonfiguration
-      availableGroups: state.availableGroups    // (Optional) verfügbare anatomische Gruppen
-      // ➕ Hier kannst du beliebig weitere State-Daten hinzufügen
+      version: '2.0',
+      timestamp: Date.now(),
+      collection: state.collection.map(item => ({
+        id: item.model?.userData?.meta?.id || item.id,
+        name: item.name || item.model?.name,
+        group: item.model?.userData?.group,
+        // ✅ WICHTIG: Individuelle Einstellungen speichern
+        color: item.color || extractModelColor(item.model),
+        opacity: item.opacity || extractModelOpacity(item.model),
+        visible: item.visible !== false,
+        meta: item.meta
+      })),
+      colors: state.colors // Aktuelle Farben
     };
 
-    // 🧱 JSON als Blob erzeugen (Textdatei im Browser)
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: 'application/json',
-    });
-
-    // 📎 Temporäre URL für den Download erstellen
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-
-    // ⬇️ Simulierter Klick auf ein <a>-Element mit Download-Link
     const a = document.createElement('a');
     a.href = url;
-    a.download = '3DAnatomie_Set.json'; // Name der exportierten Datei
+    a.download = `anatomie-sammlung-${Date.now()}.json`;
     a.click();
-
-    // 🧹 Aufräumen
     URL.revokeObjectURL(url);
-
-    console.log('📤 Sammlung exportiert.');
+    console.log('📤 Sammlung exportiert:', state.collection.length, 'Objekte');
   });
 
-  // 📥 IMPORT-VORGANG
-  importInput.addEventListener('change', event => {
-    const file = event.target.files[0]; // Erstes ausgewähltes File
+  // IMPORT - VERBESSERT
+  importInput.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-
-    reader.onload = function (e) {
+    reader.onload = async function (e) {
       try {
-        const data = JSON.parse(e.target.result); // 📄 JSON-Daten einlesen
+        const data = JSON.parse(e.target.result);
+        console.log('📥 Importiere Sammlung...', data);
 
-        // ✅ Daten in den State übernehmen (wenn gültig)
-        if (Array.isArray(data.setStructures)) {
-          state.setStructures = data.setStructures;
+        // Sammlung leeren
+        state.collection = [];
+
+        // Für jedes gespeicherte Objekt
+        for (const savedItem of data.collection) {
+          // Prüfen ob Gruppe geladen ist, sonst laden
+          const groupName = savedItem.group;
+          if (groupName && (!state.groups[groupName] || state.groups[groupName].length === 0)) {
+            console.log(`📦 Lade Gruppe "${groupName}" für Import...`);
+            await loadGroupByName(groupName, { centerCamera: false });
+          }
+
+          // Modell in geladenen Gruppen finden
+          let foundModel = null;
+          for (const group of Object.values(state.groups)) {
+            for (const model of group) {
+              const modelId = model.userData?.meta?.id || model.name;
+              if (modelId === savedItem.id) {
+                foundModel = model;
+                break;
+              }
+            }
+            if (foundModel) break;
+          }
+
+          if (foundModel) {
+            // ✅ WICHTIG: Gespeicherte Einstellungen anwenden
+            if (savedItem.color) {
+              setModelColor(foundModel, savedItem.color);
+            }
+            if (savedItem.opacity !== undefined) {
+              setModelOpacity(foundModel, savedItem.opacity);
+            }
+            setModelVisibility(foundModel, savedItem.visible);
+
+            // Zur Sammlung hinzufügen mit allen Einstellungen
+            state.collection.push({
+              model: foundModel,
+              id: savedItem.id,
+              name: savedItem.name,
+              meta: savedItem.meta,
+              color: savedItem.color,
+              opacity: savedItem.opacity,
+              visible: savedItem.visible
+            });
+          } else {
+            console.warn(`⚠️ Modell ${savedItem.id} nicht gefunden`);
+          }
         }
 
-        if (typeof data.colors === 'object') {
-          state.colors = data.colors;
-        }
+        // UI aktualisieren
+        updateCollectionUI();
+        console.log('✅ Import abgeschlossen:', state.collection.length, 'Objekte');
+        alert(`✅ ${state.collection.length} Objekte importiert!`);
 
-        console.log('📥 Sammlung importiert.');
       } catch (err) {
+        console.error('❌ Import-Fehler:', err);
         alert('❌ Fehler beim Importieren der Datei.');
       }
     };
-
-    // 📖 Datei als Text lesen (wird in reader.onload verarbeitet)
     reader.readAsText(file);
   });
+}
+
+
+
+function extractModelColor(model) {
+  if (!model) return null;
+  let color = null;
+  model.traverse(child => {
+    if (child.isMesh && child.material && !color) {
+      color = child.material.color.getHex();
+    }
+  });
+  return color;
+}
+
+function extractModelOpacity(model) {
+  if (!model) return 1;
+  let opacity = 1;
+  model.traverse(child => {
+    if (child.isMesh && child.material) {
+      opacity = child.material.opacity || 1;
+    }
+  });
+  return opacity;
 }

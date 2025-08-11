@@ -28,12 +28,13 @@ import {
 } from '../features/appearance.js';
 
 import { state } from '../store/state.js';
+import { getConfig } from '../config/config.js';    // liest ui.colors
 import { initializeGroupsFromMeta } from '../data/meta.js';
 import { restoreAllGroupStates } from '../features/groups.js';
 
 import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
-
+import { setupGroupToggle } from '../features/groupToggle.js';
 import { setupInteractions } from '../interaction/index.js';
 import { setupBasicLights, getLightRig, fitShadowFrustumToScene } from '../lights.js';
 
@@ -42,7 +43,7 @@ import { initResizeHandler } from './initResizeHandler.js';
 import { initCameraView } from './initCameraView.js';
 
 import { setupUI } from '../ui/ui-init.js';
-import { retuneCameraClipping } from '../utils/cameraClipping.js';
+import { updateModelColors } from '../modelLoader/color.js';
 
 import { getResourceManager } from '../core/resourceManager.js';
 import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
@@ -95,7 +96,7 @@ export async function startApp() {
 
     const initialScreen = document.getElementById('initial-loading-screen');
     if (!initialScreen) { console.error('❌ Initial-Loading-Screen nicht gefunden'); return; }
-    initialScreen.style.backgroundColor = state.defaultSettings.loadingScreenColor;
+    initialScreen.style.backgroundColor = getConfig('ui.theme.loadingScreen', '#0B1020');
     initialScreen.style.display = 'flex';
 
     try {
@@ -106,6 +107,26 @@ export async function startApp() {
         // 2) Licht + (optional) HDR
         setupBasicLights(scene);
         await tryApplyEnvironment(renderer);
+
+
+        const cfgColors = getConfig('ui.colors', null);
+
+        // 2) In den State spiegeln, ohne existierende Defaults zu überschreiben
+        if (cfgColors) {
+            // defaultSettings.colors beherbergt die "Werksfarben"
+            state.defaultSettings = state.defaultSettings || {};
+            state.defaultSettings.colors = {
+                ...(state.defaultSettings.colors || {}),
+                ...cfgColors
+            };
+
+            // state.colors sind die "aktuell wirksamen" Farben (UI kann sie ändern)
+            state.colors = {
+                ...(state.colors || {}),
+                ...state.defaultSettings.colors
+            };
+        }
+
 
         // 3) UI
         setupUI?.();
@@ -120,7 +141,7 @@ export async function startApp() {
 
         await loadGroupByName('teeth', { centerCamera: false });
         state.groupStates.teeth = true;
-
+        
 
         // 5a) Schattenfähigkeiten für bereits geladene Objekte setzen
         scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
@@ -137,6 +158,15 @@ export async function startApp() {
         applyGroupMaterialTweaks('bones', state.groups, cfg);
         applyGroupMaterialTweaks('teeth', state.groups, cfg);
 
+
+        ['bones', 'teeth'].forEach(g => {
+            const hex =
+                (state.colors && state.colors[g]) ??
+                (state.defaultSettings?.colors && state.defaultSettings.colors[g]) ??
+                state.defaultSettings?.colors?.default;
+            if (hex != null) updateModelColors(g, hex);
+        });
+
         requestShadowUpdate();
         freezeShadows();
 
@@ -149,6 +179,7 @@ export async function startApp() {
         setupInteractions();
         initResizeHandler();
         initCameraView();
+        setupGroupToggle();
 
         // 8) Render-Loop (wie gehabt)
         function animate() {
@@ -169,6 +200,8 @@ export async function startApp() {
         initialScreen.style.opacity = '0';
         setTimeout(() => (initialScreen.style.display = 'none'), 500);
     }
+
+
 
     const resourceManager = getResourceManager();
     console.log('📊 Resource Manager Status:', resourceManager.getStats());
@@ -214,14 +247,32 @@ async function tryApplyEnvironment(renderer) {
     try {
         const { RGBELoader } = await import('three/addons/loaders/RGBELoader.js');
         const pmrem = new THREE.PMREMGenerator(renderer);
+        pmrem.compileEquirectangularShader(); // WICHTIG: Shader vorkompilieren
+
         const hdrUrl = 'env/default.hdr';
         const hdr = await new RGBELoader().loadAsync(hdrUrl);
+
+        // FIX: HDR korrekt verarbeiten
+        hdr.mapping = THREE.EquirectangularReflectionMapping;
+
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         hdr.dispose();
+        pmrem.dispose(); // WICHTIG: PMREM aufräumen
+
+        // FIX: Intensität reduzieren für HDR
         scene.environment = envTex;
-        scene.background = null;
-        console.log('HDR-Environment aktiv');
+        scene.environmentIntensity = 0.3; // NEU: Intensität stark reduzieren
+        scene.background = null; // Hintergrund bleibt schwarz
+
+        // FIX: Tone Mapping anpassen für HDR
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.5; // Reduziert von 1.0
+
+        console.log('✅ HDR-Environment aktiv (reduzierte Intensität)');
     } catch (e) {
-        console.warn('Kein HDR geladen (ok) – weiter ohne Environment.', e?.message);
+        console.warn('Kein HDR geladen - weiter ohne Environment.', e?.message);
+        // Fallback: Nur Lichter verwenden
+        scene.environment = null;
+        scene.environmentIntensity = 0;
     }
 }

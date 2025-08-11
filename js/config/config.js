@@ -1,4 +1,4 @@
-// ============================================
+//  ! BUG - AKTIVIERUNG BEINFLUST CANVAS
 // SCHRITT 1: config.js (Zentrale Konfiguration)
 // Erstellen Sie: js/config/config.js
 // ============================================
@@ -13,7 +13,7 @@ export const APP_CONFIG = {
     // ENTWICKLUNGSMODUS
     // ===================
     development: {
-        enabled: true,              // Debug-Features verfügbar machen
+        enabled: false,              // Debug-Features verfügbar machen
         verbose: false,             // Ausführliche Logs
         showWarnings: true          // Warnungen anzeigen
     },
@@ -35,7 +35,7 @@ export const APP_CONFIG = {
         },
 
         // 8.3 Performance Monitor  
-        performanceMonitor: true,   // ← HIER: true zum Aktivieren
+        performanceMonitor: false,   // ← HIER: true zum Aktivieren
         performanceConfig: {
             enabled: true,           // Doppelte Sicherheit
             showFPS: true,            // FPS-Anzeige
@@ -91,8 +91,36 @@ export const APP_CONFIG = {
 
         // Debug UI
         showDebugPanel: false,      // Debug-Panel anzeigen
-        debugPanelPosition: 'bottom-right'
-    }
+debugPanelPosition: 'bottom-right',
+    
+
+        // 🔵 THEME: globale Farben für Szene & Splash
+        theme: {
+            background: '#0B1020', // ← Szenen-Hintergrund (THREE.Scene.background)
+            loadingScreen: '#0B1020' // ← Farbe des Splash/Loading-Screens
+        },
+
+    // Standard-Kamera-Ausrichtung (Start & Reset)
+        cameraDefaults: {
+            // Position der Kamera [x, y, z] in Weltkoordinaten
+            position: [-0.5, 1.3 , 1.3],
+            // Zielpunkt (OrbitControls.target), typ. Körpermitte
+            target: [0.0, 0.9, 0.0]
+        },
+
+    // Default-Farben pro anatomischer Gruppe (Hex ohne # als Number)
+    // alles optional – fehlende Gruppen fallen auf default zurück
+        colors: {
+            default: 0xCCCCCC, // generischer Fallback
+            bones: 0xE8E6DD, // leicht warmes Knochenweiß
+            teeth: 0xFFFFFF,  // klinisch weiß
+            muscles: 0xFF7F7F, 
+            nerves: 0xFFD166, 
+            //... beliebig erweiterbar
+        }
+
+
+},
 };
 
 /**
@@ -208,6 +236,10 @@ export function getDevHelpers() {
         }
     };
 }
+
+
+
+
 
 // ===================
 // EXPORT FÜR EXTERNE NUTZUNG

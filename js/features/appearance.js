@@ -24,14 +24,53 @@ const fallback = {
  * @param {THREE.Object3D} model
  * @param {string | THREE.Color} color – z. B. "#ff0000" oder THREE.Color
  */
-export function setModelColor(model, hex) {
+export function setModelColor(model, color) {
   if (!model) return;
-  model.traverse(o => {
-    if (!o.isMesh || !o.material || !o.material.color) return;
-    o.material.color.setHex(hex);
-    o.material.needsUpdate = true;
+
+  // Color normalisieren
+  let threeColor;
+  if (typeof color === 'string') {
+    threeColor = new THREE.Color(color);
+  } else if (typeof color === 'number') {
+    threeColor = new THREE.Color(color);
+  } else if (color instanceof THREE.Color) {
+    threeColor = color.clone();
+  } else {
+    console.warn('Ungültiger Farbwert:', color);
+    return;
+  }
+
+  model.traverse(obj => {
+    if (!obj.isMesh || !obj.material) return;
+
+    // FIX: Material-Array handhaben
+    const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+
+    materials.forEach(mat => {
+      if (!mat) return;
+
+      // FIX: Nur wenn Material eine color-Property hat
+      if ('color' in mat) {
+        // Material klonen um Seiteneffekte zu vermeiden
+        const clonedMat = mat.clone();
+        clonedMat.color = threeColor.clone();
+
+        // FIX: envMapIntensity anpassen wenn zu hell
+        if ('envMapIntensity' in clonedMat) {
+          clonedMat.envMapIntensity = 0.3; // Reduziert!
+        }
+
+        // Material ersetzen
+        const index = materials.indexOf(mat);
+        materials[index] = clonedMat;
+      }
+    });
+
+    // Material-Array zurücksetzen
+    obj.material = Array.isArray(obj.material) ? materials : materials[0];
   });
 }
+
 
 
 export const appearance = {
@@ -110,16 +149,36 @@ export function applyGroupMaterialTweaks(groupName, c = cfg()) {
  */
 export function setModelOpacity(model, opacity = 1) {
   if (!model) return;
-  model.traverse(o => {
-    if (!o.isMesh || !o.material) return;
-    const mats = Array.isArray(o.material) ? o.material : [o.material];
-    mats.forEach(m => {
-      if (!m) return;
-      m.transparent = opacity < 1;
-      m.opacity = opacity;
-      m.depthWrite = opacity >= 1;
-      m.needsUpdate = true;
+
+  model.traverse(obj => {
+    if (!obj.isMesh || !obj.material) return;
+
+    const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+
+    materials.forEach(mat => {
+      if (!mat) return;
+
+      // Material klonen für Transparenz
+      const clonedMat = mat.clone();
+
+      // FIX: Transparenz-Einstellungen
+      if (opacity < 1) {
+        clonedMat.transparent = true;
+        clonedMat.opacity = opacity;
+        clonedMat.depthWrite = false; // Wichtig für Transparenz
+        clonedMat.side = THREE.DoubleSide; // Beide Seiten rendern
+      } else {
+        clonedMat.transparent = false;
+        clonedMat.opacity = 1;
+        clonedMat.depthWrite = true;
+        clonedMat.side = THREE.FrontSide;
+      }
+
+      const index = materials.indexOf(mat);
+      materials[index] = clonedMat;
     });
+
+    obj.material = Array.isArray(obj.material) ? materials : materials[0];
   });
 }
 

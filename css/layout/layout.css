@@ -12,14 +12,25 @@
 
 /* Hamburger-Menü bei geöffnetem Zustand */
 #menu-icon {
-    position: fixed;
-    z-index: 20;
+    position: fixed !important;
     top: 10px;
     left: 10px;
-    width: 30px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1100 !important;
+    font-size: 24px;
+    color: white;
+}
+
+
+#menu-icon:hover {
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 #menu-icon div {

@@ -1,6 +1,5 @@
 import * as THREE from 'three';
-import { camera } from './camera.js'; // Behalte das, falls du es lokal brauchst – aber Funktionen verwenden Parameter
-
+import { getConfig } from '../config/config.js';
 /**
  * Utility zur Erkennung mobiler Endgeräte (Viewport-basiert).
  */
@@ -12,16 +11,19 @@ export function isMobile() {
  * Setzt Kamera und Controls auf eine definierte Standardposition.
  */
 export function setCameraToDefault(camera, controls) {
-  const defaultPosition = new THREE.Vector3( -0.5, 0.9, 0.8); // Nah ran für Anatomie-Übersicht
-  const defaultTarget = new THREE.Vector3(0, 1.0, 0);
+  // 1) Werte aus der Config lesen (Fallbacks = deine bisherigen Hartwerte)
+  const posArr = getConfig('ui.cameraDefaults.position', [-0.5, 0.9, 0.8]); // [x,y,z]
+  const tgtArr = getConfig('ui.cameraDefaults.target', [0.0, 1.0, 0.0]); // [x,y,z]
 
-  camera.position.copy(defaultPosition);
-  controls.target.copy(defaultTarget);
-  controls.update();
-  camera.lookAt(defaultTarget);
-  
-  //console.log('📷 Kamera-Position gesetzt:', camera.position.toArray());
- // console.log('🎯 Controls.target gesetzt:', controls.target.toArray());
+  // 2) In THREE-Vektoren umwandeln
+  const defaultPosition = new THREE.Vector3(posArr[0], posArr[1], posArr[2]);
+  const defaultTarget = new THREE.Vector3(tgtArr[0], tgtArr[1], tgtArr[2]);
+
+  // 3) Kamera und Controls setzen
+  camera.position.copy(defaultPosition);  // Kamera auf Preset-Position
+  controls.target.copy(defaultTarget);    // OrbitControls-Fokuspunkt setzen
+  controls.update();                      // Controls intern aktualisieren
+  camera.lookAt(defaultTarget);           // Blickrichtung explizit setzen
 }
 
 /**

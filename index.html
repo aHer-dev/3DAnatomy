@@ -16,9 +16,10 @@
       </script>
 
   <!-- Stylesheets -->
-<link rel="stylesheet" href="css/main.css">
+
 </head>
 <body>
+  <link rel="stylesheet" href="css/main.css">
   <!-- Container für Renderer -->
   <div id="canvas-container">
   <canvas id="canvas" aria-label="3D Anatomie-Ansicht"></canvas>
@@ -69,7 +70,7 @@
       <ul id="menu-cartilage" class="dropdown-menu" aria-label="Knorpel-Modelle"></ul>
     </div>
     <div class="dropdown">
-      <button id="btn-load-ear" aria-haspopup="true" aria-expanded="false">Ohr ▼</button>
+      <button id="btn-load-ear" aria-haspopup="true" aria-expanded="false">Ohr/Nase ▼</button>
       <ul id="menu-ear" class="dropdown-menu" aria-label="Ohr-Modelle"></ul>
     </div>
     <div class="dropdown">
@@ -100,10 +101,10 @@
       <button id="btn-load-organs" aria-haspopup="true" aria-expanded="false">Organe ▼</button>
       <ul id="menu-organs" class="dropdown-menu" aria-label="Organe-Modelle"></ul>
     </div>
-    <div class="dropdown">
+    <!-- <div class="dropdown">
       <button id="btn-load-skin_hair" aria-haspopup="true" aria-expanded="false">Haut/Haare ▼</button>
       <ul id="menu-skin_hair" class="dropdown-menu" aria-label="Haut/Haar-Modelle"></ul>
-    </div>
+    </div> -->
     <div class="dropdown">
       <button id="btn-load-teeth" aria-haspopup="true" aria-expanded="false">Zähne ▼</button>
       <ul id="menu-teeth" class="dropdown-menu" aria-label="Zähne-Modelle"></ul>
@@ -135,11 +136,15 @@
     </div>
 
     <!-- Export / Import / Screenshot -->
-    <div id="tools" aria-label="Werkzeuge">
-      <button id="btn-export-set" aria-label="Sammlung exportieren">Exportieren</button>
-      <input type="file" id="input-import-set" accept=".json" aria-label="Sammlung importieren">
-      <button id="btn-screenshot" aria-label="Screenshot erstellen">Screenshot</button>
-    </div>
+  <div id="tools" aria-label="Werkzeuge">
+    <button id="btn-export-set" aria-label="Sammlung exportieren">📥 Exportieren</button>
+    <label for="input-import-set"
+      style="cursor: pointer; background: #4CAF50; color: white; padding: 8px 16px; border-radius: 4px; display: inline-block;">
+      📤 Importieren
+      <input type="file" id="input-import-set" accept=".json" aria-label="Sammlung importieren" style="display: none;">
+    </label>
+    <button id="btn-screenshot" aria-label="Screenshot erstellen">📸 Screenshot</button>
+  </div>
 
     <!-- Raum-Einstellungen -->
     <fieldset id="room-controls" aria-label="Raumeinstellungen">

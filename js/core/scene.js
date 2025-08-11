@@ -1,8 +1,10 @@
-//scene.js
-
+// core/scene.js
 import * as THREE from 'three';
+import { getConfig } from '../config/config.js';
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color('#020a1d'); // Wie in alter init.js
+// Eine einzige Scene-Instanz erstellen und benannt exportieren
+export const scene = new THREE.Scene();
 
-export { scene };
+// Hintergrundfarbe aus der Config lesen (Fallback = altes Blau)
+const bg = getConfig('ui.theme.background', '#0a152eff');
+scene.background = new THREE.Color(bg);

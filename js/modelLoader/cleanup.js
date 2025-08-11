@@ -11,13 +11,12 @@ export function disposeObject3D(root) {
 
   root.traverse(child => {
     if (child.isMesh) {
-      // Geometrie entsorgen
+      // Geometrie
       if (child.geometry) {
         child.geometry.dispose();
-        child.geometry = null;
       }
 
-      // Material und Texturen entsorgen
+      // Material(ien)
       const materials = Array.isArray(child.material)
         ? child.material
         : [child.material];
@@ -25,25 +24,19 @@ export function disposeObject3D(root) {
       materials.forEach(mat => {
         if (!mat) return;
 
-        // Alle Texturen entsorgen
-        Object.keys(mat).forEach(key => {
-          const prop = mat[key];
-          if (prop?.isTexture) {
-            prop.dispose();
-            mat[key] = null;
+        // Alle Texturen
+        ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap'].forEach(mapName => {
+          if (mat[mapName]) {
+            mat[mapName].dispose();
           }
         });
 
-        // Material entsorgen
         mat.dispose();
       });
-
-      // Material auf null setzen
-      child.material = null;
     }
   });
 
-  // Von Elternobjekt entfernen
+  // Aus Parent entfernen
   if (root.parent) {
     root.parent.remove(root);
   }

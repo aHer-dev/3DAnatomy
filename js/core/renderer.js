@@ -20,6 +20,7 @@ const renderer = new THREE.WebGLRenderer({
 
 
 // Auflösung deckeln, um GPU-/VRAM-Last zu senken
+renderer.frustumCulled = true; // Nur sichtbare Objekte rendern
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
 // Startgröße setzen
