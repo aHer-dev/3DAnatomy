@@ -1,204 +1,220 @@
 // ============================================
-// js/core/resourceManager.js - Sichere Speicherverwaltung
+// SCHRITT 2: js/core/resourceManager.js  
+// Minimaler, crashsicherer Resource Manager
 // ============================================
 
-import { config } from './config.js';
+import { getConfig, isFeatureEnabled } from '../config/config.js';
 
 /**
- * 🛡️ Sichere Resource-Verwaltung ohne App-Crash
- * Verwaltet Modelle, Texturen und andere Ressourcen im Speicher
+ * MINIMALER RESOURCE MANAGER
+ * - Startet im "Monitor-Only" Modus
+ * - Kann schrittweise aktiviert werden
+ * - Bricht niemals die bestehende App
  */
-export class ResourceManager {
+class MinimalResourceManager {
     constructor() {
-        this.cache = new Map();
-        this.size = 0;
-        this.maxSize = config.get('performance.memoryLimit') || 512 * 1024 * 1024; // 512MB default
-        this.enabled = false; // ← Standardmäßig DEAKTIVIERT
+        // Feature-Status prüfen
+        this.enabled = isFeatureEnabled('resourceManager');
+        this.debug = getConfig('features.resourceManagerConfig.debugLogs', false);
+        this.maxMemoryMB = getConfig('features.resourceManagerConfig.maxMemoryMB', 100);
+        this.autoCleanup = getConfig('features.resourceManagerConfig.autoCleanup', true);
 
-        // Statistiken
+        // Cache für Ressourcen (nur wenn aktiviert)
+        this.cache = new Map();
+        this.memoryUsage = 0;
+        this.maxMemoryBytes = this.maxMemoryMB * 1024 * 1024;
+
+        // Statistiken (immer sammeln für Monitoring)
         this.stats = {
-            totalLoaded: 0,
-            totalEvicted: 0,
+            totalRequests: 0,
             cacheHits: 0,
             cacheMisses: 0,
-            currentSize: 0
+            memoryUsage: 0,
+            itemsInCache: 0,
+            cleanupOperations: 0
         };
 
-        console.log('💾 ResourceManager initialisiert (deaktiviert)');
+        this.logStatus();
     }
 
     /**
-     * 🎛️ Aktiviert den Resource Manager
+     * HAUPT-LOAD-METHODE
+     * Wrapper um bestehende Loader - bricht nichts
      */
-    enable() {
-        this.enabled = true;
-        this.setupGarbageCollection();
-        console.log('⚡ ResourceManager aktiviert');
-    }
+    async load(url, loader, options = {}) {
+        this.stats.totalRequests++;
 
-    /**
-     * 🛑 Deaktiviert den Resource Manager
-     */
-    disable() {
-        this.enabled = false;
-        this.clearGarbageCollection();
-        console.log('🔄 ResourceManager deaktiviert');
-    }
-
-    /**
-     * 📦 Lädt eine Ressource (mit Caching falls aktiviert)
-     */
-    async load(url, loader) {
-        if (!this.enabled) {
-            // Direkt laden ohne Caching
-            return await this.fetchResource(url, loader);
-        }
-
-        // Cache prüfen
-        if (this.cache.has(url)) {
-            this.stats.cacheHits++;
-            const cached = this.cache.get(url);
-            cached.lastAccessed = Date.now();
-            console.log(`📋 Cache Hit: ${url}`);
-            return cached.resource;
-        }
-
-        // Neu laden
-        this.stats.cacheMisses++;
-        const resource = await this.fetchResource(url, loader);
-
-        if (resource) {
-            this.add(url, resource);
-        }
-
-        return resource;
-    }
-
-    /**
-     * 🔄 Tatsächliches Laden der Ressource
-     */
-    async fetchResource(url, loader) {
         try {
-            return new Promise((resolve, reject) => {
-                if (!loader || typeof loader.load !== 'function') {
-                    reject(new Error('Ungültiger Loader'));
-                    return;
-                }
+            // Cache-Check (nur wenn aktiviert)
+            if (this.enabled && this.cache.has(url)) {
+                this.stats.cacheHits++;
+                if (this.debug) console.log(`📦 Cache Hit: ${url}`);
+                return this.getCachedResource(url);
+            }
 
-                loader.load(
-                    url,
-                    (resource) => {
-                        console.log(`✅ Ressource geladen: ${url}`);
-                        resolve(resource);
-                    },
-                    undefined, // onProgress
-                    (error) => {
-                        console.warn(`⚠️ Ladefehler: ${url}`, error);
-                        reject(error);
-                    }
-                );
-            });
+            // Standard-Loading (wie bisher)
+            this.stats.cacheMisses++;
+            const resource = await this.loadResource(url, loader, options);
+
+            // In Cache speichern (nur wenn aktiviert und erfolgreich)
+            if (this.enabled && resource) {
+                this.addToCache(url, resource);
+            }
+
+            return resource;
+
         } catch (error) {
-            console.error(`❌ fetchResource Fehler: ${url}`, error);
+            // Fehler weiterwerfen - normale Error-Behandlung
+            console.warn(`⚠️ ResourceManager: Ladefehler für ${url}:`, error.message);
             throw error;
         }
     }
 
     /**
-     * ➕ Fügt Ressource zum Cache hinzu
+     * STANDARD-RESOURCE-LOADING
+     * Verwendet den bereitgestellten Loader (Ihre bestehenden Loader)
      */
-    add(url, resource) {
+    async loadResource(url, loader, options) {
+        return new Promise((resolve, reject) => {
+            // Validierung
+            if (!loader || typeof loader.load !== 'function') {
+                reject(new Error(`Ungültiger Loader für ${url}`));
+                return;
+            }
+
+            // Loading mit dem originalen Loader
+            loader.load(
+                url,
+                (resource) => {
+                    if (this.debug) console.log(`✅ Loaded: ${url}`);
+                    resolve(resource);
+                },
+                options.onProgress || undefined,
+                (error) => {
+                    console.warn(`❌ Load failed: ${url}`, error);
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    /**
+     * RESOURCE ZUM CACHE HINZUFÜGEN
+     * Mit automatischem Memory Management
+     */
+    addToCache(url, resource) {
         if (!this.enabled) return;
 
-        const size = this.estimateSize(resource);
-        const entry = {
-            resource,
-            size,
-            url,
-            addedAt: Date.now(),
-            lastAccessed: Date.now()
-        };
+        try {
+            const size = this.estimateResourceSize(resource);
 
-        // Speicher-Check vor dem Hinzufügen
-        while (this.size + size > this.maxSize && this.cache.size > 0) {
-            this.evictLeastRecentlyUsed();
-        }
-
-        // Hinzufügen
-        this.cache.set(url, entry);
-        this.size += size;
-        this.stats.totalLoaded++;
-        this.stats.currentSize = this.size;
-
-        console.log(`📦 Cached: ${url} (${this.formatBytes(size)})`);
-    }
-
-    /**
-     * ➖ Entfernt Ressource aus Cache
-     */
-    remove(url) {
-        if (!this.cache.has(url)) return false;
-
-        const entry = this.cache.get(url);
-        this.size -= entry.size;
-        this.cache.delete(url);
-        this.stats.currentSize = this.size;
-
-        // Ressource sicher disposen
-        this.disposeResource(entry.resource);
-
-        console.log(`🗑️ Removed from cache: ${url}`);
-        return true;
-    }
-
-    /**
-     * 🧹 LRU-Eviction (Least Recently Used)
-     */
-    evictLeastRecentlyUsed() {
-        if (this.cache.size === 0) return;
-
-        let oldestUrl = null;
-        let oldestTime = Date.now();
-
-        for (const [url, entry] of this.cache) {
-            if (entry.lastAccessed < oldestTime) {
-                oldestTime = entry.lastAccessed;
-                oldestUrl = url;
+            // Memory-Check vor dem Hinzufügen
+            if (this.autoCleanup) {
+                this.ensureMemorySpace(size);
             }
-        }
 
-        if (oldestUrl) {
-            this.remove(oldestUrl);
-            this.stats.totalEvicted++;
-            console.log(`🧹 Evicted LRU: ${oldestUrl}`);
+            // Resource cachen
+            const cacheEntry = {
+                resource,
+                size,
+                timestamp: Date.now(),
+                lastAccessed: Date.now(),
+                accessCount: 0
+            };
+
+            this.cache.set(url, cacheEntry);
+            this.memoryUsage += size;
+            this.stats.memoryUsage = this.memoryUsage;
+            this.stats.itemsInCache = this.cache.size;
+
+            if (this.debug) {
+                console.log(`📦 Cached: ${url} (${this.formatBytes(size)}) - Total: ${this.formatBytes(this.memoryUsage)}`);
+            }
+
+        } catch (error) {
+            console.warn(`⚠️ Cache-Fehler für ${url}:`, error);
+            // Fehler hier brechen die App nicht - Resource wird nur nicht gecacht
         }
     }
 
     /**
-     * 📏 Schätzt Speichergröße einer Ressource
+     * CACHED RESOURCE ABRUFEN
      */
-    estimateSize(resource) {
+    getCachedResource(url) {
+        const entry = this.cache.get(url);
+        if (entry) {
+            entry.lastAccessed = Date.now();
+            entry.accessCount++;
+            return entry.resource;
+        }
+        return null;
+    }
+
+    /**
+     * MEMORY SPACE SICHERSTELLEN
+     * Entfernt alte Resources wenn Memory-Limit erreicht
+     */
+    ensureMemorySpace(requiredSize) {
+        if (this.memoryUsage + requiredSize <= this.maxMemoryBytes) {
+            return; // Genug Speicher verfügbar
+        }
+
+        if (this.debug) {
+            console.log(`🧹 Memory cleanup needed: ${this.formatBytes(this.memoryUsage + requiredSize)} > ${this.formatBytes(this.maxMemoryBytes)}`);
+        }
+
+        // Sortiere nach "least recently used"
+        const entries = Array.from(this.cache.entries())
+            .sort((a, b) => a[1].lastAccessed - b[1].lastAccessed);
+
+        // Entferne alte Einträge bis genug Platz frei ist
+        let freedMemory = 0;
+        let removedItems = 0;
+
+        for (const [url, entry] of entries) {
+            if (this.memoryUsage - freedMemory + requiredSize <= this.maxMemoryBytes) {
+                break; // Genug Platz geschaffen
+            }
+
+            this.removeFromCache(url);
+            freedMemory += entry.size;
+            removedItems++;
+        }
+
+        this.stats.cleanupOperations++;
+
+        if (this.debug) {
+            console.log(`🧹 Cleanup: ${removedItems} items removed, ${this.formatBytes(freedMemory)} freed`);
+        }
+    }
+
+    /**
+     * RESOURCE AUS CACHE ENTFERNEN
+     */
+    removeFromCache(url) {
+        const entry = this.cache.get(url);
+        if (entry) {
+            // Three.js Resources sauber entsorgen
+            this.disposeResource(entry.resource);
+
+            this.memoryUsage -= entry.size;
+            this.cache.delete(url);
+            this.stats.memoryUsage = this.memoryUsage;
+            this.stats.itemsInCache = this.cache.size;
+        }
+    }
+
+    /**
+     * RESOURCE-GRÖSSE SCHÄTZEN
+     * Einfache Schätzung für verschiedene Ressourcentypen
+     */
+    estimateResourceSize(resource) {
         try {
             if (!resource) return 0;
 
-            let size = 0;
-
-            // GLTF Scene
+            // GLTF/GLB
             if (resource.scene) {
-                resource.scene.traverse((child) => {
-                    if (child.geometry) {
-                        size += this.estimateGeometrySize(child.geometry);
-                    }
-                    if (child.material) {
-                        size += this.estimateMaterialSize(child.material);
-                    }
-                });
-                return size;
-            }
-
-            // Geometry
-            if (resource.geometry) {
-                return this.estimateGeometrySize(resource.geometry);
+                return this.estimateSceneSize(resource.scene);
             }
 
             // Texture
@@ -207,166 +223,190 @@ export class ResourceManager {
                 return (img.width || 512) * (img.height || 512) * 4; // RGBA
             }
 
+            // Geometry
+            if (resource.attributes) {
+                let size = 0;
+                for (const attr of Object.values(resource.attributes)) {
+                    size += attr.array ? attr.array.byteLength : 0;
+                }
+                return size;
+            }
+
             // Fallback
-            return 1024; // 1KB default
+            return 1024; // 1KB Schätzung
 
         } catch (error) {
-            console.warn('⚠️ Size estimation failed:', error);
-            return 1024;
+            return 1024; // Sichere Schätzung
         }
     }
 
     /**
-     * 📐 Geometry-Größe schätzen
+     * SCENE-GRÖSSE SCHÄTZEN
      */
-    estimateGeometrySize(geometry) {
-        if (!geometry.attributes) return 0;
+    estimateSceneSize(scene) {
+        let totalSize = 0;
 
-        let size = 0;
-        for (const attributeName in geometry.attributes) {
-            const attribute = geometry.attributes[attributeName];
-            size += attribute.array.byteLength || 0;
+        try {
+            scene.traverse((child) => {
+                // Geometry
+                if (child.geometry?.attributes) {
+                    for (const attr of Object.values(child.geometry.attributes)) {
+                        totalSize += attr.array?.byteLength || 0;
+                    }
+                }
+
+                // Textures
+                if (child.material) {
+                    const materials = Array.isArray(child.material) ? child.material : [child.material];
+                    for (const mat of materials) {
+                        if (mat.map?.image) {
+                            const img = mat.map.image;
+                            totalSize += (img.width || 512) * (img.height || 512) * 4;
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.warn('⚠️ Scene-Größenschätzung fehlgeschlagen:', error);
+            return 10240; // 10KB Fallback
         }
 
-        if (geometry.index) {
-            size += geometry.index.array.byteLength || 0;
-        }
-
-        return size;
+        return totalSize;
     }
 
     /**
-     * 🎨 Material-Größe schätzen
-     */
-    estimateMaterialSize(material) {
-        let size = 0;
-
-        // Texturen durchgehen
-        for (const prop in material) {
-            const value = material[prop];
-            if (value && value.isTexture && value.image) {
-                const img = value.image;
-                size += (img.width || 512) * (img.height || 512) * 4;
-            }
-        }
-
-        return size || 1024;
-    }
-
-    /**
-     * 🗑️ Sichere Ressourcen-Entsorgung
+     * RESOURCE SAUBER ENTSORGEN
      */
     disposeResource(resource) {
         try {
-            if (!resource) return;
-
-            // GLTF Scene
-            if (resource.scene) {
-                resource.scene.traverse((child) => {
-                    if (child.geometry) child.geometry.dispose();
-                    if (child.material) {
-                        if (Array.isArray(child.material)) {
-                            child.material.forEach(mat => mat.dispose());
-                        } else {
-                            child.material.dispose();
-                        }
-                    }
-                });
-                return;
-            }
-
-            // Einzelne Ressourcen
-            if (resource.dispose && typeof resource.dispose === 'function') {
+            // Three.js dispose pattern
+            if (resource?.dispose) {
                 resource.dispose();
             }
 
+            if (resource?.scene) {
+                resource.scene.traverse((child) => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) {
+                        const materials = Array.isArray(child.material) ? child.material : [child.material];
+                        materials.forEach(mat => {
+                            mat.dispose();
+                            // Textures entsorgen
+                            Object.keys(mat).forEach(key => {
+                                if (mat[key]?.dispose) mat[key].dispose();
+                            });
+                        });
+                    }
+                });
+            }
         } catch (error) {
             console.warn('⚠️ Dispose-Fehler:', error);
+            // Fehler hier sind nicht kritisch
         }
     }
 
     /**
-     * 🧹 Automatische Garbage Collection
+     * BYTES FORMATIEREN
      */
-    setupGarbageCollection() {
-        const interval = config.get('performance.garbageCollectInterval') || 30000;
-
-        this.gcInterval = setInterval(() => {
-            this.performGarbageCollection();
-        }, interval);
+    formatBytes(bytes) {
+        const units = ['B', 'KB', 'MB', 'GB'];
+        let i = 0;
+        while (bytes >= 1024 && i < units.length - 1) {
+            bytes /= 1024;
+            i++;
+        }
+        return `${bytes.toFixed(1)} ${units[i]}`;
     }
 
-    clearGarbageCollection() {
-        if (this.gcInterval) {
-            clearInterval(this.gcInterval);
-            this.gcInterval = null;
-        }
+    /**
+     * STATUS LOGGEN
+     */
+    logStatus() {
+        const status = this.enabled ? '✅ AKTIV' : '📊 MONITORING-ONLY';
+        console.log(`🗄️ Resource Manager: ${status} (Limit: ${this.maxMemoryMB}MB)`);
     }
 
-    performGarbageCollection() {
-        if (!this.enabled) return;
+    /**
+     * FEATURE AKTIVIEREN/DEAKTIVIEREN
+     */
+    setEnabled(enabled) {
+        if (enabled === this.enabled) return;
 
-        const before = this.cache.size;
-        const threshold = Date.now() - (5 * 60 * 1000); // 5 Minuten alt
+        this.enabled = enabled;
 
-        for (const [url, entry] of this.cache) {
-            if (entry.lastAccessed < threshold) {
-                this.remove(url);
-            }
-        }
-
-        const removed = before - this.cache.size;
-        if (removed > 0) {
-            console.log(`🧹 GC: ${removed} alte Ressourcen entfernt`);
+        if (!enabled) {
+            // Cache leeren wenn deaktiviert
+            this.clearCache();
+            console.log('🗄️ Resource Manager deaktiviert - Cache geleert');
+        } else {
+            console.log('🗄️ Resource Manager aktiviert');
         }
     }
 
     /**
-     * 📊 Statistiken abrufen
+     * CACHE LEEREN
+     */
+    clearCache() {
+        for (const url of this.cache.keys()) {
+            this.removeFromCache(url);
+        }
+        console.log(`🧹 Cache geleert (${this.cache.size} Items)`);
+    }
+
+    /**
+     * STATISTIKEN ABRUFEN
      */
     getStats() {
         return {
             ...this.stats,
-            cacheSize: this.cache.size,
-            memorySizeMB: Math.round(this.size / (1024 * 1024) * 100) / 100,
-            maxSizeMB: Math.round(this.maxSize / (1024 * 1024) * 100) / 100,
-            enabled: this.enabled
+            enabled: this.enabled,
+            maxMemoryMB: this.maxMemoryMB,
+            currentMemoryMB: Math.round(this.memoryUsage / 1024 / 1024),
+            memoryUsagePercent: Math.round((this.memoryUsage / this.maxMemoryBytes) * 100),
+            cacheHitRate: this.stats.totalRequests > 0 ?
+                Math.round((this.stats.cacheHits / this.stats.totalRequests) * 100) : 0
         };
-    }
-
-    /**
-     * 🧹 Cache komplett leeren
-     */
-    clear() {
-        for (const [url] of this.cache) {
-            this.remove(url);
-        }
-        console.log('🧹 Resource Cache geleert');
-    }
-
-    /**
-     * 📏 Bytes formatieren
-     */
-    formatBytes(bytes) {
-        if (bytes === 0) return '0 B';
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 }
 
-// Globale Instanz
-export const resourceManager = new ResourceManager();
+// ===================
+// GLOBALE INSTANZ (Singleton Pattern)
+// ===================
+let globalResourceManager = null;
 
-// Browser-Console Tools
-if (typeof window !== 'undefined' && config.get('debug.enableConsoleCommands')) {
-    window.resourceManager = {
-        enable: () => resourceManager.enable(),
-        disable: () => resourceManager.disable(),
-        stats: () => console.table(resourceManager.getStats()),
-        clear: () => resourceManager.clear()
-    };
+/**
+ * RESOURCE MANAGER ERSTELLEN/ABRUFEN
+ */
+export function getResourceManager() {
+    if (!globalResourceManager) {
+        globalResourceManager = new MinimalResourceManager();
+    }
+    return globalResourceManager;
+}
 
-    console.log('💾 ResourceManager-Commands: window.resourceManager.enable/disable/stats/clear');
+/**
+ * EINFACHE API FÜR BESTEHENDEN CODE
+ * Kann direkt anstelle Ihrer bestehenden Loader verwendet werden
+ */
+export async function loadWithManager(url, loader, options = {}) {
+    const manager = getResourceManager();
+    return manager.load(url, loader, options);
+}
+
+/**
+ * MANAGER-KONTROLLE
+ */
+export function enableResourceManager() {
+    const manager = getResourceManager();
+    manager.setEnabled(true);
+}
+
+export function disableResourceManager() {
+    const manager = getResourceManager();
+    manager.setEnabled(false);
+}
+
+export function getResourceStats() {
+    const manager = getResourceManager();
+    return manager.getStats();
 }

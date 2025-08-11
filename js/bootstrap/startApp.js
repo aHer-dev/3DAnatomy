@@ -44,6 +44,8 @@ import { initCameraView } from './initCameraView.js';
 import { setupUI } from '../ui/ui-init.js';
 import { retuneCameraClipping } from '../utils/cameraClipping.js';
 
+import { getResourceManager } from '../core/resourceManager.js';
+import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
 
 // --- RENDER-OPTIMIERUNG (optional) ---
 let renderOptimizer = null;
@@ -152,7 +154,8 @@ export async function startApp() {
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
-            renderFrame();
+            updatePerformanceMonitor(); // ← Diese eine Zeile hinzufügen
+            renderer.render(scene, camera);
         }
         animate();
 
@@ -166,6 +169,9 @@ export async function startApp() {
         initialScreen.style.opacity = '0';
         setTimeout(() => (initialScreen.style.display = 'none'), 500);
     }
+
+    const resourceManager = getResourceManager();
+    console.log('📊 Resource Manager Status:', resourceManager.getStats());
 }
 
 // ============================================
