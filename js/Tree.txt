@@ -1,4 +1,10 @@
-─ Tree.txt
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy$ ls
+Copy.py  css   draco  favicon.ico  images      js                   models        ordnerstruktur.txt  package.json  venv
+app.js   data  env    favicon.png  index.html  loading-sticker.png  node_modules  package-lock.json   three.min.js
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy$ cd ./js
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy/js$ tree
+.
+├── Tree.txt
 ├── bootstrap
 │   ├── initCameraView.js
 │   ├── initGroupLoader.js
@@ -12,8 +18,8 @@
 │   ├── camera.js
 │   ├── cameraUtils.js
 │   ├── controls.js
-│   ├── debug
 │   ├── events.js
+│   ├── lodManager.js
 │   ├── path.js
 │   ├── performanceMonitor.js
 │   ├── raycaster.js
@@ -27,6 +33,7 @@
 │   └── performanceMonitor.js
 ├── features
 │   ├── appearance.js
+│   ├── groupToggle.js
 │   ├── groups.js
 │   ├── modelLoader-core.js
 │   ├── selection.js
@@ -77,6 +84,7 @@
 │   ├── ui-export.js
 │   ├── ui-init.js
 │   ├── ui-loading.js
+│   ├── ui-reset copy.js
 │   ├── ui-reset.js
 │   ├── ui-room.js
 │   ├── ui-search.js
@@ -89,11 +97,5 @@
     ├── mouse.js
     └── utils.js
 
-20 directories, 71 files
-
-
-ls
-Copy.py  css   draco  favicon.ico  images      js                   models        ordnerstruktur.txt  package.json  venv
-app.js   data  env    favicon.png  index.html  loading-sticker.png  node_modules  package-lock.json   three.min.js
-
-
+19 directories, 74 files
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy/js$ 

@@ -175,7 +175,7 @@ export async function startApp() {
         // 6) Auto-Optimizer (wie gehabt) …
 
         // 7) Zustände & Interaktion
-        restoreAllGroupStates();
+        // restoreAllGroupStates();
         setupInteractions();
         initResizeHandler();
         initCameraView();

@@ -1,3 +1,5 @@
+
+// groupToggle.js - ERWEITERTE VERSION
 import { state } from '../store/state.js';
 import { loadGroupByName } from './modelLoader-core.js';
 import { scene } from '../core/scene.js';
@@ -6,6 +8,11 @@ import { unregisterPickables } from './selection.js';
 
 // Track welche Gruppen geladen sind
 const loadedGroups = new Map();
+
+// ✅ NEU: Map global verfügbar machen für Reset
+if (typeof window !== 'undefined') {
+    window.groupToggleLoadedGroups = loadedGroups;
+}
 
 export async function toggleGroup(groupName) {
     const isLoaded = loadedGroups.get(groupName) || false;
@@ -16,22 +23,15 @@ export async function toggleGroup(groupName) {
 
         const models = state.groups[groupName] || [];
         for (const model of models) {
-            // Pickables entfernen
             unregisterPickables(model);
-
-            // Aus Szene entfernen
             scene.remove(model);
-
-            // Speicher freigeben
             disposeObject3D(model);
         }
 
-        // State aufräumen
         state.groups[groupName] = [];
         state.groupStates[groupName] = false;
         loadedGroups.set(groupName, false);
 
-        // Button-Stil aktualisieren
         const btn = document.getElementById(`btn-load-${groupName}`);
         if (btn) {
             btn.style.backgroundColor = '';
@@ -48,7 +48,6 @@ export async function toggleGroup(groupName) {
         state.groupStates[groupName] = true;
         loadedGroups.set(groupName, true);
 
-        // Button-Stil aktualisieren
         const btn = document.getElementById(`btn-load-${groupName}`);
         if (btn) {
             btn.style.backgroundColor = '#2a5a2a';
@@ -61,7 +60,6 @@ export async function toggleGroup(groupName) {
     return !isLoaded;
 }
 
-// Event-Listener für alle Gruppen-Buttons
 export function setupGroupToggle() {
     const groups = [
         'bones', 'teeth', 'muscles', 'tendons', 'arteries',
@@ -73,11 +71,8 @@ export function setupGroupToggle() {
     groups.forEach(group => {
         const btn = document.getElementById(`btn-load-${group}`);
         if (btn) {
-            // Entferne alte Listener
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
-
-            // Neuer Toggle-Listener
             newBtn.addEventListener('click', () => toggleGroup(group));
         }
     });
@@ -85,4 +80,29 @@ export function setupGroupToggle() {
     // Bones und Teeth als geladen markieren (da beim Start geladen)
     loadedGroups.set('bones', true);
     loadedGroups.set('teeth', true);
+
+    // ✅ NEU: Event-Listener für Reset
+    document.addEventListener('resetGroupStates', (event) => {
+        console.log('🔄 GroupToggle: Reset Event empfangen');
+
+        // Map komplett zurücksetzen
+        loadedGroups.clear();
+
+        // Nur die angegebenen Gruppen als geladen markieren
+        const loaded = event.detail?.loadedGroups || ['bones', 'teeth'];
+        loaded.forEach(group => {
+            loadedGroups.set(group, true);
+        });
+
+        console.log('✅ GroupToggle: States zurückgesetzt auf:', loaded);
+    });
+}
+
+// ✅ NEU: Debugging-Funktion
+export function getLoadedGroupsDebug() {
+    const loaded = [];
+    loadedGroups.forEach((isLoaded, group) => {
+        if (isLoaded) loaded.push(group);
+    });
+    return loaded;
 }
