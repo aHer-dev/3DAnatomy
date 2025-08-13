@@ -24,7 +24,7 @@ export const state = {
   // --- Standard-Einstellungen ---
   defaultSettings: {
     modelVariant: 'draco',
-    background: 0x111111,
+    background: 0x000042,
     transparency: 1,
     lighting: 1,
     loadingScreenColor: '#110facff',
