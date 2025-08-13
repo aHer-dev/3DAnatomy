@@ -1,8 +1,16 @@
 // js/bootstrap/initGroupLoader.js
 // 📦 Initialisiert das dynamische Laden anatomischer Gruppen (z. B. Muskeln) durch Buttons
 
+
+// js/bootstrap/initGroupLoader.js
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-import { loadModels, showLoadingBar, hideLoadingBar } from '../modelLoader/index.js';
+
+// ✳️ Nur EIN Import für loadModels – aus features:
+import { loadModels } from '../features/modelLoader-core.js';
+
+// ✳️ Progress-UI kommt aus modelLoader/progress.js:
+import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
+
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';

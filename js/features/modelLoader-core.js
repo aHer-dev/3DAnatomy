@@ -242,25 +242,25 @@ export async function loadGroupByName(groupName, { centerCamera = false, loaderR
       return;
     }
 
-    // Licht sicherstellen
-    ensureMuscleLighting(scene);
-
     const loader = loaderReuse ?? createGLTFLoader();
     await loadModels(entries, groupName, centerCamera, scene, loader, camera, controls, renderer);
 
-    // Farbe NACH dem Laden pro Mesh anwenden (Material klonen!)
-    // Erwartung: loadModels setzt userData.groupName auf den relevanten Objekten/Meshes
-    scene.traverse(obj => {
-      if (obj.isMesh && obj.userData?.groupName === groupName) {
-        applyGroupColor(obj, groupName);
-      }
-    });
+    // ✅ FIX: Farbe für ALLE Gruppen anwenden, nicht nur bones/teeth
+    const hex = state.colors?.[groupName] ??
+      state.defaultSettings?.colors?.[groupName] ??
+      state.defaultSettings?.colors?.default;
+
+    if (hex != null) {
+      updateModelColors(groupName, hex);
+      console.log(`🎨 Farbe für "${groupName}" gesetzt: 0x${hex.toString(16)}`);
+    }
 
     console.log(`✅ loadGroupByName: Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
   } catch (err) {
     console.error(`❌ loadGroupByName: Fehler beim Laden von "${groupName}":`, err);
   }
 }
+
 
 /**
  * Sichtbarkeitszustand einer Gruppe wiederherstellen

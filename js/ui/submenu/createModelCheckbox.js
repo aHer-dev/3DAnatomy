@@ -1,6 +1,6 @@
 // js/ui/submenu/createModelCheckbox.js
 import { scene } from '../../core/scene.js';
-import { loadModels, removeModelByFilename, updateGroupVisibility } from '../../modelLoader/index.js';
+import { loadGroup, unloadGroup, updateGroupVisibility, restoreGroupState } from '../../features/groups.js';
 
 /**
  * Erstellt eine Checkbox für ein einzelnes anatomisches Modell.

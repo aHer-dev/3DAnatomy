@@ -10,6 +10,21 @@ import * as THREE from 'three';
  * Hinweis: Für präzise Klicks auf das Canvas kann später eine Variante mit getBoundingClientRect()
  * ergänzt werden. Diese hier ist "good enough", solange das Canvas fullscreen arbeitet.
  */
+
+
+// --- Lightweight Logger (zentral schaltbar) ---
+let __DEBUG = true; // bei Bedarf auf false setzen
+export function setDebugLogging(on) { __DEBUG = !!on; }
+export function debugLog(tag, payload = {}) {
+    if (!__DEBUG) return;
+    const ts = new Date().toISOString().split('T')[1]?.replace('Z', '') || '';
+    try {
+        console.log(`[${ts}] ${tag}`, payload);
+    } catch {
+        console.log(`[${ts}] ${tag}`);
+    }
+}
+
 export function getNormalizedMouse(event) {
   const point = ('touches' in event && event.touches.length)
     ? event.touches[0]

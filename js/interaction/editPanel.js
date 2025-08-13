@@ -1,4 +1,4 @@
-// js/interaction/editPanel.js
+// js/interaction/editPanel.js - KORRIGIERTE VERSION
 import * as THREE from 'three';
 import { renderer } from '../core/renderer.js';
 import { scene } from '../core/scene.js';
@@ -6,8 +6,6 @@ import { camera } from '../core/camera.js';
 import { setModelColor, setModelOpacity } from '../features/appearance.js';
 import { toggleModelVisibility, isModelVisible } from '../features/visibility.js';
 import { state } from '../store/state.js';
-
-
 
 // WeakMap zur Speicherung von Event-Listenern
 const listeners = new WeakMap();
@@ -23,6 +21,83 @@ function removeElementListeners(element) {
         element.removeEventListener('click', handler.click);
         listeners.delete(element);
     }
+}
+
+/**
+ * ROBUSTE DATENEXTRAKTION FÜR COLLECTION
+ */
+function extractModelData(selectedModel) {
+    const extractId = (obj) => {
+        const candidates = [
+            obj.userData?.meta?.id,
+            obj.userData?.entry?.id,
+            obj.userData?.meta?.fma,
+            obj.userData?.entry?.fma,
+            obj.name,
+            obj.userData?.id
+        ];
+
+        for (const candidate of candidates) {
+            if (candidate && candidate !== 'undefined' && typeof candidate === 'string') {
+                return candidate.toString();
+            }
+        }
+
+        const baseName = obj.name || 'unknown';
+        return `${baseName}_${Date.now()}`;
+    };
+
+    const extractName = (obj) => {
+        const candidates = [
+            obj.userData?.meta?.labels?.en,
+            obj.userData?.meta?.labels?.de,
+            obj.userData?.entry?.labels?.en,
+            obj.userData?.entry?.labels?.de,
+            obj.userData?.meta?.label,
+            obj.userData?.entry?.label,
+            obj.name,
+            'Unbekannt'
+        ];
+
+        for (const candidate of candidates) {
+            if (candidate && candidate !== 'undefined' && typeof candidate === 'string') {
+                return candidate;
+            }
+        }
+
+        return 'Unbekanntes Objekt';
+    };
+
+    const extractGroup = (obj) => {
+        const candidates = [
+            obj.userData?.group,
+            obj.userData?.meta?.classification?.group,
+            obj.userData?.entry?.classification?.group,
+            obj.userData?.meta?.group,
+            obj.userData?.entry?.group
+        ];
+
+        for (const candidate of candidates) {
+            if (candidate && candidate !== 'undefined' && typeof candidate === 'string') {
+                return candidate;
+            }
+        }
+
+        // Fallback: Aus geladenen Gruppen erraten
+        for (const [groupName, models] of Object.entries(state.groups || {})) {
+            if (models.includes(obj)) {
+                return groupName;
+            }
+        }
+
+        return 'unknown';
+    };
+
+    return {
+        id: extractId(selectedModel),
+        name: extractName(selectedModel),
+        group: extractGroup(selectedModel)
+    };
 }
 
 /**
@@ -101,34 +176,86 @@ export function buildEditPanel(container, selectedModel) {
         listeners.set(toggleButton, { click: toggleHandler });
     }
 
+    // ✅ KORRIGIERTE "ZUM SET HINZUFÜGEN" LOGIK
     if (addToSetButton) {
         const addToSetHandler = () => {
-            if (state.collection.some(item => item.model === selectedModel)) {
-                console.warn('Modell bereits in der Sammlung.');
+            console.log('🔍 EDITPANEL: Füge zur Sammlung hinzu');
+            console.log('🔍 selectedModel:', {
+                name: selectedModel.name,
+                userData: selectedModel.userData,
+                meta: selectedModel.userData?.meta,
+                entry: selectedModel.userData?.entry
+            });
+
+            // ROBUSTE DATENEXTRAKTION
+            const { id: modelId, name: modelName, group: modelGroup } = extractModelData(selectedModel);
+
+            console.log('📋 EDITPANEL: Extrahierte Daten:', {
+                id: modelId,
+                name: modelName,
+                group: modelGroup
+            });
+
+            // PRÜFEN OB BEREITS VORHANDEN
+            const exists = state.collection.some(item => item.id === modelId);
+            if (exists) {
+                console.warn(`ℹ️ "${modelName}" ist bereits in der Sammlung.`);
+                alert(`ℹ️ "${modelName}" ist bereits in der Sammlung.`);
                 return;
             }
 
+            // AKTUELLE EIGENSCHAFTEN EXTRAHIEREN
             let currentColor = new THREE.Color(0xffffff);
             let currentOpacity = 1;
-            const currentVisible = isModelVisible(selectedModel);
+            const currentVisible = selectedModel.visible !== false;
 
             selectedModel.traverse(child => {
                 if (child.isMesh && child.material) {
-                    currentColor = child.material.color.clone();
+                    if (child.material.color) {
+                        currentColor = child.material.color.getHex();
+                    }
                     currentOpacity = child.material.opacity ?? 1;
                 }
             });
 
-            state.collection.push({
-                model: selectedModel,
-                meta: selectedModel.userData.meta,
+            // COLLECTION-ITEM ERSTELLEN
+            const collectionItem = {
+                // Eindeutige Identifikation
+                id: modelId,
+                name: modelName,
+                group: modelGroup,
+
+                // Vollständige Metadaten
+                meta: selectedModel.userData?.meta || selectedModel.userData?.entry || {},
+
+                // Aktuelle visuelle Eigenschaften
                 color: currentColor,
                 opacity: currentOpacity,
-                visible: currentVisible
-            });
+                visible: currentVisible,
 
-            console.log(`"${selectedModel.name}" zur Sammlung hinzugefügt.`);
+                // Modell-Referenz
+                model: selectedModel,
+
+                // Debug-Info
+                addedAt: Date.now(),
+                source: 'editPanel'
+            };
+
+            console.log('💾 EDITPANEL: Speichere Collection-Item:', collectionItem);
+
+            // ZUR SAMMLUNG HINZUFÜGEN
+            state.collection.push(collectionItem);
+
+            console.log(`✅ EDITPANEL: "${modelName}" zur Sammlung hinzugefügt!`);
+
+            // UI AKTUALISIEREN - Event senden für ui-set.js
+            const event = new CustomEvent('collectionUpdated');
+            document.dispatchEvent(event);
+
+            // Erfolgs-Feedback
+            alert(`✅ "${modelName}" zur Sammlung hinzugefügt!\n(Gruppe: ${modelGroup}, ID: ${modelId})`);
         };
+
         addToSetButton.addEventListener('click', addToSetHandler);
         listeners.set(addToSetButton, { click: addToSetHandler });
     }
@@ -144,7 +271,5 @@ export function cleanupEditPanel(container) {
     if (!container) return;
 
     container.querySelectorAll('input, button').forEach(removeElementListeners);
-    container.innerHTML = ''; // Optional: Container leeren
+    container.innerHTML = '';
 }
-
-// WICHTIG: KEIN weiterer Code außerhalb der Funktion!

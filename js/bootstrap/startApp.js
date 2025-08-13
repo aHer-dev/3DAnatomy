@@ -47,6 +47,8 @@ import { updateModelColors } from '../modelLoader/color.js';
 
 import { getResourceManager } from '../core/resourceManager.js';
 import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
+import '../bootstrap/initSplashScreen.js';     // initialisiert Splash-Exit
+import '../utils/migration-helper.js';         // sichere Initialisierung/Logs
 
 // --- RENDER-OPTIMIERUNG (optional) ---
 let renderOptimizer = null;
@@ -175,7 +177,7 @@ export async function startApp() {
         // 6) Auto-Optimizer (wie gehabt) …
 
         // 7) Zustände & Interaktion
-        restoreAllGroupStates();
+        // restoreAllGroupStates();
         setupInteractions();
         initResizeHandler();
         initCameraView();

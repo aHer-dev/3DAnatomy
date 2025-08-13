@@ -8,11 +8,12 @@
   <!-- Import-Map für lokale Three JSM-Module -->
   <link rel="icon" href="./favicon.png" type="image/png">
   
-  <script type="importmap">
+
+<script type="importmap">
   {
     "imports": {
-      "three": "./three.module.js",
-      "three/addons/": "./three-addons/"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
     }
   }
   </script>
@@ -117,7 +118,7 @@
     </div>
 
     <!-- Farbauswahl -->
-    <fieldset id="color-controls" aria-label="Farbsteuerung">
+    <!-- <fieldset id="color-controls" aria-label="Farbsteuerung">
       <legend>Farben</legend>
       <label for="color-bones">Knochen:</label>
       <input id="color-bones" type="color" value="#cccccc" aria-label="Farbe für Knochen">
@@ -125,7 +126,7 @@
       <input id="color-muscles" type="color" value="#ff0000" aria-label="Farbe für Muskeln">
       <label for="color-tendons">Sehnen:</label>
       <input id="color-tendons" type="color" value="#ffffff" aria-label="Farbe für Sehnen">
-    </fieldset>
+    </fieldset> -->
 
     <!-- Sammlung (Set) -->
     <div class="dropdown" aria-label="Sammlungssteuerung">
@@ -137,16 +138,16 @@
       <button id="btn-clear-set" aria-label="Sammlung leeren">Sammlung leeren</button>
     </div>
 
-    <!-- Export / Import / Screenshot -->
+  <!--  Export / Import / Screenshot 
   <div id="tools" aria-label="Werkzeuge">
     <button id="btn-export-set" aria-label="Sammlung exportieren">📥 Exportieren</button>
     <label for="input-import-set"
-      style="cursor: pointer; background: #4CAF50; color: white; padding: 8px 16px; border-radius: 4px; display: inline-block;">
+      style="cursor: pointer; background: #225eb8; color: white; padding: 8px 16px; border-radius: 4px; display: inline-block;">
       📤 Importieren
       <input type="file" id="input-import-set" accept=".json" aria-label="Sammlung importieren" style="display: none;">
     </label>
     <button id="btn-screenshot" aria-label="Screenshot erstellen">📸 Screenshot</button>
-  </div>
+  </div> -->
 
     <!-- Raum-Einstellungen -->
     <fieldset id="room-controls" aria-label="Raumeinstellungen">
@@ -154,7 +155,7 @@
       <label for="slider-lighting">Beleuchtung:</label>
       <input id="slider-lighting" type="range" min="0" max="2" step="0.1" value="1" aria-valuetext="1">
       <label for="color-room">Farbe:</label>
-      <input id="color-room" type="color" value="#210B41" aria-label="Raumfarbe">
+      <input id="color-room" type="color" value="#07062b" aria-label="Raumfarbe">
       <label for="slider-room-brightness">Helligkeit:</label>
       <input id="slider-room-brightness" type="range" min="0" max="1" step="0.01" value="0.4" aria-valuetext="0.4">
     </fieldset>
