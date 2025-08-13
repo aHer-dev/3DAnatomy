@@ -5,6 +5,7 @@
   },
   "devDependencies": {
     "@types/three": "^0.179.0",
+    "dependency-cruiser": "^16.10.4",
     "madge": "^8.0.0"
   }
 }
