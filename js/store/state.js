@@ -33,7 +33,7 @@ export const state = {
     colors: {
       bones: 0xcccccc,
       teeth: 0xcccccc,
-      muscles: 0xff0000,
+      muscles: 0xe94343,
       tendons: 0xffffff,
       arteries: 0xaa0000,
       brain: 0xffa500,

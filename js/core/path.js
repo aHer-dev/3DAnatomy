@@ -54,10 +54,11 @@ export function texturePath(filename) {
  * @param {string} file - Optional: spezifische Datei im draco Ordner
  * @returns {string}
  */
+
 export function dracoPath(file = '') {
-  const base = withBase('draco');
-  // DRACOLoader erwartet einen Pfad mit trailing slash
-  return file ? `${base}/${file}` : `${base}/`;
+  // GitHub Pages: relativ zum Dokument (unter /<REPO>/…)
+  const base = new URL('draco/', document.baseURI).href; // hat immer trailing slash
+  return file ? base + file : base;
 }
 
 /**

@@ -114,7 +114,7 @@ debugPanelPosition: 'bottom-right',
             default: 0xCCCCCC, // generischer Fallback
             bones: 0xE8E6DD, // leicht warmes Knochenweiß
             teeth: 0xE8E6DD,  // klinisch weiß
-            muscles: 0xcc3333, 
+            muscles: 0xe85861, 
             nerves: 0xFFD166, 
             //... beliebig erweiterbar
         }
