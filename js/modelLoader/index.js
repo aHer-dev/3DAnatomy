@@ -110,12 +110,7 @@ export { showLoadingBar, hideLoadingBar } from './progress.js';
 export { removeModelsByGroupOrSubgroup, removeModelByFilename } from './cleanup.js';
 
 // groups
-export {
-    loadGroup,
-    unloadGroup,
-    updateGroupVisibility,
-    restoreGroupState
-} from '../features/groups.js';
+
 
 // appearance
 export { setModelColor, setModelOpacity, setModelVisibility } from '../features/appearance.js';

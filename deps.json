@@ -1,0 +1,306 @@
+{
+  "bootstrap/initCameraView.js": [
+    "core/camera.js",
+    "core/cameraUtils.js",
+    "core/controls.js"
+  ],
+  "bootstrap/initGroupLoader.js": [
+    "core/camera.js",
+    "core/controls.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "loaders/gltfLoaderFactory.js",
+    "modelLoader/index.js",
+    "store/state.js"
+  ],
+  "bootstrap/initResizeHandler.js": [
+    "core/camera.js",
+    "core/renderer.js"
+  ],
+  "bootstrap/initSplashScreen.js": [],
+  "bootstrap/initStaticAssets.js": [
+    "core/path.js"
+  ],
+  "bootstrap/startApp.js": [
+    "bootstrap/initCameraView.js",
+    "bootstrap/initResizeHandler.js",
+    "bootstrap/initStaticAssets.js",
+    "config/config.js",
+    "core/camera.js",
+    "core/controls.js",
+    "core/renderOptimizer.js",
+    "core/renderer.js",
+    "core/resourceManager.js",
+    "core/scene.js",
+    "data/meta.js",
+    "debug/performanceMonitor.js",
+    "features/appearance.js",
+    "features/groupToggle.js",
+    "features/groups.js",
+    "features/modelLoader-core.js",
+    "interaction/index.js",
+    "lights.js",
+    "modelLoader/color.js",
+    "modelLoader/progress.js",
+    "store/state.js",
+    "ui/ui-init.js"
+  ],
+  "config/config.js": [],
+  "core/camera.js": [],
+  "core/cameraUtils.js": [
+    "config/config.js"
+  ],
+  "core/controls.js": [
+    "core/camera.js",
+    "core/renderer.js",
+    "interaction/infoPanel.js"
+  ],
+  "core/events.js": [],
+  "core/lodManager.js": [],
+  "core/path.js": [],
+  "core/performanceMonitor.js": [],
+  "core/raycaster.js": [
+    "core/camera.js",
+    "core/renderer.js",
+    "store/state.js",
+    "three-addons/math/Octree.js"
+  ],
+  "core/renderOptimizer.js": [],
+  "core/renderer.js": [
+    "core/renderOptimizer.js"
+  ],
+  "core/resourceManager.js": [
+    "config/config.js"
+  ],
+  "core/scene.js": [
+    "config/config.js"
+  ],
+  "data/meta.js": [
+    "core/path.js",
+    "store/state.js"
+  ],
+  "debug/performanceMonitor.js": [
+    "config/config.js"
+  ],
+  "features/appearance.js": [
+    "features/visibility.js",
+    "store/state.js"
+  ],
+  "features/groupToggle.js": [
+    "core/scene.js",
+    "features/modelLoader-core.js",
+    "features/selection.js",
+    "modelLoader/cleanup.js",
+    "store/state.js"
+  ],
+  "features/groups.js": [
+    "core/scene.js",
+    "data/meta.js",
+    "features/selection.js",
+    "features/visibility.js",
+    "modelLoader/index.js",
+    "store/state.js"
+  ],
+  "features/modelLoader-core.js": [
+    "core/camera.js",
+    "core/cameraUtils.js",
+    "core/controls.js",
+    "core/path.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "features/selection.js",
+    "features/visibility.js",
+    "loaders/gltfLoaderFactory.js",
+    "modelLoader/color.js",
+    "modelLoader/progress.js",
+    "store/state.js"
+  ],
+  "features/selection.js": [
+    "store/state.js"
+  ],
+  "features/visibility.js": [
+    "features/selection.js",
+    "store/state.js"
+  ],
+  "interaction/editPanel.js": [
+    "core/camera.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "features/appearance.js",
+    "features/visibility.js",
+    "store/state.js"
+  ],
+  "interaction/highlightModel.js": [
+    "store/state.js"
+  ],
+  "interaction/index.js": [
+    "core/renderer.js",
+    "features/visibility.js",
+    "interaction/highlightModel.js",
+    "interaction/infoPanel.js",
+    "interaction/raycastOnClick.js",
+    "store/state.js"
+  ],
+  "interaction/infoPanel.js": [
+    "core/camera.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "features/appearance.js",
+    "interaction/editPanel.js",
+    "store/state.js"
+  ],
+  "interaction/raycastOnClick.js": [
+    "core/raycaster.js"
+  ],
+  "lights.js": [],
+  "loaders/gltfLoaderFactory.js": [
+    "core/path.js"
+  ],
+  "modelLoader/cleanup.js": [
+    "core/scene.js",
+    "store/state.js"
+  ],
+  "modelLoader/color.js": [
+    "store/state.js"
+  ],
+  "modelLoader/index.js": [
+    "core/path.js",
+    "features/appearance.js",
+    "features/modelLoader-core.js",
+    "loaders/gltfLoaderFactory.js",
+    "modelLoader/cleanup.js",
+    "modelLoader/color.js",
+    "modelLoader/progress.js"
+  ],
+  "modelLoader/progress.js": [],
+  "store/state.js": [],
+  "three-addons/controls/OrbitControls.js": [],
+  "three-addons/loaders/DRACOLoader.js": [],
+  "three-addons/loaders/GLTFLoader.js": [
+    "three-addons/utils/BufferGeometryUtils.js"
+  ],
+  "three-addons/loaders/HDRLoader.js": [],
+  "three-addons/loaders/RGBELoader.js": [
+    "three-addons/loaders/HDRLoader.js"
+  ],
+  "three-addons/math/Capsule.js": [],
+  "three-addons/math/Octree.js": [
+    "three-addons/math/Capsule.js"
+  ],
+  "three-addons/utils/BufferGeometryUtils.js": [],
+  "three.module.js": [],
+  "ui/license.js": [],
+  "ui/licenseContent.js": [],
+  "ui/submenu/buildSubgroupList.js": [
+    "ui/submenu/createModelCheckbox.js"
+  ],
+  "ui/submenu/createGroupBlock.js": [
+    "ui/submenu/createGroupCheckbox.js",
+    "ui/submenu/createToggleButton.js"
+  ],
+  "ui/submenu/createGroupCheckbox.js": [
+    "features/groups.js"
+  ],
+  "ui/submenu/createModelCheckbox.js": [
+    "core/scene.js",
+    "features/groups.js"
+  ],
+  "ui/submenu/createToggleButton.js": [
+    "ui/submenu/buildSubgroupList.js",
+    "ui/submenu/groupMetaBySubgroup.js"
+  ],
+  "ui/submenu/groupMetaBySubgroup.js": [],
+  "ui/submenu/index.js": [
+    "store/state.js",
+    "ui/submenu/createGroupBlock.js",
+    "utils/index.js"
+  ],
+  "ui/ui-color.js": [
+    "modelLoader/color.js",
+    "store/state.js"
+  ],
+  "ui/ui-controls.js": [],
+  "ui/ui-export.js": [
+    "store/state.js"
+  ],
+  "ui/ui-init.js": [
+    "ui/license.js",
+    "ui/licenseContent.js",
+    "ui/submenu/index.js",
+    "ui/ui-color.js",
+    "ui/ui-controls.js",
+    "ui/ui-export.js",
+    "ui/ui-loading.js",
+    "ui/ui-reset.js",
+    "ui/ui-room.js",
+    "ui/ui-search.js",
+    "ui/ui-set.js"
+  ],
+  "ui/ui-loading.js": [
+    "store/state.js"
+  ],
+  "ui/ui-reset copy.js": [
+    "config/config.js",
+    "core/camera.js",
+    "core/cameraUtils.js",
+    "core/controls.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "features/modelLoader-core.js",
+    "interaction/infoPanel.js",
+    "modelLoader/color.js",
+    "store/state.js",
+    "utils/cameraClipping.js"
+  ],
+  "ui/ui-reset.js": [
+    "config/config.js",
+    "core/camera.js",
+    "core/cameraUtils.js",
+    "core/controls.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "features/modelLoader-core.js",
+    "features/selection.js",
+    "features/visibility.js",
+    "interaction/infoPanel.js",
+    "modelLoader/cleanup.js",
+    "modelLoader/color.js",
+    "store/state.js"
+  ],
+  "ui/ui-room.js": [
+    "core/camera.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "lights.js"
+  ],
+  "ui/ui-search.js": [
+    "core/controls.js",
+    "core/scene.js",
+    "interaction/highlightModel.js",
+    "interaction/infoPanel.js",
+    "modelLoader/index.js",
+    "store/state.js",
+    "utils/index.js"
+  ],
+  "ui/ui-set.js": [
+    "core/camera.js",
+    "core/controls.js",
+    "core/raycaster.js",
+    "core/renderer.js",
+    "core/scene.js",
+    "features/appearance.js",
+    "features/modelLoader-core.js",
+    "features/visibility.js",
+    "store/state.js"
+  ],
+  "ui/ui-setupGroupLoadEvents.js": [],
+  "utils/cameraClipping.js": [],
+  "utils/index.js": [
+    "core/path.js",
+    "data/meta.js",
+    "utils/mouse.js"
+  ],
+  "utils/migration-helper.js": [],
+  "utils/mouse.js": [],
+  "utils/utils.js": []
+}
