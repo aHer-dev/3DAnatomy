@@ -49,7 +49,7 @@ label[for="load-file"]:hover {
 /* === 🎛️ Input-Elemente (Farbauswahl, Range etc.) === */
 input[type="color"],
 input[type="range"] {
-    accent-color: #3419cf;
+    accent-color: #193acf;
     border: none;
     cursor: pointer;
     border-radius: 5px;
@@ -75,7 +75,7 @@ input[type="range"] {
 }
 
 .info-icon:hover {
-    color: #3419cf;
+    color: #1977cf;
 }
 
 /* Schließen-Button für Infofenster */

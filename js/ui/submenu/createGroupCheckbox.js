@@ -1,5 +1,8 @@
 // js/ui/submenu/createGroupCheckbox.js
 import { loadGroup, unloadGroup, updateGroupVisibility, restoreGroupState } from '../../features/groups.js';
+// Diese Datei nutzt loadModels & removeModelByFilename, importiere sie explizit:
+import { loadModels } from '../../features/modelLoader-core.js';
+import { removeModelByFilename } from '../../modelLoader/cleanup.js';
 
 /**
  * Erstellt eine Checkbox für eine anatomische Hauptgruppe (z. B. muscles).

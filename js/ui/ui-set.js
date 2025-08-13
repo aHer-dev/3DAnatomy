@@ -254,7 +254,7 @@ function addDebugButton() {
   if (!controls) return;
 
   const debugBtn = document.createElement('button');
-  debugBtn.textContent = '🐛 Debug Sammlung';
+  debugBtn.textContent = '🐛';
   debugBtn.style.backgroundColor = '#ff9800';
   debugBtn.style.margin = '5px';
 

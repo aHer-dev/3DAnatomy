@@ -12,7 +12,7 @@ import { getMeta } from '../utils/index.js';                     // 📄 Lädt M
 import { highlightModel } from '../interaction/highlightModel.js';
 import { showInfoPanel } from '../interaction/infoPanel.js';
 
-import { loadModels } from '../modelLoader/index.js';      // 🔄 Funktion zum Laden einzelner Modelle
+import { loadModels } from '../features/modelLoader-core.js'; 
 
 /**
  * Initialisiert die Suchleiste und verbindet sie mit einem Ergebnis-Popup.
