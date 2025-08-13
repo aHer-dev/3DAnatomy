@@ -1,7 +1,6 @@
 # dependencies & envs
 node_modules/
 venv/
-env/
 
 # local three copies (wir laden über CDN)
 js/three-addons/
