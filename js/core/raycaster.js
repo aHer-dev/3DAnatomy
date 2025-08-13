@@ -1,7 +1,7 @@
 // js/core/raycaster.js
 // Hybrid: Offizielle Three.js Octree + Custom Mesh-Raycasting
 import * as THREE from 'three';
-import { Octree } from '../three-addons/math/Octree.js'; // ✅ Ihre offizielle Octree
+import { Octree } from 'three/addons/math/Octree.js'
 import { state } from '../store/state.js';
 import { camera } from './camera.js';
 import { renderer } from './renderer.js';
