@@ -1,4 +1,4 @@
-// js/interaction/editPanel.js - KORRIGIERTE VERSION
+// js/interaction/editPanel.js - VERBESSERTE UX VERSION
 import * as THREE from 'three';
 import { renderer } from '../core/renderer.js';
 import { scene } from '../core/scene.js';
@@ -21,6 +21,73 @@ function removeElementListeners(element) {
         element.removeEventListener('click', handler.click);
         listeners.delete(element);
     }
+}
+
+/**
+ * 🎯 DEZENTES FEEDBACK - Zeigt Status unter dem Button
+ */
+function showFeedbackMessage(container, message, type = 'success') {
+    // Entferne vorherige Nachrichten
+    const existing = container.querySelector('.feedback-message');
+    if (existing) existing.remove();
+
+    const feedback = document.createElement('div');
+    feedback.className = 'feedback-message';
+    feedback.textContent = message;
+
+    const colors = {
+        success: '#4caf50',
+        error: '#f44336',
+        warning: '#ff9800',
+        info: '#2196f3'
+    };
+
+    feedback.style.cssText = `
+        margin-top: 8px;
+        padding: 8px 12px;
+        background: ${colors[type] || colors.success};
+        color: white;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        text-align: center;
+    `;
+
+    container.appendChild(feedback);
+
+    // Fade in
+    setTimeout(() => feedback.style.opacity = '1', 10);
+
+    // Fade out nach 3 Sekunden
+    setTimeout(() => {
+        feedback.style.opacity = '0';
+        setTimeout(() => {
+            if (feedback.parentNode) feedback.remove();
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * 🎯 BUTTON-ANIMATION - Kurz grün färben bei Erfolg
+ */
+function animateButtonSuccess(button, originalText) {
+    const originalColor = button.style.backgroundColor;
+    const originalTextColor = button.style.color;
+
+    // Erfolgs-Animation
+    button.style.backgroundColor = '#4caf50';
+    button.style.color = 'white';
+    button.textContent = '✅ Hinzugefügt!';
+    button.disabled = true;
+
+    setTimeout(() => {
+        button.style.backgroundColor = originalColor;
+        button.style.color = originalTextColor;
+        button.textContent = originalText;
+        button.disabled = false;
+    }, 2000);
 }
 
 /**
@@ -122,7 +189,7 @@ export function buildEditPanel(container, selectedModel) {
       <input type="range" id="edit-opacity" min="0" max="1" step="0.01" value="1" />
     </label>
     <button id="edit-toggle-visible">Verstecken/Anzeigen</button>
-    <button id="edit-add-to-set">Zum Set hinzufügen</button>
+    <button id="edit-add-to-set" style="margin-bottom: 5px;">Zum Set hinzufügen</button>
   `;
 
     const colorInput = container.querySelector('#edit-color');
@@ -176,16 +243,12 @@ export function buildEditPanel(container, selectedModel) {
         listeners.set(toggleButton, { click: toggleHandler });
     }
 
-    // ✅ KORRIGIERTE "ZUM SET HINZUFÜGEN" LOGIK
+    // 🎯 VERBESSERTE "ZUM SET HINZUFÜGEN" LOGIK - DEZENTES FEEDBACK
     if (addToSetButton) {
+        const originalButtonText = addToSetButton.textContent;
+
         const addToSetHandler = () => {
             console.log('🔍 EDITPANEL: Füge zur Sammlung hinzu');
-            console.log('🔍 selectedModel:', {
-                name: selectedModel.name,
-                userData: selectedModel.userData,
-                meta: selectedModel.userData?.meta,
-                entry: selectedModel.userData?.entry
-            });
 
             // ROBUSTE DATENEXTRAKTION
             const { id: modelId, name: modelName, group: modelGroup } = extractModelData(selectedModel);
@@ -200,7 +263,22 @@ export function buildEditPanel(container, selectedModel) {
             const exists = state.collection.some(item => item.id === modelId);
             if (exists) {
                 console.warn(`ℹ️ "${modelName}" ist bereits in der Sammlung.`);
-                alert(`ℹ️ "${modelName}" ist bereits in der Sammlung.`);
+
+                // 🎯 DEZENTES FEEDBACK FÜR BEREITS VORHANDEN
+                showFeedbackMessage(container, `"${modelName}" ist bereits in der Sammlung`, 'warning');
+
+                // Button kurz orange färben
+                const originalColor = addToSetButton.style.backgroundColor;
+                addToSetButton.style.backgroundColor = '#ff9800';
+                addToSetButton.style.color = 'white';
+                addToSetButton.textContent = '⚠️ Bereits vorhanden';
+
+                setTimeout(() => {
+                    addToSetButton.style.backgroundColor = originalColor;
+                    addToSetButton.style.color = '';
+                    addToSetButton.textContent = originalButtonText;
+                }, 2000);
+
                 return;
             }
 
@@ -248,12 +326,34 @@ export function buildEditPanel(container, selectedModel) {
 
             console.log(`✅ EDITPANEL: "${modelName}" zur Sammlung hinzugefügt!`);
 
+            // 🎯 DEZENTES FEEDBACK - Kein Alert!
+            showFeedbackMessage(
+                container,
+                `"${modelName}" zur Sammlung hinzugefügt`,
+                'success'
+            );
+
+            // 🎯 BUTTON-ANIMATION
+            animateButtonSuccess(addToSetButton, originalButtonText);
+
             // UI AKTUALISIEREN - Event senden für ui-set.js
             const event = new CustomEvent('collectionUpdated');
             document.dispatchEvent(event);
 
-            // Erfolgs-Feedback
-            alert(`✅ "${modelName}" zur Sammlung hinzugefügt!\n(Gruppe: ${modelGroup}, ID: ${modelId})`);
+            // 🎯 OPTIONAL: Leichtes Highlight für das Modell
+            selectedModel.traverse(child => {
+                if (child.isMesh && child.material) {
+                    const originalEmissive = child.material.emissive?.clone() || new THREE.Color(0x000000);
+                    child.material.emissive = new THREE.Color(0x00ff00);
+
+                    setTimeout(() => {
+                        child.material.emissive = originalEmissive;
+                        renderer.render(scene, camera);
+                    }, 1000);
+                }
+            });
+
+            renderer.render(scene, camera);
         };
 
         addToSetButton.addEventListener('click', addToSetHandler);

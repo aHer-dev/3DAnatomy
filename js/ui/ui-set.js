@@ -1,6 +1,6 @@
 /**
- * @file ui-set.js - VERBESSERTE VERSION
- * @description Sammlung mit automatischem Nachladen von entladenen Gruppen
+ * @file ui-set.js - VERBESSERTE UX VERSION
+ * @description Sammlung mit dezentestem Feedback (ohne störende Alerts)
  */
 import * as THREE from 'three';
 
@@ -15,10 +15,83 @@ import { hideAllManagedModels, setModelVisibility, showModel, hideModel } from '
 import { rebuildRaycastStructures } from '../core/raycaster.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
 
+/**
+ * 🎯 DEZENTES TOAST-SYSTEM (ersetzt störende Alerts)
+ */
+function showToast(message, type = 'success', duration = 3000) {
+  // Entferne vorherige Toasts
+  const existingToast = document.getElementById('collection-toast');
+  if (existingToast) existingToast.remove();
 
+  const toast = document.createElement('div');
+  toast.id = 'collection-toast';
+  toast.textContent = message;
 
+  const colors = {
+    success: '#4caf50',
+    error: '#f44336',
+    warning: '#ff9800',
+    info: '#2196f3'
+  };
 
+  toast.style.cssText = `
+        position: fixed;
+        top: 70px;
+        right: 20px;
+        background: ${colors[type] || colors.success};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+        max-width: 300px;
+        word-wrap: break-word;
+    `;
 
+  document.body.appendChild(toast);
+
+  // Slide in
+  setTimeout(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(0)';
+  }, 10);
+
+  // Slide out
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (toast.parentNode) toast.remove();
+    }, 300);
+  }, duration);
+}
+
+/**
+ * 🎯 BUTTON-ANIMATION - Visuelles Feedback ohne Popup
+ */
+function animateButtonSuccess(button, originalText, successText = '✅ Hinzugefügt!') {
+  const originalColor = button.style.backgroundColor;
+  const originalTextColor = button.style.color;
+
+  // Erfolgs-Animation
+  button.style.backgroundColor = '#4caf50';
+  button.style.color = 'white';
+  button.textContent = successText;
+  button.disabled = true;
+
+  setTimeout(() => {
+    button.style.backgroundColor = originalColor;
+    button.style.color = originalTextColor;
+    button.textContent = originalText;
+    button.disabled = false;
+  }, 2000);
+}
 
 function debugCollection() {
   console.log('\n=== COLLECTION DEBUG ===');
@@ -169,7 +242,8 @@ async function showCollectionRobust() {
   console.log('\n🎯 ZEIGE SAMMLUNG (PROFESSIONELL)...');
 
   if (!state.collection || state.collection.length === 0) {
-    alert('ℹ️ Die Sammlung ist leer.');
+    // 🎯 DEZENTES FEEDBACK statt Alert
+    showToast('Die Sammlung ist leer', 'info');
     return;
   }
 
@@ -240,9 +314,15 @@ async function showCollectionRobust() {
 
     console.log(`✅ ${preparedCount} Objekte aus Sammlung angezeigt`);
 
+    // 🎯 DEZENTES ERFOLGS-FEEDBACK
+    showToast(`Sammlung angezeigt: ${preparedCount} Objekte`, 'success');
+
   } catch (err) {
     console.error('❌ Fehler beim Anzeigen der Sammlung:', err);
     showSceneAfterLoading(); // Szene auch bei Fehler wieder zeigen
+
+    // 🎯 DEZENTES FEHLER-FEEDBACK
+    showToast('Fehler beim Anzeigen der Sammlung', 'error');
   } finally {
     hideCollectionLoadingOverlay();
   }
@@ -254,7 +334,7 @@ function addDebugButton() {
   if (!controls) return;
 
   const debugBtn = document.createElement('button');
-  debugBtn.textContent = '🐛';
+  debugBtn.textContent = '🛠';
   debugBtn.style.backgroundColor = '#ff9800';
   debugBtn.style.margin = '5px';
 
@@ -283,12 +363,15 @@ export function setupSetUI() {
     newShowBtn.addEventListener('click', showCollectionRobust);
   }
 
-  // Add-Button mit gefixter Version
+  // Add-Button mit gefixter Version + DEZENTES FEEDBACK
   if (addBtn) {
+    const originalButtonText = addBtn.textContent;
+
     addBtn.addEventListener('click', () => {
       const selected = state.selected?.root || state.currentlySelected;
       if (!selected) {
-        alert('⚠️ Bitte wählen Sie zuerst ein Modell aus!');
+        // 🎯 DEZENTES FEEDBACK statt Alert
+        showToast('Bitte wählen Sie zuerst ein Modell aus!', 'warning');
         return;
       }
 
@@ -299,7 +382,7 @@ export function setupSetUI() {
         entry: selected.userData?.entry
       });
 
-      // ROBUSTE ID-Extraktion
+      // ROBUSTE ID-EXTRAKTION
       const extractId = (obj) => {
         const candidates = [
           obj.userData?.meta?.id,
@@ -383,7 +466,21 @@ export function setupSetUI() {
       // PRÜFEN OB BEREITS VORHANDEN
       const exists = state.collection.some(item => item.id === modelId);
       if (exists) {
-        alert(`ℹ️ "${modelName}" ist bereits in der Sammlung.`);
+        // 🎯 DEZENTES FEEDBACK statt Alert
+        showToast(`"${modelName}" ist bereits in der Sammlung`, 'warning');
+
+        // Button kurz orange färben
+        const originalColor = addBtn.style.backgroundColor;
+        addBtn.style.backgroundColor = '#ff9800';
+        addBtn.style.color = 'white';
+        addBtn.textContent = '⚠️ Bereits vorhanden';
+
+        setTimeout(() => {
+          addBtn.style.backgroundColor = originalColor;
+          addBtn.style.color = '';
+          addBtn.textContent = originalButtonText;
+        }, 2000);
+
         return;
       }
 
@@ -421,23 +518,29 @@ export function setupSetUI() {
 
       console.log('✅ Zur Sammlung hinzugefügt:', modelName);
 
-      // Visuelles Feedback
-      highlightModel(selected);
+      // 🎯 DEZENTES VISUELLES FEEDBACK (kein Alert!)
+      showToast(`"${modelName}" zur Sammlung hinzugefügt`, 'success');
 
-      // Erfolgs-Alert mit Details
-      alert(`✅ "${modelName}" zur Sammlung hinzugefügt!\n(Gruppe: ${modelGroup}, ID: ${modelId})`);
+      // 🎯 BUTTON-ANIMATION
+      animateButtonSuccess(addBtn, originalButtonText);
+
+      // Visuelles Feedback am Modell
+      highlightModel(selected);
     });
   }
 
-  // Clear-Button (wie gehabt)
+  // Clear-Button (mit dezentem Feedback)
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       if (state.collection.length === 0) {
-        alert('ℹ️ Die Sammlung ist bereits leer.');
+        // 🎯 DEZENTES FEEDBACK statt Alert
+        showToast('Die Sammlung ist bereits leer', 'info');
         return;
       }
 
+      // Bestätigung mit dezentem System (könnte auch durch Toast ersetzt werden)
       if (confirm(`🗑️ Möchten Sie wirklich ${state.collection.length} Objekte aus der Sammlung entfernen?`)) {
+        const removedCount = state.collection.length;
         state.collection = [];
         updateSetList();
 
@@ -449,6 +552,9 @@ export function setupSetUI() {
 
         renderer.render(scene, camera);
         console.log('🗑️ Sammlung geleert');
+
+        // 🎯 DEZENTES FEEDBACK
+        showToast(`Sammlung geleert: ${removedCount} Objekte entfernt`, 'info');
       }
     });
   }
@@ -496,8 +602,6 @@ function highlightModel(model) {
   });
   renderer.render(scene, camera);
 }
-
-
 
 /**
  * Aktualisiert die UI-Liste der Sammlung - VERBESSERT
@@ -564,6 +668,9 @@ function updateSetList() {
           state.collection.splice(itemIndex, 1);
           updateSetList();
           console.log('📤 Aus Sammlung entfernt:', item.name);
+
+          // 🎯 DEZENTES FEEDBACK
+          showToast(`"${item.name}" aus Sammlung entfernt`, 'info', 2000);
         }
       });
 
@@ -591,6 +698,7 @@ function updateSetList() {
   count.textContent = `${state.collection.length} Objekt(e) in Sammlung`;
   setList.appendChild(count);
 }
+
 /**
  * Gruppiert die Sammlung nach anatomischen Gruppen für bessere Übersicht
  */
@@ -621,14 +729,13 @@ function groupCollectionByGroup(collection) {
   return sortedGroups;
 }
 
-
-
 /**
  * Legacy-Support für andere Module
  */
 export function updateCollectionUI() {
   updateSetList();
 }
+
 export function clearCollection() {
   state.collection = [];
   updateCollectionUI();
@@ -642,6 +749,7 @@ export function clearCollection() {
   renderer.render(scene, camera);
   console.log('🗑️ Sammlung geleert (Baseline sichtbar).');
 }
+
 export function showCollectionInScene() {
   const showBtn = document.getElementById('btn-show-set');
   if (showBtn) showBtn.click();
@@ -655,81 +763,81 @@ function showCollectionLoadingOverlay() {
     overlay = document.createElement('div');
     overlay.id = 'collection-loading-overlay';
     overlay.innerHTML = `
-      <div class="loading-content">
-        <div class="loading-spinner"></div>
-        <h3>Lade Sammlung</h3>
-        <p id="loading-progress-text">Bereite vor...</p>
-        <div class="loading-bar">
-          <div id="loading-progress-fill" class="loading-bar-fill"></div>
-        </div>
-      </div>
-    `;
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <h3>Lade Sammlung</h3>
+                <p id="loading-progress-text">Bereite vor...</p>
+                <div class="loading-bar">
+                    <div id="loading-progress-fill" class="loading-bar-fill"></div>
+                </div>
+            </div>
+        `;
 
     // CSS-Styles hinzufügen
     overlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      font-family: Arial, sans-serif;
-    `;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            font-family: Arial, sans-serif;
+        `;
 
     const style = document.createElement('style');
     style.textContent = `
-      .loading-content {
-        text-align: center;
-        color: white;
-        max-width: 300px;
-      }
-      
-      .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #333;
-        border-top: 3px solid #4CAF50;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 20px;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      .loading-bar {
-        width: 100%;
-        height: 8px;
-        background: #333;
-        border-radius: 4px;
-        overflow: hidden;
-        margin-top: 15px;
-      }
-      
-      .loading-bar-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #4CAF50, #45a049);
-        transition: width 0.3s ease;
-        width: 0%;
-      }
-      
-      .loading-content h3 {
-        margin: 0 0 10px 0;
-        font-size: 24px;
-      }
-      
-      .loading-content p {
-        margin: 0;
-        font-size: 14px;
-        opacity: 0.8;
-      }
-    `;
+            .loading-content {
+                text-align: center;
+                color: white;
+                max-width: 300px;
+            }
+            
+            .loading-spinner {
+                width: 50px;
+                height: 50px;
+                border: 3px solid #333;
+                border-top: 3px solid #4CAF50;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 20px;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            .loading-bar {
+                width: 100%;
+                height: 8px;
+                background: #333;
+                border-radius: 4px;
+                overflow: hidden;
+                margin-top: 15px;
+            }
+            
+            .loading-bar-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #4CAF50, #45a049);
+                transition: width 0.3s ease;
+                width: 0%;
+            }
+            
+            .loading-content h3 {
+                margin: 0 0 10px 0;
+                font-size: 24px;
+            }
+            
+            .loading-content p {
+                margin: 0;
+                font-size: 14px;
+                opacity: 0.8;
+            }
+        `;
     document.head.appendChild(style);
     document.body.appendChild(overlay);
   }

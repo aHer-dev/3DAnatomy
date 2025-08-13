@@ -1,24 +1,22 @@
-// js/bootstrap/startApp.js
-// 🚀 Orchestriert den vollständigen Start der Anwendung
+// js/bootstrap/startApp.js - IMPORT FIX
 
 // ============================================
 // 🎛️ RENDER-OPTIMIERUNG KONFIGURATION
 // ============================================
 const RENDER_OPTIMIZATION = {
-    enabled: false,              // ← HIER EIN/AUS: true für Mobile-Optimierung
-    autoActivate: true,          // ← Auto-Aktivierung bei schlechter Performance
-    frustumCulling: true,        // ← Nur sichtbare Objekte rendern
-    lod: true,                   // ← Level-of-Detail basierend auf Entfernung
-    debugStats: false            // ← Performance-Stats in Console ausgeben
+    enabled: false,
+    autoActivate: true,
+    frustumCulling: true,
+    lod: true,
+    debugStats: false
 };
-// ============================================
 
-import * as THREE from 'three'; // ⬅️ nötig für PMREM etc.
+import * as THREE from 'three';
 
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
-import { renderer, requestShadowUpdate, freezeShadows/*, thawShadows*/ } from '../core/renderer.js';
+import { renderer, requestShadowUpdate, freezeShadows } from '../core/renderer.js';
 
 import {
     defaultAppearance as appearance,
@@ -28,7 +26,7 @@ import {
 } from '../features/appearance.js';
 
 import { state } from '../store/state.js';
-import { getConfig } from '../config/config.js';    // liest ui.colors
+import { getConfig } from '../config/config.js';
 import { initializeGroupsFromMeta } from '../data/meta.js';
 import { restoreAllGroupStates } from '../features/groups.js';
 
@@ -42,19 +40,20 @@ import { initStaticAssets } from './initStaticAssets.js';
 import { initResizeHandler } from './initResizeHandler.js';
 import { initCameraView } from './initCameraView.js';
 
+// ✅ FEHLENDER IMPORT HINZUGEFÜGT
+import { initDynamicGroupLoading } from './initGroupLoader.js';
+
 import { setupUI } from '../ui/ui-init.js';
 import { updateModelColors } from '../modelLoader/color.js';
 
 import { getResourceManager } from '../core/resourceManager.js';
 import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
-import '../bootstrap/initSplashScreen.js';     // initialisiert Splash-Exit
-import '../utils/migration-helper.js';         // sichere Initialisierung/Logs
+import '../bootstrap/initSplashScreen.js';
+import '../utils/migration-helper.js';
 
 // --- RENDER-OPTIMIERUNG (optional) ---
 let renderOptimizer = null;
 let useOptimization = false;
-
-
 
 // Conditional Import - nur laden wenn Optimierung aktiviert
 async function loadOptimizer() {
@@ -71,27 +70,23 @@ async function loadOptimizer() {
     }
 }
 
-
 /**
  * Render-Funktion mit optionaler Optimierung
  */
 function renderFrame() {
-    // 🎛️ OPTIMIERUNG: Nur ausführen wenn aktiviert
     if (useOptimization && renderOptimizer) {
         renderOptimizer.optimize();
 
-        // Debug-Stats (optional)
-        if (RENDER_OPTIMIZATION.debugStats && Math.random() < 0.01) { // Nur jedes 100. Frame
+        if (RENDER_OPTIMIZATION.debugStats && Math.random() < 0.01) {
             renderOptimizer.debugLog();
         }
     }
 
-    // Standard-Rendering
     renderer.render(scene, camera);
 }
 
 /**
- * Hauptinitialisierung der App – ruft Setup-Module auf und lädt erste Modelle.
+ * Hauptinitialisierung der App
  */
 export async function startApp() {
     initStaticAssets();
@@ -110,58 +105,61 @@ export async function startApp() {
         setupBasicLights(scene);
         await tryApplyEnvironment(renderer);
 
-
         const cfgColors = getConfig('ui.colors', null);
 
         // 2) In den State spiegeln, ohne existierende Defaults zu überschreiben
         if (cfgColors) {
-            // defaultSettings.colors beherbergt die "Werksfarben"
             state.defaultSettings = state.defaultSettings || {};
             state.defaultSettings.colors = {
                 ...(state.defaultSettings.colors || {}),
                 ...cfgColors
             };
 
-            // state.colors sind die "aktuell wirksamen" Farben (UI kann sie ändern)
             state.colors = {
                 ...(state.colors || {}),
                 ...state.defaultSettings.colors
             };
         }
 
-
         // 3) UI
         setupUI?.();
 
-        // 4) (optional) Optimizer laden/konfigurieren – unverändert …
-        // if (RENDER_OPTIMIZATION.enabled || RENDER_OPTIMIZATION.autoActivate) { … }
-
-        // 5) Initiale Gruppen laden
+        // 4) Initiale Gruppen laden
         showLoadingBar();
+
+        console.log('🦴 Lade Standard-Gruppen: bones, teeth, cartilage...');
+
         await loadGroupByName('bones', { centerCamera: true });
         state.groupStates.bones = true;
+        console.log('✅ Bones geladen');
 
         await loadGroupByName('teeth', { centerCamera: false });
         state.groupStates.teeth = true;
-        
+        console.log('✅ Teeth geladen');
+
+        await loadGroupByName('cartilage', { centerCamera: false });
+        state.groupStates.cartilage = true;
+        console.log('✅ Cartilage geladen');
 
         // 5a) Schattenfähigkeiten für bereits geladene Objekte setzen
         scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
 
-        // 5b) Shadow-Frustum ans Motiv anpassen (falls Helper vorhanden)
+        // 5b) Shadow-Frustum ans Motiv anpassen
         const rig = getLightRig?.();
         if (rig?.key) fitShadowFrustumToScene(rig.key, scene);
 
-        // … nach loadGroupByName('bones') und ('teeth'):
+        // Material-Tweaks für alle Standard-Gruppen
         const cfg = state?.defaultSettings?.appearance || appearance;
 
         applyRendererAppearance(renderer, cfg);
         applyEnvIntensity(scene, cfg);
+
         applyGroupMaterialTweaks('bones', state.groups, cfg);
         applyGroupMaterialTweaks('teeth', state.groups, cfg);
+        applyGroupMaterialTweaks('cartilage', state.groups, cfg);
 
-
-        ['bones', 'teeth'].forEach(g => {
+        // Farben für alle drei Gruppen setzen
+        ['bones', 'teeth', 'cartilage'].forEach(g => {
             const hex =
                 (state.colors && state.colors[g]) ??
                 (state.defaultSettings?.colors && state.defaultSettings.colors[g]) ??
@@ -171,30 +169,30 @@ export async function startApp() {
 
         requestShadowUpdate();
         freezeShadows();
-
         hideLoadingBar();
 
-        // 6) Auto-Optimizer (wie gehabt) …
-
-        // 7) Zustände & Interaktion
-        // restoreAllGroupStates();
+        // 6) Zustände & Interaktion (OHNE setupGroupToggle!)
         setupInteractions();
         initResizeHandler();
         initCameraView();
-        setupGroupToggle();
 
-        // 8) Render-Loop (wie gehabt)
+        // ❌ setupGroupToggle(); // ← DEAKTIVIERT! Überschreibt Animation
+
+        // ✅ 7) BUTTON-ANIMATION ALS LETZTES (damit nichts mehr überschreibt)
+        console.log('🎬 Initialisiere Button-Animationen als letztes...');
+        initDynamicGroupLoading(); // ← Jetzt funktioniert es!
+
+        // 8) Render-Loop
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
-            updatePerformanceMonitor(); // ← Diese eine Zeile hinzufügen
+            updatePerformanceMonitor();
             renderer.render(scene, camera);
         }
         animate();
 
-        console.log('🚀 App erfolgreich gestartet');
-        // optional Debug:
-        // window.app = { state, scene, camera, controls, renderer };
+        console.log('🚀 App erfolgreich gestartet mit Button-Animationen');
+
     } catch (err) {
         console.error('❌ Fehler beim App-Start:', err);
         hideLoadingBar();
@@ -203,19 +201,11 @@ export async function startApp() {
         setTimeout(() => (initialScreen.style.display = 'none'), 500);
     }
 
-
-
     const resourceManager = getResourceManager();
     console.log('📊 Resource Manager Status:', resourceManager.getStats());
 }
 
-// ============================================
-// 🎛️ SCHNELL-KONFIGURATION FÜR ENTWICKLUNG
-// ============================================
-
-/**
- * Aktiviert Optimierung sofort (für Testing)
- */
+// Bestehende Funktionen...
 export function enableRenderOptimization() {
     if (window.renderOptimizer) {
         window.renderOptimizer.enable();
@@ -224,18 +214,12 @@ export function enableRenderOptimization() {
     }
 }
 
-/**
- * Deaktiviert Optimierung sofort
- */
 export function disableRenderOptimization() {
     if (window.renderOptimizer) {
         window.renderOptimizer.disable();
     }
 }
 
-/**
- * Zeigt Performance-Stats
- */
 export function showRenderStats() {
     if (window.renderOptimizer) {
         console.table(window.renderOptimizer.stats());
@@ -244,36 +228,31 @@ export function showRenderStats() {
     }
 }
 
-
 async function tryApplyEnvironment(renderer) {
     try {
         const { RGBELoader } = await import('three/addons/loaders/RGBELoader.js');
         const pmrem = new THREE.PMREMGenerator(renderer);
-        pmrem.compileEquirectangularShader(); // WICHTIG: Shader vorkompilieren
+        pmrem.compileEquirectangularShader();
 
         const hdrUrl = 'env/default.hdr';
         const hdr = await new RGBELoader().loadAsync(hdrUrl);
 
-        // FIX: HDR korrekt verarbeiten
         hdr.mapping = THREE.EquirectangularReflectionMapping;
 
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         hdr.dispose();
-        pmrem.dispose(); // WICHTIG: PMREM aufräumen
+        pmrem.dispose();
 
-        // FIX: Intensität reduzieren für HDR
         scene.environment = envTex;
-        scene.environmentIntensity = 0.3; // NEU: Intensität stark reduzieren
-        scene.background = null; // Hintergrund bleibt schwarz
+        scene.environmentIntensity = 0.3;
+        scene.background = null;
 
-        // FIX: Tone Mapping anpassen für HDR
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 0.5; // Reduziert von 1.0
+        renderer.toneMappingExposure = 0.5;
 
         console.log('✅ HDR-Environment aktiv (reduzierte Intensität)');
     } catch (e) {
         console.warn('Kein HDR geladen - weiter ohne Environment.', e?.message);
-        // Fallback: Nur Lichter verwenden
         scene.environment = null;
         scene.environmentIntensity = 0;
     }

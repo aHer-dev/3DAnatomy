@@ -1,30 +1,288 @@
-// js/bootstrap/initGroupLoader.js
-// 📦 Initialisiert das dynamische Laden anatomischer Gruppen (z. B. Muskeln) durch Buttons
+// js/bootstrap/initGroupLoader.js - MIT TOGGLE-FUNKTIONALITÄT
 
-
-// js/bootstrap/initGroupLoader.js
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-
-// ✳️ Nur EIN Import für loadModels – aus features:
 import { loadModels } from '../features/modelLoader-core.js';
-
-// ✳️ Progress-UI kommt aus modelLoader/progress.js:
 import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
-
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
 import { controls } from '../core/controls.js';
 import { state } from '../store/state.js';
+import { disposeObject3D } from '../modelLoader/cleanup.js';
+import { unregisterPickables } from '../features/selection.js';
 
 /**
- * Fügt EventListener zu Gruppenbuttons hinzu (z. B. Muskeln).
- * Ladeprozess mit DRACO-Kompression und Fortschrittsanzeige.
+ * ✅ Button-Animation 
+ */
+function setButtonLoading(button, groupName, isLoading) {
+    if (!button) return;
+
+    console.log(`🎬 setButtonLoading: ${groupName}, loading: ${isLoading}`);
+
+    if (isLoading) {
+        button.disabled = true;
+        button.style.setProperty('background-color', '#ff9800', 'important');
+        button.style.setProperty('color', 'white', 'important');
+        button.style.opacity = '0.8';
+        button.textContent = `⏳ Lade ${groupName}...`;
+        console.log(`🟠 Button "${groupName}" auf Loading gesetzt`);
+    } else {
+        button.disabled = false;
+        button.style.setProperty('background-color', '#2a5a2a', 'important');
+        button.style.setProperty('color', 'white', 'important');
+        button.style.opacity = '1';
+        button.textContent = `✅ ${groupName.charAt(0).toUpperCase() + groupName.slice(1)} ▼`;
+        console.log(`🟢 Button "${groupName}" auf Success gesetzt`);
+    }
+}
+
+/**
+ * ✅ Button für Entladen
+ */
+function setButtonUnloading(button, groupName) {
+    if (!button) return;
+
+    console.log(`🎬 setButtonUnloading: ${groupName}`);
+
+    button.disabled = true;
+    button.style.setProperty('background-color', '#ff5722', 'important'); // Orange-rot
+    button.style.setProperty('color', 'white', 'important');
+    button.style.opacity = '0.8';
+    button.textContent = `🗑️ Entlade ${groupName}...`;
+    console.log(`🟠 Button "${groupName}" auf Unloading gesetzt`);
+}
+
+/**
+ * ✅ Button zurücksetzen (nicht geladen)
+ */
+function setButtonUnloaded(button, groupName) {
+    if (!button) return;
+
+    console.log(`🎬 setButtonUnloaded: ${groupName}`);
+
+    button.disabled = false;
+    button.style.removeProperty('background-color');
+    button.style.removeProperty('color');
+    button.style.opacity = '1';
+    button.textContent = `${groupName.charAt(0).toUpperCase() + groupName.slice(1)} ▼`;
+    console.log(`⚪ Button "${groupName}" zurückgesetzt`);
+}
+
+/**
+ * ✅ Toast
+ */
+function showToast(message, type = 'loading') {
+    const oldToast = document.getElementById('loading-toast');
+    if (oldToast) oldToast.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'loading-toast';
+    toast.textContent = message;
+
+    const colors = {
+        loading: '#ff9800',
+        success: '#4caf50',
+        unloading: '#ff5722',
+        unloaded: '#9e9e9e'
+    };
+
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${colors[type] || colors.loading};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 10000;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    `;
+
+    document.body.appendChild(toast);
+    return toast;
+}
+
+function hideToast() {
+    const toast = document.getElementById('loading-toast');
+    if (toast) toast.remove();
+}
+
+/**
+ * ✅ GRUPPE ENTLADEN
+ */
+async function unloadGroupWithAnimation(groupName, button) {
+    console.log(`🗑️ unloadGroupWithAnimation: ${groupName}`);
+
+    if (button.disabled) {
+        console.warn(`⚠️ Button ${groupName} ist bereits disabled`);
+        return;
+    }
+
+    const models = state.groups[groupName] || [];
+    if (models.length === 0) {
+        console.log(`ℹ️ Gruppe ${groupName} ist bereits entladen`);
+        return;
+    }
+
+    console.log(`🗑️ Entlade ${models.length} Modelle für "${groupName}"`);
+
+    try {
+        // ✅ ENTLADE-ANIMATION
+        setButtonUnloading(button, groupName);
+        showToast(`Entlade ${groupName} (${models.length} Modelle)...`, 'unloading');
+
+        // Kurze Pause für Animation
+        await new Promise(resolve => setTimeout(resolve, 200));
+
+        // Modelle entladen
+        for (const model of models) {
+            unregisterPickables(model);
+            scene.remove(model);
+            disposeObject3D(model);
+        }
+
+        // State zurücksetzen
+        state.groups[groupName] = [];
+        state.groupStates[groupName] = false;
+
+        console.log(`✅ "${groupName}" erfolgreich entladen`);
+
+        // ✅ ENTLADE-ERFOLG
+        setButtonUnloaded(button, groupName);
+        hideToast();
+        showToast(`${groupName} entladen!`, 'unloaded');
+
+        setTimeout(() => hideToast(), 2000);
+
+    } catch (err) {
+        console.error(`❌ Fehler beim Entladen von "${groupName}":`, err);
+
+        button.disabled = false;
+        button.style.setProperty('background-color', '#d32f2f', 'important');
+        button.style.setProperty('color', 'white', 'important');
+        button.textContent = `❌ Fehler: ${groupName}`;
+
+        hideToast();
+        showToast(`Fehler beim Entladen von ${groupName}!`, 'unloading');
+
+        setTimeout(() => {
+            setButtonLoading(button, groupName, false); // Zurück zu "geladen"
+            hideToast();
+        }, 3000);
+    }
+}
+
+/**
+ * ✅ GRUPPE LADEN
+ */
+async function loadGroupWithAnimation(groupName, button) {
+    console.log(`🚀 loadGroupWithAnimation: ${groupName}`);
+
+    if (button.disabled) {
+        console.warn(`⚠️ Button ${groupName} ist bereits disabled`);
+        return;
+    }
+
+    const entries = state.groupedMeta?.[groupName] || [];
+    if (!entries.length) {
+        console.warn(`⚠️ Keine Modelle für "${groupName}" gefunden`);
+        alert(`Keine Modelle für "${groupName}" verfügbar.`);
+        return;
+    }
+
+    console.log(`📦 Lade ${entries.length} Modelle für "${groupName}"`);
+
+    try {
+        // ✅ LADE-ANIMATION
+        setButtonLoading(button, groupName, true);
+        showToast(`Lade ${groupName} (${entries.length} Modelle)...`, 'loading');
+
+        // Kurze Pause für Animation
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        showLoadingBar();
+
+        const loader = createGLTFLoader();
+        await loadModels(
+            entries,
+            groupName,
+            false,
+            scene,
+            loader,
+            camera,
+            controls,
+            renderer
+        );
+
+        state.groupStates[groupName] = true;
+
+        // ✅ FARBE ANWENDEN (wichtig!)
+        const hex = state.colors?.[groupName] ??
+            state.defaultSettings?.colors?.[groupName] ??
+            state.defaultSettings?.colors?.default;
+
+        if (hex != null) {
+            const { updateModelColors } = await import('../modelLoader/color.js');
+            updateModelColors(groupName, hex);
+            console.log(`🎨 Farbe für "${groupName}" angewendet: 0x${hex.toString(16)}`);
+        }
+
+        console.log(`✅ "${groupName}" erfolgreich geladen`);
+
+        // ✅ ERFOLGS-ANIMATION
+        setButtonLoading(button, groupName, false);
+        hideToast();
+        showToast(`${groupName} erfolgreich geladen!`, 'success');
+
+        setTimeout(() => hideToast(), 3000);
+
+    } catch (err) {
+        console.error(`❌ Fehler beim Laden von "${groupName}":`, err);
+
+        button.disabled = false;
+        button.style.setProperty('background-color', '#d32f2f', 'important');
+        button.style.setProperty('color', 'white', 'important');
+        button.textContent = `❌ Fehler: ${groupName}`;
+
+        hideToast();
+        showToast(`Fehler beim Laden von ${groupName}!`, 'loading');
+
+        setTimeout(() => {
+            setButtonUnloaded(button, groupName);
+            hideToast();
+        }, 5000);
+
+        alert(`Fehler beim Laden von "${groupName}": ${err.message}`);
+    } finally {
+        hideLoadingBar();
+    }
+}
+
+/**
+ * ✅ TOGGLE-FUNKTION (Laden oder Entladen)
+ */
+async function toggleGroupWithAnimation(groupName, button) {
+    console.log(`🔄 toggleGroupWithAnimation: ${groupName}`);
+
+    // Prüfen ob Gruppe geladen ist
+    const isLoaded = state.groups[groupName]?.length > 0;
+
+    if (isLoaded) {
+        console.log(`📤 Gruppe ${groupName} ist geladen → entladen`);
+        await unloadGroupWithAnimation(groupName, button);
+    } else {
+        console.log(`📥 Gruppe ${groupName} ist nicht geladen → laden`);
+        await loadGroupWithAnimation(groupName, button);
+    }
+}
+
+/**
+ * ✅ HAUPTFUNKTION: Event-Listener mit Toggle
  */
 export function initDynamicGroupLoading() {
-    const loader = createGLTFLoader();
-
-    // Liste aller möglichen Gruppen aus den Buttons
     const buttonGroups = [
         'bones', 'muscles', 'tendons', 'ligaments',
         'arteries', 'brain', 'cartilage', 'ear',
@@ -32,10 +290,8 @@ export function initDynamicGroupLoading() {
         'nerves', 'organs', 'skin_hair', 'teeth', 'veins'
     ];
 
-    console.log('🔍 Suche Gruppen-Buttons...');
-    let boundCount = 0;
+    console.log('🔗 Binde Gruppen-Buttons mit Toggle-Animation...');
 
-    // Für jede Gruppe einen Event-Listener binden
     buttonGroups.forEach(groupName => {
         const btnId = `btn-load-${groupName}`;
         const btn = document.getElementById(btnId);
@@ -45,111 +301,65 @@ export function initDynamicGroupLoading() {
             return;
         }
 
-        // Event-Listener hinzufügen
-        btn.addEventListener('click', async () => {
-            console.log(`🔄 Lade Gruppe: ${groupName}`);
+        // ✅ ALLE bestehenden Event-Listener entfernen
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
 
-            // Metadaten für diese Gruppe holen
-            const entries = state.groupedMeta?.[groupName] || [];
+        console.log(`🧹 Event-Listener für ${btnId} zurückgesetzt`);
 
-            if (!entries.length) {
-                console.warn(`⚠️ Keine Modelle für Gruppe "${groupName}" in Metadaten gefunden`);
-                alert(`Keine Modelle für "${groupName}" verfügbar.`);
-                return;
-            }
+        // ✅ TOGGLE-Event-Listener hinzufügen
+        newBtn.addEventListener('click', async (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
-            try {
-                btn.disabled = true;
-                btn.textContent = `${groupName} lädt...`;
-                showLoadingBar();
+            console.log(`🖱️ TOGGLE-KLICK auf ${groupName}`);
 
-                // Modelle laden
-                await loadModels(
-                    entries,
-                    groupName,
-                    false, // centerCamera
-                    scene,
-                    loader,
-                    camera,
-                    controls,
-                    renderer
-                );
-
-                // Status aktualisieren
-                state.groupStates[groupName] = true;
-
-                console.log(`✅ Gruppe "${groupName}" geladen (${entries.length} Modelle)`);
-
-                // Button-Text aktualisieren
-                btn.textContent = `${groupName} ✓`;
-                btn.style.backgroundColor = '#2a5a2a'; // Grün wenn geladen
-
-            } catch (err) {
-                console.error(`❌ Fehler beim Laden von "${groupName}":`, err);
-                alert(`Fehler beim Laden von "${groupName}": ${err.message}`);
-                btn.textContent = `${groupName} ❌`;
-            } finally {
-                hideLoadingBar();
-                btn.disabled = false;
-            }
+            await toggleGroupWithAnimation(groupName, newBtn);
         });
 
-        boundCount++;
-        console.log(`✅ Button gebunden: ${btnId}`);
+        // ✅ INITIAL-STATUS setzen basierend auf bereits geladenen Gruppen
+        const isCurrentlyLoaded = state.groups[groupName]?.length > 0;
+        if (isCurrentlyLoaded) {
+            setButtonLoading(newBtn, groupName, false); // Grün = geladen
+            console.log(`📌 Button ${groupName} als bereits geladen markiert`);
+        } else {
+            setButtonUnloaded(newBtn, groupName); // Normal = nicht geladen
+        }
+
+        console.log(`✅ Toggle-Event-Listener gebunden: ${btnId}`);
     });
 
-    // Legacy-Support für "tendons" -> "ligaments"
-    const tendonsBtn = document.getElementById('btn-load-tendons');
-    if (tendonsBtn && state.groupedMeta?.ligaments) {
-        tendonsBtn.addEventListener('click', async () => {
-            console.log('🔄 Lade ligaments über tendons-Button (Legacy)');
+    console.log('🎬 Alle Buttons mit Toggle-Animation konfiguriert');
 
-            const entries = state.groupedMeta.ligaments || [];
-            if (!entries.length) {
-                alert('Keine Bänder/Sehnen verfügbar.');
-                return;
+    // Debug-Funktionen
+    if (typeof window !== 'undefined') {
+        window.testToggle = async (groupName = 'muscles') => {
+            const btn = document.getElementById(`btn-load-${groupName}`);
+            if (btn) {
+                console.log('🧪 Teste Toggle-Animation...');
+                await toggleGroupWithAnimation(groupName, btn);
             }
+        };
 
-            try {
-                tendonsBtn.disabled = true;
-                showLoadingBar();
-
-                await loadModels(
-                    entries,
-                    'ligaments',
-                    false,
-                    scene,
-                    loader,
-                    camera,
-                    controls,
-                    renderer
-                );
-
-                state.groupStates.ligaments = true;
-                console.log('✅ Ligaments über tendons-Button geladen');
-
-            } catch (err) {
-                console.error('❌ Fehler:', err);
-            } finally {
-                hideLoadingBar();
-                tendonsBtn.disabled = false;
+        window.testLoad = async (groupName = 'muscles') => {
+            const btn = document.getElementById(`btn-load-${groupName}`);
+            if (btn) {
+                console.log('🧪 Teste Lade-Animation...');
+                await loadGroupWithAnimation(groupName, btn);
             }
-        });
-        boundCount++;
-    }
+        };
 
-    console.log(`📦 Dynamisches Gruppenladen initialisiert (${boundCount} Buttons gebunden)`);
+        window.testUnload = async (groupName = 'muscles') => {
+            const btn = document.getElementById(`btn-load-${groupName}`);
+            if (btn) {
+                console.log('🧪 Teste Entlade-Animation...');
+                await unloadGroupWithAnimation(groupName, btn);
+            }
+        };
 
-    // Debug: Zeige verfügbare Gruppen in Metadaten
-    if (state.groupedMeta) {
-        const availableGroups = Object.keys(state.groupedMeta);
-        console.log('📊 Verfügbare Gruppen in Metadaten:', availableGroups);
-
-        availableGroups.forEach(group => {
-            const count = state.groupedMeta[group]?.length || 0;
-            console.log(`  - ${group}: ${count} Modelle`);
-        });
-    } else {
-        console.error('❌ state.groupedMeta ist nicht initialisiert!');
+        console.log('🧪 Debug verfügbar:');
+        console.log('  window.testToggle("muscles") - Toggle testen');
+        console.log('  window.testLoad("muscles") - Laden testen');
+        console.log('  window.testUnload("muscles") - Entladen testen');
     }
 }
