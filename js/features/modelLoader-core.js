@@ -3,8 +3,6 @@
 // ============================================
 
 import * as THREE from 'three';
-
-// --- Core ---
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
@@ -12,24 +10,34 @@ import { controls } from '../core/controls.js';
 import { fitCameraToScene } from '../core/cameraUtils.js';
 import { modelPath, withBase } from '../core/path.js';
 import { registerPickables } from '../features/selection.js';
-import { updateModelColors } from '../modelLoader/color.js'; // setzt Farbe pro Gruppe
-
-// --- State ---
+import { updateModelColors } from '../modelLoader/color.js';
 import { state } from '../store/state.js';
-
-// --- Loader ---
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
-
-// --- Visibility ---
-import {
-  setGroupVisibility,
-  showObject,
-  hideObject,
-  setModelVisibility
-} from '../features/visibility.js';
-
-// --- Progress UI ---
+import { setGroupVisibility, showObject, hideObject, setModelVisibility } from '../features/visibility.js';
 import { showLoadingBar, hideLoadingBar, updateLoadingBar } from '../modelLoader/progress.js';
+
+// ✅ IMPORT CONFIG für dynamische Performance-Werte
+import { getConfig } from '../config/config.js';
+
+// ✅ IMPORT RESOURCE MANAGER für Caching
+import { loadWithManager } from '../core/resourceManager.js';
+
+
+
+// ✅ GLOBAL LOADER-POOL für bessere Performance
+const LOADER_POOL = [];
+const MAX_LOADERS = 3;
+
+function getPooledLoader() {
+  if (LOADER_POOL.length === 0) {
+    for (let i = 0; i < MAX_LOADERS; i++) {
+      LOADER_POOL.push(createGLTFLoader());
+    }
+  }
+  return LOADER_POOL[Math.floor(Math.random() * LOADER_POOL.length)];
+}
+
+
 
 // 🔆 Schatten + sRGB Fix für geladene Modelle
 function prepareForShadows(root) {
@@ -79,7 +87,12 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
   showLoadingBar();
   const errors = [];
   let loaded = 0;
-  const batchSize = 2;
+  const batchSize = getConfig('performance.batchSize', 3);
+  const useResourceManager = getConfig('features.resourceManager', false);
+
+  console.log(`🔄 Lade ${entries.length} Modelle für "${group}" (Batch: ${batchSize}, Cache: ${useResourceManager})`);
+
+
 
   console.time(`loadGroup-${group}`);
 
