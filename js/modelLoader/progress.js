@@ -314,7 +314,7 @@ let __circle = {
  * Zeigt einen zentrierten, runden Progress-Indikator (SVG).
  * Nutzt dasselbe Custom-Event 'progressUpdate' wie deine Leiste.
  */
-export function showLoadingCircle({ size = 140, stroke = 8 } = {}) {
+export function showLoadingCircle({ size = 140, stroke = 8, label = 'Strukturen werden geladen…' } = {}) {
   if (__circle.overlay) return; // schon aktiv
 
   // Overlay (zentriert, klickt nicht in die UI, hoher z-index)
@@ -326,13 +326,27 @@ export function showLoadingCircle({ size = 140, stroke = 8 } = {}) {
   `;
 
   // Wrapper mit leichtem Glass-Look (sehr dezent)
-  const wrap = document.createElement('div');
-  wrap.style.cssText = `
-    width:${size + 48}px; height:${size + 48}px; display:flex; align-items:center; justify-content:center;
+    const wrap = document.createElement('div');
+   wrap.style.cssText = `
+    width:${size + 48}px; min-height:${size + 48}px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
     background: rgba(20,25,45,0.35); backdrop-filter: blur(8px);
     border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.35);
   `;
+
+
+    // Label oben
+      const title = document.createElement('div');
+    title.setAttribute('role', 'status');
+    title.style.cssText = `
+   font: 600 14px system-ui, -apple-system, Segoe UI, Inter, sans-serif;
+    color: rgba(255,255,255,0.85); letter-spacing:.02em; text-align:center;
+    pointer-events:none;
+  `;
+  title.textContent = label;
+
+
 
   const svgNS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(svgNS, 'svg');
@@ -401,6 +415,7 @@ export function showLoadingCircle({ size = 140, stroke = 8 } = {}) {
   stack.appendChild(svg);
   stack.appendChild(txt);
 
+  wrap.appendChild(title);
   wrap.appendChild(stack);
   overlay.appendChild(wrap);
   document.body.appendChild(overlay);

@@ -90,7 +90,7 @@ function renderFrame() {
  */
 export async function startApp() {
     window.__DISABLE_PROGRESS_OVERLAY = true;
-    showLoadingCircle();
+    showLoadingCircle({ label: 'Strukturen werden geladen…' });
     updateLoadingCircle(5);   // kleiner Startwert, damit man den Kreis sieh
     initStaticAssets();
 
