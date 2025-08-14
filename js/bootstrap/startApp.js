@@ -30,7 +30,7 @@ import { getConfig } from '../config/config.js';
 import { initializeGroupsFromMeta } from '../data/meta.js';
 import { restoreAllGroupStates } from '../features/groups.js';
 
-import { showLoadingBar, hideLoadingBar } from '../modelLoader/progress.js';
+
 import { loadGroupByName } from '../features/modelLoader-core.js';
 import { setupGroupToggle } from '../features/groupToggle.js';
 import { setupInteractions } from '../interaction/index.js';
@@ -48,7 +48,6 @@ import { updateModelColors } from '../modelLoader/color.js';
 
 import { getResourceManager } from '../core/resourceManager.js';
 import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
-import '../bootstrap/initSplashScreen.js';
 import '../utils/migration-helper.js';
 
 // --- RENDER-OPTIMIERUNG (optional) ---
@@ -91,13 +90,15 @@ function renderFrame() {
 export async function startApp() {
     initStaticAssets();
 
+    // Loading-Screen wurde entfernt – tolerant bleiben
     const initialScreen = document.getElementById('initial-loading-screen');
-    if (!initialScreen) { console.error('❌ Initial-Loading-Screen nicht gefunden'); return; }
-    initialScreen.style.backgroundColor = getConfig('ui.theme.loadingScreen', '#0B1020');
-    initialScreen.style.display = 'flex';
+    if (initialScreen) {
+        initialScreen.style.backgroundColor = getConfig('ui.theme.loadingScreen', '#0B1020');
+        initialScreen.style.display = 'flex';
+    }
 
     try {
-        // 1) Meta
+        // 1) Metadaten
         await initializeGroupsFromMeta();
         console.log('✅ Metadaten geladen:', Object.keys(state.groupedMeta).length, 'Gruppen');
 
@@ -105,28 +106,24 @@ export async function startApp() {
         setupBasicLights(scene);
         await tryApplyEnvironment(renderer);
 
+        // 3) Farben aus Config in den State übernehmen (ohne Defaults zu überschreiben)
         const cfgColors = getConfig('ui.colors', null);
-
-        // 2) In den State spiegeln, ohne existierende Defaults zu überschreiben
         if (cfgColors) {
             state.defaultSettings = state.defaultSettings || {};
             state.defaultSettings.colors = {
                 ...(state.defaultSettings.colors || {}),
                 ...cfgColors
             };
-
             state.colors = {
                 ...(state.colors || {}),
                 ...state.defaultSettings.colors
             };
         }
 
-        // 3) UI
+        // 4) UI initialisieren
         setupUI?.();
 
-        // 4) Initiale Gruppen laden
-        showLoadingBar();
-
+        // 5) Initiale Gruppen laden
         console.log('🦴 Lade Standard-Gruppen: bones, teeth, cartilage...');
 
         await loadGroupByName('bones', { centerCamera: true });
@@ -141,16 +138,12 @@ export async function startApp() {
         state.groupStates.cartilage = true;
         console.log('✅ Cartilage geladen');
 
-        // 5a) Schattenfähigkeiten für bereits geladene Objekte setzen
+        // 6) Schatten & Material-Tweaks
         scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
-
-        // 5b) Shadow-Frustum ans Motiv anpassen
         const rig = getLightRig?.();
         if (rig?.key) fitShadowFrustumToScene(rig.key, scene);
 
-        // Material-Tweaks für alle Standard-Gruppen
         const cfg = state?.defaultSettings?.appearance || appearance;
-
         applyRendererAppearance(renderer, cfg);
         applyEnvIntensity(scene, cfg);
 
@@ -158,7 +151,7 @@ export async function startApp() {
         applyGroupMaterialTweaks('teeth', state.groups, cfg);
         applyGroupMaterialTweaks('cartilage', state.groups, cfg);
 
-        // Farben für alle drei Gruppen setzen
+        // 7) Farben anwenden
         ['bones', 'teeth', 'cartilage'].forEach(g => {
             const hex =
                 (state.colors && state.colors[g]) ??
@@ -169,20 +162,17 @@ export async function startApp() {
 
         requestShadowUpdate();
         freezeShadows();
-        hideLoadingBar();
 
-        // 6) Zustände & Interaktion (OHNE setupGroupToggle!)
+        // 8) Interaktionen & Resize
         setupInteractions();
         initResizeHandler();
         initCameraView();
 
-        // ❌ setupGroupToggle(); // ← DEAKTIVIERT! Überschreibt Animation
-
-        // ✅ 7) BUTTON-ANIMATION ALS LETZTES (damit nichts mehr überschreibt)
+        // 9) Button-Animationen erst ganz am Ende
         console.log('🎬 Initialisiere Button-Animationen als letztes...');
-        initDynamicGroupLoading(); // ← Jetzt funktioniert es!
+        initDynamicGroupLoading();
 
-        // 8) Render-Loop
+        // 10) Render-Loop
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
@@ -195,14 +185,19 @@ export async function startApp() {
 
     } catch (err) {
         console.error('❌ Fehler beim App-Start:', err);
-        hideLoadingBar();
     } finally {
-        initialScreen.style.opacity = '0';
-        setTimeout(() => (initialScreen.style.display = 'none'), 500);
-    }
+        // Optional: Resource-Manager-Status loggen
+        const resourceManager = getResourceManager?.();
+        if (resourceManager) {
+            console.log('📊 Resource Manager Status:', resourceManager.getStats());
+        }
 
-    const resourceManager = getResourceManager();
-    console.log('📊 Resource Manager Status:', resourceManager.getStats());
+        // Falls der entfernte Initial-Screen doch existiert, sanft ausblenden
+        if (initialScreen) {
+            initialScreen.style.opacity = '0';
+            setTimeout(() => (initialScreen.style.display = 'none'), 500);
+        }
+    }
 }
 
 // Bestehende Funktionen...
