@@ -91,6 +91,7 @@ function renderFrame() {
 export async function startApp() {
     window.__DISABLE_PROGRESS_OVERLAY = true;
     showLoadingCircle({ label: 'Strukturen werden geladen…' });
+    renderer.domElement.style.visibility = 'hidden';
     updateLoadingCircle(5);   // kleiner Startwert, damit man den Kreis sieh
     initStaticAssets();
 
@@ -188,13 +189,15 @@ export async function startApp() {
             updatePerformanceMonitor();
             renderer.render(scene, camera);
         }
-        animate();
+                // ✅ Jetzt ist wirklich alles fertig → 100 % setzen
+                    updateLoadingCircle(100);
 
-
-        // ✅ Jetzt ist wirklich alles fertig → Loader beenden
-        updateLoadingCircle(100);
-        setTimeout(() => { try { hideLoadingCircle(); } catch { } }, 300);
-
+                // ⏳ Warte, bis das Overlay (mit „Willkommen!“) wirklich weg ist …
+                    document.addEventListener('circleOverlayHidden', () => {
+                            // … dann Canvas sichtbar machen und Render-Loop starten
+                    renderer.domElement.style.visibility = 'visible';
+                    animate();
+                }, { once: true });
         console.log('🚀 App erfolgreich gestartet mit Button-Animationen');
 
     } catch (err) {

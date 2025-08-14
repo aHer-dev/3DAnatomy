@@ -310,10 +310,12 @@ let __circle = {
   listener: null,
   circumference: 0
 };
+const CELEBRATE_MS = 2200; // 2.2 Sekunden „Willkommen!“ anzeigen
+
 
 /**
  * Zeigt einen zentrierten, runden Progress-Indikator (SVG).
- * Nutzt dasselbe Custom-Event 'progressUpdate' wie deine Leiste.
+ * Nutzt dasselbe Custom-Event 'progressUpdate' wie deine Leiste
  */
 export function showLoadingCircle({ size = 140, stroke = 8, label = 'Strukturen werden geladen…' } = {}) {
   if (__circle.overlay) return; // schon aktiv
@@ -429,10 +431,38 @@ export function showLoadingCircle({ size = 140, stroke = 8, label = 'Strukturen 
     txt.textContent = `${Math.round(pct)}%`;
 
     if (pct >= 100) {
-      // kleines Fade-out, dann entfernen
-      overlay.style.transition = 'opacity 300ms ease';
-      overlay.style.opacity = '0';
-      setTimeout(() => hideLoadingCircle(), 320);
+      if (__circle.done) return;           // mehrfaches Schließen verhindern
+      __circle.done = true;
+
+      // Kreis dezent ausblenden
+      stack.style.transition = 'opacity 300ms ease, transform 300ms ease';
+      stack.style.opacity = '0';
+      stack.style.transform = 'scale(0.98)';
+
+      // „Willkommen!“ fett, größer, mit Gradient
+      title.textContent = 'Willkommen!';
+      Object.assign(title.style, {
+        fontWeight: '800',
+        fontSize: '20px',
+        backgroundImage: 'linear-gradient(90deg, #4A9EFF, #FF7A4A)',
+        backgroundClip: 'text',
+        WebkitBackgroundClip: 'text',
+        color: 'transparent',
+        WebkitTextFillColor: 'transparent',
+        textAlign: 'center'
+      });
+
+      // ⬇️ Diese drei Zeilen sorgen für perfekte Zentrierung:
+      wrap.style.gap = '0px';                      // keinen Abstand mehr zwischen Elementen
+      setTimeout(() => { stack.style.display = 'none'; }, 300); // Kreis nach Fade-Out entfernen
+      // (wrap hat bereits display:flex; align-items:center; justify-content:center; → Text zentriert)
+
+      // Nach fester Verweilzeit ausblenden
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 300ms ease';
+        overlay.style.opacity = '0';
+        setTimeout(() => hideLoadingCircle(), 320);
+      }, CELEBRATE_MS); // z. B. 2200 ms
     }
   };
 
@@ -454,5 +484,8 @@ export function hideLoadingCircle() {
     __circle.overlay.parentNode.removeChild(__circle.overlay);
   }
   __circle = { overlay: null, fg: null, text: null, listener: null, circumference: 0 };
+
+   // 🔔 Signal: Overlay ist vollständig verschwunden
+     document.dispatchEvent(new Event('circleOverlayHidden'));
 }
 // ==================================================================
