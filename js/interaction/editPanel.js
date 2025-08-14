@@ -189,7 +189,7 @@ export function buildEditPanel(container, selectedModel) {
       <input type="range" id="edit-opacity" min="0" max="1" step="0.01" value="1" />
     </label>
     <button id="edit-toggle-visible">Verstecken/Anzeigen</button>
-    <button id="edit-add-to-set" style="margin-bottom: 5px;">Zum Set hinzufügen</button>
+    <button id="edit-add-to-set" style="margin-bottom: 5px;">Zur Sammlung hinzufügen</button>
   `;
 
     const colorInput = container.querySelector('#edit-color');
