@@ -21,17 +21,17 @@ function setButtonLoading(button, groupName, isLoading) {
 
     if (isLoading) {
         button.disabled = true;
-        button.style.setProperty('background-color', '#ff9800', 'important');
+        button.style.setProperty('background', 'linear-gradient(135deg, #4A9EFF, #FF7A4A)');
         button.style.setProperty('color', 'white', 'important');
         button.style.opacity = '0.8';
         button.textContent = `⏳ Lade ${groupName}...`;
         console.log(`🟠 Button "${groupName}" auf Loading gesetzt`);
     } else {
         button.disabled = false;
-        button.style.setProperty('background-color', '#2a5a2a', 'important');
+        button.style.setProperty('background', 'linear-gradient(135deg, #4A9EFF, #FF7A4A)');
         button.style.setProperty('color', 'white', 'important');
         button.style.opacity = '1';
-        button.textContent = `✅ ${groupName.charAt(0).toUpperCase() + groupName.slice(1)} ▼`;
+        button.textContent = `🟢 ${groupName.charAt(0).toUpperCase() + groupName.slice(1)} ▼`;
         console.log(`🟢 Button "${groupName}" auf Success gesetzt`);
     }
 }
@@ -80,8 +80,8 @@ function showToast(message, type = 'loading') {
     toast.textContent = message;
 
     const colors = {
-        loading: '#ff9800',
-        success: '#4caf50',
+        loading: '#FF7A4A',
+        success: '#4A9EFF',
         unloading: '#ff5722',
         unloaded: '#9e9e9e'
     };
