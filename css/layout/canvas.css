@@ -1,13 +1,13 @@
 /* Canvas soll im Hintergrund sein */
 #canvas-container {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0 !important;
-    /* Hintergrund */
-    pointer-events: auto;
+        position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: var(--z-canvas);
+            /* Basis-Layer */
+            pointer-events: auto;
 }
 
 /* Canvas soll nur Hintergrund sein – kein z-index nötig */

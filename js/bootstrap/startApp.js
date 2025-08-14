@@ -257,3 +257,270 @@ async function tryApplyEnvironment(renderer) {
         scene.environmentIntensity = 0;
     }
 }
+// ============================================
+// LOADING SCREEN INTEGRATION
+// Füge diese Funktionen zu deiner app.js oder startApp.js hinzu
+// ============================================
+
+/**
+ * Loading Screen Manager
+ */
+class LoadingScreenManager {
+    constructor() {
+        this.currentProgress = 0;
+        this.targetProgress = 0;
+        this.animationFrame = null;
+        this.startTime = Date.now();
+        this.modelCount = 0;
+        this.loadedCount = 0;
+    }
+
+    /**
+     * Initialisiert den Loading Screen
+     * @param {number} totalModels - Anzahl der zu ladenden Modelle
+     */
+    init(totalModels = 100) {
+        this.modelCount = totalModels;
+        this.loadedCount = 0;
+        
+        const loadingScreen = document.getElementById('initial-loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.opacity = '1';
+        }
+        
+        // Starte sanfte Animation
+        this.animateProgress();
+    }
+
+    /**
+     * Aktualisiert den Fortschritt
+     * @param {number} percent - Fortschritt in Prozent (0-100)
+     */
+    setProgress(percent) {
+        this.targetProgress = Math.min(100, Math.max(0, percent));
+        
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        if (progressBar) {
+            progressBar.style.setProperty('--progress', `${this.targetProgress}%`);
+        }
+        
+        if (progressText) {
+            this.updateProgressText(this.targetProgress);
+        }
+    }
+
+    /**
+     * Erhöht den Fortschritt basierend auf geladenen Modellen
+     */
+    incrementProgress() {
+        this.loadedCount++;
+        const percent = Math.round((this.loadedCount / this.modelCount) * 100);
+        this.setProgress(percent);
+    }
+
+    /**
+     * Aktualisiert den Fortschrittstext basierend auf Prozentsatz
+     */
+    updateProgressText(percent) {
+        const progressText = document.getElementById('progress-text');
+        if (!progressText) return;
+
+        let text = '';
+        if (percent < 10) {
+            text = 'Initialisiere System';
+        } else if (percent < 25) {
+            text = 'Lade Umgebung';
+        } else if (percent < 40) {
+            text = 'Bereite Renderer vor';
+        } else if (percent < 60) {
+            text = 'Lade Skelett-Modelle';
+        } else if (percent < 75) {
+            text = 'Lade Texturen';
+        } else if (percent < 90) {
+            text = 'Finalisiere Modelle';
+        } else if (percent < 100) {
+            text = 'Fast fertig';
+        } else {
+            text = 'Bereit!';
+        }
+
+        progressText.innerHTML = `${text}<span class="loading-dots"></span>`;
+    }
+
+    /**
+     * Sanfte Animation des Fortschrittsbalkens
+     */
+    animateProgress() {
+        const animate = () => {
+            if (this.currentProgress < this.targetProgress) {
+                this.currentProgress += (this.targetProgress - this.currentProgress) * 0.1;
+                
+                const progressBar = document.getElementById('progress-bar');
+                if (progressBar) {
+                    progressBar.style.setProperty('--progress', `${Math.round(this.currentProgress)}%`);
+                }
+                
+                if (Math.abs(this.targetProgress - this.currentProgress) > 0.5) {
+                    this.animationFrame = requestAnimationFrame(animate);
+                }
+            }
+        };
+        
+        animate();
+    }
+
+    /**
+     * Versteckt den Loading Screen mit Animation
+     * @param {number} delay - Verzögerung in ms
+     */
+    hide(delay = 500) {
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('initial-loading-screen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    if (this.animationFrame) {
+                        cancelAnimationFrame(this.animationFrame);
+                    }
+                }, 500);
+            }
+            
+            // Log Ladezeit
+            const loadTime = ((Date.now() - this.startTime) / 1000).toFixed(2);
+            console.log(`✅ Geladen in ${loadTime}s`);
+        }, delay);
+    }
+
+    /**
+     * Zeigt Live-Loading Indicator für dynamisches Laden
+     */
+    showLiveLoader() {
+        const liveLoader = document.getElementById('live-loading-sticker');
+        if (liveLoader) {
+            liveLoader.style.display = 'block';
+            liveLoader.style.opacity = '1';
+        }
+    }
+
+    /**
+     * Versteckt Live-Loading Indicator
+     */
+    hideLiveLoader() {
+        const liveLoader = document.getElementById('live-loading-sticker');
+        if (liveLoader) {
+            liveLoader.style.opacity = '0';
+            setTimeout(() => {
+                liveLoader.style.display = 'none';
+            }, 300);
+        }
+    }
+}
+
+// ============================================
+// INTEGRATION IN DEINE BESTEHENDE APP
+// ============================================
+
+// Globale Instanz erstellen
+const loadingScreen = new LoadingScreenManager();
+
+// In deiner startApp() Funktion:
+export async function startAppWithLoadingScreen() {
+    try {
+        // Loading Screen initialisieren
+        loadingScreen.init(3); // 3 Hauptgruppen zu laden
+        
+        // Initialisierung
+        loadingScreen.setProgress(10);
+        await initializeGroupsFromMeta();
+        
+        // Lichter setup
+        loadingScreen.setProgress(20);
+        setupBasicLights(scene);
+        
+        // UI Setup
+        loadingScreen.setProgress(30);
+        setupUI();
+        
+        // Erste Gruppe laden
+        loadingScreen.setProgress(40);
+        showLoadingBar(); // Dein existierender Loading Bar
+        
+        await loadGroupByName('bones', { centerCamera: true });
+        loadingScreen.setProgress(60);
+        
+        await loadGroupByName('teeth', { centerCamera: false });
+        loadingScreen.setProgress(80);
+        
+        await loadGroupByName('cartilage', { centerCamera: false });
+        loadingScreen.setProgress(95);
+        
+        // Finale Setups
+        setupInteractions();
+        initResizeHandler();
+        initCameraView();
+        
+        // Loading komplett
+        loadingScreen.setProgress(100);
+        
+        // Render Loop starten
+        animate();
+        
+        // Loading Screen ausblenden
+        loadingScreen.hide(800); // 800ms Verzögerung für "Bereit!" Anzeige
+        
+    } catch (err) {
+        console.error('❌ Fehler beim App-Start:', err);
+        loadingScreen.hide(0);
+    }
+}
+
+// ============================================
+// HELPER FUNKTIONEN FÜR DYNAMISCHES LADEN
+// ============================================
+
+/**
+ * Wrapper für loadGroupByName mit Loading Indicator
+ */
+export async function loadGroupWithIndicator(groupName, options = {}) {
+    loadingScreen.showLiveLoader();
+    
+    try {
+        await loadGroupByName(groupName, options);
+    } finally {
+        loadingScreen.hideLiveLoader();
+    }
+}
+
+/**
+ * Batch Loading mit Progress
+ */
+export async function loadMultipleGroups(groups) {
+    const total = groups.length;
+    
+    for (let i = 0; i < total; i++) {
+        const progress = Math.round(((i + 1) / total) * 100);
+        loadingScreen.setProgress(progress);
+        
+        await loadGroupByName(groups[i], { centerCamera: false });
+    }
+}
+
+// ============================================
+// EXPORT FÜR VERWENDUNG IN ANDEREN MODULEN
+// ============================================
+
+// Für direkte Verwendung in anderen Files:
+window.loadingScreenManager = loadingScreen;
+
+// Oder als ES6 Export:
+export { loadingScreen };
+
+// Beispiel Verwendung in anderen Modulen:
+// window.loadingScreenManager.showLiveLoader();
+// await loadSomeModel();
+// window.loadingScreenManager.hideLiveLoader();
