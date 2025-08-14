@@ -48,6 +48,7 @@ import { updateModelColors } from '../modelLoader/color.js';
 
 import { getResourceManager } from '../core/resourceManager.js';
 import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
+import { showLoadingCircle, updateLoadingCircle, hideLoadingCircle } from '../modelLoader/progress.js';
 import '../utils/migration-helper.js';
 
 // --- RENDER-OPTIMIERUNG (optional) ---
@@ -88,7 +89,11 @@ function renderFrame() {
  * Hauptinitialisierung der App
  */
 export async function startApp() {
+    window.__DISABLE_PROGRESS_OVERLAY = true;
+    showLoadingCircle();
+    updateLoadingCircle(5);   // kleiner Startwert, damit man den Kreis sieh
     initStaticAssets();
+
 
     // Loading-Screen wurde entfernt – tolerant bleiben
     const initialScreen = document.getElementById('initial-loading-screen');
@@ -105,6 +110,7 @@ export async function startApp() {
         // 2) Licht + (optional) HDR
         setupBasicLights(scene);
         await tryApplyEnvironment(renderer);
+        updateLoadingCircle(35);
 
         // 3) Farben aus Config in den State übernehmen (ohne Defaults zu überschreiben)
         const cfgColors = getConfig('ui.colors', null);
@@ -122,6 +128,7 @@ export async function startApp() {
 
         // 4) UI initialisieren
         setupUI?.();
+        updateLoadingCircle(45);
 
         // 5) Initiale Gruppen laden
         console.log('🦴 Lade Standard-Gruppen: bones, teeth, cartilage...');
@@ -251,6 +258,8 @@ async function tryApplyEnvironment(renderer) {
         scene.environment = null;
         scene.environmentIntensity = 0;
     }
+    updateLoadingCircle(25); 
+    hideLoadingCircle();
 }
 // ============================================
 // LOADING SCREEN INTEGRATION
@@ -432,6 +441,7 @@ export async function startAppWithLoadingScreen() {
         // Initialisierung
         loadingScreen.setProgress(10);
         await initializeGroupsFromMeta();
+        updateLoadingCircle(20);
         
         // Lichter setup
         loadingScreen.setProgress(20);
@@ -447,13 +457,15 @@ export async function startAppWithLoadingScreen() {
         
         await loadGroupByName('bones', { centerCamera: true });
         loadingScreen.setProgress(60);
+        updateLoadingCircle(65);
         
         await loadGroupByName('teeth', { centerCamera: false });
         loadingScreen.setProgress(80);
-        
+        updateLoadingCircle(80);
+
         await loadGroupByName('cartilage', { centerCamera: false });
         loadingScreen.setProgress(95);
-        
+        updateLoadingCircle(95);
         // Finale Setups
         setupInteractions();
         initResizeHandler();
@@ -470,7 +482,10 @@ export async function startAppWithLoadingScreen() {
         
     } catch (err) {
         console.error('❌ Fehler beim App-Start:', err);
-        loadingScreen.hide(0);
+    } finally {
+        // Kreis zuverlässig schließen – auch bei Fehler
+              try { updateLoadingCircle(100); } catch { }
+              try { hideLoadingCircle(); } catch { }
     }
 }
 

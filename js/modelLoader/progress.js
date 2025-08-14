@@ -7,12 +7,12 @@ let isShowing = false;
  * ✅ VERBESSERTE showLoadingBar mit korrekter Element-Suche
  */
 export function showLoadingBar() {
+  if (window?.__DISABLE_PROGRESS_OVERLAY || document.getElementById('dynamic-circle-overlay')) return;
   // Mehrere mögliche IDs versuchen
   const possibleIds = [
     'loading-bar',
     'progress-bar',
-    'progress-bar-fill',
-    'initial-loading-screen'
+    'progress-bar-fill'
   ];
 
   let bar = null;
@@ -43,6 +43,9 @@ export function showLoadingBar() {
   if (!bar) {
     console.warn('⚠️ Kein Loading-Bar Element gefunden. Erstelle dynamisch...');
     createDynamicProgressBar();
+    // Fallback-Bar gilt als "sichtbar"
+    currentProgress = 0;
+    isShowing = true;
     return;
   }
 
@@ -70,9 +73,9 @@ export function showLoadingBar() {
  * ✅ VERBESSERTE updateLoadingBar mit besserer Element-Erkennung
  */
 export function updateLoadingBar(percent) {
-  if (!isShowing) {
-    console.warn('⚠️ updateLoadingBar aufgerufen, aber Bar nicht sichtbar');
-    return;
+    if (!isShowing) {
+    // robust: bei erstem Update automatisch anzeigen
+    try { showLoadingBar(); } catch { }
   }
 
   // Prozent normalisieren
@@ -99,6 +102,7 @@ export function updateLoadingBar(percent) {
     }
 
     // Alternative: data-Attribut für CSS-basierte Bars
+    try { bar.style.setProperty?.('--progress', `${normalizedPercent}%`); } catch { }
     bar.setAttribute('data-progress', normalizedPercent);
 
     console.log(`📊 Progress aktualisiert: ${normalizedPercent}%`);
@@ -115,6 +119,11 @@ export function updateLoadingBar(percent) {
   document.dispatchEvent(new CustomEvent('progressUpdate', {
     detail: { percent: normalizedPercent }
   }));
+  
+    // Auto-Close bei 100 %
+    if (normalizedPercent >= 100) {
+        setTimeout(() => { try { hideLoadingBar(); } catch { } }, 200);
+    }
 }
 
 /**
@@ -164,75 +173,96 @@ export function hideLoadingBar() {
 
   // Custom Event für Completion
   document.dispatchEvent(new CustomEvent('progressComplete'));
+  try { hideDynamicProgressBar(); } catch { }
 }
 
 /**
  * ✅ NEUE FUNKTION: Dynamische Progress Bar erstellen falls keine vorhanden
  */
+// Schmale, nicht-blockierende Loading-Bar (unten), Theme: Blau→Orange
 function createDynamicProgressBar() {
-  console.log('🔧 Erstelle dynamische Progress Bar...');
+  if (window?.__DISABLE_PROGRESS_OVERLAY || document.getElementById('dynamic-circle-overlay')) return;
+  window.__dynProgressInit = true;
 
-  // Container-Element finden oder erstellen
-  let container = document.getElementById('initial-loading-screen') ||
-    document.body;
+  // Container: ganz unten, klickt nicht in die UI rein
+  const overlay = document.createElement('div');
+  overlay.id = 'dynamic-loading-overlay';
+  overlay.style.cssText = `
+    position: fixed;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    height: 4px;
+    z-index: 3001;
+    pointer-events: none;
+  `;
 
-  // Progress Bar HTML erstellen
-  const progressHTML = `
-        <div id="dynamic-loading-bar" style="
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            z-index: 10000;
-            background: rgba(0,0,0,0.8);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            color: white;
-            font-family: Arial, sans-serif;
-        ">
-            <div style="margin-bottom: 10px;">Laden...</div>
-            <div style="
-                width: 100%;
-                height: 20px;
-                background: #333;
-                border-radius: 10px;
-                overflow: hidden;
-            ">
-                <div id="dynamic-progress-fill" style="
-                    height: 100%;
-                    background: linear-gradient(90deg, #4CAF50, #45a049);
-                    width: 0%;
-                    transition: width 0.3s ease;
-                "></div>
-            </div>
-            <div id="dynamic-progress-text" style="margin-top: 10px;">0%</div>
-        </div>
-    `;
+  // Track
+  const track = document.createElement('div');
+  track.style.cssText = `
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 4px 16px rgba(0,0,0,0.35);
+  `;
 
-  container.insertAdjacentHTML('beforeend', progressHTML);
+  // Fill
+  const fill = document.createElement('div');
+  fill.id = 'dynamic-progress-fill';
+  fill.style.cssText = `
+    width: 0%;
+    height: 100%;
+    transition: width 250ms cubic-bezier(0.4,0,0.2,1);
+    background: linear-gradient(90deg, #4A9EFF, #FF7A4A);
+  `;
 
-  // Event-Listener für Updates
-  document.addEventListener('progressUpdate', (e) => {
-    const fill = document.getElementById('dynamic-progress-fill');
-    const text = document.getElementById('dynamic-progress-text');
+  // Optional: versteckter Text für Screenreader
+  const sr = document.createElement('div');
+  sr.id = 'dynamic-progress-text';
+  sr.setAttribute('aria-live', 'polite');
+  sr.style.cssText = `
+    position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(1px,1px,1px,1px);
+  `;
+  sr.textContent = '0%';
 
-    if (fill) fill.style.width = `${e.detail.percent}%`;
-    if (text) text.textContent = `${Math.round(e.detail.percent)}%`;
-  });
+  track.appendChild(fill);
+  overlay.appendChild(track);
+  overlay.appendChild(sr);
+  document.body.appendChild(overlay);
 
-  // Event-Listener für Completion
-  document.addEventListener('progressComplete', () => {
-    const dynamicBar = document.getElementById('dynamic-loading-bar');
-    if (dynamicBar) {
-      dynamicBar.style.opacity = '0';
-      setTimeout(() => dynamicBar.remove(), 300);
-    }
-  });
+  // Listener nur einmal registrieren
+  if (!window.__dynProgressListener) {
+    window.__dynProgressListener = (e) => {
+      const pct = Math.max(0, Math.min(100, Number(e?.detail?.percent ?? 0)));
+      const f = document.getElementById('dynamic-progress-fill');
+      const t = document.getElementById('dynamic-progress-text');
+      if (f) f.style.width = pct + '%';
+      if (t) t.textContent = Math.round(pct) + '%';
+    };
+    document.addEventListener('progressUpdate', window.__dynProgressListener);
+  }
+    // Fallback gilt als sichtbar
+      isShowing = true;
+   currentProgress = 0;
 
-  isShowing = true;
-  console.log('✅ Dynamische Progress Bar erstellt');
+}
+
+// Öffentliche Hilfen, falls du sie brauchst:
+function hideDynamicProgressBar() {
+  // sauber entfernen + Listener lösen
+  const ov = document.getElementById('dynamic-loading-overlay');
+  if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+  if (window.__dynProgressListener) {
+    document.removeEventListener('progressUpdate', window.__dynProgressListener);
+    window.__dynProgressListener = null;
+  }
+  window.__dynProgressInit = false;
+}
+
+function updateDynamicProgress(percent) {
+  document.dispatchEvent(new CustomEvent('progressUpdate', { detail: { percent } }));
 }
 
 /**
@@ -270,3 +300,143 @@ if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
   window.testProgress = testProgressBar;
   window.progressUtils = { showLoadingBar, updateLoadingBar, hideLoadingBar, getProgress };
 }
+
+// =============== CIRCULAR PROGRESS OVERLAY (CENTER) ===============
+let __circle = {
+  overlay: null,
+  fg: null,
+  text: null,
+  listener: null,
+  circumference: 0
+};
+
+/**
+ * Zeigt einen zentrierten, runden Progress-Indikator (SVG).
+ * Nutzt dasselbe Custom-Event 'progressUpdate' wie deine Leiste.
+ */
+export function showLoadingCircle({ size = 140, stroke = 8 } = {}) {
+  if (__circle.overlay) return; // schon aktiv
+
+  // Overlay (zentriert, klickt nicht in die UI, hoher z-index)
+  const overlay = document.createElement('div');
+  overlay.id = 'dynamic-circle-overlay';
+  overlay.style.cssText = `
+    position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
+    z-index: 4000; pointer-events: none;
+  `;
+
+  // Wrapper mit leichtem Glass-Look (sehr dezent)
+  const wrap = document.createElement('div');
+  wrap.style.cssText = `
+    width:${size + 48}px; height:${size + 48}px; display:flex; align-items:center; justify-content:center;
+    background: rgba(20,25,45,0.35); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  `;
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.style.display = 'block';
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+
+  // Kreisgeometrie
+  const r = (size - stroke) / 2;
+  const cx = size / 2;
+  const cy = size / 2;
+  const circumference = 2 * Math.PI * r;
+  __circle.circumference = circumference;
+
+  // Defs: Gradient für den Vordergrund
+  const defs = document.createElementNS(svgNS, 'defs');
+  const lg = document.createElementNS(svgNS, 'linearGradient');
+  lg.setAttribute('id', 'circleGrad');
+  lg.setAttribute('x1', '0%'); lg.setAttribute('y1', '0%');
+  lg.setAttribute('x2', '100%'); lg.setAttribute('y2', '0%');
+
+  const stop1 = document.createElementNS(svgNS, 'stop');
+  stop1.setAttribute('offset', '0%'); stop1.setAttribute('stop-color', '#4A9EFF');
+  const stop2 = document.createElementNS(svgNS, 'stop');
+  stop2.setAttribute('offset', '100%'); stop2.setAttribute('stop-color', '#FF7A4A');
+
+  lg.appendChild(stop1); lg.appendChild(stop2); defs.appendChild(lg);
+
+  // Hintergrundkreis (Track)
+  const bg = document.createElementNS(svgNS, 'circle');
+  bg.setAttribute('cx', cx); bg.setAttribute('cy', cy); bg.setAttribute('r', r);
+  bg.setAttribute('fill', 'none');
+  bg.setAttribute('stroke', 'rgba(255,255,255,0.12)');
+  bg.setAttribute('stroke-width', stroke);
+
+  // Vordergrundkreis (Progress)
+  const fg = document.createElementNS(svgNS, 'circle');
+  fg.setAttribute('cx', cx); fg.setAttribute('cy', cy); fg.setAttribute('r', r);
+  fg.setAttribute('fill', 'none');
+  fg.setAttribute('stroke', 'url(#circleGrad)');
+  fg.setAttribute('stroke-width', stroke);
+  fg.setAttribute('stroke-linecap', 'round');
+  fg.setAttribute('transform', `rotate(-90 ${cx} ${cy})`); // Start oben
+  fg.style.strokeDasharray = `${circumference}`;
+  fg.style.strokeDashoffset = `${circumference}`;
+  fg.style.transition = 'stroke-dashoffset 250ms cubic-bezier(0.4,0,0.2,1)';
+
+  svg.appendChild(defs);
+  svg.appendChild(bg);
+  svg.appendChild(fg);
+
+  // Prozenttext in der Mitte
+  const txt = document.createElement('div');
+  txt.style.cssText = `
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+   font: 600 14px system-ui, -apple-system, Segoe UI, Inter, sans-serif;
+    color: rgba(255,255,255,0.85); letter-spacing: .04em;
+    pointer-events: none;
+  `; 
+  txt.textContent = '0%';
+
+  // Stacken
+  const stack = document.createElement('div');
+  stack.style.cssText = `position: relative; width: ${size}px; height: ${size}px;`;
+  stack.appendChild(svg);
+  stack.appendChild(txt);
+
+  wrap.appendChild(stack);
+  overlay.appendChild(wrap);
+  document.body.appendChild(overlay);
+
+  // Listener nur für den Kreis (stört die Balken-Variante nicht)
+  const onProgress = (e) => {
+    const pct = Math.max(0, Math.min(100, Number(e?.detail?.percent ?? 0)));
+    const offset = circumference * (1 - pct / 100);
+    fg.style.strokeDashoffset = `${offset}`;
+    txt.textContent = `${Math.round(pct)}%`;
+
+    if (pct >= 100) {
+      // kleines Fade-out, dann entfernen
+      overlay.style.transition = 'opacity 300ms ease';
+      overlay.style.opacity = '0';
+      setTimeout(() => hideLoadingCircle(), 320);
+    }
+  };
+
+  document.addEventListener('progressUpdate', onProgress);
+  __circle = { overlay, fg, text: txt, listener: onProgress, circumference };
+}
+
+/** Manuell aktualisieren (falls du kein progressUpdate dispatchst) */
+export function updateLoadingCircle(percent) {
+  document.dispatchEvent(new CustomEvent('progressUpdate', { detail: { percent } }));
+}
+
+/** Ausblenden & aufräumen */
+export function hideLoadingCircle() {
+  if (__circle.listener) {
+    document.removeEventListener('progressUpdate', __circle.listener);
+  }
+  if (__circle.overlay && __circle.overlay.parentNode) {
+    __circle.overlay.parentNode.removeChild(__circle.overlay);
+  }
+  __circle = { overlay: null, fg: null, text: null, listener: null, circumference: 0 };
+}
+// ==================================================================
