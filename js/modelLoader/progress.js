@@ -73,10 +73,11 @@ export function showLoadingBar() {
  * ✅ VERBESSERTE updateLoadingBar mit besserer Element-Erkennung
  */
 export function updateLoadingBar(percent) {
+    if (window?.__DISABLE_PROGRESS_OVERLAY) return; // ← Legacy-Bar komplett aus
     if (!isShowing) {
-    // robust: bei erstem Update automatisch anzeigen
-    try { showLoadingBar(); } catch { }
-  }
+      // robust: bei erstem Update automatisch anzeigen
+      try { showLoadingBar(); } catch { }
+    }
 
   // Prozent normalisieren
   const normalizedPercent = Math.max(0, Math.min(100, percent));
@@ -420,7 +421,7 @@ export function showLoadingCircle({ size = 140, stroke = 8, label = 'Strukturen 
   overlay.appendChild(wrap);
   document.body.appendChild(overlay);
 
-  // Listener nur für den Kreis (stört die Balken-Variante nicht)
+  // Listener nur für den Kreis auf eigenem Kanal
   const onProgress = (e) => {
     const pct = Math.max(0, Math.min(100, Number(e?.detail?.percent ?? 0)));
     const offset = circumference * (1 - pct / 100);
@@ -435,19 +436,19 @@ export function showLoadingCircle({ size = 140, stroke = 8, label = 'Strukturen 
     }
   };
 
-  document.addEventListener('progressUpdate', onProgress);
+  document.addEventListener('circleProgress', onProgress);
   __circle = { overlay, fg, text: txt, listener: onProgress, circumference };
 }
 
 /** Manuell aktualisieren (falls du kein progressUpdate dispatchst) */
 export function updateLoadingCircle(percent) {
-  document.dispatchEvent(new CustomEvent('progressUpdate', { detail: { percent } }));
+    document.dispatchEvent(new CustomEvent('circleProgress', { detail: { percent } }));
 }
 
 /** Ausblenden & aufräumen */
 export function hideLoadingCircle() {
   if (__circle.listener) {
-    document.removeEventListener('progressUpdate', __circle.listener);
+    document.removeEventListener('circleProgress', __circle.listener);
   }
   if (__circle.overlay && __circle.overlay.parentNode) {
     __circle.overlay.parentNode.removeChild(__circle.overlay);

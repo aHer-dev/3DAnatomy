@@ -136,14 +136,16 @@ export async function startApp() {
         await loadGroupByName('bones', { centerCamera: true });
         state.groupStates.bones = true;
         console.log('✅ Bones geladen');
+        updateLoadingCircle(65);
 
         await loadGroupByName('teeth', { centerCamera: false });
         state.groupStates.teeth = true;
         console.log('✅ Teeth geladen');
-
+        updateLoadingCircle(80);
         await loadGroupByName('cartilage', { centerCamera: false });
         state.groupStates.cartilage = true;
         console.log('✅ Cartilage geladen');
+        updateLoadingCircle(95);
 
         // 6) Schatten & Material-Tweaks
         scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
@@ -187,6 +189,11 @@ export async function startApp() {
             renderer.render(scene, camera);
         }
         animate();
+
+
+        // ✅ Jetzt ist wirklich alles fertig → Loader beenden
+        updateLoadingCircle(100);
+        setTimeout(() => { try { hideLoadingCircle(); } catch { } }, 300);
 
         console.log('🚀 App erfolgreich gestartet mit Button-Animationen');
 
@@ -258,8 +265,7 @@ async function tryApplyEnvironment(renderer) {
         scene.environment = null;
         scene.environmentIntensity = 0;
     }
-    updateLoadingCircle(25); 
-    hideLoadingCircle();
+    updateLoadingCircle(25);   // nur Fortschritt, NICHT schließen
 }
 // ============================================
 // LOADING SCREEN INTEGRATION

@@ -2,8 +2,24 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'
+    'sha256-HjBqISQTtzuyI1/v7rG5H1RM8Ns8BmY5Tw9kc6RWH74='
+    'sha256-vvt4KWwuNr51XfE5m+hzeNEGhiOfZzG97ccfqGsPwvE=';
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data: blob:;
+  font-src 'self';
+  connect-src 'self' https://cdn.jsdelivr.net;
+  media-src 'self' blob:;
+  worker-src 'self' blob:;
+  object-src 'none';
+  base-uri 'self';
+  upgrade-insecure-requests">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BlueBody 3D</title>
+ 
 
   <!-- Import-Map für lokale Three JSM-Module -->
   <link rel="icon" href="./favicon.png" type="image/png">
@@ -17,9 +33,6 @@
     }
   }
   </script>
-
-  <!-- Stylesheets -->
-
 </head>
 
 
