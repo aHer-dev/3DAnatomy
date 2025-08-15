@@ -800,7 +800,7 @@ function showCollectionLoadingOverlay() {
                 width: 50px;
                 height: 50px;
                 border: 3px solid #333;
-                border-top: 3px solid #4CAF50;
+                border-top: 3px solid #FF7A4A;
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
                 margin: 0 auto 20px;
@@ -822,7 +822,7 @@ function showCollectionLoadingOverlay() {
             
             .loading-bar-fill {
                 height: 100%;
-                background: linear-gradient(90deg, #4CAF50, #45a049);
+                background: linear-gradient(180deg, #4A9EFF, #FF7A4A);
                 transition: width 0.3s ease;
                 width: 0%;
             }

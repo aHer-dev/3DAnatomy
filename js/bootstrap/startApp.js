@@ -50,6 +50,8 @@ import { getResourceManager } from '../core/resourceManager.js';
 import { updatePerformanceMonitor } from '../debug/performanceMonitor.js';
 import { showLoadingCircle, updateLoadingCircle, hideLoadingCircle } from '../modelLoader/progress.js';
 import '../utils/migration-helper.js';
+import { lifecycle } from '../core/lifecycle.js';
+
 
 // --- RENDER-OPTIMIERUNG (optional) ---
 let renderOptimizer = null;
@@ -123,6 +125,24 @@ function placeExtrasIntoDropdown(essentials = ['bones', 'muscles', 'cartilage'])
     }
 }
 
+// --- zentraler Render-Loop (einzig) ---
+let stopLoop = null;
+function startLoop() {
+    if (stopLoop) return; // schon aktiv
+    stopLoop = lifecycle.startLoop(() => {
+        // pro Frame:
+        controls.update?.();
+        updatePerformanceMonitor?.(); // falls aktiv
+        renderer.render(scene, camera);
+    });
+}
+
+// Sauberes Cleanup beim Verlassen/Navigieren
+window.addEventListener('beforeunload', () => {
+    stopLoop?.();
+    lifecycle.dispose();
+}, { once: true });
+
 /**
  * Hauptinitialisierung der App
  */
@@ -130,9 +150,8 @@ export async function startApp() {
     window.__DISABLE_PROGRESS_OVERLAY = true;
     showLoadingCircle({ label: 'Strukturen werden geladen…' });
     renderer.domElement.style.visibility = 'hidden';
-    updateLoadingCircle(5);   // kleiner Startwert, damit man den Kreis sieh
+    updateLoadingCircle(5);   // kleiner Startwert, damit man den Kreis sieht
     initStaticAssets();
-
 
     // Loading-Screen wurde entfernt – tolerant bleiben
     const initialScreen = document.getElementById('initial-loading-screen');
@@ -184,6 +203,7 @@ export async function startApp() {
         state.groupStates.teeth = true;
         console.log('✅ Teeth geladen');
         updateLoadingCircle(80);
+
         await loadGroupByName('cartilage', { centerCamera: false });
         state.groupStates.cartilage = true;
         console.log('✅ Cartilage geladen');
@@ -223,22 +243,17 @@ export async function startApp() {
         console.log('🎬 Initialisiere Button-Animationen als letztes...');
         initDynamicGroupLoading();
 
-        // 10) Render-Loop
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            updatePerformanceMonitor();
-            renderer.render(scene, camera);
-        }
-                // ✅ Jetzt ist wirklich alles fertig → 100 % setzen
-                    updateLoadingCircle(100);
+        // 10) Render-Loop (zentral)
+        // ✅ Jetzt ist wirklich alles fertig → 100 % setzen
+        updateLoadingCircle(100);
 
-                // ⏳ Warte, bis das Overlay (mit „Willkommen!“) wirklich weg ist …
-                    document.addEventListener('circleOverlayHidden', () => {
-                            // … dann Canvas sichtbar machen und Render-Loop starten
-                    renderer.domElement.style.visibility = 'visible';
-                    animate();
-                }, { once: true });
+        // ⏳ Warte, bis das Overlay (mit „Willkommen!“) wirklich weg ist …
+        document.addEventListener('circleOverlayHidden', () => {
+            // … dann Canvas sichtbar machen und zentralen Loop starten
+            renderer.domElement.style.visibility = 'visible';
+            startLoop(); // <-- hier statt 'animate()'
+        }, { once: true });
+
         console.log('🚀 App erfolgreich gestartet mit Button-Animationen');
 
     } catch (err) {
