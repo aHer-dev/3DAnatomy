@@ -453,7 +453,7 @@ body {
    box-shadow: var(--glass-shadow);
    z-index: 50 !important;
 }
-
+ 
 
 #license-info {
    /* Typo-Basis, damit nix riesig wird */
