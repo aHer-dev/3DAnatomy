@@ -3,6 +3,7 @@
 // ============================================
 
 import * as THREE from 'three';
+import { dispatch, StateActions } from '../store/state.js';
 
 // WICHTIG: Lazy imports für zirkuläre Referenzen (BROWSER-KOMPATIBEL)
 let _state = null;
@@ -158,45 +159,40 @@ export function ghostModel(root, alpha = 0.15) {
 }
 
 // === GROUP VISIBILITY ===
-export function setGroupVisibility(group, visible) {
+export function setGroupVisibility(groupName, visible) {
     const state = getState();
     if (!state) {
         console.warn('⚠️ setGroupVisibility: State nicht verfügbar');
         return;
     }
-
-    const arr = state.groups[group] || [];
-
-    for (const root of arr) {
-        (visible ? showModel : hideModel)(root);
-    }
-
-    state.groupVisible[group] = !!visible;
+    const v = !!visible;
+    // 1) State mutieren – zentral per Action
+    dispatch(StateActions.SET_GROUP_VISIBILITY, { group: groupName, visible: v });
+    // 2) Effekt anwenden – einzig hier werden Modelle sichtbar/unsichtbar gesetzt
+    const models = state.groups[groupName] || [];
+    for (const model of models) setModelVisibility(model, v);
 }
-
+    
 // === LEGACY/COMPATIBILITY FUNCTIONS ===
 export function setModelVisibility(model, visible) {
     if (!model) return;
+    const v = !!visible;
 
-    // Direkte Implementation ohne externe Dependencies
-    model.visible = visible;
-
+    // Sichtbarkeit & Layer für gesamten Subtree setzen
     model.traverse(child => {
-        if (child.isMesh || child.isObject3D) {
-            child.visible = visible;
-
-            if (visible) {
-                child.layers.enable(0);  // Render layer
-                child.layers.enable(1);  // Pick layer
-            } else {
-                child.layers.disable(0);
-                child.layers.disable(1);
-            }
+        if (!child.isObject3D) return;
+        child.visible = v;
+        if (v) {
+            child.layers.enable(0); // Render layer
+            child.layers.enable(1); // Pick layer
+        } else {
+            child.layers.disable(0);
+            child.layers.disable(1);
         }
     });
 
-    // Root-Layer setzen
-    if (visible) {
+    // Root sicherstellen (falls traverse-Hook Root überspringt)
+    if (v) {
         model.layers.enable(0);
         model.layers.enable(1);
     } else {
@@ -204,18 +200,12 @@ export function setModelVisibility(model, visible) {
         model.layers.disable(1);
     }
 
-    // State synchronisieren (safe)
-    const state = getState();
-    if (state?.pickableMeshes) {
-        if (visible) {
-            model.traverse(n => {
-                if (n.isMesh) state.pickableMeshes.add(n);
-            });
-        } else {
-            model.traverse(n => {
-                if (n.isMesh) state.pickableMeshes.delete(n);
-            });
-        }
+    // Pickables konsequent über API (kein direkter Zugriff auf state.pickableMeshes)
+    const setPickable = typeof getSetPickable === 'function' ? getSetPickable() : null;
+    if (setPickable) {
+        model.traverse(n => {
+            if (n.isMesh) setPickable(n, v);
+        });
     }
 }
 

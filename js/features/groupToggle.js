@@ -1,21 +1,16 @@
 
 // groupToggle.js - ERWEITERTE VERSION
-import { state } from '../store/state.js';
+import { state, dispatch, StateActions } from '../store/state.js';
 import { loadGroupByName } from './modelLoader-core.js';
 import { scene } from '../core/scene.js';
 import { disposeObject3D } from '../modelLoader/cleanup.js';
 import { unregisterPickables } from './selection.js';
 
-// Track welche Gruppen geladen sind
-const loadedGroups = new Map();
 
-// ✅ NEU: Map global verfügbar machen für Reset
-if (typeof window !== 'undefined') {
-    window.groupToggleLoadedGroups = loadedGroups;
-}
+
 
 export async function toggleGroup(groupName) {
-    const isLoaded = loadedGroups.get(groupName) || false;
+    const isLoaded = state.groups[groupName]?.length > 0;
 
     if (isLoaded) {
         // ENTLADEN
@@ -28,9 +23,11 @@ export async function toggleGroup(groupName) {
             disposeObject3D(model);
         }
 
-        state.groups[groupName] = [];
-        state.groupStates[groupName] = false;
-        loadedGroups.set(groupName, false);
+dispatch(StateActions.UNLOAD_GROUP, { group: groupName });
+dispatch(StateActions.SET_GROUP_VISIBILITY, { 
+    group: groupName,
+    visible: false
+});
 
         const btn = document.getElementById(`btn-load-${groupName}`);
         if (btn) {
@@ -45,8 +42,10 @@ export async function toggleGroup(groupName) {
         console.log(`🔺 Lade Gruppe "${groupName}"...`);
 
         await loadGroupByName(groupName, { centerCamera: false });
-        state.groupStates[groupName] = true;
-        loadedGroups.set(groupName, true);
+        dispatch(StateActions.SET_GROUP_VISIBILITY, { 
+group: groupName,
+visible: true
+});
 
         const btn = document.getElementById(`btn-load-${groupName}`);
         if (btn) {
@@ -70,39 +69,17 @@ export function setupGroupToggle() {
 
     groups.forEach(group => {
         const btn = document.getElementById(`btn-load-${group}`);
-        if (btn) {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-            newBtn.addEventListener('click', () => toggleGroup(group));
-        }
+        if (!btn) return;
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', () => toggleGroup(group));
     });
 
-    // Bones und Teeth als geladen markieren (da beim Start geladen)
-    loadedGroups.set('bones', true);
-    loadedGroups.set('teeth', true);
-
-    // ✅ NEU: Event-Listener für Reset
-    document.addEventListener('resetGroupStates', (event) => {
-        console.log('🔄 GroupToggle: Reset Event empfangen');
-
-        // Map komplett zurücksetzen
-        loadedGroups.clear();
-
-        // Nur die angegebenen Gruppen als geladen markieren
-        const loaded = event.detail?.loadedGroups || ['bones', 'teeth'];
-        loaded.forEach(group => {
-            loadedGroups.set(group, true);
-        });
-
-        console.log('✅ GroupToggle: States zurückgesetzt auf:', loaded);
-    });
+    // ❌ Nichts mit loadedGroups initialisieren oder resetten
+    // ❌ Kein resetGroupStates-Listener nötig
 }
 
-// ✅ NEU: Debugging-Funktion
+// Debug: „geladene“ Gruppen aus dem Store ableiten
 export function getLoadedGroupsDebug() {
-    const loaded = [];
-    loadedGroups.forEach((isLoaded, group) => {
-        if (isLoaded) loaded.push(group);
-    });
-    return loaded;
+    return Object.keys(state.groups).filter(g => (state.groups[g]?.length ?? 0) > 0);
 }

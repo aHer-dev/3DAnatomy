@@ -1,6 +1,7 @@
 // js/ui/ui-reset.js - VOLLSTÄNDIGE CARTILAGE-INTEGRATION
 
 import { state } from '../store/state.js';
+import { dispatch, StateActions } from '../store/state.js';
 import { hideInfoPanel } from '../interaction/infoPanel.js';
 import { renderer } from '../core/renderer.js';
 import { scene } from '../core/scene.js';
@@ -42,28 +43,18 @@ function resetToDefaultView() {
   Object.keys(state.groups || {}).forEach(groupName => {
     const models = state.groups[groupName] || [];
 
-    // ✅ NUR STANDARD-GRUPPEN sichtbar machen
-    const shouldBeVisible = STANDARD_GROUPS.includes(groupName);
+const shouldBeVisible = STANDARD_GROUPS.includes(groupName);
+dispatch(StateActions.SET_GROUP_VISIBILITY, { 
+  group: groupName,
+  visible: shouldBeVisible
+});
 
-    console.log(`👁️ Setze ${groupName} auf sichtbar: ${shouldBeVisible}`);
-
-    models.forEach(model => {
-      setModelVisibility(model, shouldBeVisible);
-      if (shouldBeVisible) {
-        registerPickables(model);
-      } else {
-        unregisterPickables(model);
-      }
-    });
-
-    // State entsprechend setzen
-    state.groupStates[groupName] = shouldBeVisible;
+models.forEach(model => {
+  setModelVisibility(model, shouldBeVisible);
+});
   });
 
-  // Sammlung-Modus verlassen
-  if (state.modes) {
-    state.modes.collection = false;
-  }
+  dispatch(StateActions.CLEAR_SELECTION, {});
 
   console.log('✅ Standard-Gruppen sichtbar:', STANDARD_GROUPS);
 }
@@ -109,7 +100,7 @@ export async function resetApp() {
 
     // SCHRITT 2: Auswahl zurücksetzen
     state.selected = { root: null, mesh: null, point: null, meta: null };
-    state.currentlySelected = null;
+    dispatch(StateActions.CLEAR_SELECTION, {});
 
     // SCHRITT 3: ALLE Modelle aus Szene entfernen und entsorgen
     updateResetProgress('Räume Szene komplett auf...', 20);
@@ -229,18 +220,7 @@ function resetAllButtonStates() {
 
 function resetGroupToggleStates() {
   try {
-    if (window.groupToggleLoadedGroups) {
-      window.groupToggleLoadedGroups.clear();
-
-      // ✅ ALLE STANDARD-GRUPPEN als geladen markieren
-      STANDARD_GROUPS.forEach(group => {
-        window.groupToggleLoadedGroups.set(group, true);
-        console.log(`📌 GroupToggle: ${group} als geladen markiert`);
-      });
-
-      console.log('✅ GroupToggle States zurückgesetzt');
-    }
-
+  
     // ✅ EVENT MIT ALLEN STANDARD-GRUPPEN senden
     const resetEvent = new CustomEvent('resetGroupStates', {
       detail: { loadedGroups: STANDARD_GROUPS }
@@ -257,7 +237,10 @@ function resetColors() {
 
   Object.keys(defaults).forEach(groupName => {
     const hex = defaults[groupName] ?? 0xcccccc;
-    state.colors[groupName] = hex;
+     dispatch(StateActions.SET_GROUP_COLOR, { 
+group: groupName,
+color: hex
+});
 
     // Nur wenn Gruppe geladen ist, Farbe anwenden
     if (state.groups[groupName]?.length > 0) {

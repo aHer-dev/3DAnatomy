@@ -1,6 +1,9 @@
 // js/features/selection.js
 // ✅ BROWSER-KOMPATIBLE VERSION (kein require!)
 
+import * as THREE from 'three';
+import { dispatch, StateActions } from '../store/state.js';
+
 // WICHTIG: Nur minimale Imports - state wird via Parameter übergeben oder lazy geladen
 const PICK_LAYER = 1; // Layer für Raycasting
 
@@ -24,28 +27,26 @@ function getState() {
  * @param {boolean} on 
  * @param {Set} pickableSet - State wird von außen übergeben (optional)
  */
-export function setPickable(mesh, on, pickableSet = null) {
+
+export function setPickable(mesh, pickable, pickableSet = null) {
     if (!mesh?.isMesh) return;
 
-    // Fallback: Versuche State zu finden
-    if (!pickableSet) {
-        const state = getState();
-        if (state?.pickableMeshes) {
-            pickableSet = state.pickableMeshes;
-        } else {
-            // Notfall: Arbeite ohne State (nur Layer setzen)
-            console.warn('⚠️ setPickable: Kein State verfügbar, arbeite nur mit Layern');
-        }
+    const enable = !!pickable;
+
+    // Originales Raycast sichern (einmalig)
+    mesh.userData ??= {};
+    if (!mesh.userData.__origRaycast) {
+        mesh.userData.__origRaycast = mesh.raycast;
     }
 
-    if (on) {
-        mesh.layers.enable(PICK_LAYER);
-        if (pickableSet) pickableSet.add(mesh);
-    } else {
-        mesh.layers.disable(PICK_LAYER);
-        if (pickableSet) pickableSet.delete(mesh);
-    }
+    // Flag + Raycast setzen
+    mesh.userData.pickable = enable;
+    mesh.raycast = enable ? mesh.userData.__origRaycast : () => { };
+
+    // SSOT: Set-Änderung über Actions
+    dispatch(enable ? StateActions.ADD_PICKABLE : StateActions.REMOVE_PICKABLE, { mesh });
 }
+
 
 /**
  * Rekursiv alle sichtbaren Meshes eines Roots registrieren

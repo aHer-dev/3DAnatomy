@@ -6,24 +6,19 @@
 import { pickAt } from '../core/raycaster.js';
 
 /**
- * Registriert einen Pointer-Listener auf dem übergebenen DOM-Element (typisch: renderer.domElement).
- * Ruft bei Treffer dein Callback mit { meta, model, event, selection } auf.
- *
  * @param {HTMLElement} domElement - z. B. renderer.domElement
  * @param {(args:{meta:any, model:THREE.Object3D, event:PointerEvent, selection:any}) => void} callback
  * @returns {() => void} cleanup-Funktion zum Entfernen des Listeners
  */
 export function setupRaycastOnClick(domElement, callback) {
     function onPointerDown(e) {
-        const sel = pickAt(e.clientX, e.clientY);          // zentraler Raycaster
+        const sel = pickAt(e.clientX, e.clientY);
         if (!sel?.root) return;
 
-        // ✅ robust: entry über root.meta oder root.entry oder Mesh-Meta
         const entry =
             sel.root.userData?.entry ||
             sel.root.userData?.meta ||
-            sel.mesh?.userData?.meta ||
-            null;
+            sel.mesh?.userData?.meta || null;
 
         callback?.({ meta: entry, model: sel.root, event: e, selection: sel });
     }

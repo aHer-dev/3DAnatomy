@@ -29,6 +29,4 @@ export function highlightModel(model) {
       child.material.needsUpdate = true;
     }
   });
-
-  state.currentlySelected = model; // Merken, damit wir beim nächsten Klick resetten können
 }

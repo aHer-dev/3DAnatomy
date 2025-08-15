@@ -1,6 +1,7 @@
 // infoPanel.js
 import * as THREE from 'three';
 import { state } from '../store/state.js';
+import { dispatch, StateActions } from '../store/state.js';
 import { renderer } from '../core/renderer.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
@@ -50,6 +51,7 @@ export function showInfoPanel(meta, selectedModel) {
 export function hideInfoPanel() {
     const infoPanel = document.getElementById('info-panel');
     const infoContent = document.getElementById('info-content');
+
     if (infoPanel) {
         infoPanel.classList.add('hidden');
         infoPanel.classList.remove('visible');
@@ -58,12 +60,15 @@ export function hideInfoPanel() {
         infoContent.innerHTML = '';
     }
 
-    if (state.currentlySelected) {
-        state.currentlySelected.traverse(child => {
+    // ✨ neu: null-sicher lesen
+    const root = state.selected?.root ?? null;
+    if (root) {
+        root.traverse(child => {
             if (child.isMesh && child.material?.emissive) {
                 child.material.emissive.setHex(0x000000);
             }
         });
-        state.currentlySelected = null;
+        // ✨ neu: sauber über Action zurücksetzen
+        dispatch(StateActions.CLEAR_SELECTION, {});
     }
 }
