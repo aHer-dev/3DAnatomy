@@ -1,26 +1,21 @@
 // Lizenz-Panel anzeigen/verstecken
+// Lizenz-Panel anzeigen/verstecken
+import { licenseHTML } from './licenseContent.js';
+
+
 export function toggleLicense() {
-  const button = document.getElementById('btn-toggle-license');
+  const btn = document.getElementById('btn-toggle-license');
   const info = document.getElementById('license-info');
+  if (!btn || !info) return;
 
-  if (!info || !button) {
-    console.error('❌ Lizenz-Elemente nicht gefunden');
-    return;
+  if (!info.dataset.injected) {
+    info.innerHTML = licenseHTML;      // Text mit CC BY 4.0, three.js MIT, Draco Apache-2.0, OBO-Hinweis
+    info.dataset.injected = '1';
   }
 
-  const isVisible = info.classList.contains('active');
-
-  if (isVisible) {
-    info.classList.remove('active');
-    info.classList.add('hidden');
-    button.setAttribute('aria-expanded', 'false');
-    info.setAttribute('aria-hidden', 'true');
-  } else {
-    info.classList.remove('hidden'); // ❗ wichtig
-    info.classList.add('active');
-    button.setAttribute('aria-expanded', 'true');
-    info.setAttribute('aria-hidden', 'false');
-  }
-
-  console.log("✅ Lizenz-Toggle ausgeführt");
+  const hidden = info.classList.contains('hidden');
+  info.classList.toggle('hidden', !hidden);
+  info.classList.toggle('active', hidden);
+  btn.setAttribute('aria-expanded', String(hidden));
+  info.setAttribute('aria-hidden', String(!hidden));
 }
