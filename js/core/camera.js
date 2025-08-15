@@ -8,9 +8,6 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 0, 5);
 
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-});
+// Resize handling moved to centralized initResizeHandler.js
 
 export { camera }; // Muss diesen Export haben

@@ -1,29 +1,42 @@
 // js/bootstrap/initResizeHandler.js
-// 📐 Initialisiert das Resize-Verhalten für Kamera & Renderer
+// 📐 ZENTRALER Resize-Handler - verhindert Mehrfachregistrierung
 
 import { camera } from '../core/camera.js';
 import { renderer } from '../core/renderer.js';
 
-/**
- * Beobachtet Fenstergrößenänderungen und passt Kamera + Renderer an.
- */
+
+// Flag um Mehrfachregistrierung zu verhindern
+let resizeHandlerInitialized = false;
+
+ //EINZIGER Resize - Handler für die gesamte Applikation
+//Konsolidiert alle Resize - Logik an einem Ort
+
 export function initResizeHandler() {
+    if (resizeHandlerInitialized) {
+        console.warn('⚠️ Resize-Handler bereits initialisiert - überspringe.');
+        return;
+    }
+
     window.addEventListener('resize', () => {
         const container = document.getElementById('canvas-container');
-        if (!container) {
-            console.warn('⚠️ Kein Canvas-Container gefunden.');
-            return;
-        }
 
-        const width = container.clientWidth;
-        const height = container.clientHeight;
+            const width = container ? container.clientWidth : window.innerWidth;
+            const height = container ? container.clientHeight : window.innerHeight;
 
-        renderer.setSize(width, height);
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
+                // Renderer anpassen
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(width, height);
 
-        console.log(`📐 Resize: ${width}x${height}`);
-    });
+                // Kamera-Aspekt anpassen
+                camera.aspect = width / height;
+            camera.updateProjectionMatrix();
 
-    console.log('🖥️ Resize-Handler aktiviert.');
+            // Debug nur bei Bedarf
+            if (window.DEBUG_RESIZE) {
+                console.log(`📐 Resize: ${width}x${height}, DPR: ${window.devicePixelRatio}`);
+            }
+        }, { passive: true });
+
+    resizeHandlerInitialized = true;
+    console.log('🖥️ Zentraler Resize-Handler aktiviert.');
 }

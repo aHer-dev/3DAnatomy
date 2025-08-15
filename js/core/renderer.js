@@ -83,16 +83,8 @@ export function thawShadows() {
   renderer.shadowMap.autoUpdate = true;
 }
 
-/**
- * Responsives Resize
- */
-function onResize() {
-  const w = canvas.clientWidth || window.innerWidth;
-  const h = canvas.clientHeight || window.innerHeight;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(w, h, false);
-}
-window.addEventListener('resize', onResize);
+// Resize handling moved to centralized initResizeHandler.js
+
 
 // Optimizer-Controls für Debug/Testing
 if (typeof window !== 'undefined') {
