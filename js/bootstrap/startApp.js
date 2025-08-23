@@ -39,6 +39,7 @@ import { setupBasicLights, getLightRig, fitShadowFrustumToScene } from '../light
 import { initStaticAssets } from './initStaticAssets.js';
 import { initResizeHandler } from './initResizeHandler.js';
 import { initCameraView } from './initCameraView.js';
+import { hideInfoPanel } from '../interaction/infoPanel.js';
 
 // ✅ FEHLENDER IMPORT HINZUGEFÜGT
 import { initDynamicGroupLoading } from './initGroupLoader.js';
@@ -236,6 +237,14 @@ export async function startApp() {
 
         // 8) Interaktionen & Resize
         setupInteractions();
+
+        lifecycle.on(controls, 'change', () => {
+            const panel = document.getElementById('info-panel');
+            if (panel?.classList.contains('visible')) {
+                hideInfoPanel();
+            }
+        });
+
         initResizeHandler();
         initCameraView();
 

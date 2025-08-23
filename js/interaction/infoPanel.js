@@ -1,49 +1,85 @@
 // infoPanel.js
-import * as THREE from 'three';
+
 import { state } from '../store/state.js';
 import { dispatch, StateActions } from '../store/state.js';
-import { renderer } from '../core/renderer.js';
-import { scene } from '../core/scene.js';
-import { camera } from '../core/camera.js';
-import { buildEditPanel } from './editPanel.js';
-import { setModelColor, setModelOpacity } from '../features/appearance.js';
+
+
+
+function pickLabel(meta, order = ['de', 'en', 'la']) {
+    // Wählt das erste nicht-leere Label gemäß Reihenfolge
+    const labels = meta?.labels || {};
+    for (const k of order) {
+        const v = (labels[k] || '').trim();
+        if (v) return v;
+    }
+    return meta?.id || 'Unbekannt';
+}
+
+function readDescription(meta, order = ['de', 'en']) {
+    // Liest Beschreibung aus meta.info.description.{de|en}
+    const desc = meta?.info?.description || {};
+    for (const k of order) {
+        const v = (desc[k] || '').trim();
+        if (v) return v;
+    }
+    return '';
+}
 
 export function showInfoPanel(meta, selectedModel) {
-    // ✅ Fallbacks + Guard
+    // 1) Fallback: Meta vom Modell holen, falls nicht übergeben
     if (!meta && selectedModel?.userData?.meta) {
-        meta = selectedModel.userData.meta; // falls der Klickpfad meta nicht mitgebracht hat
+        meta = selectedModel.userData.meta;
     }
     if (!meta) {
         console.warn('Info-Panel: Kein Meta für Auswahl – Panel wird nicht gezeigt.');
         return;
     }
 
+    // 2) DOM-Elemente sichern
     const infoPanel = document.getElementById('info-panel');
     const infoContent = document.getElementById('info-content');
-
     if (!infoPanel || !infoContent) {
-        console.error('❌ Info-Panel oder Info-Content nicht gefunden:', {
-            infoPanel: !!infoPanel,
-            infoContent: !!infoContent,
-        });
+        console.error('❌ Info-Panel oder Info-Content nicht gefunden.');
         return;
     }
-
     infoContent.innerHTML = '';
 
+    // 3) Titel (bevorzugt DE → EN → LA); klarer Haupttitel
     const title = document.createElement('h3');
-    title.textContent = meta.labels?.en || meta.id || 'Unbekannt';
+    title.textContent = pickLabel(meta, ['de', 'en', 'la']); // kannst du bei Bedarf auf ['la','de','en'] umstellen
     infoContent.appendChild(title);
 
+    // 4) Latein separat & dezent (kursiv) anzeigen, wenn vorhanden
+    const latin = (meta?.labels?.la || '').trim();
+    if (latin) {
+        const laLine = document.createElement('div');
+        laLine.setAttribute('lang', 'la');
+        laLine.style.fontStyle = 'italic';
+        laLine.style.opacity = '0.9';
+        laLine.style.marginTop = '-4px';
+        laLine.textContent = latin;
+        infoContent.appendChild(laLine);
+    }
+
+    // 5) Beschreibung aus der richtigen Quelle holen (meta.info.description.{de|en})
+    const descText = readDescription(meta, ['de', 'en']);
     const details = document.createElement('p');
-    details.textContent = meta.description || 'Keine Beschreibung verfügbar.';
     infoContent.appendChild(details);
 
+    // 6) Optional: Edit-/Appearance-Controls weiterverwenden (dein bestehender Code)
     const editDiv = document.createElement('div');
     editDiv.id = 'edit-controls';
     infoContent.appendChild(editDiv);
-    buildEditPanel(editDiv, selectedModel);  // Hier werden Initialwerte + Listener gesetzt
 
+    // Falls du diese Funktion im Modul hast:
+    try {
+        // lazy import, damit diese Datei unabhängig bleibt, wenn editPanel nicht existiert
+        import('./editPanel.js').then(({ buildEditPanel }) => {
+            buildEditPanel?.(editDiv, selectedModel);
+        }).catch(() => {/* still & safe */ });
+    } catch (e) { /* no-op */ }
+
+    // 7) Panel sichtbar
     infoPanel.classList.remove('hidden');
     infoPanel.classList.add('visible');
 }

@@ -114,7 +114,7 @@ export const state = {
       brain: 0xffa500,
       cartilage: 0xadd8e6,
       ear: 0xf5deb3,
-      eyes: 0x0000ff,
+      eyes: 0xadd8e6,
       glands: 0x800080,
       heart: 0xb22222,
       ligaments: 0xffffff,
