@@ -11,6 +11,7 @@ import { renderer } from '../core/renderer.js';
 import { controls } from '../core/controls.js';
 import { state } from '../store/state.js';
 import { hideAllManagedModels, setModelVisibility, showModel, hideModel } from '../features/visibility.js';
+import { collectionManager } from './ui-collection-export.js';
 
 import { rebuildRaycastStructures } from '../core/raycaster.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
@@ -381,8 +382,11 @@ export function setupSetUI() {
         meta: selected.userData?.meta,
         entry: selected.userData?.entry
       });
-
+      setTimeout(() => {
+        collectionManager.setupUI();
+      }, 100); // Kleine Verzögerung um sicherzustellen, dass DOM bereit ist
       // ROBUSTE ID-EXTRAKTION
+
       const extractId = (obj) => {
         const candidates = [
           obj.userData?.meta?.id,
@@ -533,13 +537,14 @@ export function setupSetUI() {
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       if (state.collection.length === 0) {
-        // 🎯 DEZENTES FEEDBACK statt Alert
         showToast('Die Sammlung ist bereits leer', 'info');
         return;
       }
 
-      // Bestätigung mit dezentem System (könnte auch durch Toast ersetzt werden)
-      if (confirm(`🗑️ Möchten Sie wirklich ${state.collection.length} Objekte aus der Sammlung entfernen?`)) {
+      // Bestätigung mit dezenter Nachricht
+      const confirmed = confirm(`🗑️ Möchten Sie wirklich ${state.collection.length} Objekte aus der Sammlung entfernen?`);
+
+      if (confirmed) {
         const removedCount = state.collection.length;
         state.collection = [];
         updateSetList();
@@ -552,12 +557,13 @@ export function setupSetUI() {
 
         renderer.render(scene, camera);
         console.log('🗑️ Sammlung geleert');
-
-        // 🎯 DEZENTES FEEDBACK
         showToast(`Sammlung geleert: ${removedCount} Objekte entfernt`, 'info');
       }
     });
   }
+
+  // Initialisierung beim Laden
+  updateSetList();
 
   document.addEventListener('collectionUpdated', () => {
     console.log('🔄 Collection wurde von editPanel aktualisiert');
@@ -606,14 +612,25 @@ function highlightModel(model) {
 /**
  * Aktualisiert die UI-Liste der Sammlung - VERBESSERT
  */
-function updateSetList() {
+export function updateSetList() {
   const setList = document.getElementById('set-list');
   if (!setList) return;
 
-  setList.innerHTML = '<h4 style="margin: 0 0 10px 0;">Meine Sammlung:</h4>';
+  // Inhalt nur innerhalb eines Wrappers ändern, um andere Elemente nicht zu löschen
+  let contentWrapper = document.getElementById('set-list-content');
+  if (!contentWrapper) {
+    // Wrapper erstellen, falls nicht vorhanden
+    contentWrapper = document.createElement('div');
+    contentWrapper.id = 'set-list-content';
+    setList.innerHTML = '';
+    setList.appendChild(contentWrapper);
+  }
+
+  // Inhalt des Wrappers aktualisieren
+  contentWrapper.innerHTML = '<h4 style="margin: 0 0 10px 0;">Meine Sammlung:</h4>';
 
   if (state.collection.length === 0) {
-    setList.innerHTML += '<p style="color: #999; font-style: italic;">Leer - Klicken Sie Modelle an und fügen Sie sie hinzu</p>';
+    contentWrapper.innerHTML += '<p style="color: #999; font-style: italic;">Leer - Klicken Sie Modelle an und fügen Sie sie hinzu</p>';
     return;
   }
 
@@ -621,6 +638,8 @@ function updateSetList() {
   ul.style.listStyle = 'none';
   ul.style.padding = '0';
   ul.style.margin = '0';
+  ul.style.maxHeight = '300px';
+  ul.style.overflowY = 'auto';
 
   // Sammlung nach Gruppen sortieren für bessere Übersicht
   const groupedItems = groupCollectionByGroup(state.collection);
@@ -638,29 +657,69 @@ function updateSetList() {
     // Items in der Gruppe
     items.forEach((item, index) => {
       const li = document.createElement('li');
-      li.style.padding = '5px 5px 5px 20px'; // Einrückung für Gruppe
-      li.style.marginBottom = '3px';
-      li.style.backgroundColor = 'rgba(255,255,255,0.1)';
-      li.style.borderRadius = '3px';
-      li.style.cursor = 'pointer';
-      li.style.display = 'flex';
-      li.style.justifyContent = 'space-between';
-      li.style.alignItems = 'center';
+      li.style.cssText = `
+        padding: 5px 5px 5px 20px;
+        margin-bottom: 3px;
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.2s ease;
+      `;
 
       const nameSpan = document.createElement('span');
       nameSpan.textContent = item.name || `Objekt ${index + 1}`;
       nameSpan.style.fontSize = '14px';
 
+      // Visuelle Indikatoren für Eigenschaften
+      const indicators = document.createElement('span');
+      indicators.style.cssText = 'display: flex; gap: 5px; align-items: center;';
+
+      // Farb-Indikator
+      if (item.color !== null && item.color !== undefined) {
+        const colorDot = document.createElement('span');
+        const hexColor = typeof item.color === 'number'
+          ? '#' + item.color.toString(16).padStart(6, '0')
+          : item.color;
+        colorDot.style.cssText = `
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background-color: ${hexColor};
+          border: 1px solid rgba(255,255,255,0.5);
+        `;
+        indicators.appendChild(colorDot);
+      }
+
+      // Transparenz-Indikator
+      if (item.opacity !== undefined && item.opacity < 1) {
+        const opacityBadge = document.createElement('span');
+        opacityBadge.textContent = `${Math.round(item.opacity * 100)}%`;
+        opacityBadge.style.cssText = `
+          font-size: 10px;
+          padding: 1px 4px;
+          background: rgba(255,255,255,0.2);
+          border-radius: 3px;
+          color: rgba(255,255,255,0.8);
+        `;
+        indicators.appendChild(opacityBadge);
+      }
+
       const removeBtn = document.createElement('button');
       removeBtn.textContent = '✕';
-      removeBtn.style.background = 'transparent';
-      removeBtn.style.border = 'none';
-      removeBtn.style.color = '#ff4444';
-      removeBtn.style.cursor = 'pointer';
-      removeBtn.style.fontSize = '16px';
+      removeBtn.style.cssText = `
+        background: transparent;
+        border: none;
+        color: #ff4444;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 0 5px;
+        transition: color 0.2s ease;
+      `;
       removeBtn.title = 'Aus Sammlung entfernen';
 
-      // Klick zum Entfernen
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const itemIndex = state.collection.findIndex(ci => ci.id === item.id);
@@ -668,13 +727,11 @@ function updateSetList() {
           state.collection.splice(itemIndex, 1);
           updateSetList();
           console.log('📤 Aus Sammlung entfernt:', item.name);
-
-          // 🎯 DEZENTES FEEDBACK
           showToast(`"${item.name}" aus Sammlung entfernt`, 'info', 2000);
         }
       });
 
-      // Hover-Effekt
+      // Hover-Effekte
       li.addEventListener('mouseenter', () => {
         li.style.backgroundColor = 'rgba(255,255,255,0.2)';
       });
@@ -683,20 +740,26 @@ function updateSetList() {
       });
 
       li.appendChild(nameSpan);
+      li.appendChild(indicators);
       li.appendChild(removeBtn);
       ul.appendChild(li);
     });
   });
 
-  setList.appendChild(ul);
+  contentWrapper.appendChild(ul);
 
   // Gesamtanzahl anzeigen
   const count = document.createElement('p');
-  count.style.marginTop = '10px';
-  count.style.fontSize = '12px';
-  count.style.color = '#999';
+  count.style.cssText = `
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+  `;
   count.textContent = `${state.collection.length} Objekt(e) in Sammlung`;
-  setList.appendChild(count);
+  contentWrapper.appendChild(count);
 }
 
 /**
