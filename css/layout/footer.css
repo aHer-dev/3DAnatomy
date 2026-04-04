@@ -1,0 +1,91 @@
+/* css/layout/footer.css – Footer & License Panel */
+
+#footer {
+   position: fixed !important;
+   bottom: 20px;
+   right: 20px;
+   background: var(--glass-bg-controls);
+   backdrop-filter: var(--glass-blur);
+   -webkit-backdrop-filter: var(--glass-blur);
+   border: 1px solid var(--glass-border);
+   border-radius: 12px;
+   box-shadow: var(--glass-shadow);
+   z-index: 50 !important;
+}
+
+#license-info {
+   font-size: 13px;
+   line-height: 1.6;
+   background: var(--glass-bg-panel);
+   backdrop-filter: var(--glass-blur);
+   -webkit-backdrop-filter: var(--glass-blur);
+   border: 1px solid var(--glass-border);
+   border-radius: var(--radius-lg);
+   box-shadow: var(--glass-shadow);
+   color: var(--text-secondary);
+   max-width: 320px;
+   max-height: calc(100vh - 120px);
+   overflow-y: auto;
+   z-index: 1200 !important;
+}
+
+#license-info h4 {
+   margin: 0 0 10px 0;
+   font-size: 14px;
+   font-weight: 600;
+   color: var(--text-primary);
+}
+#license-info p { margin: 8px 0; color: var(--text-secondary); }
+#license-info a {
+   color: var(--accent-blue);
+   text-decoration: none;
+   border-bottom: 1px dotted rgba(74, 158, 255, 0.5);
+}
+#license-info a:hover {
+   color: var(--text-primary);
+   border-bottom-color: var(--accent-blue);
+}
+
+#license-info ul { margin: 0 0 6px 0; padding: 0; list-style: none; }
+#license-info li { margin: 8px 0; padding-left: 14px; position: relative; }
+#license-info li::before {
+   content: '';
+   position: absolute;
+   left: 0; top: 0.85em;
+   width: 6px; height: 6px;
+   border-radius: 50%;
+   background: linear-gradient(135deg, var(--accent-blue), var(--accent-orange));
+   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+   transform: translateY(-50%);
+}
+
+#btn-toggle-license {
+   appearance: none;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 3px;
+   min-height: 28px;
+   padding: 6px 10px;
+   font: 600 10px/1.2 system-ui, -apple-system, Segoe UI, Inter, sans-serif;
+   color: var(--text-secondary);
+   background: transparent;
+   border: none;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: var(--transition-smooth);
+}
+#btn-toggle-license:hover {
+   color: var(--text-primary);
+   background: var(--glass-bg-hover);
+}
+#btn-toggle-license::before,
+#btn-toggle-license::after { content: none !important; }
+
+@media (max-width: 768px) {
+   #license-info {
+      left: 12px; right: 12px;
+      bottom: 80px;
+      max-width: none;
+   }
+}

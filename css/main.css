@@ -1,0 +1,26 @@
+/* ==================================================
+   MAIN.CSS – Import manifest (only this file is linked in index.html)
+   Load order matters: variables first, then base, then layout, then components
+   ================================================== */
+
+/* 1. Design tokens */
+@import 'theme/variables.css';
+
+/* 2. Reset & body */
+@import 'theme/base.css';
+
+/* 3. Layout */
+@import 'layout/app.css';
+@import 'layout/footer.css';
+
+/* 4. Controls sidebar */
+@import 'controls/search.css';
+@import 'controls/buttons.css';
+
+/* 5. Components */
+@import 'components/dropdowns.css';
+@import 'components/panels.css';
+@import 'components/toolbar.css';
+@import 'components/set-list.css';
+@import 'components/loading.css';
+@import 'components/tooltip.css';

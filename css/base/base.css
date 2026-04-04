@@ -1,0 +1,27 @@
+/* ==================================================
+   BASE.CSS — Globale Farbvariablen & Grundlayout
+   (keine UI-Komponenten, keine Utilities)
+   ================================================== */
+
+
+
+/* === 📦 Standardboxmodell: border-box === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* === ⌨️ Keyboard Focus sichtbar machen (WCAG 2.4.7) === */
+:focus { outline: none; }
+
+:focus-visible {
+    outline: 2px solid #4A9EFF;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Touch-Action: Double-Tap-Delay auf Mobile verhindern */
+button, a, [role="button"] {
+    touch-action: manipulation;
+}

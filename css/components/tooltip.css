@@ -1,0 +1,16 @@
+/* css/components/tooltip.css – Hover Tooltip */
+
+#tooltip {
+   position: absolute;
+   background: rgba(0, 0, 0, 0.9);
+   backdrop-filter: blur(10px);
+   color: white;
+   padding: 8px 12px;
+   border-radius: 8px;
+   pointer-events: none;
+   display: none;
+   z-index: 1500;
+   font-size: 12px;
+   white-space: nowrap;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

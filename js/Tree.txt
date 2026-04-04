@@ -1,0 +1,101 @@
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy$ ls
+Copy.py  css   draco  favicon.ico  images      js                   models        ordnerstruktur.txt  package.json  venv
+app.js   data  env    favicon.png  index.html  loading-sticker.png  node_modules  package-lock.json   three.min.js
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy$ cd ./js
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy/js$ tree
+.
+├── Tree.txt
+├── bootstrap
+│   ├── initCameraView.js
+│   ├── initGroupLoader.js
+│   ├── initResizeHandler.js
+│   ├── initSplashScreen.js
+│   ├── initStaticAssets.js
+│   └── startApp.js
+├── config
+│   └── config.js
+├── core
+│   ├── camera.js
+│   ├── cameraUtils.js
+│   ├── controls.js
+│   ├── events.js
+│   ├── lodManager.js
+│   ├── path.js
+│   ├── performanceMonitor.js
+│   ├── raycaster.js
+│   ├── renderOptimizer.js
+│   ├── renderer.js
+│   ├── resourceManager.js
+│   └── scene.js
+├── data
+│   └── meta.js
+├── debug
+│   └── performanceMonitor.js
+├── features
+│   ├── appearance.js
+│   ├── groupToggle.js
+│   ├── groups.js
+│   ├── modelLoader-core.js
+│   ├── selection.js
+│   └── visibility.js
+├── interaction
+│   ├── editPanel.js
+│   ├── highlightModel.js
+│   ├── index.js
+│   ├── infoPanel.js
+│   └── raycastOnClick.js
+├── lights.js
+├── loaders
+│   └── gltfLoaderFactory.js
+├── modelLoader
+│   ├── cleanup.js
+│   ├── color.js
+│   ├── index.js
+│   └── progress.js
+├── store
+│   └── state.js
+├── three-addons
+│   ├── controls
+│   │   └── OrbitControls.js
+│   ├── loaders
+│   │   ├── DRACOLoader.js
+│   │   ├── GLTFLoader.js
+│   │   ├── HDRLoader.js
+│   │   └── RGBELoader.js
+│   ├── math
+│   │   ├── Capsule.js
+│   │   └── Octree.js
+│   └── utils
+│       └── BufferGeometryUtils.js
+├── three.module.js
+├── ui
+│   ├── license.js
+│   ├── licenseContent.js
+│   ├── submenu
+│   │   ├── buildSubgroupList.js
+│   │   ├── createGroupBlock.js
+│   │   ├── createGroupCheckbox.js
+│   │   ├── createModelCheckbox.js
+│   │   ├── createToggleButton.js
+│   │   ├── groupMetaBySubgroup.js
+│   │   └── index.js
+│   ├── ui-color.js
+│   ├── ui-controls.js
+│   ├── ui-export.js
+│   ├── ui-init.js
+│   ├── ui-loading.js
+│   ├── ui-reset copy.js
+│   ├── ui-reset.js
+│   ├── ui-room.js
+│   ├── ui-search.js
+│   ├── ui-set.js
+│   └── ui-setupGroupLoadEvents.js
+└── utils
+    ├── cameraClipping.js
+    ├── index.js
+    ├── migration-helper.js
+    ├── mouse.js
+    └── utils.js
+
+19 directories, 74 files
+pepperboy8@DESKTOP-48LLQVN:~/Documents/3D_ANATOMY_BIG/3DAnatomy/js$ 

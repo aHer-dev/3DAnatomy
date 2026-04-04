@@ -1,0 +1,16 @@
+/* css/components/loading.css – Loading Screen & Progress Bar */
+
+#initial-loading-screen,
+#splash-screen {
+   background: linear-gradient(135deg, #0a0e27 0%, #151933 100%);
+}
+
+#loading-bar {
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   height: 4px;
+   background: linear-gradient(90deg, #4A9EFF, #FF7A4A);
+   z-index: 2000;
+   transition: width 0.3s ease;
+}

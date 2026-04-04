@@ -1,0 +1,94 @@
+/* css/layout/app.css – Canvas, Menü, Controls Panel, Responsive */
+
+/* Canvas */
+#canvas-container {
+   position: fixed !important;
+   top: 0; left: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: var(--z-canvas) !important;
+}
+#canvas { width: 100%; height: 100%; display: block; }
+
+/* Hamburger */
+#menu-icon {
+   position: fixed !important;
+   top: 20px; left: 20px;
+   width: 48px; height: 48px;
+   background: rgba(255, 255, 255, 0.05);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+   border: 1px solid var(--glass-border);
+   border-radius: var(--radius-md);
+   display: flex; align-items: center; justify-content: center;
+   color: var(--text-primary);
+   font-size: 24px;
+   cursor: pointer;
+   z-index: var(--z-menu-icon) !important;
+   transition: var(--transition-smooth);
+}
+#menu-icon:hover {
+   background: rgba(255, 255, 255, 0.08);
+   transform: scale(1.05);
+   box-shadow: 0 4px 20px rgba(74, 158, 255, 0.2);
+}
+
+/* Controls Panel */
+#controls {
+   position: fixed !important;
+   top: 60px; left: 20px;
+   width: 280px;
+   max-height: calc(100vh - 100px);
+   background: rgba(20, 25, 45, 0.6);
+   backdrop-filter: blur(20px);
+   -webkit-backdrop-filter: blur(20px);
+   border: 1px solid rgba(255, 255, 255, 0.06);
+   border-radius: 24px;
+   padding: 24px;
+   overflow-y: auto;
+   overflow-x: hidden;
+   z-index: 100 !important;
+   transition: var(--transition-smooth);
+   transform: translateX(-320px);
+}
+#controls.visible { transform: translateX(0); }
+#controls::-webkit-scrollbar { width: 6px; }
+#controls::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
+#controls::-webkit-scrollbar-thumb {
+   background: linear-gradient(180deg, #4A9EFF, #FF7A4A);
+   border-radius: 10px;
+}
+
+/* Room Controls */
+#room-controls {
+   padding: 16px; margin: 12px 0;
+   background: rgba(255, 255, 255, 0.02);
+   border: 1px solid rgba(255, 255, 255, 0.06);
+   border-radius: 12px;
+}
+#room-controls legend { color: var(--text-primary); font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+#room-controls label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 13px; }
+#room-controls input[type="range"], #slider-lighting, #slider-room-brightness {
+   width: 100%; height: 4px;
+   background: rgba(255,255,255,0.1);
+   border-radius: 2px; outline: none;
+   -webkit-appearance: none; margin: 8px 0;
+}
+#room-controls input[type="color"], #color-room {
+   width: 50px; height: 30px;
+   border: 1px solid rgba(255,255,255,0.1);
+   border-radius: 6px; cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+   #controls {
+      top: auto; bottom: 0; left: 0; right: 0;
+      width: 100%; max-height: 60vh;
+      border-radius: 24px 24px 0 0;
+      transform: translateY(100%);
+   }
+   #controls.visible { transform: translateY(0); }
+   #info-panel { top: auto; bottom: 20px; left: 20px; right: 20px; width: auto; max-width: none; }
+   #menu-icon { bottom: 20px; top: auto; }
+}

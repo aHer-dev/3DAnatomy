@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'
+    'sha256-HjBqISQTtzuyI1/v7rG5H1RM8Ns8BmY5Tw9kc6RWH74='
+    'sha256-vvt4KWwuNr51XfE5m+hzeNEGhiOfZzG97ccfqGsPwvE=';
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data: blob:;
+  font-src 'self';
+  connect-src 'self' https://cdn.jsdelivr.net;
+  media-src 'self' blob:;
+  worker-src 'self' blob:;
+  object-src 'none';
+  base-uri 'self';
+  upgrade-insecure-requests">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlueBody 3D</title>
+ 
+
+  <!-- Import-Map für lokale Three JSM-Module -->
+  <link rel="icon" href="./favicon.png" type="image/png">
+  
+  
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+
+<body>
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Container für Renderer -->
+  <div id="canvas-container">
+  <canvas id="canvas" aria-label="3D Anatomie-Ansicht"></canvas>
+</div>
+
+    <div id="submenu-container" class="dropdown-menu" aria-label="Submenü"></div>
+    <div id="room-dropdown-content" class="dropdown-menu" aria-label="Raumoptionen"></div>
+    <button id="menu-icon" aria-label="Menü öffnen">☰</button>
+
+
+ 
+
+  <!-- UI Controls -->
+  <div id="controls" role="region" aria-label="Steuerung der 3D-Anatomie">
+    <a id="btn-learn" href="https://aher-dev.github.io/Muskelfinder/index.html" target="_blank" rel="noopener noreferrer">
+      Lernen
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    </a>
+    <!-- Struktur-Ladebuttons -->
+    <div class="dropdown">
+      <button id="btn-load-tendons" aria-haspopup="true" aria-expanded="false">Sehnen ▼</button>
+      <ul id="menu-tendons" class="dropdown-menu" aria-label="Sehnen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-arteries" aria-haspopup="true" aria-expanded="false">Arterien ▼</button>
+      <ul id="menu-arteries" class="dropdown-menu" aria-label="Arterien-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-brain" aria-haspopup="true" aria-expanded="false">Gehirn ▼</button>
+      <ul id="menu-brain" class="dropdown-menu" aria-label="Gehirn-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-cartilage" aria-haspopup="true" aria-expanded="false">Knorpel ▼</button>
+      <ul id="menu-cartilage" class="dropdown-menu" aria-label="Knorpel-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-ear" aria-haspopup="true" aria-expanded="false">Ohr/Nase ▼</button>
+      <ul id="menu-ear" class="dropdown-menu" aria-label="Ohr-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-eyes" aria-haspopup="true" aria-expanded="false">Augen ▼</button>
+      <ul id="menu-eyes" class="dropdown-menu" aria-label="Augen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-glands" aria-haspopup="true" aria-expanded="false">Drüsen ▼</button>
+      <ul id="menu-glands" class="dropdown-menu" aria-label="Drüsen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-heart" aria-haspopup="true" aria-expanded="false">Herz ▼</button>
+      <ul id="menu-heart" class="dropdown-menu" aria-label="Herz-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-ligaments" aria-haspopup="true" aria-expanded="false">Bänder ▼</button>
+      <ul id="menu-ligaments" class="dropdown-menu" aria-label="Bänder-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-lungs" aria-haspopup="true" aria-expanded="false">Lunge ▼</button>
+      <ul id="menu-lungs" class="dropdown-menu" aria-label="Lungen-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-nerves" aria-haspopup="true" aria-expanded="false">Nerven ▼</button>
+      <ul id="menu-nerves" class="dropdown-menu" aria-label="Nerven-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-organs" aria-haspopup="true" aria-expanded="false">Organe ▼</button>
+      <ul id="menu-organs" class="dropdown-menu" aria-label="Organe-Modelle"></ul>
+    </div>
+    <!-- <div class="dropdown">
+      <button id="btn-load-skin_hair" aria-haspopup="true" aria-expanded="false">Haut/Haare ▼</button>
+      <ul id="menu-skin_hair" class="dropdown-menu" aria-label="Haut/Haar-Modelle"></ul>
+    </div> -->
+    <div class="dropdown">
+      <button id="btn-load-teeth" aria-haspopup="true" aria-expanded="false">Zähne ▼</button>
+      <ul id="menu-teeth" class="dropdown-menu" aria-label="Zähne-Modelle"></ul>
+    </div>
+    <div class="dropdown">
+      <button id="btn-load-veins" aria-haspopup="true" aria-expanded="false">Venen ▼</button>
+      <ul id="menu-veins" class="dropdown-menu" aria-label="Venen-Modelle"></ul>
+    </div>
+
+    <!-- Farbauswahl -->
+    <!-- <fieldset id="color-controls" aria-label="Farbsteuerung">
+      <legend>Farben</legend>
+      <label for="color-bones">Knochen:</label>
+      <input id="color-bones" type="color" value="#cccccc" aria-label="Farbe für Knochen">
+      <label for="color-muscles">Muskeln:</label>
+      <input id="color-muscles" type="color" value="#ff0000" aria-label="Farbe für Muskeln">
+      <label for="color-tendons">Sehnen:</label>
+      <input id="color-tendons" type="color" value="#ffffff" aria-label="Farbe für Sehnen">
+    </fieldset> -->
+
+    <!-- Sammlung (Set) -->
+    <div class="dropdown" aria-label="Sammlungssteuerung">
+    <!--  <button id="btn-add-to-set" aria-label="Zur Sammlung hinzufügen">Zur Sammlung hinzufügen</button> -->
+      <div id="set-list" aria-live="polite">Meine Sammlung</div>
+    </div>
+    <div class="dropdown">
+      <button id="btn-show-set" aria-label="Sammlung anzeigen">Sammlung anzeigen</button>
+      <button id="btn-clear-set" aria-label="Sammlung leeren">Sammlung leeren</button>
+    </div>
+
+  <!--  Export / Import / Screenshot 
+  <div id="tools" aria-label="Werkzeuge">
+    <button id="btn-export-set" aria-label="Sammlung exportieren">📥 Exportieren</button>
+    <label for="input-import-set"
+      style="cursor: pointer; background: #225eb8; color: white; padding: 8px 16px; border-radius: 4px; display: inline-block;">
+      📤 Importieren
+      <input type="file" id="input-import-set" accept=".json" aria-label="Sammlung importieren" style="display: none;">
+    </label>
+    <button id="btn-screenshot" aria-label="Screenshot erstellen">📸 Screenshot</button>
+  </div> -->
+
+    <!-- Raum-Einstellungen -->
+    <fieldset id="room-controls" aria-label="Raumeinstellungen">
+      <legend>Raum</legend>
+      <label for="slider-lighting">Beleuchtung:</label>
+      <input id="slider-lighting" type="range" min="0" max="2" step="0.1" value="1" aria-valuetext="1">
+      <label for="color-room">Farbe:</label>
+      <input id="color-room" type="color" value="#07062b" aria-label="Raumfarbe">
+      <label for="slider-room-brightness">Helligkeit:</label>
+      <input id="slider-room-brightness" type="range" min="0" max="1" step="0.01" value="0.4" aria-valuetext="0.4">
+    </fieldset>
+
+    <!-- Reset-Knopf -->
+    <button id="btn-reset" aria-label="Ansicht zurücksetzen">Reset</button>
+
+    <!-- Tastenkürzel-Hilfe -->
+    <button id="btn-shortcuts" aria-label="Tastenkürzel anzeigen" title="Tastenkürzel">?</button>
+    <div id="shortcuts-tip" role="tooltip" aria-hidden="true">
+      <b>Tastenkürzel</b>
+      <table>
+        <tr><td>G</td><td>Ghost (durchsichtig)</td></tr>
+        <tr><td>H</td><td>Verstecken</td></tr>
+        <tr><td>S</td><td>Anzeigen</td></tr>
+        <tr><td>Esc</td><td>Auswahl aufheben</td></tr>
+        <tr><td>Strg+Klick</td><td>Mehrfachauswahl</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Info-Panel und Tooltip -->
+  <div id="info-panel" class="hidden" role="dialog" aria-labelledby="info-header">
+    <header id="info-header"></header>
+    <section id="info-content"></section>
+  </div>
+  <div id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <!-- Footer & Lizenz -->
+<footer id="footer" role="contentinfo">
+  <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">Lizenz</button>
+  <div id="license-info" class="hidden" aria-hidden="true"></div>
+</footer>
+
+<!-- Script -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

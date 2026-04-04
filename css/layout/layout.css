@@ -1,0 +1,98 @@
+#container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+
+
+
+/* Hamburger-Menü bei geöffnetem Zustand */
+#menu-icon {
+    position: fixed !important;
+    top: 20px;
+    left: 20px;
+    width: 48px;
+    height: 48px;
+
+    /* Glassmorphism Effekt */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+
+    /* Inhalt zentrieren */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Styling */
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+    z-index: var(--z-menu-icon);
+
+    /* Animation */
+    transition: var(--transition-smooth);
+}
+
+
+#menu-icon:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.2);
+}
+
+
+#menu-icon:active {
+    transform: scale(0.98);
+}
+
+
+/* === Animierte Hamburger Lines (optional) === */
+#menu-icon.burger-lines {
+    font-size: 0;
+    /* Text ausblenden wenn Lines verwendet werden */
+}
+
+
+#menu-icon .line {
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 1px;
+    transition: var(--transition-smooth);
+}
+
+
+#menu-icon .line:nth-child(1) {
+    transform: translateY(-8px);
+}
+
+#menu-icon .line:nth-child(2) {
+    transform: translateY(0);
+}
+
+#menu-icon .line:nth-child(3) {
+    transform: translateY(8px);
+}
+
+/* Animierte X-Form wenn Menü offen */
+#menu-icon.open .line:nth-child(1) {
+    transform: rotate(45deg) translateY(0);
+}
+
+#menu-icon.open .line:nth-child(2) {
+    opacity: 0;
+}
+
+#menu-icon.open .line:nth-child(3) {
+    transform: rotate(-45deg) translateY(0);
+}
+
+

@@ -1,0 +1,345 @@
+/* Globale Regeln für Info-Panel (für beide Modi) */
+#info-panel {
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    max-width: 250px;
+    z-index: 1000 !important;
+}
+
+#info-panel.visible {
+    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#info-panel.hidden {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#info-panel * {
+    /* Alle Kinder */
+    pointer-events: auto;
+    /* Ermögliche Interaktion mit Buttons/Slider/Close */
+}
+
+#info-content {
+    pointer-events: auto;
+    /* Sicherstellen */
+}
+
+#info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#info-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: auto;
+    /* Rechts ausrichten */
+}
+
+#info-close:hover {
+    color: #3419cf;
+}
+
+#info-content p {
+    margin: 4px 0;
+}
+
+.info-icon {
+    font-size: 1.4em;
+}
+
+/* ─── Mehrfachauswahl-Liste ──────────────────────────────────────── */
+
+.multi-select-header {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-white);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.multi-select-list {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.multi-select-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.multi-select-item:last-child { border-bottom: none; }
+
+.multi-select-item-name {
+    flex: 1;
+    font-size: 11px;
+    color: var(--color-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 4px;
+}
+
+.multi-select-item-remove {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+
+.multi-select-item-remove:hover { color: #e53935; }
+
+/* Batch-Buttons im Multi-Edit */
+#edit-controls .multi-edit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+#multi-edit-add-all,
+#multi-edit-hide-all,
+#multi-edit-clear {
+    width: 100%;
+    margin-top: 6px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-sm);
+    background: rgba(52, 25, 207, 0.25);
+    color: var(--color-white);
+    cursor: pointer;
+    font-size: 12px;
+    transition: background var(--transition-fast);
+}
+
+#multi-edit-add-all:hover  { background: rgba(52, 25, 207, 0.5); }
+#multi-edit-hide-all:hover { background: rgba(180, 30, 30, 0.4); }
+#multi-edit-clear:hover    { background: rgba(80, 80, 80, 0.4); }
+
+/* ─── Muskel-Panel: 2+1 Button-Layout ───────────────────────────── */
+.edit-btn-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.edit-btn-half {
+    flex: 1;
+    padding: 8px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-sm);
+    background: rgba(52, 25, 207, 0.25);
+    color: var(--color-white);
+    cursor: pointer;
+    font-size: 12px;
+    transition: background var(--transition-fast);
+    white-space: nowrap;
+}
+.edit-btn-half:hover { background: rgba(52, 25, 207, 0.45); }
+
+.edit-btn-full {
+    width: 100%;
+    margin-top: 6px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-sm);
+    background: rgba(52, 25, 207, 0.25);
+    color: var(--color-white);
+    cursor: pointer;
+    font-size: 12px;
+    transition: background var(--transition-fast);
+}
+.edit-btn-full:hover { background: rgba(52, 25, 207, 0.45); }
+
+.edit-btn-back {
+    background: rgba(74, 158, 255, 0.2);
+    border-color: rgba(74, 158, 255, 0.4);
+    color: #4A9EFF;
+    margin-top: 8px;
+}
+.edit-btn-back:hover { background: rgba(74, 158, 255, 0.35); }
+
+/* ─── Isolation: fixer Zurück-Button ────────────────────────────── */
+#isolation-back-btn {
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background: rgba(20, 25, 45, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(74, 158, 255, 0.5);
+    border-radius: 12px;
+    color: #4A9EFF;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+}
+#isolation-back-btn:hover {
+    background: rgba(74, 158, 255, 0.2);
+    border-color: rgba(74, 158, 255, 0.8);
+}
+
+/* ─── Ctrl+Drag Auswahlrechteck ──────────────────────────────────── */
+
+#selection-box {
+    position: fixed;
+    border: 2px dashed rgba(52, 25, 207, 0.85);
+    background: rgba(52, 25, 207, 0.08);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* ─── Mobile: Info-Panel als kompakte Bottom-Sheet ──────────────────── */
+@media (max-width: 768px) {
+    #info-panel {
+        top: auto !important;
+        bottom: 72px !important;
+        left: 0 !important;
+        right: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 16px 16px 0 0 !important;
+        border-bottom: none !important;
+        height: auto !important;
+        max-height: 40vh;
+        overflow-y: auto;
+        padding: 20px 16px 16px !important;
+        /* Zieh-Indikator oben */
+        background-image: linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.18) 0px,
+            rgba(255,255,255,0.18) 3px,
+            transparent 3px
+        ) !important;
+        background-size: 36px 3px !important;
+        background-repeat: no-repeat !important;
+        background-position: center 8px !important;
+    }
+
+    /* Titel kompakter */
+    #info-panel h3 {
+        font-size: 15px;
+        margin: 8px 0 2px;
+    }
+
+    /* Beschreibung auf Mobile kürzen */
+    #info-panel p {
+        font-size: 12px;
+        max-height: 3em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    /* Edit-Buttons als Reihe */
+    #info-panel #edit-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    #info-panel #edit-controls label {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    #info-panel .edit-btn-row {
+        width: 100%;
+    }
+
+    #info-panel .edit-btn-half,
+    #info-panel .edit-btn-full,
+    #info-panel #edit-toggle-visible,
+    #info-panel #edit-add-to-set {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    #info-panel #edit-add-to-set,
+    #info-panel #edit-toggle-visible {
+        width: 100%;
+        margin-top: 4px;
+    }
+
+    /* Mehrfachauswahl: kompakte Leiste */
+    #info-panel.info-panel--multi {
+        max-height: 120px;
+        bottom: 70px !important;
+        border-radius: 14px 14px 0 0 !important;
+    }
+
+    #info-panel.info-panel--multi .multi-select-header {
+        margin-bottom: 6px;
+        padding-bottom: 0;
+        border-bottom: none;
+        font-size: 11px;
+        text-align: center;
+        opacity: 0.7;
+    }
+
+    #info-panel.info-panel--multi #edit-controls {
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
+    #info-panel.info-panel--multi #multi-edit-add-all,
+    #info-panel.info-panel--multi #multi-edit-hide-all,
+    #info-panel.info-panel--multi #multi-edit-clear {
+        margin-top: 0;
+        padding: 7px 10px;
+        font-size: 11px;
+        width: auto;
+        flex: 1;
+    }
+}
+
+/* --- Tooltip für Modellnamen --- */
+#tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    display: none;
+    z-index: 150;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+

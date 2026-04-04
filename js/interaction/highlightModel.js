@@ -1,0 +1,34 @@
+// js/interaction/highlightModel.js
+// — Selektions-Highlight: vorher altes Highlight entfernen, dann neues setzen —
+import * as THREE from 'three';       // <<< NEU: wir benötigen THREE.Color
+import { state } from '../store/state.js';  // globaler Zustand (merkt currentlySelected)
+
+/**
+ * Hebt ein Modell dezent hervor (emissive) und entfernt vorheriges Highlight.
+ * @param {THREE.Object3D} model
+ */
+export function highlightModel(model) {
+  // Altes Highlight zurücksetzen
+  if (state.currentlySelected) {
+    state.currentlySelected.traverse(child => {
+      if (child.isMesh && child.material?.emissive) {
+        child.material.emissive.set(0x000000); // Reset auf „dunkel“
+      }
+    });
+  }
+
+  // Neues Highlight setzen (dezent)
+  model.traverse(child => {
+    if (child.isMesh && child.material) {
+      if (!child.material.emissive) {
+        child.material.emissive = new THREE.Color(0x222222);
+      } else {
+        child.material.emissive.set(0x222222);
+      }
+      child.material.needsUpdate = true;
+    }
+  });
+
+  // Aktuell selektiertes Modell merken, damit nächster Klick es zurücksetzen kann
+  state.currentlySelected = model;
+}

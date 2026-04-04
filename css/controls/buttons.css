@@ -1,0 +1,43 @@
+/* css/controls/buttons.css – Action Buttons */
+
+#btn-reset {
+   width: 100%;
+   padding: 12px 24px;
+   margin-top: 16px;
+   background: linear-gradient(135deg, #4A9EFF, #FF7A4A);
+   border: none;
+   border-radius: 12px;
+   color: white;
+   font-size: 14px;
+   font-weight: 600;
+   cursor: pointer;
+   box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+   transition: var(--transition-smooth);
+}
+#btn-reset:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 8px 25px rgba(74, 158, 255, 0.4);
+}
+
+#btn-add-to-set,
+#btn-show-set,
+#btn-clear-set {
+   width: 100%;
+   padding: 12px 24px;
+   margin: 4px 0;
+   background: linear-gradient(135deg, #4A9EFF, #FF7A4A);
+   border: none;
+   border-radius: 12px;
+   color: white;
+   font-size: 14px;
+   font-weight: 600;
+   cursor: pointer;
+   box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+   transition: var(--transition-smooth);
+}
+#btn-add-to-set:hover,
+#btn-show-set:hover,
+#btn-clear-set:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 8px 25px rgba(74, 158, 255, 0.4);
+}

@@ -1,0 +1,24 @@
+/* Canvas soll im Hintergrund sein */
+#canvas-container {
+        position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: var(--z-canvas);
+            /* Basis-Layer */
+            pointer-events: auto;
+}
+
+/* Canvas soll nur Hintergrund sein – kein z-index nötig */
+#canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: auto;
+}
+
+.hidden {
+    display: none;
+    /* This might be your problem */
+}

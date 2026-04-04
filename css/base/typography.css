@@ -1,0 +1,32 @@
+/* ==================================================
+   TYPOGRAPHY.CSS — Globale Schrift- & Textdefinitionen
+   ================================================== */
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--color-bg-dark);
+    color: var(--color-white);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+}
+
+.small {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}

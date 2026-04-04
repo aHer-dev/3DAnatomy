@@ -1,0 +1,41 @@
+# dependencies & envs
+node_modules/
+venv/
+
+# local three copies (wir laden über CDN)
+js/three-addons/
+js/three.module.js
+
+# dev outputs / tooling
+deps.json
+file_lines.csv
+file_sizes.csv
+dev/
+
+# builds / caches
+dist/
+build/
+.cache/
+.tmp/
+coverage/
+
+# os/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude AI session data
+.claude/
+
+# Daten-Backups & Temporärdateien
+data/meta copy*.json
+data/meta copy *.json
+data/META_BACKUP/
+data/JSON_TEMP.json
+data/FILENAMES.txt
+data/groups_summary.txt
+
+# Projekt-Backups (liegen als separate Ordner daneben)
+three.min.js
+ordnerstruktur.txt
