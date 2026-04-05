@@ -1,0 +1,408 @@
+/* css/components/photo-mode.css – Fotomodus: Overlay, Rahmen, Sidebar, Auslöser */
+
+/* ─── Foto-Modus-Button (im #controls Panel) ────────────────────────────── */
+
+#btn-photo-mode {
+  width: 100%;
+  padding: 12px 24px;
+  margin-top: 8px;
+  background: linear-gradient(135deg, #3dd68c, #4A9EFF);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(61, 214, 140, 0.28);
+  transition: var(--transition-smooth);
+}
+#btn-photo-mode:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(61, 214, 140, 0.4);
+}
+#btn-photo-mode.photo-mode-active {
+  background: linear-gradient(135deg, #e94343, #ff7a4a);
+  box-shadow: 0 4px 15px rgba(233, 67, 67, 0.38);
+}
+
+/* ─── Overlay-Wurzel ────────────────────────────────────────────────────── */
+
+#photo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  pointer-events: none;   /* Canvas bleibt vollständig bedienbar */
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+#photo-overlay.photo-overlay--visible {
+  opacity: 1;
+}
+
+/* ─── Abdunkelungs-Panels ───────────────────────────────────────────────── */
+
+.photo-vignette {
+  position: fixed;
+  background: rgba(4, 7, 18, 0.74);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: none;
+  z-index: 801;
+}
+
+/* ─── Foto-Rahmen ───────────────────────────────────────────────────────── */
+
+#photo-frame {
+  position: fixed;
+  border: 1.5px solid rgba(74, 158, 255, 0.65);
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 1px rgba(74, 158, 255, 0.12),
+    0 0 24px rgba(74, 158, 255, 0.18),
+    inset 0 0 0 1px rgba(74, 158, 255, 0.06);
+  pointer-events: none;
+  z-index: 802;
+}
+
+/* Eck-Markierungen */
+#photo-frame::before,
+#photo-frame::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgba(74, 158, 255, 0.9);
+  border-style: solid;
+}
+#photo-frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+  border-radius: 2px 0 0 0;
+}
+#photo-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+  border-radius: 0 0 2px 0;
+}
+
+/* Format-Label */
+#photo-frame-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(74, 158, 255, 0.85);
+  letter-spacing: 0.07em;
+  background: rgba(4, 7, 18, 0.58);
+  padding: 3px 8px;
+  border-radius: 5px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ─── Auslöser-Button ───────────────────────────────────────────────────── */
+
+#photo-shutter {
+  position: fixed;
+  transform: translate(-50%, 0);
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 810;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shutter-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  box-shadow:
+    0 3px 14px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.shutter-inner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  transition: transform 0.14s ease, opacity 0.14s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#photo-shutter:hover .shutter-ring {
+  border-color: #fff;
+  transform: scale(1.06);
+}
+#photo-shutter:hover .shutter-inner {
+  opacity: 1;
+}
+#photo-shutter:active .shutter-inner,
+#photo-shutter.shutter--flash .shutter-inner {
+  transform: scale(0.8);
+  opacity: 0.5;
+}
+#photo-shutter.shutter--flash .shutter-ring {
+  border-color: rgba(74, 158, 255, 0.9);
+}
+
+/* ─── Schließen-Button ──────────────────────────────────────────────────── */
+
+#photo-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 22, 42, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  z-index: 820;
+  pointer-events: auto;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+#photo-close svg {
+  width: 15px;
+  height: 15px;
+}
+#photo-close:hover {
+  background: rgba(233, 67, 67, 0.22);
+  border-color: rgba(233, 67, 67, 0.45);
+  color: #e94343;
+}
+
+/* ─── Rechte Sidebar ────────────────────────────────────────────────────── */
+
+#photo-sidebar {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) translateX(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 8px;
+  background: rgba(20, 25, 45, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  z-index: 810;
+  min-width: 60px;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+#photo-sidebar.photo-sidebar--visible {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  pointer-events: auto;
+}
+
+.psb-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.psb-title {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  text-align: center;
+  padding: 4px 4px 5px;
+}
+
+.psb-btn {
+  padding: 7px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  transition: var(--transition-smooth);
+  letter-spacing: 0.02em;
+  min-width: 44px;
+}
+.psb-btn:hover {
+  background: rgba(74, 158, 255, 0.1);
+  border-color: rgba(74, 158, 255, 0.28);
+  color: rgba(255, 255, 255, 0.82);
+}
+.psb-btn--active {
+  background: rgba(74, 158, 255, 0.16);
+  border-color: rgba(74, 158, 255, 0.5);
+  color: #4A9EFF;
+}
+
+.psb-sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 5px 3px;
+}
+
+/* ─── Hamburger immer über dem Overlay ─────────────────────────────────── */
+
+/* Wenn Fotomodus aktiv: ☰ über das Overlay (z-800) heben */
+body.photo-mode-on #menu-icon {
+  z-index: 830 !important;
+}
+
+/* Auf Mobile im Fotomodus: Hamburger leicht hervorheben damit er sichtbar ist */
+@media (max-width: 768px) {
+  body.photo-mode-on #menu-icon {
+    background: rgba(74, 158, 255, 0.15) !important;
+    border-right-color: rgba(74, 158, 255, 0.3) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+}
+
+/* ─── Mobile ────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Sidebar: horizontale Leiste oben statt rechts */
+  #photo-sidebar {
+    right: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: auto;
+    transform: translateY(-20px);
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px calc(8px + env(safe-area-inset-top, 0px));
+    border-radius: 0 0 16px 16px;
+    min-width: auto;
+    width: auto;
+    justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Trennlinie nach unten statt links/rechts */
+    border-top: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  }
+  #photo-sidebar.photo-sidebar--visible {
+    transform: translateY(0);
+  }
+
+  .psb-section {
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  .psb-title {
+    display: none; /* Titel ausblenden – kein Platz in Horizontal-Layout */
+  }
+
+  .psb-sep {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 4px;
+    align-self: center;
+  }
+
+  .psb-btn {
+    min-width: 40px;
+    padding: 8px 10px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* Schließen-Button: unten rechts, über Toolbar-Bar, gut erreichbar */
+  #photo-close {
+    top: auto;
+    bottom: 84px;
+    right: 16px;
+    left: auto;
+    /* Pill-Form statt Kreis: X + Text */
+    width: auto;
+    height: 44px;
+    border-radius: 22px;
+    padding: 0 16px 0 12px;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(30, 20, 20, 0.85);
+    border-color: rgba(233, 67, 67, 0.45);
+    z-index: 830;
+  }
+  #photo-close svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+  /* "Beenden" Text via CSS */
+  #photo-close::after {
+    content: 'Beenden';
+  }
+  #photo-close:hover {
+    background: rgba(233, 67, 67, 0.28);
+    border-color: rgba(233, 67, 67, 0.7);
+  }
+
+  /* Frame-Label: kleiner auf Mobile */
+  #photo-frame-label {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+
+  /* Auslöser: relativ zum Frame, immer sichtbar */
+  #photo-shutter {
+    width: 56px;
+    height: 56px;
+  }
+  .shutter-ring {
+    width: 50px;
+    height: 50px;
+    border-width: 2.5px;
+  }
+  .shutter-inner {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Photo-Mode-Button im Controls: volle Breite */
+  #btn-photo-mode {
+    margin-top: 12px;
+    padding: 14px 20px;
+    min-height: 52px;
+  }
+}

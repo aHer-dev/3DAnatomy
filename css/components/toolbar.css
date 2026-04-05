@@ -230,23 +230,98 @@
    border-radius: 4px;
 }
 
-/* Mobile */
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+
+   /* Toolbar: volle Breite als Bottom-Bar */
    #anatomy-toolbar {
-      bottom: 14px;
-      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: auto;
+      max-width: none;
+      transform: none;
+      border-radius: 16px 16px 0 0;
+      border-bottom: none;
+      padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px));
       gap: 2px;
-      padding: 4px 5px;
+      justify-content: space-around;
+      /* Stärkerer Glaseffekt für die Bar */
+      background: rgba(14, 18, 38, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      /* Platz links für Hamburger-Icon freilassen */
+      padding-left: 72px;
    }
+
+   /* Touch-freundliche Buttons */
    .toolbar-btn {
-      padding: 8px 10px;
       min-width: 44px;
-      min-height: 44px;
-      gap: 2px;
+      min-height: 46px;
+      padding: 6px 10px;
+      gap: 3px;
+      flex: 1;
+      max-width: 72px;
    }
-   .toolbar-btn svg { width: 15px; height: 15px; }
+   .toolbar-btn svg { width: 18px; height: 18px; }
    .toolbar-label { font-size: 9px; }
-   .toolbar-toggle-btn { width: 44px; min-height: 44px; }
+
+   /* Toggle-Pfeil: touch-freundlich */
+   .toolbar-toggle-btn {
+      width: 36px;
+      min-height: 46px;
+      flex-shrink: 0;
+   }
    .toolbar-toggle-btn svg { width: 14px; height: 14px; }
-   #toolbar-dir-panel { bottom: 76px; }
+
+   /* Trenner: volle Höhe */
+   .toolbar-sep { margin: 6px 3px; }
+
+   /* Richtungs-Panel: über der Toolbar-Bar */
+   #toolbar-dir-panel {
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 24px);
+      flex-wrap: wrap;
+      justify-content: center;
+   }
+
+   /* Collapsible buttons: bei Expand etwas kompakter */
+   .toolbar-btn--collapsible.toolbar-btn--visible {
+      display: flex;
+   }
+}
+
+/* Sehr kleine Bildschirme / Landscape */
+@media (max-width: 480px) {
+   #anatomy-toolbar { padding-left: 64px; }
+   .toolbar-btn { max-width: 62px; padding: 6px 8px; }
+   .toolbar-label { display: none; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+   #anatomy-toolbar {
+      left: auto;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      width: 72px;
+      height: auto;
+      flex-direction: column;
+      border-radius: 12px 0 0 12px;
+      padding: 12px 8px;
+      padding-left: 8px;
+      justify-content: center;
+   }
+   .toolbar-btn { flex: 0; max-width: none; width: 52px; }
+   .toolbar-label { display: none; }
+   #toolbar-dir-panel {
+      bottom: auto;
+      right: 80px;
+      left: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      flex-direction: column;
+   }
 }

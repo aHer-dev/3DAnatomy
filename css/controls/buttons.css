@@ -1,5 +1,24 @@
 /* css/controls/buttons.css – Action Buttons */
 
+/* ─── Mobile: Touch-freundliche Buttons ──────────────────────────────────── */
+@media (max-width: 768px) {
+  #btn-reset,
+  #btn-add-to-set,
+  #btn-show-set,
+  #btn-clear-set {
+    padding: 14px 20px;
+    min-height: 52px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  #btn-shortcuts {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+}
+
 #btn-reset {
    width: 100%;
    padding: 12px 24px;

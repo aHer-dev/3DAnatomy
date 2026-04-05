@@ -83,9 +83,22 @@
 #btn-toggle-license::after { content: none !important; }
 
 @media (max-width: 768px) {
+   /* Footer: über der Toolbar-Bar, rechts */
+   #footer {
+      bottom: auto;
+      top: 16px;
+      right: 16px;
+   }
+
+   /* Lizenz-Info: Bottom-Sheet Stil */
    #license-info {
-      left: 12px; right: 12px;
+      position: fixed;
+      left: 12px;
+      right: 12px;
       bottom: 80px;
+      top: auto;
       max-width: none;
+      max-height: 55vh;
+      border-radius: 16px;
    }
 }

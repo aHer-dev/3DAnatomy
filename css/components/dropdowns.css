@@ -92,3 +92,30 @@ button[id^="btn-load-"]::after {
    margin-top: 4px;
 }
 .dropdown.active .dropdown-menu { display: block; }
+
+/* ─── Mobile: größere Touch-Targets & Abstände ─────────────────────────── */
+@media (max-width: 768px) {
+   #btn-learn {
+      padding: 14px 20px;
+      font-size: 15px;
+      min-height: 52px;
+   }
+
+   .dropdown button[id^="btn-load-"] {
+      padding: 16px 18px;
+      font-size: 15px;
+      border-radius: 14px;
+      min-height: 52px;
+   }
+
+   .dropdown { margin-bottom: 6px; }
+
+   .dropdown-menu {
+      border-radius: 10px;
+      padding: 6px;
+   }
+
+   /* Set-Liste */
+   #set-list { padding: 12px; max-height: 160px; }
+   #set-list li { padding: 10px 14px; font-size: 14px; }
+}
