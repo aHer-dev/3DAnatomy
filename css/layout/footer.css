@@ -14,6 +14,10 @@
 }
 
 #license-info {
+   /* Jetzt direktes Body-Kind → muss selbst positioniert sein */
+   position: fixed !important;
+   bottom: 60px;
+   right: 20px;
    font-size: 13px;
    line-height: 1.6;
    background: var(--glass-bg-panel);
@@ -27,6 +31,7 @@
    max-height: calc(100vh - 120px);
    overflow-y: auto;
    z-index: 1200 !important;
+   padding: 16px;
 }
 
 #license-info h4 {

@@ -196,8 +196,9 @@
   <!-- Footer & Lizenz -->
 <footer id="footer" role="contentinfo">
   <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">Lizenz</button>
-  <div id="license-info" class="hidden" aria-hidden="true"></div>
 </footer>
+<!-- License-Info außerhalb des Footers, damit backdrop-filter kein containing block bildet -->
+<div id="license-info" class="hidden" aria-hidden="true"></div>
 
 <!-- Script -->
   <script type="module" src="app.js"></script>
