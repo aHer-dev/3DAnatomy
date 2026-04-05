@@ -306,9 +306,13 @@ body.photo-mode-on #menu-icon {
     border-radius: 0 0 16px 16px;
     min-width: auto;
     width: auto;
-    justify-content: center;
+    justify-content: flex-start;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Damit der Anfang nicht abgeschnitten wird */
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-left: 16px;
     /* Trennlinie nach unten statt links/rechts */
     border-top: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
