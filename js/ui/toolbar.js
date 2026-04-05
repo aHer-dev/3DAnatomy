@@ -43,10 +43,13 @@ export function onToolChange(fn) {
 function _triggerFocus() {
     const model = state.selected?.root || state.currentlySelected || null;
     if (!model) {
-        // Kein Modell – zurück zu Select
-        _activeTool = TOOL.SELECT;
-        _updateUI();
-        _hideDirPanel();
+        // Kein Modell ausgewählt → Panel trotzdem zeigen,
+        // aktuelles Orbit-Zentrum und Abstand als Referenz nutzen
+        _focusState = {
+            center: controls.target.clone(),
+            radius: camera.position.distanceTo(controls.target),
+        };
+        _showDirPanel();
         return;
     }
     _focusState = focusOnObject(camera, controls, model);
