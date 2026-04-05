@@ -113,7 +113,7 @@ function _dirTitle(id) {
 
 const LAYER_GROUPS = {
     bones:   ['bones', 'cartilage', 'teeth'],
-    muscles: ['muscles'],
+    muscles: ['muscles', 'ligaments'],
 };
 
 const _layerState = {

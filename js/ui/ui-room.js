@@ -16,24 +16,15 @@ export function setupRoomUI() {
   }
 
   // FIX: Beleuchtungsregler funktionsfähig machen
-  lightingSlider.addEventListener('input', (e) => {
-    const intensity = parseFloat(e.target.value);
-
-    // Lichter anpassen
+  function applyLighting(intensity) {
+    renderer.toneMappingExposure = 0.65 * intensity;
     setLightIntensity(intensity);
-
-    // HDR-Environment-Intensität anpassen
-    if (scene.environment) {
-      scene.environmentIntensity = 0.3 * intensity; // Skaliert mit Slider
-    }
-
-    // Renderer-Exposure anpassen
-    renderer.toneMappingExposure = 0.5 * intensity;
-
-    // Neu rendern
+    if (scene.environment) scene.environmentIntensity = 0.3 * intensity;
     renderer.render(scene, camera);
+  }
 
-    console.log(`🔆 Beleuchtung: ${(intensity * 100).toFixed(0)}%`);
+  lightingSlider.addEventListener('input', (e) => {
+    applyLighting(parseFloat(e.target.value));
   });
 
   // FIX: Raumfarbe funktionsfähig
@@ -66,9 +57,10 @@ export function setupRoomUI() {
   // Initial setzen
   updateRoomColor();
 
-  // Initial Beleuchtung auf 1.0
-  lightingSlider.value = 1.0;
-  setLightIntensity(1.0);
+  // Initial – Slider und Lichter synchron starten
+  const DEFAULT_INTENSITY = 0.85;
+  lightingSlider.value = DEFAULT_INTENSITY;
+  applyLighting(DEFAULT_INTENSITY);
 
   console.log('✅ Room-UI initialisiert');
 }

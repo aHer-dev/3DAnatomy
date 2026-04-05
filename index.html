@@ -159,7 +159,7 @@
     <fieldset id="room-controls" aria-label="Raumeinstellungen">
       <legend>Raum</legend>
       <label for="slider-lighting">Beleuchtung:</label>
-      <input id="slider-lighting" type="range" min="0" max="2" step="0.1" value="1" aria-valuetext="1">
+      <input id="slider-lighting" type="range" min="0" max="2" step="0.05" value="0.85" aria-valuetext="0.85">
       <label for="color-room">Farbe:</label>
       <input id="color-room" type="color" value="#07062b" aria-label="Raumfarbe">
       <label for="slider-room-brightness">Helligkeit:</label>
@@ -169,8 +169,20 @@
     <!-- Foto-Modus -->
     <button id="btn-photo-mode" aria-label="Fotomodus aktivieren">📷 Foto</button>
 
+    <!-- Preset-Bibliothek -->
+    <div id="preset-control" class="preset-control">
+      <button id="btn-preset" aria-haspopup="listbox" aria-expanded="false" aria-label="Preset laden">
+        <span id="preset-btn-label">Presets</span>
+        <svg class="preset-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      <ul id="preset-dropdown-list" class="preset-dropdown-list" role="listbox" aria-label="Preset auswählen"></ul>
+    </div>
+
     <!-- Reset-Knopf -->
     <button id="btn-reset" aria-label="Ansicht zurücksetzen">Reset</button>
+    <button id="btn-reset-colors" aria-label="Farben zurücksetzen">Reset Farbe</button>
 
     <!-- Tastenkürzel-Hilfe -->
     <button id="btn-shortcuts" aria-label="Tastenkürzel anzeigen" title="Tastenkürzel">?</button>

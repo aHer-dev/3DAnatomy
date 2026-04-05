@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "presets": [
+    {
+      "name": "Hand – knöcherner Aufbau",
+      "file": "Hand - knöcherner Aufbau.bluebody",
+      "category": "",
+      "description": ""
+    },
+    {
+      "name": "Pelvis – knöcherne Strukturen",
+      "file": "Pelvis - knöcherne Strukturen.bluebody",
+      "category": "",
+      "description": ""
+    }
+  ]
+}

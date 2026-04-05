@@ -8,6 +8,7 @@ import { toggleModelVisibility, isModelVisible, hideModel, setModelVisibility } 
 import { state } from '../store/state.js';
 import { clearMultiSelect } from './multiSelect.js';
 import { extractModelData } from '../utils/modelData.js';
+import { attachRecentColors } from '../ui/recentColors.js';
 
 // WeakMap zur Speicherung von Event-Listenern
 const listeners = new WeakMap();
@@ -222,6 +223,10 @@ function _wireMusclePanelListeners(container, selectedModel) {
         const h = (e) => { setModelColor(selectedModel, new THREE.Color(e.target.value)); _scheduleRender(); };
         colorInput.addEventListener('input', h);
         listeners.set(colorInput, { input: h });
+        attachRecentColors(colorInput, (hex) => {
+            setModelColor(selectedModel, new THREE.Color(hex));
+            _scheduleRender();
+        });
     }
     if (opacitySlider) {
         opacitySlider.value = initialOpacity;
@@ -335,6 +340,10 @@ export function buildEditPanel(container, selectedModel) {
         };
         colorInput.addEventListener('input', colorHandler);
         listeners.set(colorInput, { input: colorHandler });
+        attachRecentColors(colorInput, (hex) => {
+            setModelColor(selectedModel, new THREE.Color(hex));
+            _scheduleRender();
+        });
     }
 
     if (opacitySlider) {
@@ -520,6 +529,11 @@ export function buildMultiEditPanel(container, models, onUpdate) {
     // Farbe auf alle anwenden
     colorInput.addEventListener('input', (e) => {
         const col = new THREE.Color(e.target.value);
+        models.forEach(m => setModelColor(m, col));
+        _scheduleRender();
+    });
+    attachRecentColors(colorInput, (hex) => {
+        const col = new THREE.Color(hex);
         models.forEach(m => setModelColor(m, col));
         _scheduleRender();
     });

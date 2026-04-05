@@ -1,0 +1,373 @@
+{
+  "version": "3.0",
+  "timestamp": "2026-04-05T14:23:13.778Z",
+  "appInfo": {
+    "name": "BlueBody 3D",
+    "exportDate": "5.4.2026"
+  },
+  "statistics": {
+    "totalObjects": 3,
+    "groups": {
+      "bones": 3
+    }
+  },
+  "collection": [
+    {
+      "id": "fma16586",
+      "name": "Right hip bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma16586",
+        "labels": {
+          "en": "Right hip bone",
+          "de": "",
+          "la": "Os coxae"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3152.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3152.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3152.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3152",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3152.glb",
+            "url": "bones/FJ3152.glb",
+            "fileKey": "FJ3152.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma16586",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma16586__FJ3152.glb"
+      },
+      "color": 14999087,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma16586",
+      "userData": {}
+    },
+    {
+      "id": "fma16202",
+      "name": "Sacrum",
+      "group": "bones",
+      "meta": {
+        "id": "fma16202",
+        "labels": {
+          "en": "Sacrum",
+          "de": "",
+          "la": "os sacrum [vertebrae sacrales I - V]"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3393.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3393.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3393.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3393",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3393.glb",
+            "url": "bones/FJ3393.glb",
+            "fileKey": "FJ3393.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma16202",
+            "wikipedia_de": "",
+            "uberon": "UBERON:0003690"
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "UBERON (OBO)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma16202__FJ3393.glb"
+      },
+      "color": 15094097,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma16202",
+      "userData": {}
+    },
+    {
+      "id": "fma16587",
+      "name": "Left hip bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma16587",
+        "labels": {
+          "en": "Left hip bone",
+          "de": "",
+          "la": "Os coxae"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3288.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3288.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3288.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3288",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3288.glb",
+            "url": "bones/FJ3288.glb",
+            "fileKey": "FJ3288.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma16587",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma16587__FJ3288.glb"
+      },
+      "color": 14999087,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma16587",
+      "userData": {}
+    }
+  ]
+}

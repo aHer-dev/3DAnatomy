@@ -10,6 +10,7 @@ import { setupLoadingUI } from './ui-loading.js';
 import { toggleLicense } from './license.js';
 import { licenseHTML } from './licenseContent.js';
 import { initPhotoMode } from './photoMode.js';
+import { setupPresetsUI } from './ui-presets.js';
 
 // import { loadModels } from '../modelLoader/index.js'; // Nicht nötig hier – in app.js
 
@@ -25,6 +26,7 @@ export function setupUI() {
     setupRoomUI();
     setupLoadingUI();
     initPhotoMode();
+    setupPresetsUI();
 
     const toggleButton = document.getElementById('btn-toggle-license');
     const licenseInfo = document.getElementById('license-info');

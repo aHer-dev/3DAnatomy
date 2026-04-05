@@ -1,0 +1,3229 @@
+{
+  "version": "3.0",
+  "timestamp": "2026-04-05T13:11:57.217Z",
+  "appInfo": {
+    "name": "BlueBody 3D",
+    "exportDate": "5.4.2026"
+  },
+  "statistics": {
+    "totalObjects": 27,
+    "groups": {
+      "bones": 27
+    }
+  },
+  "collection": [
+    {
+      "id": "fma24460",
+      "name": "Distal phalanx of right index finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24460",
+        "labels": {
+          "en": "Distal phalanx of right index finger",
+          "de": "",
+          "la": "Phalanx distalis digiti II"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3193.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3193.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3193.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3193",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3193.glb",
+            "url": "bones/FJ3193.glb",
+            "fileKey": "FJ3193.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24460",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24460__FJ3193.glb"
+      },
+      "color": 5618984,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24460",
+      "userData": {}
+    },
+    {
+      "id": "fma24463",
+      "name": "Distal phalanx of right little finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24463",
+        "labels": {
+          "en": "Distal phalanx of right little finger",
+          "de": "",
+          "la": "Phalanx distalis digiti V"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3194.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3194.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3194.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3194",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3194.glb",
+            "url": "bones/FJ3194.glb",
+            "fileKey": "FJ3194.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24463",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24463__FJ3194.glb"
+      },
+      "color": 5618984,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24463",
+      "userData": {}
+    },
+    {
+      "id": "fma24461",
+      "name": "Distal phalanx of right middle finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24461",
+        "labels": {
+          "en": "Distal phalanx of right middle finger",
+          "de": "",
+          "la": "Phalanx media digiti III"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3196.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3196.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3196.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3196",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3196.glb",
+            "url": "bones/FJ3196.glb",
+            "fileKey": "FJ3196.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24461",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24461__FJ3196.glb"
+      },
+      "color": 5618984,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24461",
+      "userData": {}
+    },
+    {
+      "id": "fma24462",
+      "name": "Distal phalanx of right ring finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24462",
+        "labels": {
+          "en": "Distal phalanx of right ring finger",
+          "de": "",
+          "la": "Phalanx distalis digiti IV"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3197.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3197.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3197.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3197",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3197.glb",
+            "url": "bones/FJ3197.glb",
+            "fileKey": "FJ3197.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24462",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24462__FJ3197.glb"
+      },
+      "color": 5618984,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24462",
+      "userData": {}
+    },
+    {
+      "id": "fma24459",
+      "name": "Distal phalanx of right thumb",
+      "group": "bones",
+      "meta": {
+        "id": "fma24459",
+        "labels": {
+          "en": "Distal phalanx of right thumb",
+          "de": "",
+          "la": "Phalanx distalis pollicis"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3198.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3198.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3198.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3198",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3198.glb",
+            "url": "bones/FJ3198.glb",
+            "fileKey": "FJ3198.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24459",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (bones v2)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24459__FJ3198.glb"
+      },
+      "color": 5618984,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24459",
+      "userData": {}
+    },
+    {
+      "id": "fma24457",
+      "name": "Middle phalanx of right ring finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24457",
+        "labels": {
+          "en": "Middle phalanx of right ring finger",
+          "de": "",
+          "la": "Phalanx media digiti III"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3292.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3292.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3292.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3292",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3292.glb",
+            "url": "bones/FJ3292.glb",
+            "fileKey": "FJ3292.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24457",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24457__FJ3292.glb"
+      },
+      "color": 12558360,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24457",
+      "userData": {}
+    },
+    {
+      "id": "fma24455",
+      "name": "Middle phalanx of right index finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24455",
+        "labels": {
+          "en": "Middle phalanx of right index finger",
+          "de": "",
+          "la": "Phalanx media digiti II"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3303.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3303.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3303.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3303",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3303.glb",
+            "url": "bones/FJ3303.glb",
+            "fileKey": "FJ3303.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24455",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24455__FJ3303.glb"
+      },
+      "color": 12558360,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24455",
+      "userData": {}
+    },
+    {
+      "id": "fma24458",
+      "name": "Middle phalanx of right little finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24458",
+        "labels": {
+          "en": "Middle phalanx of right little finger",
+          "de": "",
+          "la": "Phalanx media digiti III"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3304.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3304.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3304.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3304",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3304.glb",
+            "url": "bones/FJ3304.glb",
+            "fileKey": "FJ3304.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24458",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24458__FJ3304.glb"
+      },
+      "color": 12558360,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24458",
+      "userData": {}
+    },
+    {
+      "id": "fma24456",
+      "name": "Middle phalanx of right middle finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24456",
+        "labels": {
+          "en": "Middle phalanx of right middle finger",
+          "de": "",
+          "la": "Phalanx media digiti III"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3306.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3306.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3306.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3306",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3306.glb",
+            "url": "bones/FJ3306.glb",
+            "fileKey": "FJ3306.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24456",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24456__FJ3306.glb"
+      },
+      "color": 12558360,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24456",
+      "userData": {}
+    },
+    {
+      "id": "fma24451",
+      "name": "Proximal phalanx of right index finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24451",
+        "labels": {
+          "en": "Proximal phalanx of right index finger",
+          "de": "",
+          "la": "Phalanx proximalis digiti II"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3322.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3322.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3322.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3322",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3322.glb",
+            "url": "bones/FJ3322.glb",
+            "fileKey": "FJ3322.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24451",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24451__FJ3322.glb"
+      },
+      "color": 5718966,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24451",
+      "userData": {}
+    },
+    {
+      "id": "fma24454",
+      "name": "Proximal phalanx of right little finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24454",
+        "labels": {
+          "en": "Proximal phalanx of right little finger",
+          "de": "",
+          "la": "Phalanx proximalis digiti V"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3323.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3323.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3323.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3323",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3323.glb",
+            "url": "bones/FJ3323.glb",
+            "fileKey": "FJ3323.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24454",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24454__FJ3323.glb"
+      },
+      "color": 5718966,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24454",
+      "userData": {}
+    },
+    {
+      "id": "fma24452",
+      "name": "Proximal phalanx of right middle finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24452",
+        "labels": {
+          "en": "Proximal phalanx of right middle finger",
+          "de": "",
+          "la": "Phalanx proximalis digiti III"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3325.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3325.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3325.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3325",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3325.glb",
+            "url": "bones/FJ3325.glb",
+            "fileKey": "FJ3325.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24452",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24452__FJ3325.glb"
+      },
+      "color": 5718966,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24452",
+      "userData": {}
+    },
+    {
+      "id": "fma24453",
+      "name": "Proximal phalanx of right ring finger",
+      "group": "bones",
+      "meta": {
+        "id": "fma24453",
+        "labels": {
+          "en": "Proximal phalanx of right ring finger",
+          "de": "",
+          "la": "Phalanx proximalis digiti IV"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3326.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3326.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3326.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3326",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3326.glb",
+            "url": "bones/FJ3326.glb",
+            "fileKey": "FJ3326.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24453",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24453__FJ3326.glb"
+      },
+      "color": 5718966,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24453",
+      "userData": {}
+    },
+    {
+      "id": "fma24450",
+      "name": "Proximal phalanx of right thumb",
+      "group": "bones",
+      "meta": {
+        "id": "fma24450",
+        "labels": {
+          "en": "Proximal phalanx of right thumb",
+          "de": "",
+          "la": "Phalanx proximalis pollicis"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3327.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3327.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3327.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3327",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3327.glb",
+            "url": "bones/FJ3327.glb",
+            "fileKey": "FJ3327.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24450",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (bones v2)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24450__FJ3327.glb"
+      },
+      "color": 5718966,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24450",
+      "userData": {}
+    },
+    {
+      "id": "fma24464",
+      "name": "Right first metacarpal bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma24464",
+        "labels": {
+          "en": "Right first metacarpal bone",
+          "de": "",
+          "la": "Os metacarpale I"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3350.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3350.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3350.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3350",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3350.glb",
+            "url": "bones/FJ3350.glb",
+            "fileKey": "FJ3350.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24464",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24464__FJ3350.glb"
+      },
+      "color": 15094097,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24464",
+      "userData": {}
+    },
+    {
+      "id": "fma24466",
+      "name": "Right second metacarpal bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma24466",
+        "labels": {
+          "en": "Right second metacarpal bone",
+          "de": "",
+          "la": "Os metacarpale II"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3352.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3352.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3352.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3352",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3352.glb",
+            "url": "bones/FJ3352.glb",
+            "fileKey": "FJ3352.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24466",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24466__FJ3352.glb"
+      },
+      "color": 15094097,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24466",
+      "userData": {}
+    },
+    {
+      "id": "fma24468",
+      "name": "Right third metacarpal bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma24468",
+        "labels": {
+          "en": "Right third metacarpal bone",
+          "de": "",
+          "la": "Os metacarpale III"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3354.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3354.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3354.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3354",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3354.glb",
+            "url": "bones/FJ3354.glb",
+            "fileKey": "FJ3354.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24468",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24468__FJ3354.glb"
+      },
+      "color": 15094097,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24468",
+      "userData": {}
+    },
+    {
+      "id": "fma24470",
+      "name": "Right fourth metacarpal bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma24470",
+        "labels": {
+          "en": "Right fourth metacarpal bone",
+          "de": "",
+          "la": "Os metacarpale IV"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3356.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3356.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3356.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3356",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3356.glb",
+            "url": "bones/FJ3356.glb",
+            "fileKey": "FJ3356.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24470",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24470__FJ3356.glb"
+      },
+      "color": 15094097,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24470",
+      "userData": {}
+    },
+    {
+      "id": "fma24472",
+      "name": "Right fifth metacarpal bone",
+      "group": "bones",
+      "meta": {
+        "id": "fma24472",
+        "labels": {
+          "en": "Right fifth metacarpal bone",
+          "de": "",
+          "la": "Os metacarpale V"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3358.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3358.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3358.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3358",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3358.glb",
+            "url": "bones/FJ3358.glb",
+            "fileKey": "FJ3358.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24472",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24472__FJ3358.glb"
+      },
+      "color": 15094097,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24472",
+      "userData": {}
+    },
+    {
+      "id": "fma24446",
+      "name": "Right capitate",
+      "group": "bones",
+      "meta": {
+        "id": "fma24446",
+        "labels": {
+          "en": "Right capitate",
+          "de": "",
+          "la": "Os capitatum"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3361.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3361.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3361.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3361",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3361.glb",
+            "url": "bones/FJ3361.glb",
+            "fileKey": "FJ3361.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24446",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24446__FJ3361.glb"
+      },
+      "color": 11225556,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24446",
+      "userData": {}
+    },
+    {
+      "id": "fma24448",
+      "name": "Right hamate",
+      "group": "bones",
+      "meta": {
+        "id": "fma24448",
+        "labels": {
+          "en": "Right hamate",
+          "de": "",
+          "la": "Os hamatum"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3367.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3367.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3367.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3367",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3367.glb",
+            "url": "bones/FJ3367.glb",
+            "fileKey": "FJ3367.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24448",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24448__FJ3367.glb"
+      },
+      "color": 11225556,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24448",
+      "userData": {}
+    },
+    {
+      "id": "fma24437",
+      "name": "Right lunate",
+      "group": "bones",
+      "meta": {
+        "id": "fma24437",
+        "labels": {
+          "en": "Right lunate",
+          "de": "",
+          "la": "Os lunatum"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3374.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3374.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3374.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3374",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3374.glb",
+            "url": "bones/FJ3374.glb",
+            "fileKey": "FJ3374.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24437",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24437__FJ3374.glb"
+      },
+      "color": 3655137,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24437",
+      "userData": {}
+    },
+    {
+      "id": "fma24441",
+      "name": "Right pisiform",
+      "group": "bones",
+      "meta": {
+        "id": "fma24441",
+        "labels": {
+          "en": "Right pisiform",
+          "de": "",
+          "la": "Os pisiforme"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3382.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3382.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3382.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3382",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3382.glb",
+            "url": "bones/FJ3382.glb",
+            "fileKey": "FJ3382.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24441",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24441__FJ3382.glb"
+      },
+      "color": 3655137,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24441",
+      "userData": {}
+    },
+    {
+      "id": "fma24435",
+      "name": "Right scaphoid",
+      "group": "bones",
+      "meta": {
+        "id": "fma24435",
+        "labels": {
+          "en": "Right scaphoid",
+          "de": "",
+          "la": "Os scaphoideum"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3383.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3383.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3383.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3383",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3383.glb",
+            "url": "bones/FJ3383.glb",
+            "fileKey": "FJ3383.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24435",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24435__FJ3383.glb"
+      },
+      "color": 3655137,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24435",
+      "userData": {}
+    },
+    {
+      "id": "fma23725",
+      "name": "Right trapezoid",
+      "group": "bones",
+      "meta": {
+        "id": "fma23725",
+        "labels": {
+          "en": "Right trapezoid",
+          "de": "",
+          "la": "Os trapezoideum"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3389.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3389.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3389.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3389",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3389.glb",
+            "url": "bones/FJ3389.glb",
+            "fileKey": "FJ3389.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma23725",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma23725__FJ3389.glb"
+      },
+      "color": 11225556,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma23725",
+      "userData": {}
+    },
+    {
+      "id": "fma24439",
+      "name": "Right triquetral",
+      "group": "bones",
+      "meta": {
+        "id": "fma24439",
+        "labels": {
+          "en": "Right triquetral",
+          "de": "",
+          "la": "Os triquetrum"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3390.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3390.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3390.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3390",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3390.glb",
+            "url": "bones/FJ3390.glb",
+            "fileKey": "FJ3390.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24439",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24439__FJ3390.glb"
+      },
+      "color": 3655137,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24439",
+      "userData": {}
+    },
+    {
+      "id": "fma24443",
+      "name": "Right trapezium",
+      "group": "bones",
+      "meta": {
+        "id": "fma24443",
+        "labels": {
+          "en": "Right trapezium",
+          "de": "",
+          "la": "Os trapezium"
+        },
+        "synonyms": {
+          "en": [],
+          "de": []
+        },
+        "classification": {
+          "group": "bones",
+          "subgroup": null,
+          "side": "",
+          "system": "",
+          "region": ""
+        },
+        "relations": {
+          "is_a": [],
+          "part_of": [],
+          "has_parts": [],
+          "adjacent_to": [],
+          "cross_references": {}
+        },
+        "model": {
+          "current": "draco",
+          "variants": {
+            "draco": {
+              "path": "bones",
+              "filename": "FJ3388.glb",
+              "format": "glb"
+            },
+            "hifi": {
+              "path": "hifi/bones",
+              "filename": "FJ3388.glb",
+              "format": "glb"
+            },
+            "lofi": {
+              "path": "lofi/bones",
+              "filename": "FJ3388.glb",
+              "format": "glb"
+            }
+          },
+          "default_color": "#cccccc",
+          "visible_by_default": true,
+          "highlight_color": "",
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "bounding_box": [
+            [],
+            []
+          ],
+          "checksum": "",
+          "root_name": "FJ3388",
+          "asset": {
+            "path": "bones",
+            "file": "FJ3388.glb",
+            "url": "bones/FJ3388.glb",
+            "fileKey": "FJ3388.glb"
+          }
+        },
+        "info": {
+          "description": {
+            "en": "",
+            "de": ""
+          },
+          "keywords": {
+            "en": [],
+            "de": []
+          },
+          "links": {
+            "wikipedia_en": "",
+            "fma": "fma24443",
+            "wikipedia_de": "",
+            "uberon": ""
+          },
+          "images": []
+        },
+        "meta": {
+          "sources": [
+            "BodyParts3D",
+            "Rule-based Latin (TA2-style)"
+          ],
+          "license": "CC BY-SA 2.1 JP",
+          "attribution": "Copyright © 2008 DBCLS",
+          "version": "1.0.0",
+          "last_updated": "2025-08-04",
+          "reliability_score": null,
+          "notes": "",
+          "validation_status": "",
+          "purpose": "",
+          "creator": "",
+          "contributor": [],
+          "ontology_version": "",
+          "language": ""
+        },
+        "type": "structure",
+        "meta_schema": "1.1",
+        "entry_uid": "fma24443__FJ3388.glb"
+      },
+      "color": 11225556,
+      "opacity": 1,
+      "visible": true,
+      "originalName": "fma24443",
+      "userData": {}
+    }
+  ]
+}

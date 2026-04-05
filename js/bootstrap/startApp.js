@@ -331,7 +331,7 @@ async function tryApplyEnvironment(renderer) {
         scene.background = null;
 
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 0.5;
+        // toneMappingExposure wird von setupRoomUI gesetzt – hier nicht überschreiben
 
     } catch (e) {
         console.warn('Kein HDR geladen - weiter ohne Environment.', e?.message);

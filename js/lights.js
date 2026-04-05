@@ -6,9 +6,15 @@ let LIGHT_RIG = null;
 export function setupBasicLights(scene) {
     if (LIGHT_RIG) return LIGHT_RIG;
 
-    // FIX: Reduzierte Intensitäten für HDR-Kompatibilität
-    const key = new THREE.DirectionalLight(0xffffff, 0.5); // Reduziert von 2.0
-    key.position.set(3, 5, 2);
+    // Gleichmäßige Grundbeleuchtung – wichtig für 360°-Rotation
+    const ambient = new THREE.AmbientLight(0xffffff, 0.375);
+
+    // Hemisphere: helles Oberlicht, helles Unterlicht (kein dunkler Boden)
+    const hemi = new THREE.HemisphereLight(0xffffff, 0xaaaaaa, 0.45);
+
+    // Key – vorne oben (Hauptlicht mit Schatten)
+    const key = new THREE.DirectionalLight(0xffffff, 0.75);
+    key.position.set(2, 4, 3);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
     key.shadow.bias = -0.0005;
@@ -20,19 +26,26 @@ export function setupBasicLights(scene) {
     key.shadow.camera.top = 6;
     key.shadow.camera.bottom = -6;
 
-    // FIX: Hemisphere Light als Ambient
-    const fill = new THREE.HemisphereLight(0xffffff, 0x444444, 0.3); // Reduziert
+    // Fill links – beleuchtet die linke Seite
+    const fillLeft = new THREE.DirectionalLight(0xffffff, 0.45);
+    fillLeft.position.set(-4, 2, 1);
+    fillLeft.castShadow = false;
 
-    // FIX: Rim Light schwächer
-    const rim = new THREE.DirectionalLight(0xffffff, 0.2); // Reduziert
-    rim.position.set(-2, 3, -2);
-    rim.castShadow = false;
+    // Back – beleuchtet die Rückseite
+    const back = new THREE.DirectionalLight(0xffffff, 0.525);
+    back.position.set(0, 3, -4);
+    back.castShadow = false;
 
-    scene.add(key, fill, rim);
+    // Unten – verhindert komplett schwarze Unterseite
+    const bottom = new THREE.DirectionalLight(0xffffff, 0.225);
+    bottom.position.set(0, -3, 0);
+    bottom.castShadow = false;
 
-    LIGHT_RIG = { key, fill, rim };
+    scene.add(ambient, hemi, key, fillLeft, back, bottom);
 
-    console.log('💡 Beleuchtung initialisiert (HDR-kompatibel)');
+    LIGHT_RIG = { ambient, hemi, key, fillLeft, back, bottom };
+
+    console.log('💡 Beleuchtung initialisiert (360°-optimiert)');
     return LIGHT_RIG;
 }
 
@@ -44,14 +57,12 @@ export function getLightRig() {
 export function setLightIntensity(factor = 1.0) {
     if (!LIGHT_RIG) return;
 
-    // Basis-Intensitäten
-    const baseKey = 0.5;
-    const baseFill = 0.3;
-    const baseRim = 0.2;
-
-    LIGHT_RIG.key.intensity = baseKey * factor;
-    LIGHT_RIG.fill.intensity = baseFill * factor;
-    LIGHT_RIG.rim.intensity = baseRim * factor;
+    LIGHT_RIG.ambient.intensity   = 0.375 * factor;
+    LIGHT_RIG.hemi.intensity      = 0.45 * factor;
+    LIGHT_RIG.key.intensity       = 0.75 * factor;
+    LIGHT_RIG.fillLeft.intensity  = 0.45 * factor;
+    LIGHT_RIG.back.intensity      = 0.525 * factor;
+    LIGHT_RIG.bottom.intensity    = 0.225 * factor;
 
     console.log(`💡 Licht-Intensität: ${(factor * 100).toFixed(0)}%`);
 }

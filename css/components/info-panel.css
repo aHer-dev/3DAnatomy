@@ -327,6 +327,49 @@
     }
 }
 
+/* ─── Zuletzt verwendete Farben ─────────────────────────────────── */
+
+.rc-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+    padding: 6px 0 2px;
+}
+
+.rc-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    /* background-color wird per JS inline gesetzt */
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, border-color 0.15s ease,
+                box-shadow 0.15s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.rc-swatch:hover {
+    transform: scale(1.25);
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.rc-swatch:focus-visible {
+    outline: 2px solid #4A9EFF;
+    outline-offset: 2px;
+}
+
+/* Mobile: etwas größere Circles zum Tippen */
+@media (max-width: 768px) {
+    .rc-swatch {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 /* --- Tooltip für Modellnamen --- */
 #tooltip {
     position: absolute;

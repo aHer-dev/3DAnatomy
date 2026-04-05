@@ -30,7 +30,7 @@ renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight ||
 renderer.sortObjects = true;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.0;
+renderer.toneMappingExposure = 0.65;
 
 //shadow?
 renderer.shadowMap.enabled = true;

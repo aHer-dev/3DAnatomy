@@ -141,7 +141,7 @@ async function synchronizeCollection() {
 }
 
 // 4. VERBESSERTE showCollection Funktion
-async function showCollectionRobust() {
+export async function showCollectionRobust() {
 
   if (!state.collection || state.collection.length === 0) {
     // 🎯 DEZENTES FEEDBACK statt Alert

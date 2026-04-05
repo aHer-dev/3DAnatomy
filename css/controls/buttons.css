@@ -19,10 +19,11 @@
   }
 }
 
-#btn-reset {
+#btn-reset,
+#btn-reset-colors {
    width: 100%;
    padding: 12px 24px;
-   margin-top: 16px;
+   margin-top: 8px;
    background: linear-gradient(135deg, #4A9EFF, #FF7A4A);
    border: none;
    border-radius: 12px;
@@ -33,7 +34,9 @@
    box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
    transition: var(--transition-smooth);
 }
-#btn-reset:hover {
+#btn-reset { margin-top: 16px; }
+#btn-reset:hover,
+#btn-reset-colors:hover {
    transform: translateY(-2px);
    box-shadow: 0 8px 25px rgba(74, 158, 255, 0.4);
 }

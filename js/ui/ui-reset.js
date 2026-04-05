@@ -50,6 +50,14 @@ export function setupResetUI() {
     });
   }
 
+  const colorBtn = document.getElementById('btn-reset-colors');
+  if (colorBtn) {
+    colorBtn.addEventListener('click', () => {
+      resetColors();
+      renderer.render(scene, camera);
+    }, { passive: true });
+  }
+
   btn.addEventListener('click', () => {
     console.log('🔄 Schneller Reset gestartet...');
     resetToDefaultView();
