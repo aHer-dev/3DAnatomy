@@ -12,7 +12,7 @@
  */
 
 const STORAGE_KEY = 'bb_recent_colors';
-const MAX_COLORS  = 10;
+const MAX_COLORS  = 5;
 
 // ─── Daten ────────────────────────────────────────────────────────────────────
 
@@ -57,8 +57,14 @@ export function attachRecentColors(colorInput, onColorPick) {
   const wrapper = document.createElement('div');
   wrapper.className = 'rc-swatches';
 
-  // Nach dem colorInput einfügen (innerhalb des <label>)
-  colorInput.insertAdjacentElement('afterend', wrapper);
+  // In Edit-Panels sitzt der Color-Input oft in einem Label mit Flex-Layout.
+  // Dort den Wrapper nach der ganzen Zeile einfügen, damit die Swatches klein bleiben.
+  const parentLabel = colorInput.closest('label');
+  if (parentLabel && parentLabel.contains(colorInput)) {
+    parentLabel.insertAdjacentElement('afterend', wrapper);
+  } else {
+    colorInput.insertAdjacentElement('afterend', wrapper);
+  }
 
   // Swatches rendern
   function render() {

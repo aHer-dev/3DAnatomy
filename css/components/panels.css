@@ -107,7 +107,7 @@
    background: linear-gradient(135deg, #4A9EFF, #FF7A4A);
    border-radius: 50%; cursor: pointer;
 }
-#edit-controls button {
+#edit-controls button:not(.rc-swatch) {
    width: 100%; padding: 10px; margin-top: 8px;
    background: linear-gradient(135deg, rgba(74,158,255,0.1), rgba(74,158,255,0.05));
    border: 1px solid rgba(74,158,255,0.3);
@@ -115,7 +115,7 @@
    font-weight: 500; cursor: pointer;
    transition: var(--transition-smooth);
 }
-#edit-controls button:hover {
+#edit-controls button:not(.rc-swatch):hover {
    background: linear-gradient(135deg, rgba(74,158,255,0.2), rgba(74,158,255,0.1));
    transform: translateY(-2px);
    box-shadow: 0 4px 12px rgba(74,158,255,0.3);
