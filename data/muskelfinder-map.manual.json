@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "muscleKey": "m_gluteus_maximus",
+      "group": "muscles",
+      "muskelfinderNames": ["M. gluteus maximus"],
+      "latinLabel": "Musculus gluteus maximus",
+      "ids": ["fma22328", "fma22329"],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_iliacus",
+      "group": "muscles",
+      "muskelfinderNames": ["M. iliacus"],
+      "latinLabel": "Musculus iliacus",
+      "ids": ["fma22322", "fma22323"],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_psoas_major",
+      "group": "muscles",
+      "muskelfinderNames": ["M. psoas major"],
+      "latinLabel": "Musculus psoas major",
+      "ids": ["fma22342", "fma22343"],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_rhomboideus_major",
+      "group": "muscles",
+      "muskelfinderNames": ["M. rhomboideus major"],
+      "latinLabel": "Musculus rhomboideus major",
+      "ids": ["fma13381", "fma13382"],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_rhomboideus_minor",
+      "group": "muscles",
+      "muskelfinderNames": ["M. rhomboideus minor"],
+      "latinLabel": "Musculus rhomboideus minor",
+      "ids": ["fma13383", "fma13384"],
+      "source": "manual"
+    }
+  ]
+}
