@@ -114,6 +114,11 @@ function _cleanupContainer(container) {
     container.querySelectorAll('input, button').forEach(removeElementListeners);
 }
 
+function _isMuscleOrCartilage(model) {
+    if (!model) return false;
+    return (state.groups['muscles']?.includes(model) || state.groups['cartilage']?.includes(model)) ?? false;
+}
+
 function _buildMuscleButtons(container, model) {
     _cleanupContainer(container);
     container.innerHTML = `
