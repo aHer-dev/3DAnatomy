@@ -4,11 +4,12 @@ import { renderer } from '../core/renderer.js';
 import { scene } from '../core/scene.js';
 import { camera } from '../core/camera.js';
 import { setModelColor, setModelOpacity } from '../features/appearance.js';
-import { toggleModelVisibility, isModelVisible, hideModel, setModelVisibility } from '../features/visibility.js';
+import { toggleModelVisibility, isModelVisible, hideModel } from '../features/visibility.js';
 import { state } from '../store/state.js';
 import { clearMultiSelect } from './multiSelect.js';
 import { extractModelData } from '../utils/modelData.js';
 import { attachRecentColors } from '../ui/recentColors.js';
+import { enterIsolatedView } from './isolationView.js';
 
 // WeakMap zur Speicherung von Event-Listenern
 const listeners = new WeakMap();
@@ -109,76 +110,6 @@ function animateButtonSuccess(button, originalText) {
  * @param {HTMLElement} container 
  * @param {THREE.Object3D} selectedModel 
  */
-// ─── Einzelansicht (Isolation) ───────────────────────────────────────────────
-
-/** Snapshot: { modelName: boolean } für alle geladenen Modelle */
-let _isolationSnapshot = null;
-
-const ISOLATION_GROUPS = ['bones', 'teeth', 'cartilage'];
-
-function _isMuscleOrCartilage(model) {
-    return (state.groups['muscles']?.includes(model) || state.groups['cartilage']?.includes(model)) ?? false;
-}
-
-function _saveVisibilitySnapshot() {
-    const snap = {};
-    for (const [group, models] of Object.entries(state.groups || {})) {
-        for (const m of models) {
-            snap[`${group}::${m.uuid}`] = m.visible;
-        }
-    }
-    return snap;
-}
-
-function _restoreVisibilitySnapshot(snap) {
-    for (const [group, models] of Object.entries(state.groups || {})) {
-        for (const m of models) {
-            const key = `${group}::${m.uuid}`;
-            if (key in snap) setModelVisibility(m, snap[key]);
-        }
-    }
-}
-
-function _showIsolationBackButton(model) {
-    _removeIsolationBackButton();
-    const btn = document.createElement('button');
-    btn.id = 'isolation-back-btn';
-    btn.textContent = '← Zurück zur Gesamtansicht';
-    btn.addEventListener('click', () => _exitIsolatedView(model));
-    document.body.appendChild(btn);
-}
-
-function _removeIsolationBackButton() {
-    document.getElementById('isolation-back-btn')?.remove();
-}
-
-function _enterIsolatedView(model) {
-    _isolationSnapshot = _saveVisibilitySnapshot();
-
-    // Alles verstecken
-    for (const models of Object.values(state.groups || {})) {
-        for (const m of models) setModelVisibility(m, false);
-    }
-    // Knochen + Zähne + Knorpel anzeigen
-    for (const g of ISOLATION_GROUPS) {
-        for (const m of (state.groups[g] || [])) setModelVisibility(m, true);
-    }
-    // Das Modell selbst anzeigen
-    setModelVisibility(model, true);
-
-    renderer.render(scene, camera);
-    _showIsolationBackButton(model);
-}
-
-function _exitIsolatedView(model) {
-    if (_isolationSnapshot) {
-        _restoreVisibilitySnapshot(_isolationSnapshot);
-        _isolationSnapshot = null;
-    }
-    renderer.render(scene, camera);
-    _removeIsolationBackButton();
-}
-
 function _cleanupContainer(container) {
     container.querySelectorAll('input, button').forEach(removeElementListeners);
 }
@@ -245,7 +176,7 @@ function _wireMusclePanelListeners(container, selectedModel) {
         listeners.set(hideBtn, { click: h });
     }
     if (isolateBtn) {
-        const h = () => _enterIsolatedView(selectedModel);
+        const h = () => enterIsolatedView(selectedModel);
         isolateBtn.addEventListener('click', h);
         listeners.set(isolateBtn, { click: h });
     }

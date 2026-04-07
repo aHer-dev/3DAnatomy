@@ -1,0 +1,1866 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-07T22:27:54.607Z",
+  "source": "scripts/build-muskelfinder-map.js",
+  "manualSource": "muskelfinder-map.manual.json",
+  "summary": {
+    "manualEntries": 5,
+    "generatedExactEntries": 116,
+    "totalEntries": 121
+  },
+  "entries": [
+    {
+      "muscleKey": "m_abductor_digiti_minimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. abductor digiti minimi"
+      ],
+      "latinLabel": "Musculus abductor digiti minimi of hand",
+      "ids": [
+        "fma37396",
+        "fma37397"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_abductor_digiti_minimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. abductor digiti minimi"
+      ],
+      "latinLabel": "Musculus abductor digiti minimi of foot",
+      "ids": [
+        "fma37463",
+        "fma37464"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_abductor_hallucis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. abductor hallucis"
+      ],
+      "latinLabel": "Musculus abductor hallucis",
+      "ids": [
+        "fma37459",
+        "fma37460"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_abductor_pollicis_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. abductor pollicis brevis"
+      ],
+      "latinLabel": "Musculus abductor pollicis brevis",
+      "ids": [
+        "fma37386",
+        "fma37387"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_abductor_pollicis_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. abductor pollicis longus"
+      ],
+      "latinLabel": "Musculus abductor pollicis longus",
+      "ids": [
+        "fma38516",
+        "fma38517"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_adductor_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. adductor brevis"
+      ],
+      "latinLabel": "Musculus adductor brevis",
+      "ids": [
+        "fma22452",
+        "fma22454"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_adductor_hallucis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. adductor hallucis"
+      ],
+      "latinLabel": "Musculus transverse head of adductor hallucis",
+      "ids": [
+        "fma46020",
+        "fma46021"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_adductor_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. adductor longus"
+      ],
+      "latinLabel": "Musculus adductor longus",
+      "ids": [
+        "fma22456",
+        "fma22457"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_adductor_magnus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. adductor magnus"
+      ],
+      "latinLabel": "Musculus adductor magnus",
+      "ids": [
+        "fma22459",
+        "fma22460"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_adductor_pollicis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. adductor pollicis"
+      ],
+      "latinLabel": "Musculus oblique head of adductor pollicis",
+      "ids": [
+        "fma46121",
+        "fma46122",
+        "fma46123",
+        "fma46124"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_anconeus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. anconeus"
+      ],
+      "latinLabel": "Musculus anconeus",
+      "ids": [
+        "fma37705",
+        "fma37706"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_biceps_brachii",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. biceps brachii"
+      ],
+      "latinLabel": "Musculus long head of biceps brachii",
+      "ids": [
+        "fma37684",
+        "fma37685",
+        "fma37686",
+        "fma37687"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_biceps_femoris_caput_breve",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. biceps femoris – Caput breve"
+      ],
+      "latinLabel": "Musculus short head of biceps femoris",
+      "ids": [
+        "fma45891",
+        "fma45892"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_biceps_femoris_caput_longum",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. biceps femoris – Caput longum"
+      ],
+      "latinLabel": "Musculus long head of biceps femoris",
+      "ids": [
+        "fma45888",
+        "fma45889"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_brachialis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. brachialis"
+      ],
+      "latinLabel": "Musculus brachialis",
+      "ids": [
+        "fma37668",
+        "fma37669"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_brachioradialis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. brachioradialis"
+      ],
+      "latinLabel": "Musculus brachioradialis",
+      "ids": [
+        "fma38486",
+        "fma38487"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_coccygeus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. coccygeus"
+      ],
+      "latinLabel": "Musculus coccygeus",
+      "ids": [
+        "fma46443",
+        "fma46444"
+      ],
+      "source": "generated-alias",
+      "region": "wirbelsaeule",
+      "subgroup": "beckenboden"
+    },
+    {
+      "muscleKey": "m_coracobrachialis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. coracobrachialis"
+      ],
+      "latinLabel": "Musculus coracobrachialis",
+      "ids": [
+        "fma37665",
+        "fma37666"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_deltoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. deltoideus"
+      ],
+      "latinLabel": "Pars acromialis musculi deltoidei",
+      "ids": [
+        "fma34680",
+        "fma34681",
+        "fma34682",
+        "fma34683",
+        "fma34684",
+        "fma34685"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_digastricus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. digastricus"
+      ],
+      "latinLabel": "Musculus digastricus",
+      "ids": [
+        "fma46292",
+        "fma46293"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "suprahyoidal"
+    },
+    {
+      "muscleKey": "m_extensor_carpi_radialis_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor carpi radialis brevis"
+      ],
+      "latinLabel": "Musculus extensor carpi radialis brevis",
+      "ids": [
+        "fma38498",
+        "fma38499"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_carpi_radialis_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor carpi radialis longus"
+      ],
+      "latinLabel": "Musculus extensor carpi radialis longus",
+      "ids": [
+        "fma38495",
+        "fma38496"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_carpi_ulnaris",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor carpi ulnaris"
+      ],
+      "latinLabel": "Musculus extensor carpi ulnaris",
+      "ids": [
+        "fma38507",
+        "fma38508"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_digiti_minimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor digiti minimi"
+      ],
+      "latinLabel": "Musculus extensor digiti minimi",
+      "ids": [
+        "fma38504",
+        "fma38505"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_digitorum",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor digitorum"
+      ],
+      "latinLabel": "Musculus extensor digitorum",
+      "ids": [
+        "fma38501",
+        "fma38502"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_digitorum_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor digitorum longus"
+      ],
+      "latinLabel": "Musculus extensor digitorum longus",
+      "ids": [
+        "fma22548",
+        "fma22549"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_extensor_hallucis_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor hallucis brevis"
+      ],
+      "latinLabel": "Musculus extensor hallucis brevis",
+      "ids": [
+        "fma51144",
+        "fma51145"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_extensor_hallucis_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor hallucis longus"
+      ],
+      "latinLabel": "Musculus extensor hallucis longus",
+      "ids": [
+        "fma22546",
+        "fma22547"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_extensor_indicis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor indicis"
+      ],
+      "latinLabel": "Musculus extensor indicis",
+      "ids": [
+        "fma38525",
+        "fma38526"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_pollicis_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor pollicis brevis"
+      ],
+      "latinLabel": "Musculus extensor pollicis brevis",
+      "ids": [
+        "fma38519",
+        "fma38520"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_extensor_pollicis_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. extensor pollicis longus"
+      ],
+      "latinLabel": "Musculus extensor pollicis longus",
+      "ids": [
+        "fma38522",
+        "fma38523"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_fibularis_brevis_m_peroneus_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. fibularis brevis (M. peroneus brevis)"
+      ],
+      "latinLabel": "Musculus fibularis brevis",
+      "ids": [
+        "fma22554",
+        "fma22555"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_fibularis_longus_m_peroneus_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. fibularis longus (M. peroneus longus)"
+      ],
+      "latinLabel": "Musculus fibularis longus",
+      "ids": [
+        "fma22552",
+        "fma22553"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_flexor_carpi_radialis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor carpi radialis"
+      ],
+      "latinLabel": "Musculus flexor carpi radialis",
+      "ids": [
+        "fma38460",
+        "fma38461"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_flexor_carpi_ulnaris",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor carpi ulnaris"
+      ],
+      "latinLabel": "Musculus humeral head of flexor carpi ulnaris",
+      "ids": [
+        "fma38617",
+        "fma38618",
+        "fma38619",
+        "fma38620"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_flexor_digiti_minimi_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor digiti minimi brevis"
+      ],
+      "latinLabel": "Musculus flexor digiti minimi brevis of hand",
+      "ids": [
+        "fma37398",
+        "fma37399"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_flexor_digiti_minimi_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor digiti minimi brevis"
+      ],
+      "latinLabel": "Musculus flexor digiti minimi brevis of foot",
+      "ids": [
+        "fma37471",
+        "fma37472"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_flexor_digitorum_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor digitorum brevis"
+      ],
+      "latinLabel": "Musculus flexor digitorum brevis",
+      "ids": [
+        "fma37461",
+        "fma37462"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_flexor_digitorum_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor digitorum longus"
+      ],
+      "latinLabel": "Musculus flexor digitorum longus",
+      "ids": [
+        "fma65016",
+        "fma65017"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_flexor_digitorum_profundus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor digitorum profundus"
+      ],
+      "latinLabel": "Musculus flexor digitorum profundus",
+      "ids": [
+        "fma38479",
+        "fma38480"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_flexor_digitorum_superficialis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor digitorum superficialis"
+      ],
+      "latinLabel": "Musculus flexor digitorum superficialis",
+      "ids": [
+        "fma38470",
+        "fma38471"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_flexor_hallucis_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor hallucis brevis"
+      ],
+      "latinLabel": "Musculus lateralis head of flexor hallucis brevis",
+      "ids": [
+        "fma45971",
+        "fma45972",
+        "fma45973",
+        "fma45974"
+      ],
+      "source": "generated-group",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_flexor_hallucis_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor hallucis longus"
+      ],
+      "latinLabel": "Musculus flexor hallucis longus",
+      "ids": [
+        "fma65014",
+        "fma65015"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_flexor_pollicis_brevis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor pollicis brevis"
+      ],
+      "latinLabel": "Musculus flexor pollicis brevis",
+      "ids": [
+        "fma37388",
+        "fma37389"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_flexor_pollicis_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. flexor pollicis longus"
+      ],
+      "latinLabel": "Musculus flexor pollicis longus",
+      "ids": [
+        "fma38482",
+        "fma38484"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_gastrocnemius",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gastrocnemius"
+      ],
+      "latinLabel": "Musculus gastrocnemius (caput laterale)",
+      "ids": [
+        "fma45957",
+        "fma45958",
+        "fma45960",
+        "fma45961"
+      ],
+      "source": "generated-group",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_gemellus_inferior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gemellus inferior"
+      ],
+      "latinLabel": "Musculus gemellus inferior",
+      "ids": [
+        "fma22336",
+        "fma22337"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_gemellus_superior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gemellus superior"
+      ],
+      "latinLabel": "Musculus gemellus superior",
+      "ids": [
+        "fma22334",
+        "fma22335"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_geniohyoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. geniohyoideus"
+      ],
+      "latinLabel": "Musculus geniohyoideus",
+      "ids": [
+        "fma46326",
+        "fma46327"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "suprahyoidal"
+    },
+    {
+      "muscleKey": "m_gluteus_maximus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gluteus maximus"
+      ],
+      "latinLabel": "Musculus gluteus maximus",
+      "ids": [
+        "fma22328",
+        "fma22329"
+      ],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_gluteus_medius",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gluteus medius"
+      ],
+      "latinLabel": "Musculus gluteus medius",
+      "ids": [
+        "fma22330",
+        "fma22331"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_gluteus_minimus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gluteus minimus"
+      ],
+      "latinLabel": "Musculus gluteus minimus",
+      "ids": [
+        "fma22332",
+        "fma22333"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_gracilis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. gracilis"
+      ],
+      "latinLabel": "Musculus gracilis",
+      "ids": [
+        "fma43883",
+        "fma43884"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_iliacus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. iliacus"
+      ],
+      "latinLabel": "Musculus iliacus",
+      "ids": [
+        "fma22322",
+        "fma22323"
+      ],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_infraspinatus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. infraspinatus"
+      ],
+      "latinLabel": "Musculus infraspinatus",
+      "ids": [
+        "fma32547",
+        "fma32548"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_levator_scapulae",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. levator scapulae"
+      ],
+      "latinLabel": "Musculus levator scapulae",
+      "ids": [
+        "fma32540",
+        "fma32541"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_longus_capitis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. longus capitis"
+      ],
+      "latinLabel": "Musculus longus capitis",
+      "ids": [
+        "fma46309",
+        "fma46310"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "praevertebralis"
+    },
+    {
+      "muscleKey": "m_mylohyoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. mylohyoideus"
+      ],
+      "latinLabel": "Musculus mylohyoideus",
+      "ids": [
+        "fma46321",
+        "fma46322"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "suprahyoidal"
+    },
+    {
+      "muscleKey": "m_obliquus_externus_abdominis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. obliquus externus abdominis"
+      ],
+      "latinLabel": "Musculus obliquus externus abdominis",
+      "ids": [
+        "fma13336",
+        "fma13337"
+      ],
+      "source": "generated-alias",
+      "region": "wirbelsaeule",
+      "subgroup": "bauch"
+    },
+    {
+      "muscleKey": "m_obturatorius_externus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. obturatorius externus"
+      ],
+      "latinLabel": "Musculus obturator externus",
+      "ids": [
+        "fma22326",
+        "fma22327"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_obturatorius_internus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. obturatorius internus"
+      ],
+      "latinLabel": "Musculus obturator internus",
+      "ids": [
+        "fma22324",
+        "fma22325"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_omohyoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. omohyoideus"
+      ],
+      "latinLabel": "Musculus omohyoideus",
+      "ids": [
+        "fma13348",
+        "fma13349"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "infrahyoidal"
+    },
+    {
+      "muscleKey": "m_opponens_digiti_minimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. opponens digiti minimi"
+      ],
+      "latinLabel": "Musculus opponens digiti minimi of hand",
+      "ids": [
+        "fma37400",
+        "fma37401"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_opponens_digiti_minimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. opponens digiti minimi"
+      ],
+      "latinLabel": "Musculus opponens digiti minimi of foot",
+      "ids": [
+        "fma86034",
+        "fma86035"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_opponens_pollicis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. opponens pollicis"
+      ],
+      "latinLabel": "Musculus opponens pollicis",
+      "ids": [
+        "fma37390",
+        "fma37391"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_palmaris_longus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. palmaris longus"
+      ],
+      "latinLabel": "Musculus palmaris longus",
+      "ids": [
+        "fma38463",
+        "fma38464"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_pectineus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. pectineus"
+      ],
+      "latinLabel": "Musculus pectineus",
+      "ids": [
+        "fma22450",
+        "fma22451"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_pectoralis_major",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. pectoralis major"
+      ],
+      "latinLabel": "Pars abdominalis musculi pectoralis majoris",
+      "ids": [
+        "fma34690",
+        "fma34691",
+        "fma45874",
+        "fma45875",
+        "fma79979",
+        "fma79980"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_pectoralis_minor",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. pectoralis minor"
+      ],
+      "latinLabel": "Musculus pectoralis minor",
+      "ids": [
+        "fma13375",
+        "fma13376"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_piriformis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. piriformis"
+      ],
+      "latinLabel": "Musculus piriformis",
+      "ids": [
+        "fma22340",
+        "fma22341"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_plantaris",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. plantaris"
+      ],
+      "latinLabel": "Musculus plantaris",
+      "ids": [
+        "fma22560",
+        "fma22561"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_popliteus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. popliteus"
+      ],
+      "latinLabel": "Musculus popliteus",
+      "ids": [
+        "fma22591",
+        "fma22592"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_pronator_quadratus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. pronator quadratus"
+      ],
+      "latinLabel": "Musculus pronator quadratus",
+      "ids": [
+        "fma38454",
+        "fma38455"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_pronator_teres",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. pronator teres"
+      ],
+      "latinLabel": "Musculus humeral head of pronator teres",
+      "ids": [
+        "fma38560",
+        "fma38561",
+        "fma38562",
+        "fma38563"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_psoas_major",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. psoas major"
+      ],
+      "latinLabel": "Musculus psoas major",
+      "ids": [
+        "fma22342",
+        "fma22343"
+      ],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_quadratus_femoris",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. quadratus femoris"
+      ],
+      "latinLabel": "Musculus quadratus femoris",
+      "ids": [
+        "fma22338",
+        "fma22339"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_quadratus_plantae",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. quadratus plantae"
+      ],
+      "latinLabel": "Musculus flexor accessorius",
+      "ids": [
+        "fma37465",
+        "fma37466"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_rectus_femoris",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. rectus femoris"
+      ],
+      "latinLabel": "Musculus rectus femoris",
+      "ids": [
+        "fma38928",
+        "fma38929"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_rhomboideus_major",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. rhomboideus major"
+      ],
+      "latinLabel": "Musculus rhomboideus major",
+      "ids": [
+        "fma13381",
+        "fma13382"
+      ],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_rhomboideus_minor",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. rhomboideus minor"
+      ],
+      "latinLabel": "Musculus rhomboideus minor",
+      "ids": [
+        "fma13383",
+        "fma13384"
+      ],
+      "source": "manual"
+    },
+    {
+      "muscleKey": "m_sartorius",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. sartorius"
+      ],
+      "latinLabel": "Musculus sartorius",
+      "ids": [
+        "fma22354",
+        "fma22355"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_semimembranosus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. semimembranosus"
+      ],
+      "latinLabel": "Musculus semimembranosus",
+      "ids": [
+        "fma22448",
+        "fma22449"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_semispinalis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. semispinalis"
+      ],
+      "latinLabel": "Musculus semispinalis capitis",
+      "ids": [
+        "fma22872",
+        "fma22873",
+        "fma22874",
+        "fma22875",
+        "fma22876",
+        "fma22877"
+      ],
+      "source": "generated-group",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_semitendinosus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. semitendinosus"
+      ],
+      "latinLabel": "Musculus semitendinosus",
+      "ids": [
+        "fma22358",
+        "fma22359"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_serratus_anterior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. serratus anterior"
+      ],
+      "latinLabel": "Musculus serratus anterior",
+      "ids": [
+        "fma13398",
+        "fma13399"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_serratus_posterior_inferior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. serratus posterior inferior"
+      ],
+      "latinLabel": "Musculus serratus posterior inferior",
+      "ids": [
+        "fma13405",
+        "fma13406"
+      ],
+      "source": "generated-alias",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_serratus_posterior_superior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. serratus posterior superior"
+      ],
+      "latinLabel": "Musculus serratus posterior superior",
+      "ids": [
+        "fma13403",
+        "fma13404"
+      ],
+      "source": "generated-alias",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_soleus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. soleus"
+      ],
+      "latinLabel": "Musculus soleus",
+      "ids": [
+        "fma22558",
+        "fma22559"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_sternocleidomastoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. sternocleidomastoideus"
+      ],
+      "latinLabel": "Musculus sternocleidomastoideus",
+      "ids": [
+        "fma13408",
+        "fma13409"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "halsmuskulatur"
+    },
+    {
+      "muscleKey": "m_sternohyoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. sternohyoideus"
+      ],
+      "latinLabel": "Musculus sternohyoideus",
+      "ids": [
+        "fma13346",
+        "fma13347"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "infrahyoidal"
+    },
+    {
+      "muscleKey": "m_sternothyroideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. sternothyroideus"
+      ],
+      "latinLabel": "Musculus sternothyroideus",
+      "ids": [
+        "fma13350",
+        "fma13351"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "infrahyoidal"
+    },
+    {
+      "muscleKey": "m_stylohyoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. stylohyoideus"
+      ],
+      "latinLabel": "Musculus stylohyoideus",
+      "ids": [
+        "fma45826",
+        "fma45827"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "suprahyoidal"
+    },
+    {
+      "muscleKey": "m_subclavius",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. subclavius"
+      ],
+      "latinLabel": "Musculus subclavius",
+      "ids": [
+        "fma13411",
+        "fma13412"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_subscapularis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. subscapularis"
+      ],
+      "latinLabel": "Musculus subscapularis",
+      "ids": [
+        "fma13414",
+        "fma13415"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_supinator",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. supinator"
+      ],
+      "latinLabel": "Musculus supinator",
+      "ids": [
+        "fma38513",
+        "fma38514"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_supraspinatus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. supraspinatus"
+      ],
+      "latinLabel": "Musculus supraspinatus",
+      "ids": [
+        "fma32544",
+        "fma32545"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_tensor_fasciae_latae",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. tensor fasciae latae"
+      ],
+      "latinLabel": "Musculus tensor fasciae latae",
+      "ids": [
+        "fma22425",
+        "fma22426"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "huefte"
+    },
+    {
+      "muscleKey": "m_teres_major",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. teres major"
+      ],
+      "latinLabel": "Musculus teres major",
+      "ids": [
+        "fma32551",
+        "fma32552"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_teres_minor",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. teres minor"
+      ],
+      "latinLabel": "Musculus teres minor",
+      "ids": [
+        "fma32553",
+        "fma32554"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_thyrohyoideus",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. thyrohyoideus"
+      ],
+      "latinLabel": "Musculus thyrohyoideus",
+      "ids": [
+        "fma13352",
+        "fma13353"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "infrahyoidal"
+    },
+    {
+      "muscleKey": "m_tibialis_anterior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. tibialis anterior"
+      ],
+      "latinLabel": "Musculus tibialis anterior",
+      "ids": [
+        "fma22544",
+        "fma22545"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_tibialis_posterior",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. tibialis posterior"
+      ],
+      "latinLabel": "Musculus tibialis posterior",
+      "ids": [
+        "fma65018",
+        "fma65019"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_trapezius_pars_ascendens",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. trapezius – Pars ascendens"
+      ],
+      "latinLabel": "Pars ascendens musculi trapezii",
+      "ids": [
+        "fma33581",
+        "fma33583"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_trapezius_pars_descendens",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. trapezius – Pars descendens"
+      ],
+      "latinLabel": "Pars descendens musculi trapezii",
+      "ids": [
+        "fma33586",
+        "fma33587"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_trapezius_pars_transversa",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. trapezius – Pars transversa"
+      ],
+      "latinLabel": "Pars transversa musculi trapezii",
+      "ids": [
+        "fma33584",
+        "fma33585"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "schulter"
+    },
+    {
+      "muscleKey": "m_triceps_brachii_caput_laterale_und_mediale",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. triceps brachii – Caput laterale und mediale"
+      ],
+      "latinLabel": "Musculus lateralis head of triceps brachii",
+      "ids": [
+        "fma37695",
+        "fma37696",
+        "fma37697",
+        "fma37698"
+      ],
+      "source": "generated-group",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_triceps_brachii_caput_longum",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. triceps brachii – Caput longum"
+      ],
+      "latinLabel": "Musculus long head of triceps brachii",
+      "ids": [
+        "fma37699",
+        "fma37700"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "ellenbogen"
+    },
+    {
+      "muscleKey": "m_vastus_intermedius",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. vastus intermedius"
+      ],
+      "latinLabel": "Musculus vastus intermedius",
+      "ids": [
+        "fma38934",
+        "fma38935"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_vastus_lateralis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. vastus lateralis"
+      ],
+      "latinLabel": "Musculus vastus lateralis",
+      "ids": [
+        "fma38930",
+        "fma38931"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_vastus_medialis",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. vastus medialis"
+      ],
+      "latinLabel": "Musculus vastus medialis",
+      "ids": [
+        "fma38932",
+        "fma38933"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "knie"
+    },
+    {
+      "muscleKey": "m_iliocostales",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. iliocostales"
+      ],
+      "latinLabel": "Musculus iliocostalis cervicis",
+      "ids": [
+        "fma22740",
+        "fma22741",
+        "fma22742",
+        "fma22743",
+        "fma22744",
+        "fma22745"
+      ],
+      "source": "generated-group",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_interossei_dorsales_i_iv",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. interossei dorsales I–IV"
+      ],
+      "latinLabel": "Musculi interossei dorsales manus",
+      "ids": [
+        "fma42404",
+        "fma42405"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_interossei_palmares_i_iii",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. interossei palmares I–III"
+      ],
+      "latinLabel": "Musculi interossei palmares manus",
+      "ids": [
+        "fma42402",
+        "fma42403"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_interossei_plantares",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. interossei plantares"
+      ],
+      "latinLabel": "Musculus interosseus plantaris pedis I",
+      "ids": [
+        "fma37741",
+        "fma37742",
+        "fma37743",
+        "fma37744",
+        "fma37745",
+        "fma37746"
+      ],
+      "source": "generated-group",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_interspinales",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. interspinales"
+      ],
+      "latinLabel": "Musculus interspinalis thoracis",
+      "ids": [
+        "fma22890",
+        "fma22891"
+      ],
+      "source": "generated-alias",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_longissimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. longissimi"
+      ],
+      "latinLabel": "Musculus longissimus capitis",
+      "ids": [
+        "fma22751",
+        "fma22753",
+        "fma22754",
+        "fma22756",
+        "fma22757",
+        "fma22758"
+      ],
+      "source": "generated-group",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_lumbricales",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. lumbricales"
+      ],
+      "latinLabel": "Musculus lumbricalis pedis I",
+      "ids": [
+        "fma37483",
+        "fma37484",
+        "fma37485",
+        "fma37486",
+        "fma37717",
+        "fma37718",
+        "fma37719",
+        "fma37720"
+      ],
+      "source": "generated-group",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss"
+    },
+    {
+      "muscleKey": "m_lumbricales_i_iv",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. lumbricales I–IV"
+      ],
+      "latinLabel": "Musculi lumbricales manus",
+      "ids": [
+        "fma42398",
+        "fma42399"
+      ],
+      "source": "generated-alias",
+      "region": "obere-extremitaet",
+      "subgroup": "hand"
+    },
+    {
+      "muscleKey": "m_rotatores",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. rotatores"
+      ],
+      "latinLabel": "Musculus rotator lumborum",
+      "ids": [
+        "fma23089",
+        "fma23090",
+        "fma81752",
+        "fma81753"
+      ],
+      "source": "generated-group",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_splenii",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Mm. splenii"
+      ],
+      "latinLabel": "Musculus splenius capitis",
+      "ids": [
+        "fma22726",
+        "fma22727",
+        "fma22728",
+        "fma22729"
+      ],
+      "source": "generated-group",
+      "region": "wirbelsaeule",
+      "subgroup": "ruecken"
+    },
+    {
+      "muscleKey": "m_platysma",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "Platysma"
+      ],
+      "latinLabel": "Musculus platysma",
+      "ids": [
+        "fma45739",
+        "fma45740"
+      ],
+      "source": "generated-alias",
+      "region": "kopf-hals",
+      "subgroup": "halsmuskulatur"
+    }
+  ]
+}
