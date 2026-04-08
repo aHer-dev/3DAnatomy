@@ -16,8 +16,10 @@ export const lifecycle = {
     startLoop(tick) {
         if (_rafId !== null) return () => { }; // schon aktiv
         const step = (t) => {
+            _rafId = null;
+            const keepRunning = tick?.(t);
+            if (keepRunning === false) return;
             _rafId = requestAnimationFrame(step);
-            tick?.(t);
         };
         _rafId = requestAnimationFrame(step);
         return () => {

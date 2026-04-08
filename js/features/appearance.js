@@ -17,6 +17,17 @@ const fallback = {
   }
 };
 
+const SHADOW_CASTING_GROUPS = new Set(['bones', 'teeth']);
+const SHADOW_RECEIVER_GROUPS = new Set(['bones', 'teeth', 'cartilage']);
+
+export function getShadowFlagsForGroup(groupName = 'default') {
+  const key = typeof groupName === 'string' ? groupName.toLowerCase() : 'default';
+  return {
+    castShadow: SHADOW_CASTING_GROUPS.has(key),
+    receiveShadow: SHADOW_RECEIVER_GROUPS.has(key)
+  };
+}
+
 
 
 /**
@@ -108,6 +119,7 @@ export function applyRendererAppearance(renderer, cfg = defaultAppearance) {
 export function applyGroupMaterialTweaks(groupName, c = cfg()) {
   const rules = (c.groups && (c.groups[groupName] || c.groups.default)) || {};
   const roots = state.groups?.[groupName] || [];
+  const { castShadow, receiveShadow } = getShadowFlagsForGroup(groupName);
   for (const root of roots) {
     root.traverse(o => {
       if (!o.isMesh || !o.material) return;
@@ -121,9 +133,9 @@ export function applyGroupMaterialTweaks(groupName, c = cfg()) {
       if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
       if (m.emissiveMap) m.emissiveMap.colorSpace = THREE.SRGBColorSpace;
 
-      // Schatten sicherstellen
-      o.castShadow = true;
-      o.receiveShadow = true;
+      // Schatten gezielt statt pauschal aktivieren
+      o.castShadow = castShadow;
+      o.receiveShadow = receiveShadow;
     });
   }
 }

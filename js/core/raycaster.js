@@ -15,10 +15,12 @@ export function markPickablesDirty() {
 
 // Mesh-orientierte Spatial Hash für Raycasting-Performance
 class MeshSpatialHash {
-    constructor(cellSize = 10) {
+    constructor(cellSize = 4) {
         this.cellSize = cellSize;
         this.grid = new Map();
         this.meshes = new Set();
+        this.boundingBoxes = new Map();
+        this.boundingSpheres = new Map();
         this.needsRebuild = true;
     }
 
@@ -51,14 +53,29 @@ class MeshSpatialHash {
         if (!this.needsRebuild) return;
 
         this.grid.clear();
+        this.boundingBoxes.clear();
+        this.boundingSpheres.clear();
 
         for (const mesh of this.meshes) {
             if (!mesh.geometry) continue;
+            mesh.updateWorldMatrix?.(true, false);
 
             // Bounding Box berechnen
-            mesh.geometry.computeBoundingBox();
+            if (!mesh.geometry.boundingBox) {
+                mesh.geometry.computeBoundingBox();
+            }
+            if (!mesh.geometry.boundingSphere) {
+                mesh.geometry.computeBoundingSphere();
+            }
             const box = mesh.geometry.boundingBox.clone();
             box.applyMatrix4(mesh.matrixWorld);
+            this.boundingBoxes.set(mesh, box);
+
+            const sphere = mesh.geometry.boundingSphere?.clone();
+            if (sphere) {
+                sphere.applyMatrix4(mesh.matrixWorld);
+                this.boundingSpheres.set(mesh, sphere);
+            }
 
             // Mesh in alle betroffenen Zellen eintragen
             const minKey = this.getKey(box.min.x, box.min.y, box.min.z);
@@ -89,14 +106,16 @@ class MeshSpatialHash {
         this.rebuild();
 
         const candidates = new Set();
+        const visitedKeys = new Set();
         const step = this.cellSize * 0.5; // Kleinere Schritte für bessere Abdeckung
-        const direction = ray.direction.clone();
-        const origin = ray.origin.clone();
+        const point = new THREE.Vector3();
 
         // Ray in Schritten abgehen
         for (let distance = 0; distance < maxDistance; distance += step) {
-            const point = origin.clone().add(direction.clone().multiplyScalar(distance));
+            ray.at(distance, point);
             const key = this.getKey(point.x, point.y, point.z);
+            if (visitedKeys.has(key)) continue;
+            visitedKeys.add(key);
 
             const cellMeshes = this.grid.get(key);
             if (cellMeshes) {
@@ -106,7 +125,10 @@ class MeshSpatialHash {
             }
         }
 
-        return Array.from(candidates);
+        return Array.from(candidates).filter(mesh => {
+            const box = this.boundingBoxes.get(mesh);
+            return box ? ray.intersectsBox(box) : true;
+        });
     }
 
     // Debug-Info
@@ -114,9 +136,19 @@ class MeshSpatialHash {
         return {
             totalMeshes: this.meshes.size,
             totalCells: this.grid.size,
+            totalBoundingBoxes: this.boundingBoxes.size,
+            totalBoundingSpheres: this.boundingSpheres.size,
             cellSize: this.cellSize,
             needsRebuild: this.needsRebuild
         };
+    }
+
+    getBoundingBox(mesh) {
+        return this.boundingBoxes.get(mesh) || null;
+    }
+
+    getBoundingSphere(mesh) {
+        return this.boundingSpheres.get(mesh) || null;
     }
 }
 
@@ -124,8 +156,9 @@ class MeshSpatialHash {
 class OptimizedRaycaster {
     constructor() {
         this.raycaster = new THREE.Raycaster();
-        this.spatialHash = new MeshSpatialHash(10); // 10 Units Zellgröße
+        this.spatialHash = new MeshSpatialHash(); // feinere Zellgröße über Default
         this.collisionOctree = null; // Für Physik (falls benötigt)
+        this.cachedPickCandidates = [];
 
         // Layer für Picking
         this.raycaster.layers.set(1);
@@ -158,6 +191,85 @@ class OptimizedRaycaster {
         return current?.userData?.isModelRoot ? current : obj;
     }
 
+    isCandidatePickable(mesh) {
+        return !!(
+            mesh?.isMesh &&
+            mesh.visible &&
+            mesh.geometry &&
+            mesh.userData?.pickable !== false &&
+            mesh.layers?.test?.(this.raycaster.layers)
+        );
+    }
+
+    getPickCandidates() {
+        this.syncPickableMeshes();
+        return this.cachedPickCandidates;
+    }
+
+    getRayQueryDistance() {
+        const far = Number.isFinite(camera?.far) ? camera.far : 1000;
+        return Math.min(Math.max(far, this.spatialHash.cellSize), 1000);
+    }
+
+    getSpatialCandidates(allCandidates) {
+        if (allCandidates.length <= 24) return allCandidates;
+
+        const spatialCandidates = this.spatialHash
+            .queryRay(this.raycaster.ray, this.getRayQueryDistance())
+            .filter(mesh => this.isCandidatePickable(mesh));
+        const spatialSource =
+            spatialCandidates.length > 0 && spatialCandidates.length < allCandidates.length
+                ? spatialCandidates
+                : allCandidates;
+
+        const sphereCandidates = spatialSource.filter(mesh => {
+            const sphere = this.spatialHash.getBoundingSphere(mesh);
+            return sphere ? this.raycaster.ray.intersectsSphere(sphere) : true;
+        });
+
+        const sphereSource =
+            sphereCandidates.length > 0 && sphereCandidates.length < spatialSource.length
+                ? sphereCandidates
+                : spatialSource;
+
+        const boxCandidates = sphereSource.filter(mesh => {
+            const box = this.spatialHash.getBoundingBox(mesh);
+            return box ? this.raycaster.ray.intersectsBox(box) : true;
+        });
+
+        if (boxCandidates.length > 0 && boxCandidates.length < sphereSource.length) {
+            return boxCandidates;
+        }
+        if (sphereCandidates.length > 0 && sphereCandidates.length < spatialSource.length) {
+            return sphereCandidates;
+        }
+        if (spatialCandidates.length > 0 && spatialCandidates.length < allCandidates.length) {
+            return spatialCandidates;
+        }
+        return allCandidates;
+    }
+
+    raycastBackfaces(candidates) {
+        const mutatedMaterials = [];
+
+        for (const mesh of candidates) {
+            const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            for (const mat of mats) {
+                if (!mat || mat.side === THREE.DoubleSide) continue;
+                mutatedMaterials.push([mat, mat.side]);
+                mat.side = THREE.DoubleSide;
+            }
+        }
+
+        try {
+            return this.raycaster.intersectObjects(candidates, false);
+        } finally {
+            for (const [mat, side] of mutatedMaterials) {
+                mat.side = side;
+            }
+        }
+    }
+
     // Hauptfunktion: Optimiertes Mesh-Picking
     pickAt(clientX, clientY) {
         try {
@@ -171,27 +283,28 @@ class OptimizedRaycaster {
             // Raycaster konfigurieren
             this.raycaster.setFromCamera(ndc, camera);
 
-            // Alle pickbaren Meshes als Kandidaten – Three.js filtert intern via Bounding Sphere
-            const candidates = Array.from(state.pickableMeshes || []);
+            const allCandidates = this.getPickCandidates();
 
-            if (candidates.length === 0) {
+            if (allCandidates.length === 0) {
                 state.selected = null;
                 return null;
             }
 
-            // Backface-Culling temporär deaktivieren damit Meshes von allen Seiten klickbar sind
-            const savedSides = candidates.map(m => {
-                const mats = Array.isArray(m.material) ? m.material : [m.material];
-                return mats.map(mat => { const s = mat.side; mat.side = THREE.DoubleSide; return s; });
-            });
+            const candidates = this.getSpatialCandidates(allCandidates);
+            const usedSpatialSubset = candidates !== allCandidates;
+            let intersections = this.raycaster.intersectObjects(candidates, false);
 
-            const intersections = this.raycaster.intersectObjects(candidates, false);
+            if (intersections.length === 0 && usedSpatialSubset) {
+                intersections = this.raycaster.intersectObjects(allCandidates, false);
+            }
 
-            // Material-Seiten wiederherstellen
-            candidates.forEach((m, i) => {
-                const mats = Array.isArray(m.material) ? m.material : [m.material];
-                mats.forEach((mat, j) => { mat.side = savedSides[i][j]; });
-            });
+            // Backface-Fallback nur bei echtem Bedarf ausführen.
+            if (intersections.length === 0) {
+                intersections = this.raycastBackfaces(candidates);
+            }
+            if (intersections.length === 0 && usedSpatialSubset) {
+                intersections = this.raycastBackfaces(allCandidates);
+            }
 
             if (intersections.length === 0) {
                 state.selected = null;
@@ -234,6 +347,8 @@ class OptimizedRaycaster {
         for (const mesh of statePickables) {
             if (!this.spatialHash.meshes.has(mesh)) this.spatialHash.addMesh(mesh);
         }
+
+        this.cachedPickCandidates = Array.from(statePickables).filter(mesh => this.isCandidatePickable(mesh));
     }
 
     // NDC-Koordinaten berechnen
@@ -291,8 +406,9 @@ class OptimizedRaycaster {
 
     // Räume Spatial Hash auf
     clear() {
-        this.spatialHash = new MeshSpatialHash(10);
+        this.spatialHash = new MeshSpatialHash();
         this.collisionOctree = null;
+        this.cachedPickCandidates = [];
     }
 }
 

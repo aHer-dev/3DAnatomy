@@ -16,7 +16,7 @@ export function setupBasicLights(scene) {
     const key = new THREE.DirectionalLight(0xffffff, 0.75);
     key.position.set(2, 4, 3);
     key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.mapSize.set(1024, 1024);
     key.shadow.bias = -0.0005;
     key.shadow.normalBias = 0.02;
     key.shadow.camera.near = 0.1;

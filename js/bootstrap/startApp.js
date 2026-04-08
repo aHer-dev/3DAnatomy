@@ -129,29 +129,73 @@ function placeExtrasIntoDropdown(essentials = ['bones', 'muscles', 'cartilage'])
 
 // --- Demand-Rendering: nur rendern wenn sich etwas geändert hat ---
 let _needsRender = true;
+let _loopKeepAliveFrames = 0;
+let _controlsInteracting = false;
+let _loopEventsBound = false;
+const DEFAULT_RENDER_BURST = 2;
+const CONTROL_START_FRAMES = 8;
+const CONTROL_SETTLE_FRAMES = 24;
+const CONTROL_CHANGE_FRAMES = 4;
 
-export function requestRender() {
+function ensureLoopRunning() {
+    if (stopLoop) return;
+
+    stopLoop = lifecycle.startLoop(() => {
+        const shouldUpdateControls = _controlsInteracting || _loopKeepAliveFrames > 0;
+        const controlsChanged = shouldUpdateControls ? !!controls.update?.() : false;
+
+        if (controlsChanged) {
+            _needsRender = true;
+            _loopKeepAliveFrames = Math.max(_loopKeepAliveFrames, DEFAULT_RENDER_BURST);
+        }
+
+        if (_needsRender) {
+            _needsRender = false;
+            updatePerformanceMonitor?.();
+            renderer.render(scene, camera);
+        }
+
+        if (_loopKeepAliveFrames > 0) {
+            _loopKeepAliveFrames--;
+        }
+
+        if (_controlsInteracting || _loopKeepAliveFrames > 0 || _needsRender) {
+            return true;
+        }
+
+        stopLoop = null;
+        return false;
+    });
+}
+
+export function requestRender(frames = DEFAULT_RENDER_BURST) {
     _needsRender = true;
+    _loopKeepAliveFrames = Math.max(_loopKeepAliveFrames, frames);
+    ensureLoopRunning();
 }
 // Auch global verfügbar machen (für Module ohne direkten Import)
 if (typeof window !== 'undefined') window.requestRender = requestRender;
 
 // --- zentraler Render-Loop (einzig) ---
 let stopLoop = null;
-function startLoop() {
-    if (stopLoop) return; // schon aktiv
+function bindLoopEvents() {
+    if (_loopEventsBound) return;
+    _loopEventsBound = true;
 
-    // Kamera-Bewegung → rendern
-    controls.addEventListener('change', requestRender);
-
-    stopLoop = lifecycle.startLoop(() => {
-        controls.update?.();
-        if (_needsRender) {
-            _needsRender = false;
-            updatePerformanceMonitor?.();
-            renderer.render(scene, camera);
-        }
+    lifecycle.on(controls, 'change', () => requestRender(CONTROL_CHANGE_FRAMES));
+    lifecycle.on(controls, 'start', () => {
+        _controlsInteracting = true;
+        requestRender(CONTROL_START_FRAMES);
     });
+    lifecycle.on(controls, 'end', () => {
+        _controlsInteracting = false;
+        requestRender(CONTROL_SETTLE_FRAMES);
+    });
+}
+
+function startLoop() {
+    bindLoopEvents();
+    requestRender(CONTROL_START_FRAMES);
 }
 
 // Sauberes Cleanup beim Verlassen/Navigieren
@@ -222,7 +266,6 @@ export async function startApp() {
         updateLoadingCircle(95);
 
         // 6) Schatten & Material-Tweaks
-        scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
         const rig = getLightRig?.();
         if (rig?.key) fitShadowFrustumToScene(rig.key, scene);
 

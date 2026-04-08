@@ -171,12 +171,14 @@ export function animateCameraTo(camera, controls, newPosition, newTarget, durati
     camera.position.lerpVectors(startPos, endPos, e);
     controls.target.lerpVectors(startTarget, endTarget, e);
     camera.lookAt(controls.target);
+    if (typeof window !== 'undefined') window.requestRender?.(4);
 
     if (t < 1) {
       requestAnimationFrame(animateFrame);
     } else {
       controls.enabled = true;
       controls.update();
+      if (typeof window !== 'undefined') window.requestRender?.(8);
     }
   }
 

@@ -10,6 +10,7 @@ import { controls } from '../core/controls.js';
 import { fitCameraToScene } from '../core/cameraUtils.js';
 import { modelPath, withBase } from '../core/path.js';
 import { registerPickables } from '../features/selection.js';
+import { getShadowFlagsForGroup } from '../features/appearance.js';
 import { updateModelColors } from '../modelLoader/color.js';
 import { state } from '../store/state.js';
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
@@ -27,6 +28,7 @@ import { loadWithManager } from '../core/resourceManager.js';
 // ✅ GLOBAL LOADER-POOL für bessere Performance
 const LOADER_POOL = [];
 const MAX_LOADERS = 3;
+const RESPONSIVE_BATCH_GROUPS = new Set(['muscles', 'skin_hair']);
 
 function getPooledLoader() {
   if (LOADER_POOL.length === 0) {
@@ -37,16 +39,46 @@ function getPooledLoader() {
   return LOADER_POOL[Math.floor(Math.random() * LOADER_POOL.length)];
 }
 
+function getResponsiveBatchSize(groupName, defaultBatchSize, entryCount) {
+  const safeDefault = Math.max(1, defaultBatchSize || 1);
+  const groupKey = typeof groupName === 'string' ? groupName.toLowerCase() : '';
+  if (RESPONSIVE_BATCH_GROUPS.has(groupKey)) {
+    return Math.min(safeDefault, 2);
+  }
+  if (entryCount >= 200) {
+    return Math.min(safeDefault, 2);
+  }
+  if (entryCount >= 80) {
+    return Math.min(safeDefault, 3);
+  }
+  return safeDefault;
+}
+
+function shouldYieldBetweenBatches(entryCount, batchSize) {
+  return entryCount > batchSize;
+}
+
+function waitForBrowserBreather() {
+  return new Promise(resolve => {
+    if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(() => resolve());
+      return;
+    }
+    setTimeout(resolve, 0);
+  });
+}
+
 
 
 // 🔆 Schatten + sRGB Fix für geladene Modelle
-function prepareForShadows(root) {
+function prepareForShadows(root, groupName = root?.userData?.group) {
+  const { castShadow, receiveShadow } = getShadowFlagsForGroup(groupName);
   root.traverse((o) => {
     if (!o.isMesh) return;
 
-    // Schatten
-    o.castShadow = true;
-    o.receiveShadow = true;
+    // Schatten nur für ausgewählte Gruppen aktivieren
+    o.castShadow = castShadow;
+    o.receiveShadow = receiveShadow;
 
     // sRGB nur für „farbige“ Texturen
     const m = o.material;
@@ -87,10 +119,12 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
   showLoadingBar();
   const errors = [];
   let loaded = 0;
-  const batchSize = getConfig('performance.batchSize', 3);
+  const configuredBatchSize = getConfig('performance.batchSize', 3);
+  const batchSize = getResponsiveBatchSize(group, configuredBatchSize, entries.length);
   const useResourceManager = getConfig('features.resourceManager', false);
+  const yieldBetweenBatches = shouldYieldBetweenBatches(entries.length, batchSize);
 
-  console.log(`🔄 Lade ${entries.length} Modelle für "${group}" (Batch: ${batchSize}, Cache: ${useResourceManager})`);
+  console.log(`🔄 Lade ${entries.length} Modelle für "${group}" (Batch: ${batchSize}/${configuredBatchSize}, Cache: ${useResourceManager}, Yield: ${yieldBetweenBatches})`);
 
 
 
@@ -110,6 +144,11 @@ export async function loadModels(entries, group, centerCamera, scene, loader, ca
         }
       })
     );
+
+    if (yieldBetweenBatches && i + batchSize < entries.length) {
+      if (typeof window !== 'undefined') window.requestRender?.();
+      await waitForBrowserBreather();
+    }
   }
 
   console.timeEnd(`loadGroup-${group}`);
@@ -185,7 +224,7 @@ export function loadSingleModel(entry, group, scene, loader) {
           model.userData.entry = entry;      // direkter Zugriff im Info-Panel
 
           // 6) Schatten & Farbraum vorbereiten (🔆)
-          prepareForShadows(model);
+          prepareForShadows(model, effectiveGroup);
 
           // 7) Layers (0: Render, 1: Pick)
           model.traverse((ch) => {

@@ -2,7 +2,7 @@
 // 📐 ZENTRALER Resize-Handler - verhindert Mehrfachregistrierung
 
 import { camera } from '../core/camera.js';
-import { renderer } from '../core/renderer.js';
+import { renderer, getTargetPixelRatio } from '../core/renderer.js';
 
 
 // Flag um Mehrfachregistrierung zu verhindern
@@ -24,14 +24,15 @@ export function initResizeHandler() {
             const height = container ? container.clientHeight : window.innerHeight;
 
                 // Renderer anpassen
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                renderer.setPixelRatio(getTargetPixelRatio());
             renderer.setSize(width, height);
 
                 // Kamera-Aspekt anpassen
                 camera.aspect = width / height;
             camera.updateProjectionMatrix();
+            if (typeof window !== 'undefined') window.requestRender?.(4);
 
-            // Debug nur bei Bedarf
+                // Debug nur bei Bedarf
             if (window.DEBUG_RESIZE) {
                 console.log(`📐 Resize: ${width}x${height}, DPR: ${window.devicePixelRatio}`);
             }

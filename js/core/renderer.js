@@ -1,6 +1,19 @@
 import * as THREE from 'three';
 import { createOptimizer, optimizeRender } from './renderOptimizer.js';
 
+const MAX_DESKTOP_PIXEL_RATIO = 1.5;
+const MAX_COARSE_PIXEL_RATIO = 1.25;
+
+function prefersCoarsePointer() {
+  return typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches;
+}
+
+export function getTargetPixelRatio() {
+  const devicePixelRatio = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1;
+  const cap = prefersCoarsePointer() ? MAX_COARSE_PIXEL_RATIO : MAX_DESKTOP_PIXEL_RATIO;
+  return Math.min(devicePixelRatio, cap);
+}
+
 // Existierendes Canvas nutzen oder neu anlegen
 const canvas = document.getElementById('canvas') || (() => {
   const c = document.createElement('canvas');
@@ -21,7 +34,7 @@ const renderer = new THREE.WebGLRenderer({
 
 // Auflösung deckeln, um GPU-/VRAM-Last zu senken
 renderer.frustumCulled = true; // Nur sichtbare Objekte rendern
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setPixelRatio(getTargetPixelRatio());
 
 // Startgröße setzen
 renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
