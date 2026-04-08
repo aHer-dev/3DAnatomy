@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quellen & Lizenzen</title>
+  <link rel="icon" href="./favicon.png" type="image/png">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: rgba(20, 25, 45, 0.82);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.72);
+      --link: #4a9eff;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(74, 158, 255, 0.18), transparent 32%),
+        linear-gradient(180deg, #10162d 0%, var(--bg) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .page-return {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(20, 25, 45, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .hero,
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 5vw, 42px);
+    }
+
+    .hero p,
+    .card p,
+    .card li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .back-link,
+    a {
+      color: var(--link);
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-top: 10px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .wrap { width: min(100%, calc(100% - 20px)); padding-top: 14px; }
+      .hero, .card { border-radius: 18px; }
+      .hero, .card { padding: 18px; }
+      .card h2 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="page-return" type="button" onclick="goBackToApp()">← Zurück</button>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Quellen & Lizenzen</h1>
+      <p>Transparenz zu Datengrundlagen, Modellquellen und verwendeten Software-Bibliotheken der 3D-Anatomie-App.</p>
+      <a class="back-link" href="./index.html">Zurück zur 3D-App</a>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>BodyParts3D als Modellgrundlage</h2>
+        <p>
+          Die 3D-App nutzt BodyParts3D bzw. daraus abgeleitete Datenbestände als anatomische Modellgrundlage.
+          Nach der aktuellen Archiv-Lizenzseite von DBCLS wird die Datenbank unter
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+          bereitgestellt.
+        </p>
+        <p>
+          Im Projektbestand finden sich zugleich noch historische Lizenzhinweise aus älteren BodyParts3D-Ständen.
+          Diese Bestandsbereinigung wird projektseitig transparent nachgezogen. Bis zur vollständigen Harmonisierung
+          werden Quelle, Lizenzlink und Projektanpassungen offen dokumentiert.
+        </p>
+        <p>
+          Der aktuelle Projektstand harmonisiert die lokalen Metadaten deshalb auf den archivbasierten
+          Projektstandard <strong>CC BY 4.0</strong>. Eine interne Projektnotiz dazu liegt unter
+          <code>data/BODYPARTS3D_LICENSE_NOTE.md</code>.
+        </p>
+        <ul>
+          <li><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html" target="_blank" rel="noopener noreferrer">BodyParts3D Archiv-Lizenzseite</a></li>
+          <li><a href="https://lifesciencedb.jp/bp3d/info_en/userGuide/faq/credit.html" target="_blank" rel="noopener noreferrer">Historischer Credit-Hinweis / FAQ</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Projektanpassungen</h2>
+        <p>
+          Die App bereitet die Modelle für den Lern- und Unterrichtskontext didaktisch auf, etwa durch Auswahl,
+          Gruppierung, Farbgebung, Isolation, Fokussteuerung und Deep-Linking aus dem Muskelfinder.
+          Solche Anpassungen ändern nichts an den Ursprungsrechten der Quellmodelle.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Verwendete Software</h2>
+        <ul>
+          <li><strong>three.js</strong> unter MIT-Lizenz</li>
+          <li><strong>Draco 3D Data Compression</strong> unter Apache License 2.0</li>
+          <li>Weitere Projektlogik in HTML, CSS und JavaScript</li>
+        </ul>
+        <p>
+          Offizielle Lizenztexte:
+          <a href="https://github.com/mrdoob/three.js/blob/dev/LICENSE" target="_blank" rel="noopener noreferrer">three.js MIT</a>,
+          <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer">Apache 2.0</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+  <script>
+    function goBackToApp() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.location.href = './index.html';
+    }
+  </script>
+</body>
+</html>

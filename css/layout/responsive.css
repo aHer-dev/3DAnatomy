@@ -56,19 +56,17 @@
 
 
 
-    /* Footer: Kleinere Schrift, weniger Padding */
     #footer {
-        bottom: 5px;
-        right: 5px;
-        font-size: 12px;
-        padding: 3px 6px;
+        display: none;
     }
 
     /* Lizenz-Dropdown: Anpassung für kleinere Bildschirme */
     #license-info {
-        width: 70vw;
-        bottom: 35px;
-        right: 5px;
+        width: auto;
+        left: 10px;
+        right: 10px;
+        bottom: 78px;
+        top: auto;
     }
 
     /* Sub-Dropdowns: Weniger Einrückung */

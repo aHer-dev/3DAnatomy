@@ -212,6 +212,14 @@
         <tr><td>Strg+Klick</td><td>Mehrfachauswahl</td></tr>
       </table>
     </div>
+    <section id="legal-links-panel" aria-label="Rechtliche Hinweise">
+      <h3>Rechtliches</h3>
+      <div class="legal-links-grid">
+        <button id="btn-toggle-license-menu" type="button" class="legal-link-btn" aria-expanded="false" aria-controls="license-info">Lizenz</button>
+        <a href="./quellen-lizenzen.html" class="legal-link-btn">Quellen &amp; Lizenzen</a>
+        <a href="./datenschutz.html" class="legal-link-btn">Datenschutz</a>
+      </div>
+    </section>
   </div>
 
   <!-- Info-Panel und Tooltip -->
@@ -223,8 +231,13 @@
 
   <!-- Footer & Lizenz -->
 <footer id="footer" role="contentinfo">
-  <button id="btn-toggle-license" aria-expanded="false" aria-controls="license-info">Lizenz</button>
+  <button id="btn-toggle-legal" aria-expanded="false" aria-controls="legal-menu">Rechtliches</button>
 </footer>
+<div id="legal-menu" class="hidden" aria-hidden="true">
+  <button id="btn-toggle-license" type="button" class="legal-menu-item" aria-expanded="false" aria-controls="license-info">Lizenz</button>
+  <a class="legal-menu-item" href="./quellen-lizenzen.html">Quellen &amp; Lizenzen</a>
+  <a class="legal-menu-item" href="./datenschutz.html">Datenschutz</a>
+</div>
 <!-- License-Info außerhalb des Footers, damit backdrop-filter kein containing block bildet -->
 <div id="license-info" class="hidden" aria-hidden="true"></div>
 

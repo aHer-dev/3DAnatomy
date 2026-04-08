@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datenschutz</title>
+  <link rel="icon" href="./favicon.png" type="image/png">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: rgba(20, 25, 45, 0.82);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.72);
+      --link: #4a9eff;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(74, 158, 255, 0.18), transparent 32%),
+        linear-gradient(180deg, #10162d 0%, var(--bg) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .page-return {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(20, 25, 45, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .hero,
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 5vw, 42px);
+    }
+
+    .hero p,
+    .card p,
+    .card li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .back-link,
+    a {
+      color: var(--link);
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-top: 10px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .wrap { width: min(100%, calc(100% - 20px)); padding-top: 14px; }
+      .hero, .card { border-radius: 18px; }
+      .hero, .card { padding: 18px; }
+      .card h2 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+  <button class="page-return" type="button" onclick="goBackToApp()">← Zurück</button>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Datenschutz</h1>
+      <p>Hinweise zur Nutzung der 3D-Anatomie-App als statische Webanwendung.</p>
+      <a class="back-link" href="./index.html">Zurück zur 3D-App</a>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Allgemeiner Betrieb</h2>
+        <p>
+          Die 3D-Anatomie-App ist eine statische Web-App ohne Login und ohne integriertes Werbe- oder Analyse-Tracking
+          nach aktuellem Projektstand.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Lokale Browser-Speicherungen</h2>
+        <p>Für die Funktion und Bedienbarkeit der App werden lokal im Browser gespeicherte Daten verwendet.</p>
+        <ul>
+          <li>Metadaten-Cache im <strong>localStorage</strong></li>
+          <li>Zuletzt verwendete Farben im <strong>localStorage</strong></li>
+          <li>Weitere funktionale UI-Zustände im Browser</li>
+        </ul>
+        <p>
+          Diese Informationen dienen nach aktuellem Projektstand der lokalen App-Funktion auf dem verwendeten Gerät
+          und werden nicht an einen eigenen Projektserver übertragen.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Öffentliche Bereitstellung</h2>
+        <p>
+          Bei öffentlicher Bereitstellung über GitHub Pages wird die Website über GitHub ausgeliefert. Dabei können
+          technisch notwendige Verbindungsdaten wie IP-Adressen durch den Hosting-Anbieter verarbeitet werden.
+        </p>
+        <p>
+          Zusätzlich lädt die 3D-App derzeit Teile ihrer 3D-Bibliothek über <strong>jsDelivr</strong>. Auch hierbei
+          entstehen technisch notwendige externe Abrufe.
+        </p>
+        <ul>
+          <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener noreferrer">GitHub Pages</a></li>
+          <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement</a></li>
+          <li><a href="https://www.jsdelivr.com/terms/privacy-policy" target="_blank" rel="noopener noreferrer">jsDelivr Terms & Policies</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Hinweis</h2>
+        <p>
+          Diese Seite dient der transparenten Projektinformation. Für einen öffentlichen schulischen oder institutionellen
+          Einsatz sollten Verantwortlichenangaben, Impressum und die konkrete Hosting-Konfiguration zusätzlich geprüft und
+          ergänzt werden.
+        </p>
+      </section>
+    </div>
+  </main>
+  <script>
+    function goBackToApp() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.location.href = './index.html';
+    }
+  </script>
+</body>
+</html>
