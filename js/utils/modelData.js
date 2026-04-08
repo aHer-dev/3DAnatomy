@@ -2,6 +2,7 @@
 // Gemeinsame Hilfsfunktionen zur Extraktion von Modell-Metadaten
 
 import { state } from '../store/state.js';
+import { getStructureDisplayLabel } from './anatomyLabels.js';
 
 /**
  * Extrahiert ID, Name und Gruppe eines 3D-Modells aus userData.
@@ -33,8 +34,15 @@ function _extractId(obj) {
 
 function _extractName(obj) {
     const candidates = [
+        getStructureDisplayLabel(obj),
+        obj.userData?.meta?.displayLabel,
+        obj.userData?.entry?.displayLabel,
+        obj.userData?.meta?.label,
+        obj.userData?.entry?.label,
+        obj.userData?.meta?.labels?.la,
         obj.userData?.meta?.labels?.en,
         obj.userData?.meta?.labels?.de,
+        obj.userData?.entry?.labels?.la,
         obj.userData?.entry?.labels?.en,
         obj.userData?.entry?.labels?.de,
         obj.userData?.meta?.label,

@@ -3,12 +3,12 @@
 
 import * as THREE from 'three';
 import { state } from '../store/state.js';
+import { getStructureDisplayLabel } from '../utils/anatomyLabels.js';
 
 const HIGHLIGHT_MULTI = 0x1a1a4a;   // dezentes Blau für Mehrfachauswahl
 
 function _getName(model) {
-    const m = model.userData?.meta || model.userData?.entry || {};
-    return m.labels?.de || m.labels?.en || m.labels?.la || model.name || '?';
+    return getStructureDisplayLabel(model) || model.name || '?';
 }
 
 function _applyHighlight(model, hex) {

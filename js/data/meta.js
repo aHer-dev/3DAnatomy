@@ -3,6 +3,7 @@
 // ============================================
 import { dataPath } from '../core/path.js';
 import { state } from '../store/state.js';
+import { decorateStructureEntry } from '../utils/anatomyLabels.js';
 
 let cachedMeta = null;
 
@@ -21,7 +22,7 @@ export async function getMeta() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            cachedMeta = await response.json();
+            cachedMeta = (await response.json()).map((entry) => decorateStructureEntry(entry));
             console.log(`✅ meta.json geladen – ${cachedMeta.length} Einträge`);
         } catch (error) {
             console.error("❌ Fehler beim Laden der Metadaten:", error);

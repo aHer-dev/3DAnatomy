@@ -9,8 +9,10 @@ import { controls } from '../core/controls.js'; // Falls für Interaktionen nöt
 // ... Rest des Code
 import { state } from '../store/state.js';                        // 🔁 Globaler App-Zustand              
 import { getMeta } from '../utils/index.js';                     // 📄 Lädt Metadaten der Modelle
+import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
 import { highlightModel } from '../interaction/highlightModel.js';
 import { showInfoPanel } from '../interaction/infoPanel.js';
+import { getStructureDisplayLabel, getStructureSearchText } from '../utils/anatomyLabels.js';
 
 import { loadModels } from '../features/modelLoader-core.js'; 
 
@@ -38,31 +40,33 @@ export function setupSearchUI() {
 
     // 📎 Filtere alle passenden Einträge nach Label oder FMA-ID
     const results = meta.filter(entry =>
-      entry.label.toLowerCase().includes(searchTerm) ||
-      entry.fma.toLowerCase().includes(searchTerm)
+      getStructureSearchText(entry).includes(searchTerm)
     );
 
     // 📦 Für jeden Treffer ein visuelles Listenelement erzeugen
     results.forEach(result => {
+      const group = result.classification?.group || result.group || 'other';
       const item = document.createElement('div');
       item.className = 'search-item';
-      item.textContent = `${result.label} (${result.group})`;      // z. B. „Biceps brachii (muscles)“
+      item.textContent = `${getStructureDisplayLabel(result)} (${group})`;
       item.dataset.entry = JSON.stringify(result);                 // Speichere vollständigen Eintrag für später
 
       // 📌 Klick auf ein Suchergebnis: lade, zeige und fokussiere Modell
       item.addEventListener('click', async () => {
         const entry = JSON.parse(item.dataset.entry);
+        const entryGroup = entry.classification?.group || entry.group || 'other';
+        const loader = createGLTFLoader();
 
         // 🧲 Modell in Szene laden
-        await loadModels([entry], entry.group, true, scene, loader);
+        await loadModels([entry], entryGroup, true, scene, loader);
 
         // 🟢 Modellobjekt im geladenen Zustand finden
-        const model = state.groups[entry.group]?.find(
-          m => state.modelNames.get(m) === entry.label
+        const model = state.groups[entryGroup]?.find(
+          m => (m.userData?.meta?.id || m.userData?.entry?.id || m.name) === entry.id
         );
 
         if (model) {
-          highlightObject(model);             // ✨ Modell hervorheben
+          highlightModel(model);              // ✨ Modell hervorheben
           showInfoPanel(entry, model);        // 🧾 Info-Fenster öffnen
         }
 

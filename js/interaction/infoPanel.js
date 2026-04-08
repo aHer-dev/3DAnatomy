@@ -4,17 +4,9 @@ import { state } from '../store/state.js';
 import { dispatch, StateActions } from '../store/state.js';
 import { getMuskelfinderDetailsForMeta } from '../integration/muskelfinderDetails.js';
 import { getModelName, removeFromMultiSelect, clearMultiSelect, getMultiSelectedArray } from './multiSelect.js';
+import { getStructureDisplayLabel } from '../utils/anatomyLabels.js';
 
 // ─── Hilfsfunktionen ────────────────────────────────────────────────────────
-
-function pickLabel(meta, order = ['de', 'en', 'la']) {
-    const labels = meta?.labels || {};
-    for (const k of order) {
-        const v = (labels[k] || '').trim();
-        if (v) return v;
-    }
-    return meta?.id || 'Unbekannt';
-}
 
 function readDescription(meta, order = ['de', 'en']) {
     const desc = meta?.info?.description || {};
@@ -172,18 +164,8 @@ export function showInfoPanel(meta, selectedModel) {
 
     // Titel
     const title = document.createElement('h3');
-    title.textContent = pickLabel(meta, ['de', 'en', 'la']);
+    title.textContent = getStructureDisplayLabel(meta);
     infoContent.appendChild(title);
-
-    // Latein
-    const latin = (meta?.labels?.la || '').trim();
-    if (latin) {
-        const laLine = document.createElement('div');
-        laLine.setAttribute('lang', 'la');
-        laLine.style.cssText = 'font-style:italic;opacity:0.9;margin-top:-4px;';
-        laLine.textContent = latin;
-        infoContent.appendChild(laLine);
-    }
 
     void appendMuskelfinderDetails(infoContent, meta);
 
