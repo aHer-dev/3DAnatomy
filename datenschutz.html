@@ -122,7 +122,7 @@
   </style>
 </head>
 <body>
-  <button class="page-return" type="button" onclick="goBackToApp()">← Zurück</button>
+  <a class="page-return" href="./index.html">← Zurück</a>
   <main class="wrap">
     <section class="hero">
       <h1>Datenschutz</h1>
@@ -180,14 +180,5 @@
       </section>
     </div>
   </main>
-  <script>
-    function goBackToApp() {
-      if (window.history.length > 1) {
-        window.history.back();
-        return;
-      }
-      window.location.href = './index.html';
-    }
-  </script>
 </body>
 </html>
