@@ -196,15 +196,12 @@ export async function resetApp() {
     // SCHRITT 7: GroupToggle zurücksetzen
     resetGroupToggleStates();
 
-    // SCHRITT 8: Farben zurücksetzen
-    updateResetProgress('Setze Farben zurück...', 90);
-    resetColors();
-
-    // SCHRITT 9: Kamera zurücksetzen
+    // SCHRITT 8: Kamera zurücksetzen
+    updateResetProgress('Setze Ansicht zurück...', 90);
     setCameraToDefault(camera, controls);
     if (typeof controls?.saveState === 'function') controls.saveState();
 
-    // SCHRITT 10: Sicherstellen dass NUR Standard-Gruppen sichtbar sind
+    // SCHRITT 9: Sicherstellen dass NUR Standard-Gruppen sichtbar sind
     updateResetProgress('Finalisiere...', 95);
     ensureOnlyBasicGroupsVisible();
 
@@ -263,7 +260,7 @@ function resetGroupToggleStates() {
 }
 
 function resetColors() {
-  const defaults = state?.defaultSettings?.colors || {};
+  const defaults = state?.defaultSettings?.resetColors || state?.defaultSettings?.colors || {};
 
   Object.keys(defaults).forEach(groupName => {
     const hex = defaults[groupName] ?? 0xcccccc;

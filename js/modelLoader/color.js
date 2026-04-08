@@ -17,7 +17,6 @@ export function updateModelColors(group, hexColor) {
     });
   });
   state.colors[group] = resolved;
-  state.defaultSettings.colors[group] = resolved;
   console.log(`🎨 Farbe für Gruppe "${group}" gesetzt: 0x${resolved.toString(16).padStart(6, '0')}`);
 }
 
@@ -27,7 +26,7 @@ export function updateModelColors(group, hexColor) {
  * @param {string} group
  */
 export function resetGroupColor(group) {
-  const defaultColor = state.defaultSettings.colors[group];
+  const defaultColor = state.defaultSettings.resetColors?.[group] ?? state.defaultSettings.colors[group];
   if (defaultColor === undefined) {
     console.warn(`⚠️ Keine Standardfarbe für Gruppe "${group}" definiert.`);
     return;

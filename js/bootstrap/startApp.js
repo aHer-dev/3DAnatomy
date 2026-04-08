@@ -244,6 +244,11 @@ export async function startApp() {
             };
         }
 
+        // Originalfarben für "Reset Farbe" einmalig festhalten.
+        state.defaultSettings.resetColors = {
+            ...(state.defaultSettings.colors || {})
+        };
+
         // 4) UI initialisieren
         setupUI?.();
         updateLoadingCircle(45);

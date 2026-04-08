@@ -69,6 +69,10 @@ export function dispatch(action, payload) {
       state.pickableMeshes.delete(payload.mesh);
       break;
 
+    case StateActions.SET_GROUP_COLOR:
+      state.colors[payload.group] = payload.color;
+      break;
+
     default:
       console.warn('Unknown action:', action);
   }
@@ -125,6 +129,7 @@ export const state = {
       skin_hair: 0xffd700,
       veins: 0x00008b
     },
+    resetColors: {},
     defaultColor: 0xcccccc
   },
 
@@ -178,8 +183,6 @@ export const getGroupVisibility = (group) => {
   if (!models?.length) return false;
   return state.groupStates[group] !== false;
 };
-
-
 
 
 
