@@ -192,6 +192,12 @@
 #info-panel h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 600; color: var(--text-primary); }
 #info-panel p { margin: 8px 0; color: var(--text-secondary); line-height: 1.6; }
 
+.anatomy-side-label {
+   font-size: 0.84em;
+   opacity: 0.82;
+   letter-spacing: 0.01em;
+}
+
 .mf-detail-slot {
    margin: 12px 0 0;
 }

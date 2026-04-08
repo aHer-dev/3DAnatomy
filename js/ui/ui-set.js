@@ -16,6 +16,7 @@ import { collectionManager } from './ui-collection-export.js';
 import { rebuildRaycastStructures } from '../core/raycaster.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
 import { extractModelData } from '../utils/modelData.js';
+import { renderStructureLabel } from '../utils/anatomyLabels.js';
 
 /**
  * 🎯 DEZENTES TOAST-SYSTEM (ersetzt störende Alerts)
@@ -457,7 +458,7 @@ export function updateSetList() {
       `;
 
       const nameSpan = document.createElement('span');
-      nameSpan.textContent = item.name || `Objekt ${index + 1}`;
+      renderStructureLabel(nameSpan, item.name || `Objekt ${index + 1}`);
       nameSpan.style.fontSize = '14px';
 
       // Visuelle Indikatoren für Eigenschaften

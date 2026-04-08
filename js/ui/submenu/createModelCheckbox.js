@@ -1,6 +1,7 @@
 // js/ui/submenu/createModelCheckbox.js
 import { scene } from '../../core/scene.js';
 import { loadGroup, unloadGroup, updateGroupVisibility, restoreGroupState } from '../../features/groups.js';
+import { renderStructureLabel } from '../../utils/anatomyLabels.js';
 
 /**
  * Erstellt eine Checkbox für ein einzelnes anatomisches Modell.
@@ -16,7 +17,7 @@ export function createModelCheckbox(entry, group) {
     cb.id = `entry-${entry.fma}`;
 
     const label = document.createElement('label');
-    label.textContent = entry.label;
+    renderStructureLabel(label, entry.label);
     label.htmlFor = cb.id;
 
     cb.addEventListener('change', async () => {

@@ -4,7 +4,7 @@ import { state } from '../store/state.js';
 import { dispatch, StateActions } from '../store/state.js';
 import { getMuskelfinderDetailsForMeta } from '../integration/muskelfinderDetails.js';
 import { getModelName, removeFromMultiSelect, clearMultiSelect, getMultiSelectedArray } from './multiSelect.js';
-import { getStructureDisplayLabel } from '../utils/anatomyLabels.js';
+import { renderStructureLabel } from '../utils/anatomyLabels.js';
 
 // ─── Hilfsfunktionen ────────────────────────────────────────────────────────
 
@@ -164,7 +164,7 @@ export function showInfoPanel(meta, selectedModel) {
 
     // Titel
     const title = document.createElement('h3');
-    title.textContent = getStructureDisplayLabel(meta);
+    renderStructureLabel(title, meta);
     infoContent.appendChild(title);
 
     void appendMuskelfinderDetails(infoContent, meta);
@@ -250,8 +250,9 @@ function _showMultiSelectDesktop(infoContent, models, rebuildPanel) {
 
         const nameSpan = document.createElement('span');
         nameSpan.className = 'multi-select-item-name';
-        nameSpan.textContent = getModelName(model);
-        nameSpan.title = getModelName(model);
+        const displayName = getModelName(model);
+        renderStructureLabel(nameSpan, displayName);
+        nameSpan.title = displayName;
 
         const removeBtn = document.createElement('button');
         removeBtn.className = 'multi-select-item-remove';

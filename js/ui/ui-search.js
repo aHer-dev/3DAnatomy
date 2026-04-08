@@ -12,7 +12,7 @@ import { getMeta } from '../utils/index.js';                     // 📄 Lädt M
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
 import { highlightModel } from '../interaction/highlightModel.js';
 import { showInfoPanel } from '../interaction/infoPanel.js';
-import { getStructureDisplayLabel, getStructureSearchText } from '../utils/anatomyLabels.js';
+import { getStructureDisplayLabel, getStructureSearchText, renderStructureLabel } from '../utils/anatomyLabels.js';
 
 import { loadModels } from '../features/modelLoader-core.js'; 
 
@@ -46,9 +46,10 @@ export function setupSearchUI() {
     // 📦 Für jeden Treffer ein visuelles Listenelement erzeugen
     results.forEach(result => {
       const group = result.classification?.group || result.group || 'other';
+      const displayLabel = getStructureDisplayLabel(result);
       const item = document.createElement('div');
       item.className = 'search-item';
-      item.textContent = `${getStructureDisplayLabel(result)} (${group})`;
+      renderStructureLabel(item, `${displayLabel} (${group})`);
       item.dataset.entry = JSON.stringify(result);                 // Speichere vollständigen Eintrag für später
 
       // 📌 Klick auf ein Suchergebnis: lade, zeige und fokussiere Modell

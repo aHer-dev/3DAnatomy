@@ -22,6 +22,8 @@ const GROUP_TO_GENERIC_LATIN = {
     veins: 'Vena'
 };
 
+const LATIN_SIDE_SUFFIX_PATTERN = /^(.*?)(?:\s+(dexter|sinister|dextra|sinistra|dextrum|sinistrum))(\s*\(.+\))?$/i;
+
 const ORDINAL_TO_ROMAN = {
     first: 'I',
     second: 'II',
@@ -269,6 +271,50 @@ export function getStructureDisplayLabel(source) {
     const identifier = normalizeText(entry?.id || entry?.fma || entry?.info?.links?.fma || '');
     const withSide = appendLatinSide(genericLabel, entry);
     return identifier ? `${withSide} (${identifier})` : withSide;
+}
+
+function splitStructureLabel(label = '') {
+    const normalized = normalizeText(label);
+    const match = normalized.match(LATIN_SIDE_SUFFIX_PATTERN);
+    if (!match) return null;
+
+    const [, prefix = '', side = '', suffix = ''] = match;
+    if (!prefix || !side) return null;
+
+    return {
+        prefix: normalizeText(prefix),
+        side: normalizeText(side),
+        suffix: suffix || ''
+    };
+}
+
+export function renderStructureLabel(target, source) {
+    if (!target) return '';
+
+    const label = typeof source === 'string'
+        ? normalizeText(source)
+        : getStructureDisplayLabel(source);
+
+    target.replaceChildren();
+
+    const split = splitStructureLabel(label);
+    if (!split) {
+        target.textContent = label;
+        return label;
+    }
+
+    target.appendChild(document.createTextNode(`${split.prefix} `));
+
+    const side = document.createElement('span');
+    side.className = 'anatomy-side-label';
+    side.textContent = split.side;
+    target.appendChild(side);
+
+    if (split.suffix) {
+        target.appendChild(document.createTextNode(split.suffix));
+    }
+
+    return label;
 }
 
 export function decorateStructureEntry(entry) {
