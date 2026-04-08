@@ -325,3 +325,60 @@
       flex-direction: column;
    }
 }
+
+@media (max-height: 500px) and (orientation: landscape) and (hover: none) and (pointer: coarse) {
+   #anatomy-toolbar {
+      top: auto;
+      right: auto;
+      bottom: 0;
+      left: calc(50% + (env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) / 2);
+      width: max-content;
+      max-width: calc(100vw - 16px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+      height: auto;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      border-radius: 16px 16px 0 0;
+      padding: 6px 10px calc(6px + env(safe-area-inset-bottom, 0px)) 10px;
+      transform: translateX(-50%);
+   }
+
+   #anatomy-toolbar::-webkit-scrollbar {
+      display: none;
+   }
+
+   .toolbar-btn {
+      flex: 0 0 auto;
+      width: 52px;
+      min-width: 52px;
+      min-height: 42px;
+      max-width: none;
+      padding: 6px 8px;
+   }
+
+   .toolbar-toggle-btn {
+      min-height: 42px;
+      width: 34px;
+   }
+
+   .toolbar-label {
+      display: none;
+   }
+
+   #toolbar-dir-panel {
+      top: auto;
+      right: auto;
+      bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      max-width: calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+      transform: translateX(-50%);
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+   }
+}
