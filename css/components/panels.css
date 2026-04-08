@@ -65,6 +65,112 @@
    margin-right: 8px;
 }
 
+#app-guide-modal {
+   display: none;
+   position: fixed;
+   inset: 0;
+   background: rgba(0, 0, 0, 0.68);
+   backdrop-filter: blur(4px);
+   -webkit-backdrop-filter: blur(4px);
+   z-index: 2200;
+   align-items: center;
+   justify-content: center;
+   padding: 16px;
+}
+
+#app-guide-modal.open {
+   display: flex;
+}
+
+#app-guide-box {
+   background: rgba(20, 25, 48, 0.96);
+   backdrop-filter: blur(16px);
+   -webkit-backdrop-filter: blur(16px);
+   border: 1px solid rgba(255,255,255,0.1);
+   border-radius: 20px;
+   padding: 28px 24px 24px;
+   max-width: 540px;
+   width: 100%;
+   max-height: 85vh;
+   overflow-y: auto;
+   position: relative;
+   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+#app-guide-box h2 {
+   margin: 0 0 20px;
+   padding-right: 28px;
+   font-size: 20px;
+   font-weight: 700;
+   color: var(--text-primary);
+}
+
+#app-guide-close {
+   position: absolute;
+   top: 14px;
+   right: 14px;
+   background: none;
+   border: none;
+   color: rgba(255,255,255,0.55);
+   font-size: 16px;
+   cursor: pointer;
+   padding: 4px 8px;
+   border-radius: 10px;
+   transition: var(--transition-smooth);
+}
+
+#app-guide-close:hover {
+   color: #ffffff;
+   background: rgba(255,255,255,0.06);
+}
+
+.app-guide-step {
+   display: flex;
+   gap: 14px;
+   align-items: flex-start;
+   margin-bottom: 18px;
+}
+
+.app-guide-step:last-child {
+   margin-bottom: 0;
+}
+
+.app-guide-icon {
+   flex-shrink: 0;
+   width: 28px;
+   height: 28px;
+   border-radius: 50%;
+   background: rgba(74, 158, 255, 0.18);
+   border: 1px solid rgba(74, 158, 255, 0.36);
+   color: #4A9EFF;
+   font-size: 12px;
+   font-weight: 700;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.app-guide-step strong {
+   display: block;
+   font-size: 14px;
+   font-weight: 600;
+   color: var(--text-primary);
+   margin-bottom: 4px;
+}
+
+.app-guide-step p {
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.6;
+   color: var(--text-secondary);
+}
+
+.app-guide-step p em {
+   color: #ffffff;
+   font-style: normal;
+   font-weight: 600;
+}
+
 /* Info Panel */
 #info-panel {
    position: fixed !important;
@@ -85,6 +191,119 @@
 #info-panel.visible { opacity: 1; transform: translateY(0); display: block; }
 #info-panel h3 { margin: 0 0 12px 0; font-size: 18px; font-weight: 600; color: var(--text-primary); }
 #info-panel p { margin: 8px 0; color: var(--text-secondary); line-height: 1.6; }
+
+.mf-detail-slot {
+   margin: 12px 0 0;
+}
+
+.mf-detail-disclosure {
+   margin: 0;
+   border: 1px solid rgba(255,255,255,0.08);
+   border-radius: 14px;
+   background: rgba(255,255,255,0.03);
+   overflow: hidden;
+}
+
+.mf-detail-summary {
+   list-style: none;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 10px 12px;
+   cursor: pointer;
+   user-select: none;
+   color: var(--text-secondary);
+   transition: background 0.2s ease;
+}
+
+.mf-detail-summary::-webkit-details-marker {
+   display: none;
+}
+
+.mf-detail-summary:hover {
+   background: rgba(255,255,255,0.04);
+}
+
+.mf-detail-summary-label {
+   font-size: 13px;
+   font-weight: 600;
+   color: var(--text-primary);
+}
+
+.mf-detail-summary-hint {
+   font-size: 11px;
+   color: var(--text-muted);
+}
+
+.mf-detail-summary::after {
+   content: '▾';
+   margin-left: auto;
+   color: var(--text-muted);
+   transition: transform 0.2s ease;
+}
+
+.mf-detail-disclosure[open] .mf-detail-summary::after {
+   transform: rotate(180deg);
+}
+
+.mf-detail-body {
+   padding: 0 12px 12px;
+}
+
+.mf-detail-section {
+   padding-top: 10px;
+   border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.mf-detail-section:first-child {
+   padding-top: 0;
+   border-top: none;
+}
+
+.mf-detail-section-title {
+   display: block;
+   margin-bottom: 4px;
+   font-size: 12px;
+   font-weight: 600;
+   color: var(--text-primary);
+}
+
+.mf-detail-line {
+   margin: 4px 0;
+   font-size: 13px;
+   line-height: 1.55;
+   color: var(--text-secondary);
+}
+
+.mf-detail-line strong {
+   color: var(--text-primary);
+   font-weight: 600;
+}
+
+body.muskelfinder-preview-mode #menu-icon,
+body.muskelfinder-preview-mode #controls,
+body.muskelfinder-preview-mode #anatomy-toolbar,
+body.muskelfinder-preview-mode #toolbar-dir-panel,
+body.muskelfinder-preview-mode #info-panel,
+body.muskelfinder-preview-mode #footer,
+body.muskelfinder-preview-mode #legal-menu,
+body.muskelfinder-preview-mode #license-info,
+body.muskelfinder-preview-mode #submenu-container,
+body.muskelfinder-preview-mode #room-dropdown-content,
+body.muskelfinder-preview-mode #shortcuts-tip,
+body.muskelfinder-preview-mode #tooltip {
+   display: none !important;
+}
+
+body.muskelfinder-preview-mode #isolation-actions {
+   bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+   width: min(calc(100vw - 32px), 360px);
+}
+
+body.muskelfinder-preview-mode .isolation-action-btn {
+   width: 100%;
+   justify-content: center;
+}
 
 /* Edit Controls */
 #edit-controls { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); }
@@ -278,6 +497,32 @@
       -webkit-box-orient: vertical;
    }
 
+   .mf-detail-summary {
+      padding: 10px 12px;
+   }
+
+   .mf-detail-summary-label {
+      font-size: 12px;
+   }
+
+   .mf-detail-summary-hint {
+      font-size: 10px;
+   }
+
+   .mf-detail-body {
+      padding: 0 12px 12px;
+   }
+
+   .mf-detail-line {
+      max-height: none !important;
+      overflow: visible !important;
+      display: block !important;
+      -webkit-line-clamp: unset !important;
+      -webkit-box-orient: initial !important;
+      font-size: 12px;
+      line-height: 1.5;
+   }
+
    #info-panel #edit-controls {
       display: flex;
       flex-wrap: wrap;
@@ -312,6 +557,25 @@
       right: auto;
       transform: translateX(-50%);
       min-width: 200px;
+   }
+
+   #app-guide-box {
+      padding: 22px 18px 18px;
+      max-width: calc(100vw - 20px);
+   }
+
+   #app-guide-box h2 {
+      font-size: 18px;
+      margin-bottom: 18px;
+   }
+
+   .app-guide-step {
+      gap: 12px;
+      margin-bottom: 16px;
+   }
+
+   .app-guide-step p {
+      font-size: 12px;
    }
 
    /* Isolation-Aktionsbereich: über Toolbar */

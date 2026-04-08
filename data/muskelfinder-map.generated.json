@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-07T22:27:54.607Z",
+  "generatedAt": "2026-04-08T21:07:30.386Z",
   "source": "scripts/build-muskelfinder-map.js",
   "manualSource": "muskelfinder-map.manual.json",
   "summary": {
@@ -22,7 +22,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_abductor_digiti_minimi__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_abductor_digiti_minimi",
@@ -37,7 +38,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_abductor_digiti_minimi__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_abductor_hallucis",
@@ -52,7 +54,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_abductor_hallucis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_abductor_pollicis_brevis",
@@ -67,7 +70,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_abductor_pollicis_brevis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_abductor_pollicis_longus",
@@ -82,7 +86,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_abductor_pollicis_longus__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_adductor_brevis",
@@ -97,7 +102,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_adductor_brevis__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_adductor_hallucis",
@@ -112,7 +118,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_adductor_hallucis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_adductor_longus",
@@ -127,7 +134,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_adductor_longus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_adductor_magnus",
@@ -142,7 +150,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_adductor_magnus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_adductor_pollicis",
@@ -159,7 +168,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_adductor_pollicis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_anconeus",
@@ -174,7 +184,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_anconeus__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_biceps_brachii",
@@ -191,7 +202,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_biceps_brachii__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_biceps_femoris_caput_breve",
@@ -206,7 +218,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_biceps_femoris_caput_breve__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_biceps_femoris_caput_longum",
@@ -221,7 +234,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_biceps_femoris_caput_longum__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_brachialis",
@@ -236,7 +250,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_brachialis__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_brachioradialis",
@@ -251,7 +266,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_brachioradialis__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_coccygeus",
@@ -266,7 +282,8 @@
       ],
       "source": "generated-alias",
       "region": "wirbelsaeule",
-      "subgroup": "beckenboden"
+      "subgroup": "beckenboden",
+      "detailKey": "m_coccygeus__wirbelsaeule__beckenboden"
     },
     {
       "muscleKey": "m_coracobrachialis",
@@ -281,7 +298,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_coracobrachialis__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_deltoideus",
@@ -300,7 +318,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_deltoideus__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_digastricus",
@@ -315,7 +334,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "suprahyoidal"
+      "subgroup": "suprahyoidal",
+      "detailKey": "m_digastricus__kopf_hals__suprahyoidal"
     },
     {
       "muscleKey": "m_extensor_carpi_radialis_brevis",
@@ -330,7 +350,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_carpi_radialis_brevis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_carpi_radialis_longus",
@@ -345,7 +366,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_carpi_radialis_longus__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_carpi_ulnaris",
@@ -360,7 +382,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_carpi_ulnaris__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_digiti_minimi",
@@ -375,7 +398,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_digiti_minimi__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_digitorum",
@@ -390,7 +414,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_digitorum__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_digitorum_longus",
@@ -405,7 +430,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_extensor_digitorum_longus__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_extensor_hallucis_brevis",
@@ -420,7 +446,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_extensor_hallucis_brevis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_extensor_hallucis_longus",
@@ -435,7 +462,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_extensor_hallucis_longus__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_extensor_indicis",
@@ -450,7 +478,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_indicis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_pollicis_brevis",
@@ -465,7 +494,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_pollicis_brevis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_extensor_pollicis_longus",
@@ -480,7 +510,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_extensor_pollicis_longus__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_fibularis_brevis_m_peroneus_brevis",
@@ -495,7 +526,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_fibularis_brevis_m_peroneus_brevis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_fibularis_longus_m_peroneus_longus",
@@ -510,7 +542,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_fibularis_longus_m_peroneus_longus__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_flexor_carpi_radialis",
@@ -525,7 +558,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_carpi_radialis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_flexor_carpi_ulnaris",
@@ -542,7 +576,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_carpi_ulnaris__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_flexor_digiti_minimi_brevis",
@@ -557,7 +592,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_digiti_minimi_brevis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_flexor_digiti_minimi_brevis",
@@ -572,7 +608,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_flexor_digiti_minimi_brevis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_flexor_digitorum_brevis",
@@ -587,7 +624,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_flexor_digitorum_brevis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_flexor_digitorum_longus",
@@ -602,7 +640,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_flexor_digitorum_longus__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_flexor_digitorum_profundus",
@@ -617,7 +656,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_digitorum_profundus__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_flexor_digitorum_superficialis",
@@ -632,7 +672,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_digitorum_superficialis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_flexor_hallucis_brevis",
@@ -649,7 +690,8 @@
       ],
       "source": "generated-group",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_flexor_hallucis_brevis__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_flexor_hallucis_longus",
@@ -664,7 +706,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_flexor_hallucis_longus__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_flexor_pollicis_brevis",
@@ -679,7 +722,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_pollicis_brevis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_flexor_pollicis_longus",
@@ -694,7 +738,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_flexor_pollicis_longus__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_gastrocnemius",
@@ -711,7 +756,8 @@
       ],
       "source": "generated-group",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_gastrocnemius__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_gemellus_inferior",
@@ -726,7 +772,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_gemellus_inferior__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_gemellus_superior",
@@ -741,7 +788,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_gemellus_superior__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_geniohyoideus",
@@ -756,7 +804,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "suprahyoidal"
+      "subgroup": "suprahyoidal",
+      "detailKey": "m_geniohyoideus__kopf_hals__suprahyoidal"
     },
     {
       "muscleKey": "m_gluteus_maximus",
@@ -769,7 +818,8 @@
         "fma22328",
         "fma22329"
       ],
-      "source": "manual"
+      "source": "manual",
+      "detailKey": "m_gluteus_maximus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_gluteus_medius",
@@ -784,7 +834,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_gluteus_medius__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_gluteus_minimus",
@@ -799,7 +850,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_gluteus_minimus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_gracilis",
@@ -814,7 +866,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_gracilis__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_iliacus",
@@ -827,7 +880,8 @@
         "fma22322",
         "fma22323"
       ],
-      "source": "manual"
+      "source": "manual",
+      "detailKey": "m_iliacus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_infraspinatus",
@@ -842,7 +896,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_infraspinatus__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_levator_scapulae",
@@ -857,7 +912,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_levator_scapulae__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_longus_capitis",
@@ -872,7 +928,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "praevertebralis"
+      "subgroup": "praevertebralis",
+      "detailKey": "m_longus_capitis__kopf_hals__praevertebralis"
     },
     {
       "muscleKey": "m_mylohyoideus",
@@ -887,7 +944,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "suprahyoidal"
+      "subgroup": "suprahyoidal",
+      "detailKey": "m_mylohyoideus__kopf_hals__suprahyoidal"
     },
     {
       "muscleKey": "m_obliquus_externus_abdominis",
@@ -902,7 +960,8 @@
       ],
       "source": "generated-alias",
       "region": "wirbelsaeule",
-      "subgroup": "bauch"
+      "subgroup": "bauch",
+      "detailKey": "m_obliquus_externus_abdominis__wirbelsaeule__bauch"
     },
     {
       "muscleKey": "m_obturatorius_externus",
@@ -917,7 +976,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_obturatorius_externus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_obturatorius_internus",
@@ -932,7 +992,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_obturatorius_internus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_omohyoideus",
@@ -947,7 +1008,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "infrahyoidal"
+      "subgroup": "infrahyoidal",
+      "detailKey": "m_omohyoideus__kopf_hals__infrahyoidal"
     },
     {
       "muscleKey": "m_opponens_digiti_minimi",
@@ -962,7 +1024,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_opponens_digiti_minimi__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_opponens_digiti_minimi",
@@ -977,7 +1040,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_opponens_digiti_minimi__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_opponens_pollicis",
@@ -992,7 +1056,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_opponens_pollicis__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_palmaris_longus",
@@ -1007,7 +1072,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_palmaris_longus__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_pectineus",
@@ -1022,7 +1088,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_pectineus__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_pectoralis_major",
@@ -1041,7 +1108,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_pectoralis_major__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_pectoralis_minor",
@@ -1056,7 +1124,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_pectoralis_minor__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_piriformis",
@@ -1071,7 +1140,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_piriformis__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_plantaris",
@@ -1086,7 +1156,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_plantaris__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_popliteus",
@@ -1101,7 +1172,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_popliteus__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_pronator_quadratus",
@@ -1116,7 +1188,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_pronator_quadratus__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_pronator_teres",
@@ -1133,7 +1206,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_pronator_teres__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_psoas_major",
@@ -1146,7 +1220,8 @@
         "fma22342",
         "fma22343"
       ],
-      "source": "manual"
+      "source": "manual",
+      "detailKey": "m_psoas_major__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_quadratus_femoris",
@@ -1161,7 +1236,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_quadratus_femoris__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_quadratus_plantae",
@@ -1176,7 +1252,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_quadratus_plantae__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_rectus_femoris",
@@ -1191,7 +1268,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_rectus_femoris__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_rhomboideus_major",
@@ -1204,7 +1282,8 @@
         "fma13381",
         "fma13382"
       ],
-      "source": "manual"
+      "source": "manual",
+      "detailKey": "m_rhomboideus_major__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_rhomboideus_minor",
@@ -1217,7 +1296,8 @@
         "fma13383",
         "fma13384"
       ],
-      "source": "manual"
+      "source": "manual",
+      "detailKey": "m_rhomboideus_minor__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_sartorius",
@@ -1232,7 +1312,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_sartorius__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_semimembranosus",
@@ -1247,7 +1328,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_semimembranosus__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_semispinalis",
@@ -1266,7 +1348,8 @@
       ],
       "source": "generated-group",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_semispinalis__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_semitendinosus",
@@ -1281,7 +1364,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_semitendinosus__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_serratus_anterior",
@@ -1296,7 +1380,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_serratus_anterior__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_serratus_posterior_inferior",
@@ -1311,7 +1396,8 @@
       ],
       "source": "generated-alias",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_serratus_posterior_inferior__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_serratus_posterior_superior",
@@ -1326,7 +1412,8 @@
       ],
       "source": "generated-alias",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_serratus_posterior_superior__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_soleus",
@@ -1341,7 +1428,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_soleus__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_sternocleidomastoideus",
@@ -1356,7 +1444,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "halsmuskulatur"
+      "subgroup": "halsmuskulatur",
+      "detailKey": "m_sternocleidomastoideus__kopf_hals__halsmuskulatur"
     },
     {
       "muscleKey": "m_sternohyoideus",
@@ -1371,7 +1460,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "infrahyoidal"
+      "subgroup": "infrahyoidal",
+      "detailKey": "m_sternohyoideus__kopf_hals__infrahyoidal"
     },
     {
       "muscleKey": "m_sternothyroideus",
@@ -1386,7 +1476,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "infrahyoidal"
+      "subgroup": "infrahyoidal",
+      "detailKey": "m_sternothyroideus__kopf_hals__infrahyoidal"
     },
     {
       "muscleKey": "m_stylohyoideus",
@@ -1401,7 +1492,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "suprahyoidal"
+      "subgroup": "suprahyoidal",
+      "detailKey": "m_stylohyoideus__kopf_hals__suprahyoidal"
     },
     {
       "muscleKey": "m_subclavius",
@@ -1416,7 +1508,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_subclavius__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_subscapularis",
@@ -1431,7 +1524,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_subscapularis__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_supinator",
@@ -1446,7 +1540,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_supinator__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_supraspinatus",
@@ -1461,7 +1556,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_supraspinatus__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_tensor_fasciae_latae",
@@ -1476,7 +1572,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "huefte"
+      "subgroup": "huefte",
+      "detailKey": "m_tensor_fasciae_latae__untere_extremitaet__huefte"
     },
     {
       "muscleKey": "m_teres_major",
@@ -1491,7 +1588,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_teres_major__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_teres_minor",
@@ -1506,7 +1604,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_teres_minor__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_thyrohyoideus",
@@ -1521,7 +1620,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "infrahyoidal"
+      "subgroup": "infrahyoidal",
+      "detailKey": "m_thyrohyoideus__kopf_hals__infrahyoidal"
     },
     {
       "muscleKey": "m_tibialis_anterior",
@@ -1536,7 +1636,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_tibialis_anterior__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_tibialis_posterior",
@@ -1551,7 +1652,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_tibialis_posterior__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_trapezius_pars_ascendens",
@@ -1566,7 +1668,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_trapezius_pars_ascendens__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_trapezius_pars_descendens",
@@ -1581,7 +1684,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_trapezius_pars_descendens__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_trapezius_pars_transversa",
@@ -1596,7 +1700,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "schulter"
+      "subgroup": "schulter",
+      "detailKey": "m_trapezius_pars_transversa__obere_extremitaet__schulter"
     },
     {
       "muscleKey": "m_triceps_brachii_caput_laterale_und_mediale",
@@ -1613,7 +1718,8 @@
       ],
       "source": "generated-group",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_triceps_brachii_caput_laterale_und_mediale__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_triceps_brachii_caput_longum",
@@ -1628,7 +1734,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "ellenbogen"
+      "subgroup": "ellenbogen",
+      "detailKey": "m_triceps_brachii_caput_longum__obere_extremitaet__ellenbogen"
     },
     {
       "muscleKey": "m_vastus_intermedius",
@@ -1643,7 +1750,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_vastus_intermedius__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_vastus_lateralis",
@@ -1658,7 +1766,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_vastus_lateralis__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_vastus_medialis",
@@ -1673,7 +1782,8 @@
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",
-      "subgroup": "knie"
+      "subgroup": "knie",
+      "detailKey": "m_vastus_medialis__untere_extremitaet__knie"
     },
     {
       "muscleKey": "m_iliocostales",
@@ -1692,7 +1802,8 @@
       ],
       "source": "generated-group",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_iliocostales__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_interossei_dorsales_i_iv",
@@ -1707,7 +1818,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_interossei_dorsales_i_iv__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_interossei_palmares_i_iii",
@@ -1722,7 +1834,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_interossei_palmares_i_iii__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_interossei_plantares",
@@ -1741,7 +1854,8 @@
       ],
       "source": "generated-group",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_interossei_plantares__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_interspinales",
@@ -1756,7 +1870,8 @@
       ],
       "source": "generated-alias",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_interspinales__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_longissimi",
@@ -1775,7 +1890,8 @@
       ],
       "source": "generated-group",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_longissimi__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_lumbricales",
@@ -1796,7 +1912,8 @@
       ],
       "source": "generated-group",
       "region": "untere-extremitaet",
-      "subgroup": "fuss"
+      "subgroup": "fuss",
+      "detailKey": "m_lumbricales__untere_extremitaet__fuss"
     },
     {
       "muscleKey": "m_lumbricales_i_iv",
@@ -1811,7 +1928,8 @@
       ],
       "source": "generated-alias",
       "region": "obere-extremitaet",
-      "subgroup": "hand"
+      "subgroup": "hand",
+      "detailKey": "m_lumbricales_i_iv__obere_extremitaet__hand"
     },
     {
       "muscleKey": "m_rotatores",
@@ -1828,7 +1946,8 @@
       ],
       "source": "generated-group",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_rotatores__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_splenii",
@@ -1845,7 +1964,8 @@
       ],
       "source": "generated-group",
       "region": "wirbelsaeule",
-      "subgroup": "ruecken"
+      "subgroup": "ruecken",
+      "detailKey": "m_splenii__wirbelsaeule__ruecken"
     },
     {
       "muscleKey": "m_platysma",
@@ -1860,7 +1980,8 @@
       ],
       "source": "generated-alias",
       "region": "kopf-hals",
-      "subgroup": "halsmuskulatur"
+      "subgroup": "halsmuskulatur",
+      "detailKey": "m_platysma__kopf_hals__halsmuskulatur"
     }
   ]
 }

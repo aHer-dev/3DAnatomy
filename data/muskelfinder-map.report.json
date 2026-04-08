@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-07T22:27:54.608Z",
+  "generatedAt": "2026-04-08T21:07:30.386Z",
   "source": "scripts/build-muskelfinder-map.js",
   "summary": {
     "muskelfinderMuscles": 150,
@@ -1533,22 +1533,6 @@
       "sourceFile": "untere-extremitaet.json"
     },
     {
-      "muscleKey": "m_opponens_digiti_minimi",
-      "group": "muscles",
-      "muskelfinderNames": [
-        "M. opponens digiti minimi"
-      ],
-      "latinLabel": "Musculus opponens digiti minimi of foot",
-      "ids": [
-        "fma86034",
-        "fma86035"
-      ],
-      "source": "generated-alias",
-      "region": "untere-extremitaet",
-      "subgroup": "fuss",
-      "sourceFile": "untere-extremitaet.json"
-    },
-    {
       "muscleKey": "m_abductor_digiti_minimi",
       "group": "muscles",
       "muskelfinderNames": [
@@ -1558,6 +1542,22 @@
       "ids": [
         "fma37463",
         "fma37464"
+      ],
+      "source": "generated-alias",
+      "region": "untere-extremitaet",
+      "subgroup": "fuss",
+      "sourceFile": "untere-extremitaet.json"
+    },
+    {
+      "muscleKey": "m_opponens_digiti_minimi",
+      "group": "muscles",
+      "muskelfinderNames": [
+        "M. opponens digiti minimi"
+      ],
+      "latinLabel": "Musculus opponens digiti minimi of foot",
+      "ids": [
+        "fma86034",
+        "fma86035"
       ],
       "source": "generated-alias",
       "region": "untere-extremitaet",

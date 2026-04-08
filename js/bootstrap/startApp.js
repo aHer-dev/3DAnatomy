@@ -29,6 +29,7 @@ import { state } from '../store/state.js';
 import { getConfig } from '../config/config.js';
 import { initializeGroupsFromMeta } from '../data/meta.js';
 import { restoreAllGroupStates } from '../features/groups.js';
+import { isMuskelfinderPreviewMode } from '../integration/muskelfinderPreview.js';
 
 
 import { loadGroupByName } from '../features/modelLoader-core.js';
@@ -208,6 +209,7 @@ window.addEventListener('beforeunload', () => {
  * Hauptinitialisierung der App
  */
 export async function startApp() {
+    const previewMode = isMuskelfinderPreviewMode();
     window.__DISABLE_PROGRESS_OVERLAY = true;
     showLoadingCircle({ label: 'Strukturen werden geladen…' });
     renderer.domElement.style.visibility = 'hidden';
@@ -250,11 +252,15 @@ export async function startApp() {
         };
 
         // 4) UI initialisieren
-        setupUI?.();
+        if (!previewMode) {
+            setupUI?.();
+        }
         updateLoadingCircle(45);
 
         // Nur die drei Essentials oben lassen – Rest ins Dropdown
-        placeExtrasIntoDropdown(['bones', 'muscles']);
+        if (!previewMode) {
+            placeExtrasIntoDropdown(['bones', 'muscles']);
+        }
 
         // 5) Initiale Gruppen laden
 
@@ -295,14 +301,16 @@ export async function startApp() {
         freezeShadows();
 
         // 8) Interaktionen & Resize
-        setupInteractions();
+        if (!previewMode) {
+            setupInteractions();
 
-        lifecycle.on(controls, 'change', () => {
-            const panel = document.getElementById('info-panel');
-            if (panel?.classList.contains('visible')) {
-                hideInfoPanel();
-            }
-        });
+            lifecycle.on(controls, 'change', () => {
+                const panel = document.getElementById('info-panel');
+                if (panel?.classList.contains('visible')) {
+                    hideInfoPanel();
+                }
+            });
+        }
 
         initResizeHandler();
         initCameraView();
@@ -312,7 +320,9 @@ export async function startApp() {
         await handleMuskelfinderDeeplink();
 
         // 9) Button-Animationen erst ganz am Ende
-        initDynamicGroupLoading();
+        if (!previewMode) {
+            initDynamicGroupLoading();
+        }
 
         // 10) Render-Loop (zentral)
         // ✅ Jetzt ist wirklich alles fertig → 100 % setzen

@@ -26,6 +26,7 @@ const MAP_FILE = path.join(ROOT_DIR, 'data', 'muskelfinder-map.json');
 const MANUAL_MAP_FILE = path.join(ROOT_DIR, 'data', 'muskelfinder-map.manual.json');
 const GENERATED_MAP_FILE = path.join(ROOT_DIR, 'data', 'muskelfinder-map.generated.json');
 const REPORT_FILE = path.join(ROOT_DIR, 'data', 'muskelfinder-map.report.json');
+const DETAILS_FILE = path.join(ROOT_DIR, 'data', 'muskelfinder-details.json');
 
 const MUSKELFINDER_DIR = path.join(ROOT_DIR, '..', 'Muskelfinder', 'data');
 const MUSKELFINDER_FILES = [
@@ -41,6 +42,16 @@ function readJson(file) {
 
 function writeJson(file, data) {
   fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n', 'utf8');
+}
+
+function slugify(value = '') {
+  return String(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .replace(/_+/g, '_');
 }
 
 function normalizeLabel(value = '') {
@@ -72,6 +83,17 @@ function buildMuscleKey(name = '') {
   return normalized ? `m_${normalized}` : '';
 }
 
+function buildDetailBaseKey(muscle) {
+  const parts = [muscle.muscleKey || 'm_unknown'];
+  const region = slugify(muscle.region || '');
+  const subgroup = slugify(muscle.subgroup || '');
+
+  if (region) parts.push(region);
+  if (subgroup) parts.push(subgroup);
+
+  return parts.join('__');
+}
+
 function uniqueStrings(values) {
   return [...new Set(values.filter(Boolean))];
 }
@@ -99,6 +121,7 @@ function simplifyCandidate(entry) {
 
 function loadMuskelfinderMuscles() {
   const muscles = [];
+  const detailBaseCounts = new Map();
 
   for (const file of MUSKELFINDER_FILES) {
     const fullPath = path.join(MUSKELFINDER_DIR, file);
@@ -107,19 +130,192 @@ function loadMuskelfinderMuscles() {
     }
 
     const rows = readJson(fullPath).Sheet1 || [];
-    for (const row of rows) {
-      muscles.push({
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
+      const row = rows[rowIndex];
+      const muscle = {
         name: row.Name,
         muscleKey: buildMuscleKey(row.Name),
         normalizedName: normalizeLabel(row.Name),
         region: row.region || '',
         subgroup: row.subgroup || '',
-        sourceFile: file
-      });
+        sourceFile: file,
+        sourceRow: row,
+        sourceRowIndex: rowIndex
+      };
+
+      const detailBaseKey = buildDetailBaseKey(muscle);
+      const detailIndex = (detailBaseCounts.get(detailBaseKey) || 0) + 1;
+      detailBaseCounts.set(detailBaseKey, detailIndex);
+
+      muscle.detailKey = detailIndex === 1
+        ? detailBaseKey
+        : `${detailBaseKey}__${detailIndex}`;
+
+      muscles.push(muscle);
     }
   }
 
   return muscles;
+}
+
+function normalizeSectionLine(value = '') {
+  return String(value)
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeSectionItems(value) {
+  if (value == null || value === '') {
+    return [];
+  }
+
+  if (typeof value === 'string') {
+    return value
+      .replace(/\r\n?/g, '\n')
+      .split('\n')
+      .map((line) => ({ text: normalizeSectionLine(line) }))
+      .filter((item) => item.text);
+  }
+
+  if (Array.isArray(value)) {
+    return value.flatMap((item) => normalizeSectionItems(item));
+  }
+
+  if (typeof value === 'object') {
+    const label = normalizeSectionLine(value.Part || value.part || value.label || '');
+    const text = normalizeSectionLine(
+      value.Location ||
+      value.location ||
+      value.text ||
+      value.value ||
+      value.name ||
+      ''
+    );
+
+    if (label || text) {
+      return [{ label, text }];
+    }
+  }
+
+  return [{ text: normalizeSectionLine(value) }].filter((item) => item.text);
+}
+
+function buildDetailSections(row) {
+  const sectionConfigs = [
+    ['origin', 'Ursprung', row.Origin],
+    ['insertion', 'Ansatz', row.Insertion],
+    ['movement', 'Bewegung', row.Movements],
+    ['function', 'Funktion', row.Function],
+    ['innervation', 'Innervation', row.Segments],
+    ['clinical', 'Klinischer Bezug', row.clinicalNote]
+  ];
+
+  return sectionConfigs
+    .map(([id, label, value]) => {
+      const items = normalizeSectionItems(value);
+      if (!items.length) return null;
+      return { id, label, items };
+    })
+    .filter(Boolean);
+}
+
+function buildMuskelfinderDetailsEntry(muscle) {
+  return {
+    detailKey: muscle.detailKey,
+    muscleKey: muscle.muscleKey,
+    name: muscle.name,
+    region: muscle.region,
+    subgroup: muscle.subgroup,
+    sourceFile: muscle.sourceFile,
+    sourceRowIndex: muscle.sourceRowIndex,
+    sections: buildDetailSections(muscle.sourceRow)
+  };
+}
+
+function buildDetailsLookup(muscles) {
+  const byMuscleKey = new Map();
+
+  for (const muscle of muscles) {
+    if (!muscle.muscleKey) continue;
+    if (!byMuscleKey.has(muscle.muscleKey)) {
+      byMuscleKey.set(muscle.muscleKey, []);
+    }
+    byMuscleKey.get(muscle.muscleKey).push(muscle);
+  }
+
+  return { byMuscleKey };
+}
+
+function resolveDetailKeyForMapEntry(entry, lookup) {
+  const candidates = lookup.byMuscleKey.get(entry?.muscleKey || '') || [];
+  if (!candidates.length) return null;
+
+  let filtered = candidates;
+  const name = String(entry?.muskelfinderNames?.[0] || '').trim();
+  if (name) {
+    const byName = filtered.filter((candidate) => candidate.name === name);
+    if (byName.length) filtered = byName;
+  }
+
+  const region = String(entry?.region || '').trim();
+  if (region) {
+    const byRegion = filtered.filter((candidate) => candidate.region === region);
+    if (byRegion.length) filtered = byRegion;
+  }
+
+  const subgroup = String(entry?.subgroup || '').trim();
+  if (subgroup) {
+    const bySubgroup = filtered.filter((candidate) => candidate.subgroup === subgroup);
+    if (bySubgroup.length) filtered = bySubgroup;
+  }
+
+  return filtered[0]?.detailKey || null;
+}
+
+function buildDetailsPayload(muscles, generatedEntries) {
+  const entries = muscles
+    .map(buildMuskelfinderDetailsEntry)
+    .sort((a, b) => a.name.localeCompare(b.name, 'de'));
+
+  const modelToDetailKey = Object.create(null);
+  const conflicts = [];
+
+  for (const entry of generatedEntries) {
+    const detailKey = entry?.detailKey || null;
+    if (!detailKey) continue;
+
+    for (const id of entry.ids || []) {
+      if (!id) continue;
+
+      if (modelToDetailKey[id] && modelToDetailKey[id] !== detailKey) {
+        conflicts.push({
+          id,
+          detailKeys: [modelToDetailKey[id], detailKey]
+        });
+        continue;
+      }
+
+      modelToDetailKey[id] = detailKey;
+    }
+  }
+
+  const mappedDetailKeys = new Set(Object.values(modelToDetailKey));
+
+  return {
+    version: 1,
+    generatedAt: new Date().toISOString(),
+    source: 'scripts/build-muskelfinder-map.js',
+    summary: {
+      totalDetailEntries: entries.length,
+      mappedDetailEntries: mappedDetailKeys.size,
+      unmappedDetailEntries: entries.length - mappedDetailKeys.size,
+      mappedModelIds: Object.keys(modelToDetailKey).length,
+      mappingConflicts: conflicts.length
+    },
+    entries,
+    modelToDetailKey,
+    mappingConflicts: conflicts
+  };
 }
 
 function buildMetaIndexes(meta) {
@@ -464,6 +660,7 @@ function main() {
   const manualMap = readJson(manualSourceFile);
   const muscles = loadMuskelfinderMuscles();
   const indexes = buildMetaIndexes(meta);
+  const detailsLookup = buildDetailsLookup(muscles);
 
   const manualEntries = Array.isArray(manualMap.entries) ? manualMap.entries : [];
   const manualKeys = new Set(manualEntries.map((entry) => entry.muscleKey).filter(Boolean));
@@ -524,7 +721,10 @@ function main() {
   const generatedEntries = [
     ...manualEntries.map((entry) => ({ ...entry, source: entry.source || 'manual' })),
     ...exactMatches.map(({ sourceFile, ...entry }) => entry)
-  ].sort((a, b) => {
+  ].map((entry) => {
+    const detailKey = resolveDetailKeyForMapEntry(entry, detailsLookup);
+    return detailKey ? { ...entry, detailKey } : entry;
+  }).sort((a, b) => {
     const left = a.muskelfinderNames?.[0] || a.latinLabel || a.muscleKey || '';
     const right = b.muskelfinderNames?.[0] || b.latinLabel || b.muscleKey || '';
     return left.localeCompare(right, 'de');
@@ -563,9 +763,12 @@ function main() {
     missingMatches
   };
 
+  const detailsPayload = buildDetailsPayload(muscles, generatedEntries);
+
   writeJson(MAP_FILE, generatedMap);
   writeJson(GENERATED_MAP_FILE, generatedMap);
   writeJson(REPORT_FILE, report);
+  writeJson(DETAILS_FILE, detailsPayload);
 
   console.log('✅ Muskelfinder-Mapping ausgewertet');
   console.log(`   Muskelfinder-Muskeln: ${report.summary.muskelfinderMuscles}`);
@@ -577,6 +780,7 @@ function main() {
   console.log(`\n   Datei: ${path.relative(ROOT_DIR, MAP_FILE)}`);
   console.log(`   Datei: ${path.relative(ROOT_DIR, GENERATED_MAP_FILE)}`);
   console.log(`   Datei: ${path.relative(ROOT_DIR, REPORT_FILE)}`);
+  console.log(`   Datei: ${path.relative(ROOT_DIR, DETAILS_FILE)}`);
 }
 
 try {

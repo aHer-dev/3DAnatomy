@@ -62,6 +62,8 @@ export function setupResetUI() {
     }, { passive: true });
   }
 
+  setupAppGuideUI(colorBtn, shortcutsTip);
+
   btn.addEventListener('click', async () => {
     try {
       console.log('🔄 Schneller Reset gestartet...');
@@ -74,6 +76,110 @@ export function setupResetUI() {
       console.error('❌ Schneller Reset fehlgeschlagen:', error);
     }
   }, { passive: true });
+}
+
+function setupAppGuideUI(anchorBtn, shortcutsTip) {
+  if (!anchorBtn) return;
+
+  let guideBtn = document.getElementById('btn-app-guide');
+  if (!guideBtn) {
+    guideBtn = document.createElement('button');
+    guideBtn.id = 'btn-app-guide';
+    guideBtn.type = 'button';
+    guideBtn.setAttribute('aria-label', 'App-Anleitung anzeigen');
+    guideBtn.textContent = 'Anleitung';
+    anchorBtn.insertAdjacentElement('afterend', guideBtn);
+  }
+
+  let modal = document.getElementById('app-guide-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'app-guide-modal';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML = `
+      <div id="app-guide-box" role="dialog" aria-modal="true" aria-labelledby="app-guide-title">
+        <button id="app-guide-close" type="button" aria-label="Schließen">✕</button>
+        <h2 id="app-guide-title">🫀 So nutzt du 3D Anatomy</h2>
+
+        <div class="app-guide-step">
+          <div class="app-guide-icon">1</div>
+          <div>
+            <strong>Strukturen laden</strong>
+            <p>Über die Buttons im Menü lädst du Knochen, Muskeln, Organe und weitere Ebenen in die Szene.</p>
+          </div>
+        </div>
+
+        <div class="app-guide-step">
+          <div class="app-guide-icon">2</div>
+          <div>
+            <strong>Modelle antippen</strong>
+            <p>Tippe oder klicke auf eine Struktur, um sie auszuwählen und das Bearbeitungs- oder Info-Panel zu öffnen.</p>
+          </div>
+        </div>
+
+        <div class="app-guide-step">
+          <div class="app-guide-icon">3</div>
+          <div>
+            <strong>Isolieren, verstecken, einfärben</strong>
+            <p>Im Panel kannst du einzelne Modelle ausblenden, in Einzelansicht zeigen, transparent machen oder farblich hervorheben.</p>
+          </div>
+        </div>
+
+        <div class="app-guide-step">
+          <div class="app-guide-icon">4</div>
+          <div>
+            <strong>Kamera bewegen</strong>
+            <p>Mit Maus oder Finger kannst du drehen, zoomen und verschieben, um dir die Anatomie aus jedem Winkel anzusehen.</p>
+          </div>
+        </div>
+
+        <div class="app-guide-step">
+          <div class="app-guide-icon">5</div>
+          <div>
+            <strong>Reset richtig nutzen</strong>
+            <p><em>Reset</em> bringt dich zurück zur Startansicht. <em>Reset Farbe</em> setzt nur die Farben wieder auf den Ausgangszustand.</p>
+          </div>
+        </div>
+
+        <div class="app-guide-step">
+          <div class="app-guide-icon">💡</div>
+          <div>
+            <strong>Tipp</strong>
+            <p>Lade zuerst nur wenige Ebenen und arbeite dich dann schrittweise tiefer hinein. So bleibt die Szene übersichtlich.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  if (guideBtn.dataset.bound === 'true') return;
+  guideBtn.dataset.bound = 'true';
+
+  const closeBtn = modal.querySelector('#app-guide-close');
+
+  const openGuide = () => {
+    shortcutsTip?.classList.remove('visible');
+    shortcutsTip?.setAttribute('aria-hidden', 'true');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeGuide = () => {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  };
+
+  guideBtn.addEventListener('click', openGuide);
+  closeBtn?.addEventListener('click', closeGuide);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeGuide();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal.classList.contains('open')) {
+      closeGuide();
+    }
+  });
 }
 
 function isMuskelfinderDeeplinkActive() {

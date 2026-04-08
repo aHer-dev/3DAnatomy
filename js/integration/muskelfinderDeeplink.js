@@ -12,6 +12,7 @@ import { setModelVisibility } from '../features/visibility.js';
 import { highlightModel } from '../interaction/highlightModel.js';
 import { showInfoPanel } from '../interaction/infoPanel.js';
 import { enterIsolatedView, exitIsolatedView } from '../interaction/isolationView.js';
+import { isMuskelfinderPreviewMode } from './muskelfinderPreview.js';
 import { createGLTFLoader } from '../loaders/gltfLoaderFactory.js';
 import { updateModelColors } from '../modelLoader/color.js';
 import { state } from '../store/state.js';
@@ -107,17 +108,23 @@ function clearMuskelfinderDeeplinkParams() {
 }
 
 function buildIsolationActionBar(request) {
-  if (request?.source !== 'muskelfinder' || !request?.returnTo) {
+  if (request?.source !== 'muskelfinder') {
     return null;
   }
 
   return {
     primaryLabel: '← Zurück zum Muskelfinder',
     onPrimary: () => {
-      window.location.href = request.returnTo;
-    },
-    secondaryLabel: 'In 3D bleiben',
-    onSecondary: () => {
+      if (request?.returnTo) {
+        window.location.href = request.returnTo;
+        return;
+      }
+
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
       clearMuskelfinderDeeplinkParams();
       exitIsolatedView();
     }
@@ -381,6 +388,7 @@ export async function handleMuskelfinderDeeplink() {
   if (!request) {
     return null;
   }
+  const previewMode = isMuskelfinderPreviewMode();
 
   const result = storeResult(createResult(request));
 
@@ -437,8 +445,10 @@ export async function handleMuskelfinderDeeplink() {
       actionBar: isolationActionBar
     });
 
-    highlightModel(models[0]);
-    showInfoPanel(models[0]?.userData?.meta || resolution.entries[0], models[0]);
+    if (!previewMode) {
+      highlightModel(models[0]);
+      showInfoPanel(models[0]?.userData?.meta || resolution.entries[0], models[0]);
+    }
 
     const focus = focusOnModels(models);
     if (focus) {

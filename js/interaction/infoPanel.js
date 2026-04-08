@@ -2,6 +2,7 @@
 
 import { state } from '../store/state.js';
 import { dispatch, StateActions } from '../store/state.js';
+import { getMuskelfinderDetailsForMeta } from '../integration/muskelfinderDetails.js';
 import { getModelName, removeFromMultiSelect, clearMultiSelect, getMultiSelectedArray } from './multiSelect.js';
 
 // ─── Hilfsfunktionen ────────────────────────────────────────────────────────
@@ -22,6 +23,89 @@ function readDescription(meta, order = ['de', 'en']) {
         if (v) return v;
     }
     return '';
+}
+
+function buildMuskelfinderDetailsDisclosure(detailEntry) {
+    const sections = Array.isArray(detailEntry?.sections) ? detailEntry.sections : [];
+    if (!sections.length) return null;
+
+    const disclosure = document.createElement('details');
+    disclosure.className = 'mf-detail-disclosure';
+
+    const summary = document.createElement('summary');
+    summary.className = 'mf-detail-summary';
+
+    const summaryLabel = document.createElement('span');
+    summaryLabel.className = 'mf-detail-summary-label';
+    summaryLabel.textContent = 'Details';
+    summary.appendChild(summaryLabel);
+
+    disclosure.appendChild(summary);
+
+    const body = document.createElement('div');
+    body.className = 'mf-detail-body';
+
+    for (const section of sections) {
+        const sectionEl = document.createElement('section');
+        sectionEl.className = 'mf-detail-section';
+
+        const title = document.createElement('strong');
+        title.className = 'mf-detail-section-title';
+        title.textContent = section.label || '';
+        sectionEl.appendChild(title);
+
+        for (const item of section.items || []) {
+            const line = document.createElement('p');
+            line.className = 'mf-detail-line';
+
+            const label = String(item?.label || '').trim();
+            const text = String(item?.text || '').trim();
+
+            if (label) {
+                const labelEl = document.createElement('strong');
+                labelEl.textContent = `${label}:`;
+                line.appendChild(labelEl);
+                if (text) {
+                    line.appendChild(document.createTextNode(` ${text}`));
+                }
+            } else {
+                line.textContent = text;
+            }
+
+            if (line.textContent || line.children.length) {
+                sectionEl.appendChild(line);
+            }
+        }
+
+        body.appendChild(sectionEl);
+    }
+
+    disclosure.appendChild(body);
+    return disclosure;
+}
+
+async function appendMuskelfinderDetails(infoContent, meta) {
+    if (!infoContent || meta?.classification?.group !== 'muscles') {
+        return;
+    }
+
+    const slot = document.createElement('div');
+    slot.className = 'mf-detail-slot';
+    infoContent.appendChild(slot);
+
+    const detailEntry = await getMuskelfinderDetailsForMeta(meta);
+    if (!detailEntry || !slot.isConnected) {
+        slot.remove();
+        return;
+    }
+
+    const disclosure = buildMuskelfinderDetailsDisclosure(detailEntry);
+    if (!disclosure) {
+        slot.remove();
+        return;
+    }
+
+    slot.replaceChildren(disclosure);
 }
 
 // ─── Panel-Sichtbarkeit ──────────────────────────────────────────────────────
@@ -100,6 +184,8 @@ export function showInfoPanel(meta, selectedModel) {
         laLine.textContent = latin;
         infoContent.appendChild(laLine);
     }
+
+    void appendMuskelfinderDetails(infoContent, meta);
 
     // Beschreibung
     const descText = readDescription(meta, ['de', 'en']);

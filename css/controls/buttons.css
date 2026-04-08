@@ -3,6 +3,7 @@
 /* ─── Mobile: Touch-freundliche Buttons ──────────────────────────────────── */
 @media (max-width: 768px) {
   #btn-reset,
+  #btn-app-guide,
   #btn-add-to-set,
   #btn-show-set,
   #btn-clear-set {
@@ -20,7 +21,8 @@
 }
 
 #btn-reset,
-#btn-reset-colors {
+#btn-reset-colors,
+#btn-app-guide {
    width: 100%;
    padding: 12px 24px;
    margin-top: 8px;
@@ -36,7 +38,8 @@
 }
 #btn-reset { margin-top: 16px; }
 #btn-reset:hover,
-#btn-reset-colors:hover {
+#btn-reset-colors:hover,
+#btn-app-guide:hover {
    transform: translateY(-2px);
    box-shadow: 0 8px 25px rgba(74, 158, 255, 0.4);
 }
