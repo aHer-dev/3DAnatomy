@@ -125,6 +125,20 @@ export function getLayerActive(system) {
     return _layerState[system] ?? true;
 }
 
+export function syncToolbarLayerButtons() {
+    Object.keys(LAYER_GROUPS).forEach((system) => {
+        const groups = LAYER_GROUPS[system] || [];
+        _layerState[system] = groups.some((group) => (state.groups[group]?.length ?? 0) > 0);
+    });
+
+    document.querySelectorAll('.toolbar-layer-btn').forEach((btn) => {
+        const system = btn.dataset.system;
+        const isActive = !!_layerState[system];
+        btn.classList.toggle('layer-active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+    });
+}
+
 async function _toggleLayer(system, btn) {
     const groups = LAYER_GROUPS[system];
     const isLoaded = groups.some(g => (state.groups[g]?.length ?? 0) > 0);

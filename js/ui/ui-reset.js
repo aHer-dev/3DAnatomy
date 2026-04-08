@@ -9,11 +9,15 @@ import { camera } from '../core/camera.js';
 import { controls } from '../core/controls.js';
 import { updateModelColors } from '../modelLoader/color.js';
 import { loadGroupByName } from '../features/modelLoader-core.js';
+import { setModelOpacity } from '../features/appearance.js';
 import { setCameraToDefault } from '../core/cameraUtils.js';
 import { getConfig } from '../config/config.js';
-import { setModelVisibility } from '../features/visibility.js';
+import { setModelVisibility, showModel } from '../features/visibility.js';
 import { registerPickables, unregisterPickables } from '../features/selection.js';
+import { clearMultiSelect } from '../interaction/multiSelect.js';
+import { exitIsolatedView } from '../interaction/isolationView.js';
 import { disposeObject3D } from '../modelLoader/cleanup.js';
+import { syncToolbarLayerButtons } from './toolbar.js';
 
 // ✅ STANDARD-GRUPPEN ZENTRAL DEFINIERT
 const STANDARD_GROUPS = ['bones', 'teeth', 'cartilage'];
@@ -58,35 +62,96 @@ export function setupResetUI() {
     }, { passive: true });
   }
 
-  btn.addEventListener('click', () => {
-    console.log('🔄 Schneller Reset gestartet...');
-    resetToDefaultView();
-    setCameraToDefault(camera, controls);
-    if (typeof controls?.saveState === 'function') controls.saveState();
-    renderer.render(scene, camera);
-    console.log('✅ Reset: Ansicht zurückgesetzt');
+  btn.addEventListener('click', async () => {
+    try {
+      console.log('🔄 Schneller Reset gestartet...');
+      await resetToDefaultView();
+      setCameraToDefault(camera, controls);
+      if (typeof controls?.saveState === 'function') controls.saveState();
+      renderer.render(scene, camera);
+      console.log('✅ Reset: Ansicht zurückgesetzt');
+    } catch (error) {
+      console.error('❌ Schneller Reset fehlgeschlagen:', error);
+    }
   }, { passive: true });
 }
 
-function resetToDefaultView() {
-  // Alle Gruppen durchgehen
-  Object.keys(state.groups || {}).forEach(groupName => {
-    const models = state.groups[groupName] || [];
+function isMuskelfinderDeeplinkActive() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('source') === 'muskelfinder'
+      || params.has('muscleKey')
+      || params.has('muscle');
+  } catch (error) {
+    return false;
+  }
+}
 
-const shouldBeVisible = STANDARD_GROUPS.includes(groupName);
-dispatch(StateActions.SET_GROUP_VISIBILITY, { 
-  group: groupName,
-  visible: shouldBeVisible
-});
+function clearMuskelfinderDeeplinkParams() {
+  try {
+    const url = new URL(window.location.href);
+    ['muscleKey', 'muscle', 'source', 'returnTo'].forEach((key) => {
+      url.searchParams.delete(key);
+    });
+    const search = url.searchParams.toString();
+    window.history.replaceState({}, '', `${url.pathname}${search ? `?${search}` : ''}${url.hash}`);
+  } catch (error) {
+    console.warn('⚠️ Deeplink-Parameter konnten nicht entfernt werden:', error);
+  }
+}
 
-models.forEach(model => {
-  setModelVisibility(model, shouldBeVisible);
-});
-  });
-
+async function resetToDefaultView() {
+  exitIsolatedView();
+  hideInfoPanel?.();
+  clearMultiSelect();
   dispatch(StateActions.CLEAR_SELECTION, {});
 
-  console.log('✅ Standard-Gruppen sichtbar:', STANDARD_GROUPS);
+  if (state.modes) {
+    state.modes.collection = false;
+  }
+
+  const loadedGroups = Object.keys(state.groups || {});
+
+  for (const groupName of loadedGroups) {
+    if (STANDARD_GROUPS.includes(groupName)) continue;
+
+    const models = state.groups[groupName] || [];
+    if (!models.length) continue;
+
+    for (const model of models) {
+      unregisterPickables(model);
+      scene.remove(model);
+      disposeObject3D(model);
+    }
+
+    state.groups[groupName] = [];
+    state.groupStates[groupName] = false;
+  }
+
+  for (const groupName of STANDARD_GROUPS) {
+    if (!state.groups[groupName]?.length) {
+      await loadGroupByName(groupName, { centerCamera: false });
+    }
+
+    dispatch(StateActions.SET_GROUP_VISIBILITY, {
+      group: groupName,
+      visible: true
+    });
+
+    (state.groups[groupName] || []).forEach((model) => {
+      setModelOpacity(model, 1);
+      showModel(model);
+    });
+  }
+
+  resetAllButtonStates();
+  syncToolbarLayerButtons();
+
+  if (isMuskelfinderDeeplinkActive()) {
+    clearMuskelfinderDeeplinkParams();
+  }
+
+  console.log('✅ Startansicht mit bones, teeth und cartilage wiederhergestellt');
 }
 
 function ensureOnlyBasicGroupsVisible() {
