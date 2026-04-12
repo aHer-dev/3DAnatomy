@@ -127,7 +127,7 @@ class CollectionManager {
 
         // Event Listeners
         exportBtn.addEventListener('click', () => this.exportCollection());
-        importBtn.addEventListener('click', () => fileInput.click());
+        importBtn.addEventListener('click', () => this.showDropModal(fileInput));
         fileInput.addEventListener('change', (e) => this.importCollection(e));
 
         // Buttons zum Container hinzufügen
@@ -532,6 +532,161 @@ class CollectionManager {
     /**
      * Loading Overlay anzeigen
      */
+    showDropModal(fileInput) {
+        if (document.getElementById('drop-modal-overlay')) return;
+
+        const isMobile = window.innerWidth < 768;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'drop-modal-overlay';
+        overlay.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex; justify-content: center; align-items: ${isMobile ? 'flex-end' : 'center'};
+            z-index: 10000;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: dropModalFadeIn 0.2s ease;
+        `;
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: ${isMobile ? '20px 20px 0 0' : '20px'};
+            padding: ${isMobile ? '24px 20px 32px' : '40px'};
+            width: ${isMobile ? '100%' : '360px'};
+            max-width: ${isMobile ? '100%' : '90vw'};
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            display: flex; flex-direction: column; align-items: center; gap: ${isMobile ? '14px' : '20px'};
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            color: white;
+        `;
+
+        const dropZone = document.createElement('div');
+        dropZone.id = 'drop-zone';
+        dropZone.style.cssText = `
+            width: 100%; min-height: ${isMobile ? '100px' : '160px'};
+            border: 2px dashed rgba(74, 158, 255, 0.6);
+            border-radius: 14px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px;
+            background: rgba(74, 158, 255, 0.07);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: ${isMobile ? '20px' : '24px'};
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        `;
+        dropZone.innerHTML = isMobile ? `
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(74,158,255,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.9);">Datei auswählen</span>
+            <span style="font-size:11px;color:rgba(255,255,255,0.45);">.json oder .bluebody</span>
+        ` : `
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(74,158,255,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span style="font-size:15px;font-weight:600;color:rgba(255,255,255,0.9);">Sammlung hier ablegen</span>
+            <span style="font-size:12px;color:rgba(255,255,255,0.45);">.json oder .bluebody</span>
+        `;
+
+        const fileLink = document.createElement('a');
+        fileLink.href = '#';
+        fileLink.textContent = isMobile ? 'Dateimanager öffnen' : 'Dateimanager öffnen';
+        fileLink.style.cssText = `
+            font-size: ${isMobile ? '14px' : '13px'};
+            color: rgba(74, 158, 255, 0.9);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(74, 158, 255, 0.4);
+            padding-bottom: 1px;
+            transition: color 0.2s;
+            ${isMobile ? 'padding: 10px 0; display: block;' : ''}
+        `;
+        fileLink.addEventListener('mouseenter', () => fileLink.style.color = 'rgba(74,158,255,1)');
+        fileLink.addEventListener('mouseleave', () => fileLink.style.color = 'rgba(74,158,255,0.9)');
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = `
+            position: absolute; top: 14px; right: 18px;
+            background: none; border: none; color: rgba(255,255,255,0.5);
+            font-size: ${isMobile ? '20px' : '18px'};
+            cursor: pointer; line-height: 1;
+            transition: color 0.2s;
+            padding: ${isMobile ? '6px' : '0'};
+            -webkit-tap-highlight-color: transparent;
+        `;
+        closeBtn.addEventListener('mouseenter', () => closeBtn.style.color = 'rgba(255,255,255,0.9)');
+        closeBtn.addEventListener('mouseleave', () => closeBtn.style.color = 'rgba(255,255,255,0.5)');
+        modal.style.position = 'relative';
+
+        const style = document.createElement('style');
+        style.id = 'drop-modal-style';
+        style.textContent = `
+            @keyframes dropModalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+            #drop-zone.drag-over {
+                border-color: rgba(74,158,255,1);
+                background: rgba(74,158,255,0.18);
+                transform: scale(1.02);
+            }
+            #drop-zone:active {
+                background: rgba(74,158,255,0.15);
+            }
+        `;
+        document.head.appendChild(style);
+
+        const closeModal = () => {
+            overlay.remove();
+            document.getElementById('drop-modal-style')?.remove();
+        };
+
+        const handleFile = (file) => {
+            if (!file) return;
+            closeModal();
+            const fakeEvent = { target: { files: [file], value: '' } };
+            this.importCollection(fakeEvent);
+        };
+
+        // Drag & Drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            closeModal();
+            handleFile(e.dataTransfer.files?.[0]);
+        });
+        // Klick auf Drop-Zone öffnet Dateimanager → Modal schließen, originaler Handler übernimmt
+        dropZone.addEventListener('click', () => { closeModal(); fileInput.click(); });
+
+        // Dateimanager-Link
+        fileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal();
+            fileInput.click();
+        });
+
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+        modal.appendChild(closeBtn);
+        modal.appendChild(dropZone);
+        modal.appendChild(fileLink);
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+    }
+
     showLoadingOverlay(message = 'Lade...') {
         this.hideLoadingOverlay(); // Vorhandene entfernen
 

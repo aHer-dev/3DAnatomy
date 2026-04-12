@@ -191,14 +191,26 @@ function _wireMusclePanelListeners(container, selectedModel) {
 }
 
 function _wireAddToSet(btn, container, selectedModel) {
-    const originalText = btn.textContent;
+    const { id: modelId, name: modelName, group: modelGroup } = extractModelData(selectedModel);
+
+    function _updateBtnState() {
+        const inCollection = state.collection.some(item => item.id === modelId);
+        btn.textContent = inCollection ? 'Aus Sammlung entfernen' : 'Zur Sammlung hinzufügen';
+        btn.style.backgroundColor = inCollection ? '#c0392b' : '';
+        btn.style.color = inCollection ? 'white' : '';
+    }
+
+    _updateBtnState();
+
     const h = () => {
-        const { id: modelId, name: modelName, group: modelGroup } = extractModelData(selectedModel);
-        if (state.collection.some(item => item.id === modelId)) {
-            showFeedbackMessage(container, `"${modelName}" ist bereits in der Sammlung`, 'warning');
-            btn.style.backgroundColor = '#ff9800';
-            btn.textContent = '⚠️ Bereits vorhanden';
-            setTimeout(() => { btn.style.backgroundColor = ''; btn.textContent = originalText; }, 2000);
+        const inCollection = state.collection.some(item => item.id === modelId);
+        if (inCollection) {
+            const idx = state.collection.findIndex(item => item.id === modelId);
+            state.collection.splice(idx, 1);
+            showFeedbackMessage(container, `"${modelName}" aus der Sammlung entfernt`, 'warning');
+            document.dispatchEvent(new CustomEvent('collectionUpdated'));
+            renderer.render(scene, camera);
+            _updateBtnState();
             return;
         }
         let currentColor = new THREE.Color(0xffffff).getHex();
@@ -217,9 +229,9 @@ function _wireAddToSet(btn, container, selectedModel) {
             model: selectedModel, addedAt: Date.now(), source: 'editPanel'
         });
         showFeedbackMessage(container, `"${modelName}" zur Sammlung hinzugefügt`, 'success');
-        animateButtonSuccess(btn, originalText);
         document.dispatchEvent(new CustomEvent('collectionUpdated'));
         renderer.render(scene, camera);
+        _updateBtnState();
     };
     btn.addEventListener('click', h);
     listeners.set(btn, { click: h });
@@ -304,108 +316,51 @@ export function buildEditPanel(container, selectedModel) {
         listeners.set(toggleButton, { click: toggleHandler });
     }
 
-    // 🎯 VERBESSERTE "ZUM SET HINZUFÜGEN" LOGIK - DEZENTES FEEDBACK
     if (addToSetButton) {
-        const originalButtonText = addToSetButton.textContent;
+        const { id: modelId, name: modelName, group: modelGroup } = extractModelData(selectedModel);
+
+        function _updateAddBtnState() {
+            const inCollection = state.collection.some(item => item.id === modelId);
+            addToSetButton.textContent = inCollection ? 'Aus Sammlung entfernen' : 'Zur Sammlung hinzufügen';
+            addToSetButton.style.backgroundColor = inCollection ? '#c0392b' : '';
+            addToSetButton.style.color = inCollection ? 'white' : '';
+        }
+
+        _updateAddBtnState();
 
         const addToSetHandler = () => {
-
-            // ROBUSTE DATENEXTRAKTION
-            const { id: modelId, name: modelName, group: modelGroup } = extractModelData(selectedModel);
-
-            // PRÜFEN OB BEREITS VORHANDEN
-            const exists = state.collection.some(item => item.id === modelId);
-            if (exists) {
-                console.warn(`ℹ️ "${modelName}" ist bereits in der Sammlung.`);
-
-                // 🎯 DEZENTES FEEDBACK FÜR BEREITS VORHANDEN
-                showFeedbackMessage(container, `"${modelName}" ist bereits in der Sammlung`, 'warning');
-
-                // Button kurz orange färben
-                const originalColor = addToSetButton.style.backgroundColor;
-                addToSetButton.style.backgroundColor = '#ff9800';
-                addToSetButton.style.color = 'white';
-                addToSetButton.textContent = '⚠️ Bereits vorhanden';
-
-                setTimeout(() => {
-                    addToSetButton.style.backgroundColor = originalColor;
-                    addToSetButton.style.color = '';
-                    addToSetButton.textContent = originalButtonText;
-                }, 2000);
-
+            const inCollection = state.collection.some(item => item.id === modelId);
+            if (inCollection) {
+                const idx = state.collection.findIndex(item => item.id === modelId);
+                state.collection.splice(idx, 1);
+                showFeedbackMessage(container, `"${modelName}" aus der Sammlung entfernt`, 'warning');
+                document.dispatchEvent(new CustomEvent('collectionUpdated'));
+                renderer.render(scene, camera);
+                _updateAddBtnState();
                 return;
             }
 
-            // AKTUELLE EIGENSCHAFTEN EXTRAHIEREN
-            let currentColor = new THREE.Color(0xffffff);
+            let currentColor = new THREE.Color(0xffffff).getHex();
             let currentOpacity = 1;
-            const currentVisible = selectedModel.visible !== false;
-
             selectedModel.traverse(child => {
                 if (child.isMesh && child.material) {
-                    if (child.material.color) {
-                        currentColor = child.material.color.getHex();
-                    }
+                    if (child.material.color) currentColor = child.material.color.getHex();
                     currentOpacity = child.material.opacity ?? 1;
                 }
             });
 
-            // COLLECTION-ITEM ERSTELLEN
-            const collectionItem = {
-                // Eindeutige Identifikation
-                id: modelId,
-                name: modelName,
-                group: modelGroup,
-
-                // Vollständige Metadaten
+            state.collection.push({
+                id: modelId, name: modelName, group: modelGroup,
                 meta: selectedModel.userData?.meta || selectedModel.userData?.entry || {},
-
-                // Aktuelle visuelle Eigenschaften
-                color: currentColor,
-                opacity: currentOpacity,
-                visible: currentVisible,
-
-                // Modell-Referenz
-                model: selectedModel,
-
-                // Debug-Info
-                addedAt: Date.now(),
-                source: 'editPanel'
-            };
-
-
-            // ZUR SAMMLUNG HINZUFÜGEN
-            state.collection.push(collectionItem);
-
-
-            // 🎯 DEZENTES FEEDBACK - Kein Alert!
-            showFeedbackMessage(
-                container,
-                `"${modelName}" zur Sammlung hinzugefügt`,
-                'success'
-            );
-
-            // 🎯 BUTTON-ANIMATION
-            animateButtonSuccess(addToSetButton, originalButtonText);
-
-            // UI AKTUALISIEREN - Event senden für ui-set.js
-            const event = new CustomEvent('collectionUpdated');
-            document.dispatchEvent(event);
-
-            // 🎯 OPTIONAL: Leichtes Highlight für das Modell
-            selectedModel.traverse(child => {
-                if (child.isMesh && child.material) {
-                    const originalEmissive = child.material.emissive?.clone() || new THREE.Color(0x000000);
-                    child.material.emissive = new THREE.Color(0x00ff00);
-
-                    setTimeout(() => {
-                        child.material.emissive = originalEmissive;
-                        renderer.render(scene, camera);
-                    }, 1000);
-                }
+                color: currentColor, opacity: currentOpacity,
+                visible: selectedModel.visible !== false,
+                model: selectedModel, addedAt: Date.now(), source: 'editPanel'
             });
 
+            showFeedbackMessage(container, `"${modelName}" zur Sammlung hinzugefügt`, 'success');
+            document.dispatchEvent(new CustomEvent('collectionUpdated'));
             renderer.render(scene, camera);
+            _updateAddBtnState();
         };
 
         addToSetButton.addEventListener('click', addToSetHandler);
@@ -444,7 +399,7 @@ export function buildMultiEditPanel(container, models, onUpdate) {
         <label class="multi-edit-row">Transparenz:
             <input type="range" id="multi-edit-opacity" min="0" max="1" step="0.01" value="1" />
         </label>
-        <button id="multi-edit-add-all">Alle zur Sammlung hinzufügen</button>
+        <button id="multi-edit-add-all"></button>
         <button id="multi-edit-hide-all">Alle verstecken</button>
         <button id="multi-edit-clear">Auswahl aufheben</button>
     `;
@@ -481,33 +436,76 @@ export function buildMultiEditPanel(container, models, onUpdate) {
         _scheduleRender();
     });
 
-    // Alle zur Sammlung
-    addAllBtn.addEventListener('click', () => {
-        let added = 0;
-        for (const model of models) {
-            const { id: modelId, name: modelName, group: modelGroup } = extractModelData(model);
-            if (state.collection.some(item => item.id === modelId)) continue;
-
-            let color = new THREE.Color(0xffffff);
-            let opacity = 1;
-            model.traverse(child => {
-                if (child.isMesh && child.material) {
-                    if (child.material.color) color = child.material.color.getHex();
-                    opacity = child.material.opacity ?? 1;
-                }
-            });
-
-            state.collection.push({
-                id: modelId, name: modelName, group: modelGroup,
-                meta: model.userData?.meta || model.userData?.entry || {},
-                color, opacity, visible: model.visible !== false,
-                model, addedAt: Date.now(), source: 'multiSelect'
-            });
-            added++;
+    // Alle zur Sammlung / Alle aus Sammlung entfernen
+    function _updateMultiAddBtnState() {
+        const allIn = models.every(m => {
+            const { id } = extractModelData(m);
+            return state.collection.some(item => item.id === id);
+        });
+        const anyIn = models.some(m => {
+            const { id } = extractModelData(m);
+            return state.collection.some(item => item.id === id);
+        });
+        if (allIn) {
+            addAllBtn.textContent = 'Alle aus Sammlung entfernen';
+            addAllBtn.style.backgroundColor = '#c0392b';
+            addAllBtn.style.color = 'white';
+        } else if (anyIn) {
+            addAllBtn.textContent = 'Restliche zur Sammlung hinzufügen';
+            addAllBtn.style.backgroundColor = '';
+            addAllBtn.style.color = '';
+        } else {
+            addAllBtn.textContent = 'Alle zur Sammlung hinzufügen';
+            addAllBtn.style.backgroundColor = '';
+            addAllBtn.style.color = '';
         }
-        document.dispatchEvent(new CustomEvent('collectionUpdated'));
-        showFeedbackMessage(container, `${added} Struktur${added !== 1 ? 'en' : ''} zur Sammlung hinzugefügt`, added > 0 ? 'success' : 'warning');
+    }
+
+    _updateMultiAddBtnState();
+
+    addAllBtn.addEventListener('click', () => {
+        const allIn = models.every(m => {
+            const { id } = extractModelData(m);
+            return state.collection.some(item => item.id === id);
+        });
+
+        if (allIn) {
+            // Alle entfernen
+            for (const model of models) {
+                const { id } = extractModelData(model);
+                const idx = state.collection.findIndex(item => item.id === id);
+                if (idx !== -1) state.collection.splice(idx, 1);
+            }
+            document.dispatchEvent(new CustomEvent('collectionUpdated'));
+            showFeedbackMessage(container, `${models.length} Struktur${models.length !== 1 ? 'en' : ''} aus der Sammlung entfernt`, 'warning');
+        } else {
+            // Fehlende hinzufügen
+            let added = 0;
+            for (const model of models) {
+                const { id: modelId, name: modelName, group: modelGroup } = extractModelData(model);
+                if (state.collection.some(item => item.id === modelId)) continue;
+                let color = new THREE.Color(0xffffff).getHex();
+                let opacity = 1;
+                model.traverse(child => {
+                    if (child.isMesh && child.material) {
+                        if (child.material.color) color = child.material.color.getHex();
+                        opacity = child.material.opacity ?? 1;
+                    }
+                });
+                state.collection.push({
+                    id: modelId, name: modelName, group: modelGroup,
+                    meta: model.userData?.meta || model.userData?.entry || {},
+                    color, opacity, visible: model.visible !== false,
+                    model, addedAt: Date.now(), source: 'multiSelect'
+                });
+                added++;
+            }
+            document.dispatchEvent(new CustomEvent('collectionUpdated'));
+            showFeedbackMessage(container, `${added} Struktur${added !== 1 ? 'en' : ''} zur Sammlung hinzugefügt`, added > 0 ? 'success' : 'warning');
+        }
+
         renderer.render(scene, camera);
+        _updateMultiAddBtnState();
     });
 
     // Alle verstecken

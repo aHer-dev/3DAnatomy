@@ -1,5 +1,6 @@
 // js/controls.js
 // Steuert die Kamera-Interaktion in der 3D-Szene
+import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { camera } from './camera.js';
 import { renderer } from './renderer.js';
@@ -40,5 +41,28 @@ controls.addEventListener('change', () => {
     hideInfoPanel();
   }
 });
+
+// ─── Dynamisches Zoom-Target ────────────────────────────────────────────────
+// Problem: controls.target bleibt am Modellzentrum. Beim Reinzoomen in einen
+// weit entfernten Bereich (z.B. Fuß) trifft die Kamera irgendwann minDistance
+// und stoppt. Lösung: Target beim Reinzoomen in Blickrichtung verschieben.
+const _lookDir = new THREE.Vector3();
+
+renderer.domElement.addEventListener('wheel', (e) => {
+  const zoomingIn = e.deltaY < 0;
+  if (!zoomingIn) return;
+
+  const dist = camera.position.distanceTo(controls.target);
+
+  // Erst aktiv werden wenn nahe dran (unter 15% des maxDistance)
+  if (dist > controls.maxDistance * 0.15) return;
+
+  camera.getWorldDirection(_lookDir);
+
+  // Target um 30% der aktuellen Distanz nach vorne verschieben
+  const shift = dist * 0.3;
+  controls.target.addScaledVector(_lookDir, shift);
+  controls.update();
+}, { passive: true });
 
 export { controls };
