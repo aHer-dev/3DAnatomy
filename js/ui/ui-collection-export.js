@@ -126,7 +126,7 @@ class CollectionManager {
         });
 
         // Event Listeners
-        exportBtn.addEventListener('click', () => this.exportCollection());
+        exportBtn.addEventListener('click', () => this.showSaveModal());
         importBtn.addEventListener('click', () => this.showDropModal(fileInput));
         fileInput.addEventListener('change', (e) => this.importCollection(e));
 
@@ -149,7 +149,7 @@ class CollectionManager {
     /**
      * Exportiert die aktuelle Sammlung als JSON-Datei
      */
-    exportCollection() {
+    exportCollection(customName = null) {
         if (!state.collection || state.collection.length === 0) {
             this.showToast('Die Sammlung ist leer', 'warning');
             return;
@@ -182,7 +182,8 @@ class CollectionManager {
             const a = document.createElement('a');
             a.href = url;
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-            a.download = `sammlung_${timestamp}${this.fileExtension}`;
+            const baseName = customName || `sammlung_${timestamp}`;
+            a.download = `${baseName}${this.fileExtension}`;
 
             // Download triggern
             document.body.appendChild(a);
@@ -532,6 +533,173 @@ class CollectionManager {
     /**
      * Loading Overlay anzeigen
      */
+    showSaveModal() {
+        if (document.getElementById('save-modal-overlay')) return;
+
+        if (!state.collection || state.collection.length === 0) {
+            this.showToast('Die Sammlung ist leer', 'warning');
+            return;
+        }
+
+        const isMobile = window.innerWidth < 768;
+        const defaultName = `Sammlung_${new Date().toLocaleDateString('de-DE').replace(/\./g, '-')}`;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'save-modal-overlay';
+        overlay.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex; justify-content: center; align-items: ${isMobile ? 'flex-end' : 'center'};
+            z-index: 10000;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: saveModalFadeIn 0.2s ease;
+        `;
+
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: relative;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: ${isMobile ? '20px 20px 0 0' : '20px'};
+            padding: ${isMobile ? '24px 20px 32px' : '40px'};
+            width: ${isMobile ? '100%' : '360px'};
+            max-width: ${isMobile ? '100%' : '90vw'};
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            display: flex; flex-direction: column; align-items: stretch; gap: ${isMobile ? '14px' : '20px'};
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            color: white; box-sizing: border-box;
+        `;
+
+        // Titel
+        const title = document.createElement('div');
+        title.textContent = 'Sammlung speichern';
+        title.style.cssText = `
+            font-size: ${isMobile ? '16px' : '17px'};
+            font-weight: 600;
+            color: rgba(255,255,255,0.92);
+            text-align: center;
+            padding-top: 4px;
+        `;
+
+        // Hinweis
+        const hint = document.createElement('div');
+        hint.textContent = `${state.collection.length} Struktur${state.collection.length !== 1 ? 'en' : ''} werden gespeichert`;
+        hint.style.cssText = `
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            margin-top: -10px;
+        `;
+
+        // Input
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = defaultName;
+        input.placeholder = 'Dateiname';
+        input.style.cssText = `
+            width: 100%; box-sizing: border-box;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(74,158,255,0.45);
+            border-radius: 10px;
+            padding: ${isMobile ? '14px 14px' : '12px 14px'};
+            font-size: ${isMobile ? '16px' : '14px'};
+            color: white;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        `;
+        input.addEventListener('focus', () => {
+            input.style.borderColor = 'rgba(74,158,255,0.9)';
+            input.select();
+        });
+        input.addEventListener('blur', () => {
+            input.style.borderColor = 'rgba(74,158,255,0.45)';
+        });
+
+        // Dateiendung-Anzeige
+        const extHint = document.createElement('div');
+        extHint.textContent = `Wird gespeichert als: ${defaultName}${this.fileExtension}`;
+        extHint.style.cssText = `
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            text-align: center;
+            margin-top: -8px;
+        `;
+        input.addEventListener('input', () => {
+            const val = input.value.trim() || defaultName;
+            extHint.textContent = `Wird gespeichert als: ${val}${this.fileExtension}`;
+        });
+
+        // Speichern-Button
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Speichern';
+        saveBtn.style.cssText = `
+            width: 100%;
+            padding: ${isMobile ? '15px' : '12px'};
+            background: linear-gradient(135deg, #4A9EFF, #FF7A4A);
+            color: white; border: none;
+            border-radius: 12px;
+            font-size: ${isMobile ? '15px' : '14px'};
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        `;
+        saveBtn.addEventListener('mouseenter', () => { saveBtn.style.opacity = '0.88'; saveBtn.style.transform = 'translateY(-1px)'; });
+        saveBtn.addEventListener('mouseleave', () => { saveBtn.style.opacity = '1'; saveBtn.style.transform = ''; });
+
+        // ✕-Button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = `
+            position: absolute; top: 14px; right: 18px;
+            background: none; border: none; color: rgba(255,255,255,0.5);
+            font-size: ${isMobile ? '20px' : '18px'};
+            cursor: pointer; line-height: 1;
+            transition: color 0.2s;
+            padding: ${isMobile ? '6px' : '0'};
+            -webkit-tap-highlight-color: transparent;
+        `;
+        closeBtn.addEventListener('mouseenter', () => closeBtn.style.color = 'rgba(255,255,255,0.9)');
+        closeBtn.addEventListener('mouseleave', () => closeBtn.style.color = 'rgba(255,255,255,0.5)');
+
+        const style = document.createElement('style');
+        style.id = 'save-modal-style';
+        style.textContent = `@keyframes saveModalFadeIn { from { opacity:0; } to { opacity:1; } }`;
+        document.head.appendChild(style);
+
+        const closeModal = () => {
+            overlay.remove();
+            document.getElementById('save-modal-style')?.remove();
+        };
+
+        const doSave = () => {
+            const name = input.value.trim() || defaultName;
+            closeModal();
+            this.exportCollection(name);
+        };
+
+        saveBtn.addEventListener('click', doSave);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSave(); if (e.key === 'Escape') closeModal(); });
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+        modal.appendChild(closeBtn);
+        modal.appendChild(title);
+        modal.appendChild(hint);
+        modal.appendChild(input);
+        modal.appendChild(extHint);
+        modal.appendChild(saveBtn);
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        // Input fokussieren (kurz verzögert wegen Animation)
+        setTimeout(() => input.focus(), 50);
+    }
+
     showDropModal(fileInput) {
         if (document.getElementById('drop-modal-overlay')) return;
 
